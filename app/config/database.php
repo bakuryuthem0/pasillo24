@@ -54,9 +54,9 @@ return array(
 
 		'mysql' => array(
 			'driver'    => 'mysql',
-			'host'      => 'pasillo24.com',
+			'host'      => 'localhost',
 			'database'  => 'pasillo24_db',
-			'username'  => 'pasilo24_admin',
+			'username'  => 'pasillo24_admin',
 			'password'  => 'QMlm31D3SaPa',
 			'charset'   => 'utf8',
 			'collation' => 'utf8_unicode_ci',
