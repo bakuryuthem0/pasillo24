@@ -17,7 +17,7 @@
 				<div class="col-xs-12">
 					<div class="col-xs-12">
 						<legend>Formulario de registro</legend>
-						<p class="textoPromedio">Llene el siguiente formulario para registrarse en ffasil.com.</p>
+						<p class="textoPromedio">Llene el siguiente formulario para registrarse en pasillo24.com.</p>
 						<p class="textoPromedio">(*) Campos obligatorios.</p>
 						<hr>
 					</div>						

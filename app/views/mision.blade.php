@@ -5,9 +5,9 @@
 <div class="container contenedorUnico">
 	<div class="row">
 		<div class="col-xs-12 ">
-			<legend style="text-align:center;margin:2em 0px;">PERFIL DE FFASIL.COM</legend>
+			<legend style="text-align:center;margin:2em 0px;">PERFIL DE pasillo24.COM</legend>
 			<div class="col-xs-12 contAnaranjado" style="margin:2em 0px;">
-				<h3>Misión de ffasil.com</h3>
+				<h3>Misión de pasillo24.com</h3>
 				<hr>
 				<p class="textoPromedio" style="text-align:justify;">
 					Ofrecer y facilitar soluciones de comercio electrónico para que cualquier persona o empresa pueda comprar, vender, pagar o  publicitar productos y servicios.
@@ -15,22 +15,22 @@
 			</div>
 			
 			<div class="col-xs-12 contAnaranjado" style="margin:2em 0px;">
-				<h3>Visión de ffasil.com</h3>
+				<h3>Visión de pasillo24.com</h3>
 				<hr>
 				<p class="textoPromedio" style="text-align:justify;">
 					Constituirse en el principal portal de comercio electrónico a nivel nacional, coadyuvando en el desarrollo, crecimiento y fortalecimiento económico del país a través de la administración de recursos humanos y medios tecnológicos de última generación.
 				</p>
 			</div>
 			<div class="col-xs-12 contAnaranjado" style="margin:2em 0px;">
-				<h3>¿De donde nace ffasil.com?</h3>
+				<h3>¿De donde nace pasillo24.com?</h3>
 				<hr>
 				<p class="textoPromedio" style="text-align:justify;">
-					FFASIL.COM  Surge de la necesidad de contar con un medio que facilite la comercialización de productos y servicios a gran escala, permitiendo tanto al joven emprendedor como a las empresas consolidadas  promocionar sus productos o servicios al precio más bajo del mercado y con la tecnología de vanguardia.
+					pasillo24.COM  Surge de la necesidad de contar con un medio que facilite la comercialización de productos y servicios a gran escala, permitiendo tanto al joven emprendedor como a las empresas consolidadas  promocionar sus productos o servicios al precio más bajo del mercado y con la tecnología de vanguardia.
 
-FFASIL provee al usuario una solución simple a las complicadas actividades relacionadas con la venta, compra, intercambio, alquiler, permuta o cualquier otra actividad comercial.
+pasillo24 provee al usuario una solución simple a las complicadas actividades relacionadas con la venta, compra, intercambio, alquiler, permuta o cualquier otra actividad comercial.
 
 				</p>
-				<p class="textoPromedio">En FFASIL tu puedes:</p>
+				<p class="textoPromedio">En pasillo24 tu puedes:</p>
 				<ul class="textoPromedio">
 					<li>Diseñar fácilmente anuncios con fotos.</li>
 					<li>Monitorear tu actividad de ventas, compras y preguntas por algún producto publicado o de tu interés.</li>

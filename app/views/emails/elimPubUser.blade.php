@@ -79,18 +79,18 @@ fieldset[disabled] .btn-success.active {
       </style>
    </head>
    <body style="font-family:'Roboto','san serif';padding:2em 4em;">
-      <img src="http://preview.ffasil.com/public/images/logo2.png" style="width:40%;">
+      <img src="http://preview.pasillo24.com/images/logo2.png" style="width:40%;">
       <div>
       	<legend>Estimado usuario</legend>
          <ul>
-            <li>Este mensaje le fue enviado debido a que se ha eliminado su publicación en <strong>ffasil.com</strong>.</li>
+            <li>Este mensaje le fue enviado debido a que se ha eliminado su publicación en <strong>pasillo24.com</strong>.</li>
          </ul>
 	       <p class="bg-primary" style="padding:1em;">Titulo de la publicacion: {{ $publicacion }} </p>
          <ul>
-            <li>Para mas información sobre esta accion, contactenos a travez de nuestro sistema en <strong>ffasil.com</strong></li>
+            <li>Para mas información sobre esta accion, contactenos a travez de nuestro sistema en <strong>pasillo24.com</strong></li>
             
          </ul>
-	      <p  style="text-align:center;">Atentamente <span class="bg-primary" style="color:white;">ffasil.com</span></p>
+	      <p  style="text-align:center;">Atentamente <span class="bg-primary" style="color:white;">pasillo24.com</span></p>
 	  </div>
    </body>
 </html>

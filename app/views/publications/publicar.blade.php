@@ -21,7 +21,7 @@
 				<h3 class="footerText">ANUNCIO LÍDER</h3>
 				<img src="{{asset('images/lider-01.png')}}" class="pubType">
 				<p class="textoPromedio footerText textoPublicacion">
-					Anuncio LÍDER es un espacio privilegiado de publicidad que se encuentra en la sección de menú principal y categorías, le permite al usuario que el cliente visite su página web en caso de tenerla, además la comunidad FFASIL se encarga de aumentar la publicidad de su anuncio a través de las principales redes sociales.
+					Anuncio LÍDER es un espacio privilegiado de publicidad que se encuentra en la sección de menú principal y categorías, le permite al usuario que el cliente visite su página web en caso de tenerla, además la comunidad pasillo24 se encarga de aumentar la publicidad de su anuncio a través de las principales redes sociales.
 				</p>
 				<a href="{{ URL::to('usuario/publicacion/lider') }}" class="btn btn-primary footerText btn-go-pub">Crear publicación</a>
 			</div>
@@ -29,7 +29,7 @@
 				<h3 class="footerText">ANUNCIO HABITUAL</h3>
 				<img src="{{asset('images/habitual-01.png')}}" class="pubType">
 				<p class="textoPromedio footerText textoPublicacion">
-					Anuncio HABITUAL es una publicación destinada a productos y servicios, pudiendo determinar la categoría en la cual publicar, cada publicación tiene una duración de 70 días, ideal para el joven emprendedor permitiéndole adquirir reputación dentro de la comunidad FFASIL.
+					Anuncio HABITUAL es una publicación destinada a productos y servicios, pudiendo determinar la categoría en la cual publicar, cada publicación tiene una duración de 70 días, ideal para el joven emprendedor permitiéndole adquirir reputación dentro de la comunidad pasillo24.
 				</p>
 				<a href="{{ URL::to('usuario/publicacion/habitual') }}" class="btn btn-primary footerText btn-go-pub">Crear publicación</a>
 			</div>

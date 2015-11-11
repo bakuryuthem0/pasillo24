@@ -79,21 +79,21 @@ fieldset[disabled] .btn-success.active {
       </style>
    </head>
    <body style="font-family:'Roboto','san serif';padding:2em 4em;">
-      <img src="http://preview.ffasil.com/public/images/logo2.png" style="width:40%;">
+      <img src="http://preview.pasillo24.com/images/logo2.png" style="width:40%;">
       <div>
       	<legend>Estimado usuario</legend>
          <ul>
-            <li>Este mensaje le fue enviado debido a su solicitud de inscripción en <strong>ffasil.com</strong>. Para completar el proceso de registro en nuestro portal sólo necesita hacer click en el siguiente botón.</li>
+            <li>Este mensaje le fue enviado debido a su solicitud de inscripción en <strong>pasillo24.com</strong>. Para completar el proceso de registro en nuestro portal sólo necesita hacer click en el siguiente botón.</li>
          </ul>
 	     
 	      <a href="{{ $link }}" class="btn btn-success" style="margin:2em auto;display:block;width: 150px;">Confirma tu cuenta</a>
          <p>Si no puedes ver el botón, copia este enlace en tu navegador</p>
          <p class="bg-primary" style="padding:1em;">{{ $link }}</p>
          <ul>
-            <li>Si usted no solicitó el registro en <strong>ffasil.com</strong>, por favor ignore o borre este mensaje</li>
+            <li>Si usted no solicitó el registro en <strong>pasillo24.com</strong>, por favor ignore o borre este mensaje</li>
             <li>Si tiene alguna duda o necesita mas información. llámenos al teléfono (x)xxx-xxxx o escríbanos a los correos electrónicos <span class="bg-primary" style="padding:0px 0.5em;">123456789@hotmail.com</span> o <span class="bg-primary" style="padding:0px 0.5em;">123456789@hotmail.com</span> sera un placer atenderle</li>
          </ul>
-	      <p  style="text-align:center;">Gracias por unirse a nuestra comunidad. Atentamente <span class="bg-primary" style="color:white;">ffasil.com</span></p>
+	      <p  style="text-align:center;">Gracias por unirse a nuestra comunidad. Atentamente <span class="bg-primary" style="color:white;">pasillo24.com</span></p>
 	  </div>
    </body>
 </html>

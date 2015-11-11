@@ -254,8 +254,8 @@
 			</div>
 				<div class="modal-body">
 					<ul class="textoPromedio">
-						<li>La comunidad ffasil.com ha creado un sistema de valoración para determinar la calidad de los productos así como también la calidad de atención al público.</li>
-						<li>No trate de generar reputación utilizando programas o medios ilícitos, ffasil.com cuenta con un sistema de gestión de usuarios y nos reservamos el derecho de eliminar al usuario que este ejerciendo este tipo de actividad.</li>
+						<li>La comunidad pasillo24.com ha creado un sistema de valoración para determinar la calidad de los productos así como también la calidad de atención al público.</li>
+						<li>No trate de generar reputación utilizando programas o medios ilícitos, pasillo24.com cuenta con un sistema de gestión de usuarios y nos reservamos el derecho de eliminar al usuario que este ejerciendo este tipo de actividad.</li>
 						<li>
 							Como verá en el área de "mis compras" o "mis ventas" encontrará un botón con el cual podrá calificar al  usuario.
 						</li>
@@ -265,7 +265,7 @@
 
 						<li>Una valoración negativa anula a una positiva.</li>
 						<li>Evite utilizar vocabulario inadecuado, recuerde que los Bolivianos nos caracterizamos por la amabilidad ante todo.</li>
-						<li>La comunidad ffasil.com le desea éxitos, no olvide comunicarse al: atencionalclienteffasil@gmail.com estamos  para servirle.</li>
+						<li>La comunidad pasillo24.com le desea éxitos, no olvide comunicarse al: atencionalclientepasillo24@gmail.com estamos  para servirle.</li>
 					</ul>
 				</div>
 				<div class="modal-footer " style="text-align:center;">

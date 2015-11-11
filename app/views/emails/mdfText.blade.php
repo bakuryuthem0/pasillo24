@@ -79,18 +79,18 @@ fieldset[disabled] .btn-success.active {
       </style>
    </head>
    <body style="font-family:'Roboto','san serif';padding:2em 4em;">
-      <img src="http://preview.ffasil.com/public/images/logo2.png" style="width:40%;">
+      <img src="http://preview.pasillo24.com/images/logo2.png" style="width:40%;">
       <div>
       	<legend>Estimado Roberto</legend>
          <ul>
-            <li>Este mensaje le fue enviado debido a que se han cambiado los texto de las publicaciones en <strong>ffasil.com</strong>.</li>
+            <li>Este mensaje le fue enviado debido a que se han cambiado los texto de las publicaciones en <strong>pasillo24.com</strong>.</li>
          </ul>
          <p class="bg-primary" style="padding:1em;">Cambiado por: {{ $creadoPor }}</p>
          <ul>
-            <li>Si usted aprueba esta accion <strong>ffasil.com</strong>, por favor tome las medidas necesarias</li>
+            <li>Si usted aprueba esta accion <strong>pasillo24.com</strong>, por favor tome las medidas necesarias</li>
             
          </ul>
-	      <p  style="text-align:center;">Atentamente <span class="bg-primary" style="color:white;">ffasil.com</span></p>
+	      <p  style="text-align:center;">Atentamente <span class="bg-primary" style="color:white;">pasillo24.com</span></p>
 	  </div>
    </body>
 </html>

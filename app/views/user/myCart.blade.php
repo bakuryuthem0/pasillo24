@@ -5,7 +5,7 @@
 <div class="container contenedorUnico">
 	<div class="row">
 		<div class="col-xs-12">
-				<legend>Sistema de reputación de ffasil.com</legend>
+				<legend>Sistema de reputación de pasillo24.com</legend>
 				<p class=textoPromedio>Una vez que hayas realizado tu compra, podrás valorar al vendedor según tus experiencias, pasadas las 48 horas. </p>
 				<table class="table table-striped table-hover textoPromedio">
 					<thead>

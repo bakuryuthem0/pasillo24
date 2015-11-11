@@ -79,16 +79,16 @@ fieldset[disabled] .btn-success.active {
       </style>
    </head>
    <body style="font-family:'Roboto','san serif';padding:2em 4em;">
-      <img src="http://preview.ffasil.com/public/images/logo2.png" style="width:40%;">
+      <img src="http://preview.pasillo24.com/images/logo2.png" style="width:40%;">
       <div>
          <legend>Estimado usuario</legend>
          
-         <p class="bg-primary" style="padding:1em;">Este mensaje fue enviado por ffasil.com debido a que se ha respondido su comentario.</p>
+         <p class="bg-primary" style="padding:1em;">Este mensaje fue enviado por pasillo24.com debido a que se ha respondido su comentario.</p>
 
          <ul>
             <li>Si tiene alguna duda o necesita mas información. llámenos al teléfono (x)xxx-xxxx o escríbanos a los correos electrónicos <span class="bg-primary" style="padding:0px 0.5em;">123456789@hotmail.com</span> o <span class="bg-primary" style="padding:0px 0.5em;">123456789@hotmail.com</span> será un placer atenderle</li>
          </ul>
-         <p  style="text-align:center;">Gracias por unirse a nuestra comunidad. Atentamente <span class="bg-primary" style="color:white;">ffasil.com</span></p>
+         <p  style="text-align:center;">Gracias por unirse a nuestra comunidad. Atentamente <span class="bg-primary" style="color:white;">pasillo24.com</span></p>
      </div>
    </body>
 </html>

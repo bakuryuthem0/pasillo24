@@ -14,7 +14,7 @@
 		{{ HTML::style('css/bootstrap.min.css') }}
 		{{ HTML::style('//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css') }}
 		{{ HTML::style('css/bootstrap-theme.min.css')}}
-		{{ HTML::style('css/custom.css') }}
+		{{ HTML::style('css/custom-preview.css') }}
 		{{ HTML::style('css/jquery.cleditor.css') }}
 		{{ HTML::style('css/owl.carousel.css') }}
 		{{ HTML::style('css/owl.theme.default.css') }}
@@ -37,7 +37,7 @@
 						<img src="{{ asset('images/logo.png') }}" class="logo">
 					</a>
 					<img src="{{ asset('images/logo-02.png') }}" class="logo logo2">
-					@if($title != "ffasil.com el portal de comercio  creado por bolivianos para bolivianos")
+					@if($title != "pasillo24.com el portal de comercio  creado por bolivianos para bolivianos")
 					<nav class="navbar navbar-default">
 						<div class="container-fluid">
 							<!-- Brand and toggle get grouped for better mobile display -->
@@ -53,12 +53,12 @@
 								<ul class="navbar-nav redes2" style="float:right;">
 
 									<li>
-										<a target="_blank" href="https://twitter.com/FFASILSRL">
+										<a target="_blank" href="https://twitter.com/pasillo_24">
 											<i class="fa fa-twitter menu-icon" role="button" data-toggle="popover" data-trigger="hover" data-placement="bottom" data-content="Twitter"></i>
 										</a>
 									</li>
 									<li>
-										<a target="_blank" href="https://www.facebook.com/pages/Ffasil/1044665552215357?fref=ts">
+										<a target="_blank" href="https://www.facebook.com/pages/pasillo24">
 											<i class="fa fa-facebook menu-icon" role="button" data-toggle="popover" data-trigger="hover" data-placement="bottom" data-content="Facebook"></i>
 										</a>
 									</li>
@@ -69,7 +69,7 @@
 										</a>
 									</li>
 									<li>
-										<a target="_blank" href="http://blog.ffasil.com">
+										<a target="_blank" href="http://blog.pasillo24.com">
 											<i class="fa fa-wordpress menu-icon" role="button" data-toggle="popover" data-trigger="hover" data-placement="bottom" data-content="Blog"></i>
 
 										</a>
@@ -81,12 +81,12 @@
 								<ul class="navbar-nav redes" style="float:right;">
 
 									<li>
-										<a target="_blank" href="https://twitter.com/FFASILSRL">
+										<a target="_blank" href="https://twitter.com/pasillo_24">
 											<i class="fa fa-twitter menu-icon" role="button" data-toggle="popover" data-trigger="hover" data-placement="bottom" data-content="Twitter"></i>
 										</a>
 									</li>
 									<li>
-										<a target="_blank" href="https://www.facebook.com/pages/Ffasil/1044665552215357?fref=ts">
+										<a target="_blank" href="https://www.facebook.com/pages/pasillo24">
 											<i class="fa fa-facebook menu-icon" role="button" data-toggle="popover" data-trigger="hover" data-placement="bottom" data-content="Facebook"></i>
 										</a>
 									</li>
@@ -97,7 +97,7 @@
 										</a>
 									</li>
 									<li>
-										<a target="_blank" href="http://blog.ffasil.com">
+										<a target="_blank" href="http://blog.pasillo24.com">
 											<i class="fa fa-wordpress menu-icon" role="button" data-toggle="popover" data-trigger="hover" data-placement="bottom" data-content="Blog"></i>
 
 										</a>
@@ -294,7 +294,7 @@ margin-top: 0.5em;display:inline-block;">
 					</nav>
 					@else
 					<ul class="mainMenu nav navbar-nav menuFront">
-						<li><a href="{{ URL::to('mision-y-vision') }}" class="btn log"><strong>¿Qué es ffasil.com?</strong></a></li>
+						<li><a href="{{ URL::to('mision-y-vision') }}" class="btn log"><strong>¿Qué es pasillo24.com?</strong></a></li>
 						<li><a href="{{ URL::to('inicio') }}" class="btn log"><strong>Ingresar</strong></a></li>
 					</ul>
 					@endif
@@ -305,7 +305,7 @@ margin-top: 0.5em;display:inline-block;">
 		<div class="row @if(isset($portada)) portadaFooter @else @endif" style="margin-right:0px;">
 			<footer>
 				<div class="panel-footer col-xs-12">
-					<p class="footerText textoPromedio"><strong>ffasil.com</strong> S.R.L. Todos los derechos reservados &copy 2015| <a href="{{ URL::to('inicio/terminos-y-condiciones') }}">Términos y condiciones de uso</a> | <a href="{{ URL::to('inicio/politica-de-privacidad') }}">Política de privacidad</a></p>
+					<p class="footerText textoPromedio"><strong>pasillo24.com</strong> S.R.L. Todos los derechos reservados &copy 2015| <a href="{{ URL::to('inicio/terminos-y-condiciones') }}">Términos y condiciones de uso</a> | <a href="{{ URL::to('inicio/politica-de-privacidad') }}">Política de privacidad</a></p>
 				</div>
 			</footer>
 		</div>

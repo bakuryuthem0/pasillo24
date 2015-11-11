@@ -28,7 +28,7 @@
 							números de cuentas, entidades bancarias y sucursales  en todo el territorio nacional le 
 							invitamos a pulsar sobre el ícono “CUENTAS Y ENTIDADES BANCARIAS”. Una vez 
 							hecho el depósito o transferencia bancaria debe enviarnos el número de transacción.
-							Recuerde que los datos del depositante y del titular de la cuenta en Ffasil.com. deben ser 
+							Recuerde que los datos del depositante y del titular de la cuenta en pasillo24.com. deben ser 
 							los mismos.
 							Si dentro de las 48 horas próximas no se ha confirmado la publicación del anuncio 
 							mediante el pago respectivo, este será eliminado de nuestra base de datos 
@@ -110,7 +110,7 @@
 			<div class="contAnaranjado">
 				<div class="col-xs-12">
 					<legend>Pago con <strong>PayPal</strong></legend>
-					<p class="textoPromedio">ffasil.com le ofrece la facilidad de pagar mediante nuestra cuenta paypal.</p>
+					<p class="textoPromedio">pasillo24.com le ofrece la facilidad de pagar mediante nuestra cuenta paypal.</p>
 					<div class="col-xs-12">
 						<form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_blank">
 							<input type="hidden" name="cmd" value="_s-xclick">
