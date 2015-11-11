@@ -78,7 +78,7 @@
 				<legend>También podrá contactarnos mediante:</legend>
 				<div class="bg-info textoPromedio textoInfoContactUs" style="padding:2em 1em 2em 4em;border-radius: 16px;">
 					<p>Números telefónicos</p>
-					<p><i class="fa fa-envelope"></i> pasillo24@gmail.com</p>
+					<p><i class="fa fa-envelope"></i> aquipasillo24@gmail.com</p>
 					<p>skype</p>
 					<p></p>
 				</div>
