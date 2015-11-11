@@ -14,7 +14,7 @@
 		{{ HTML::style('css/bootstrap.min.css') }}
 		{{ HTML::style('//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css') }}
 		{{ HTML::style('css/bootstrap-theme.min.css')}}
-		{{ HTML::style('public/css/custom-preview.css') }}
+		{{ HTML::style('css/custom.css') }}
 		{{ HTML::style('css/jquery.cleditor.css') }}
 		{{ HTML::style('css/owl.carousel.css') }}
 		{{ HTML::style('css/owl.theme.default.css') }}
