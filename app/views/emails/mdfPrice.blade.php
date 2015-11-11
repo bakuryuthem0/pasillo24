@@ -79,7 +79,7 @@ fieldset[disabled] .btn-success.active {
       </style>
    </head>
    <body style="font-family:'Roboto','san serif';padding:2em 4em;">
-      <img src="http://preview.pasillo24.com/images/logo2.png" style="width:40%;">
+      <img src="http://preview.pasillo24.com/images/logo.png" style="width:40%;">
       <div>
       	<legend>Estimado Roberto</legend>
          <ul>

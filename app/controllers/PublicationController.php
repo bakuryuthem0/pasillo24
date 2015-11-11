@@ -764,7 +764,7 @@ class PublicationController extends BaseController {
 			'required' 	=> ':attribute es obligatorio',
 			'min'		=> ':attribute debe ser mas largo',
 			'image'		=> ':attribute debe ser una imagen',
-			'numeric'	=> '>attribute debe ser numerico'
+			'numeric'	=> ':attribute debe ser numerico'
 		);
 		$customAttributes = array(
 			'precio'	 	=> 'El campo precio',

@@ -36,7 +36,6 @@
 					<a href="{{ URL::to('inicio') }}">
 						<img src="{{ asset('images/logo.png') }}" class="logo">
 					</a>
-					<img src="{{ asset('images/logo-02.png') }}" class="logo logo2">
 					@if($title != "pasillo24.com el portal de comercio  creado por bolivianos para bolivianos")
 					<nav class="navbar navbar-default">
 						<div class="container-fluid">

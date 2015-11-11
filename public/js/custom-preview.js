@@ -1374,7 +1374,7 @@ jQuery(document).ready(function($) {
 		
 	}
 	setTimeout(function(){ verificarComentario(); }, 1);
-	setInterval(verificarComentario,5000)
+	setInterval(verificarComentario,120000)
 });
 
 jQuery(document).ready(function($) {
