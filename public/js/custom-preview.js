@@ -821,6 +821,7 @@ $(document).ready(function() {
 		var rand1 = Math.round(Math.random()*100);
 		var rand2 = Math.round(Math.random()*100);
 		$('.formula').html('Cuanto es: '+rand1+'+'+rand2).append('<input type="hidden" name="x" value="'+rand1+'">').append('<input type="hidden" name="y" value="'+rand2+'">')
+		$('.resultado').html(rand1+random);
 		$('.info').animate({'opacity': 0},500, function(){
 				$(this).remove();	
 				$('.formPub').css({'display':'block','opacity':0}).animate({
