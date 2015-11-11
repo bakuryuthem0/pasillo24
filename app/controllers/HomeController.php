@@ -4,7 +4,7 @@ class HomeController extends BaseController {
 	public function showFront()
 	{
 
-		$title = "ffasil.com el portal de comercio  creado por bolivianos para bolivianos";
+		$title = "pasillo24.com el portal de comercio  creado por bolivianos para bolivianos";
 		return View::make('portada')->with('title',$title)->with('portada','portada');;
 	}
 	public function showIndex($id = null)
@@ -12,7 +12,7 @@ class HomeController extends BaseController {
                 if (!is_null($id)) {
 			$dep = Department::find($id);
 		}
-		$title ="Inicio | ffasil.com";
+		$title ="Inicio | pasillo24.com";
 		if (!is_null($id)) {
 			$lider = Publicaciones::where('status','=','Aprobado')
 			->where('ubicacion','=','Principal')
@@ -135,18 +135,18 @@ class HomeController extends BaseController {
 	}
 	public function getTermsAndConditions()
 	{
-		$title = "Términos y condiciones | ffasil.com";
+		$title = "Términos y condiciones | pasillo24.com";
 		return View::make('termsAndCond')->with('title',$title);
 	}
 	public function getMision()
 	{
-		$title = "Misión y visión | ffasil.com";
+		$title = "Misión y visión | pasillo24.com";
 		return View::make('mision')
 		->with('title',$title);
 	}
 	public function getPolitics()
 	{
-		$title = "Política de privacidad | ffasil.com";
+		$title = "Política de privacidad | pasillo24.com";
 		return View::make('politics')
 		->with('title',$title);
 	}
@@ -154,7 +154,7 @@ class HomeController extends BaseController {
 	{
 
 		$input = Input::all();
-		$title = "Búsqueda | ffasil.com";
+		$title = "Búsqueda | pasillo24.com";
 		
 		
 		$lider = DB::select("SELECT `publicaciones`.`id`,`publicaciones`.`img_1`,`publicaciones`.`titulo` 

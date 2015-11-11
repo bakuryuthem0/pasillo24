@@ -95,10 +95,10 @@ class UserController extends BaseController {
 		if($user->save())
 		{
 			$data = array(
-				'link' => 'ffasil.com/inicio/contacto'
+				'link' => 'pasillo24.com/inicio/contacto'
 			);
 			Mail::send('emails.modify', $data, function ($message) use ($input,$email){
-			    $message->subject('Correo de cambio de perfil ffasil.com');
+			    $message->subject('Correo de cambio de perfil pasillo24.com');
 			    $message->to($email);
 			});
 			Session::flash('success', 'Datos Cambiados correctamente. Le hemos enviado un correo electrónico como seguridad.');
@@ -111,12 +111,12 @@ class UserController extends BaseController {
 	public function getPublication()
 	{
 
-		$title ="Publicación | ffasil.com";
+		$title ="Publicación | pasillo24.com";
 		return View::make('publications.publicar')->with('title',$title);
 	}
 	public function getPublicationLider()
 	{
-		$title ="Publicación Lider | ffasil.com";
+		$title ="Publicación Lider | pasillo24.com";
 		$department = Department::all();
 		$categoria  = Categorias::where('tipo','=',1)->get();
 		$servicios  = Categorias::where('tipo','=',2)->get();
@@ -376,7 +376,7 @@ class UserController extends BaseController {
 	}
 	public function getPublicationNormal()
 	{
-		$title ="Publicación HABITUAL | ffasil.com";
+		$title ="Publicación HABITUAL | pasillo24.com";
 		$marcas = Marcas::all();
 		$url = 'usuario/publication/estandar/enviar';
 		$departamento = Department::all();
@@ -488,10 +488,10 @@ class UserController extends BaseController {
 				'moneda'  => $moneda,
 				'num_trans' => $input['transNumber']
 			);
-			$to_Email = 'ffasilsrl@gmail.com';
+			$to_Email = 'aquipasil@gmail.com';
 			Mail::send('emails.newPost', $data, function($message) use ($input,$to_Email,$subject)
 			{
-				$message->to($to_Email)->from('sistema@ffasil.com')->subject($subject);
+				$message->to($to_Email)->from('sistema@pasillo24.com')->subject($subject);
 			});
 			Session::flash('success', 'Información enviada, pronto procesaremos su pago');
 			return Redirect::to('usuario/publicaciones/mis-publicaciones');
@@ -503,7 +503,7 @@ class UserController extends BaseController {
 	}
 	public function getChangePass()
 	{
-		$title ="Cambiar contraseña | ffasil.com";
+		$title ="Cambiar contraseña | pasillo24.com";
 		return View::make('user.changePass')->with('title',$title);
 	}
 	public function postChangePass()
@@ -545,7 +545,7 @@ class UserController extends BaseController {
 				$newPass = $input['new'];
 				$email = Auth::user()['email'];
 				Mail::send('emails.passNew', $data, function ($message) use ($newPass,$email){
-					    $message->subject('Correo de cambio de contraseña ffasil.com');
+					    $message->subject('Correo de cambio de contraseña pasillo24.com');
 					    $message->to($email);
 					});
 				Session::flash('success', 'Contraseña modificada correctamente');
@@ -560,7 +560,7 @@ class UserController extends BaseController {
 	}
 	public function getMyCart()
 	{
-		$title = "Mis compras | ffasil.com";
+		$title = "Mis compras | pasillo24.com";
 		
 		$compras = Compras::join('publicaciones','publicaciones.id','=','compras.pub_id')
 		->join('usuario','usuario.id','=','publicaciones.user_id')
@@ -589,7 +589,7 @@ class UserController extends BaseController {
 	}
 	public function getMySell()
 	{
-		$title = "Mis ventas | ffasil.com";
+		$title = "Mis ventas | pasillo24.com";
 		$compras = Compras::join('publicaciones','publicaciones.id','=','compras.pub_id')
 		->join('usuario','usuario.id','=','compras.user_id')
 		->where('publicaciones.user_id','=',Auth::id())
@@ -683,7 +683,7 @@ class UserController extends BaseController {
 	}
 	public function getMyReputation()
 	{
-		$title = "Mi reputación|ffasil.com";
+		$title = "Mi reputación|pasillo24.com";
 		$compras = Compras::join('publicaciones','publicaciones.id','=','compras.pub_id')
 		->join('usuario','usuario.id','=','publicaciones.user_id')
 		->where('compras.user_id','=',Auth::id())

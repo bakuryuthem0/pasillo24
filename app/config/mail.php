@@ -10,7 +10,7 @@ return array(
 	
 	'driver' => 'sendmail',
 
-	'from' => array('address' => 'prueba@ffasil.com', 'name' => 'ffasil.com'),
+	'from' => array('address' => 'prueba@pasillo24.com', 'name' => 'pasillo24.com'),
 
 	'encryption' => 'tls',
 

@@ -124,7 +124,7 @@ class AuthController extends BaseController {
 		$user->role          = 'Usuario';
 		
 		if ($user->save()) {
-			Session::flash('success', 'Su cuenta se ha registrado satisfactoriamente, Inicie sesión para disfrutar de los beneficios de ffasil.com');
+			Session::flash('success', 'Su cuenta se ha registrado satisfactoriamente, Inicie sesión para disfrutar de los beneficios de pasillo24.com');
 return Redirect::to('inicio/login');
 			
 		}else
@@ -170,7 +170,7 @@ return Redirect::to('inicio/login');
 
 			  	if ($user[0]->save()) {
 			  		Mail::send('emails.passNew', $data, function ($message) use ($pass,$email){
-					    $message->subject('Correo de restablecimiento de contraseña ffasil.com');
+					    $message->subject('Correo de restablecimiento de contraseña pasillo24.com');
 					    $message->to($email);
 					});
 					return Response::json(array('type' => 'success','msg' => 'Se ha enviado un email con una clave provisional.'));
