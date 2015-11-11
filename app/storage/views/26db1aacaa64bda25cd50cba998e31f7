@@ -1,0 +1,586 @@
+<?php $__env->startSection('content'); ?>
+<div class="container contenedorUnico">
+	<div class="row">
+
+		<div class="col-xs-12 contAnaranjado" style="margin-top:2em;">
+			
+			<form method="post" action="<?php echo URL::to($url); ?>" enctype="multipart/form-data">
+			<?php if($tipo == 'Lider'): ?>
+
+				<h4>Modificar publicación LÍDER</h4>
+				<hr>
+				<?php if(Session::has('error')): ?>
+				<div class="col-xs-12">
+					<div class="alert alert-danger">
+						<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+						<p class="textoPromedio"><?php echo Session::get('error'); ?></p>
+					</div>
+				</div>
+				<?php endif; ?>
+
+				<div class="col-xs-6 inputLider">
+					<label for="cat" class="textoPromedio">Categoría</label>
+					<select name="cat" id="category" class="form-control">
+						<option value="1">Seleccione la categoría</option>
+						<?php foreach($categorias as $categoria): ?>
+							<?php if($publicaciones->categoria == $categoria->id): ?>
+								<option value="<?php echo $categoria->id; ?>" selected><?php echo $categoria->nombre; ?></option>
+							<?php else: ?>
+								<option value="<?php echo $categoria->id; ?>"><?php echo $categoria->nombre; ?></option>
+							<?php endif; ?>
+						<?php endforeach; ?>
+					</select>
+					<?php if($errors->has('cat')): ?>
+						 <?php foreach($errors->get('cat') as $err): ?>
+						 	<div class="alert alert-danger">
+						 		<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+						 		<p class="textoPromedio"><?php echo $err; ?></p>
+						 	</div>
+						 <?php endforeach; ?>
+					<?php endif; ?>
+				</div>
+				<div class="col-xs-12 textoPromedio inputLider">
+					<label for="namePub">Nombre / Título de la publicación:</label>
+					<?php echo Form::text('namePub',
+					$publicaciones->titulo,
+					 array('class' => 'form-control','id' => 'name','placeholder' => 'Titulo')); ?>
+
+					<?php if($errors->has('namePub')): ?>
+						 <?php foreach($errors->get('namePub') as $err): ?>
+						 	<div class="alert alert-danger">
+						 		<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+						 		<p class="textoPromedio"><?php echo $err; ?></p>
+						 	</div>
+						 <?php endforeach; ?>
+					<?php endif; ?>
+				</div>
+				
+				
+				<div class="col-xs-12" style="margin: 2em 0px 2em 0px;">
+					<hr>
+
+					<p class="bg-info textoPromedio" style="padding:1em;text-align:center;">La imagen debe tener un ancho mínimo de 400px</p>
+					<div class="col-xs-6 textoPromedio">
+						<label>Imagen de la Publicación</label>
+						<input type="file" name="img1">
+					</div>
+					<div class="col-xs-6 textoPromedio">
+						<label>Imagen secundaria</label>
+						<input type="file" name="img2">
+					</div>
+					<?php if($errors->has('img1')): ?>
+					<div class="col-xs-6">
+						 <?php foreach($errors->get('img1') as $err): ?>
+						 	<div class="alert alert-danger">
+						 		<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+						 		<p class="textoPromedio"><?php echo $err; ?></p>
+						 	</div>
+						 <?php endforeach; ?>
+					</div>
+					<?php endif; ?>
+				</div>
+				<div class="col-xs-12">
+					<hr>
+
+					<p class="bg-info textoPromedio" style="padding:1em;text-align:center;">El url de la página web debe comenzar con http:// o https://</p>
+					<label for="pagina" class="textoPromedio">Url de su página web</label>
+					<?php echo Form::text('pagina',$publicaciones->pag_web,array('class' => 'form-control','placeholder' => 'http://example.com')); ?>
+
+
+					<?php if($errors->has('pagina')): ?>
+						 <?php foreach($errors->get('pagina') as $err): ?>
+						 	<div class="alert alert-danger">
+						 		<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+						 		<p class="textoPromedio"><?php echo $err; ?></p>
+						 	</div>
+						 <?php endforeach; ?>
+					<?php endif; ?>
+				</div>
+				<div class="col-xs-12" style="margin-top:5em;">
+					<legend>Información de contacto</legend>
+				</div>
+				<div class="col-xs-6">
+					<label for="" class="textoPromedio">(*) Nombre de contacto</label>
+					<?php echo Form::text('nomb',$publicaciones->name,array('class' => 'form-control','placeholder' => 'Nombre de contacto')); ?>
+
+				</div>
+				<div class="col-xs-6">
+					<label for="" class="textoPromedio">(*) Teléfono de contacto</label>
+					<?php echo Form::text('phone',$publicaciones->phone,array('class' => 'form-control','placeholder' => 'Telefono de contacto')); ?>
+
+				</div>
+				<div class="col-xs-6">
+					<label for="" class="textoPromedio">(*) Correo electrónico</label>
+					<?php echo Form::text('email',$publicaciones->email,array('class' => 'form-control', 'placeholder' => 'Correo electronico')); ?>
+
+				</div>
+				<div class="col-xs-6">
+					<label for="" class="textoPromedio">(*) Sitio web</label>
+					<?php echo Form::text('pag_web',$publicaciones->pag_web_hab,array('class' => 'form-control', 'placeholder' => 'Sitio web')); ?>
+
+				</div>
+				<div class="col-xs-12">
+					<button  value="<?php echo $publicaciones->id; ?>" name="enviarPub" class="btn btn-success">Enviar</button>
+					<input type="reset" value="Borrar" name="borrar" class="btn btn-warning">
+					<a href="<?php echo URL::to('usuario/publicaciones/mis-publicaciones/lider'); ?>" class="btn btn-danger cancel">Cancelar</a>
+				</div>
+				
+			<?php elseif($tipo == 'Habitual'): ?>
+			
+
+
+
+			<div class="col-xs-12">
+					<legend>Modificación de publicación HABITUAL</legend>
+				</div>
+				<?php if(Session::has('error')): ?>
+				<div class="col-xs-12">
+					<div class="alert alert-danger">
+						<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+						<p class="textoPromedio"><?php echo Session::get('error'); ?></p>
+					</div>
+				</div>
+				<?php endif; ?>
+				<div class="col-xs-6 inputLider">
+					<label for="cat" class="textoPromedio">Categoría</label>
+					<select name="cat" id="category" class="form-control">
+						<option value="1">Seleccione la categoría</option>
+						<?php foreach($categorias as $categoria): ?>
+							<?php if($publicaciones->categoria == $categoria->id): ?>
+								<option value="<?php echo $categoria->id; ?>" selected><?php echo $categoria->nombre; ?></option>
+							<?php else: ?>
+								<option value="<?php echo $categoria->id; ?>"><?php echo $categoria->nombre; ?></option>
+							<?php endif; ?>
+						<?php endforeach; ?>
+					</select>
+					<?php if($errors->has('cat')): ?>
+						 <?php foreach($errors->get('cat') as $err): ?>
+						 	<div class="alert alert-danger">
+						 		<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+						 		<p class="textoPromedio"><?php echo $err; ?></p>
+						 	</div>
+						 <?php endforeach; ?>
+					<?php endif; ?>
+				</div>
+				<div class="col-xs-6">
+					<label for="subCat" class="textoPromedio">Sub-categoría</label>
+					<select class="form-control" name="subCat" id="subCat">
+						<option value="">Seleccione la sub-categoría</option>
+						<?php foreach($subCat as $sub): ?>
+							<?php if($sub->categoria_id == $publicaciones->categoria): ?>
+								<?php if($sub->id == $publicaciones->typeCat): ?>
+									<option class="optiongroup" value="<?php echo $sub->id; ?>" selected><?php echo $sub->desc; ?></option>
+								<?php else: ?>
+									<option class="optiongroup" value="<?php echo $sub->id; ?>"><?php echo $sub->desc; ?></option>
+								<?php endif; ?>
+							<?php endif; ?>
+						<?php endforeach; ?>
+					</select>
+					<?php if($errors->has('subCat')): ?>
+						 <?php foreach($errors->get('subCat') as $err): ?>
+						 	<div class="alert alert-danger">
+						 		<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+						 		<p class="textoPromedio"><?php echo $err; ?></p>
+						 	</div>
+						 <?php endforeach; ?>
+					<?php endif; ?>
+				</div>
+				
+				<div class="col-xs-12">
+					<label for="title" class="textoPromedio">Título</label>
+					<?php echo Form::text('title',$publicaciones->titulo,array('placeholder' => 'Titulo','class' => 'form-control')); ?>
+
+					<?php if($errors->has('title')): ?>
+						 <?php foreach($errors->get('title') as $err): ?>
+						 	<div class="alert alert-danger">
+						 		<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+						 		<p class="textoPromedio"><?php echo $err; ?></p>
+						 	</div>
+						 <?php endforeach; ?>
+					<?php endif; ?>
+				</div>
+				<div class="col-xs-6">
+					<label for="precio" class="textoPromedio">Precio</label>
+					<?php echo Form::text('precio',$publicaciones->precio,array('placeholder' => 'Precio','class' => 'form-control')); ?>
+
+					<?php if($errors->has('precio')): ?>
+						 <?php foreach($errors->get('precio') as $err): ?>
+						 	<div class="alert alert-danger">
+						 		<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+						 		<p class="textoPromedio"><?php echo $err; ?></p>
+						 	</div>
+						 <?php endforeach; ?>
+					<?php endif; ?>
+				</div>
+				<div class="col-xs-6">
+					<label class="textoPromedio">Moneda</label>
+					<div class="col-xs-12" class="textoPromedio">
+						<span for="moneda" class="textoPromedio">USD</span>
+						<?php if($publicaciones->moneda == "usd"): ?>
+							<input type="radio" name="moneda" value="usd" checked>
+						<?php else: ?>
+							<input type="radio" name="moneda" value="usd">
+						<?php endif; ?>
+						<span for="moneda" class="textoPromedio">BS</span>
+						<?php if($publicaciones->moneda == "Bs"): ?>
+							<input type="radio" name="moneda" value="Bs" checked>
+						<?php else: ?>
+							<input type="radio" name="moneda" value="Bs">
+						<?php endif; ?>
+					</div>
+					<?php if($errors->has('moneda')): ?>
+						 <?php foreach($errors->get('moneda') as $err): ?>
+						 	<div class="alert alert-danger">
+						 		<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+						 		<p class="textoPromedio"><?php echo $err; ?></p>
+						 	</div>
+						 <?php endforeach; ?>
+					<?php endif; ?>
+				</div>
+				<div class="clearfix"></div>
+				<div class="col-xs-6">
+					<label for="" class="textoPromedio">Departamento</label>
+					<select name="departamento" class="form-control">
+						<option value="">Seleccione el departamento</option>
+						<?php foreach($departamento as $department): ?>
+							<?php if($publicaciones->departamento == $department->id): ?>
+								<option value="<?php echo $department->id; ?>" selected><?php echo $department->nombre; ?></option>
+							<?php else: ?>
+								<option value="<?php echo $department->id; ?>"><?php echo $department->nombre; ?></option>
+							<?php endif; ?>
+						<?php endforeach; ?>
+					</select>
+					<?php if($errors->has('departamento')): ?>
+						 <?php foreach($errors->get('departamento') as $err): ?>
+						 	<div class="alert alert-danger">
+						 		<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+						 		<p class="textoPromedio"><?php echo $err; ?></p>
+						 	</div>
+						 <?php endforeach; ?>
+					<?php endif; ?>
+				</div>
+				<div class="col-xs-6">
+					<label for="" class="textoPromedio">Ciudad</label>
+					<?php echo Form::text('ciudad',$publicaciones->ciudad,array('class' => 'form-control','placeholder' => 'Ciudad')); ?>
+
+					<?php if($errors->has('ciudad')): ?>
+						 <?php foreach($errors->get('ciudad') as $err): ?>
+						 	<div class="alert alert-danger">
+						 		<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+						 		<p class="textoPromedio"><?php echo $err; ?></p>
+						 	</div>
+						 <?php endforeach; ?>
+					<?php endif; ?>
+				</div>
+				
+				<?php if($publicaciones->categoria == 34): ?>
+					<div class="col-xs-6">
+						<label class="textoPromedio">Marca</label>
+						<select name="marca" class="form-control" id="veiMarca">
+							<option value="">Seleccione una marca</option>
+							<?php foreach($marcas as $marca): ?>
+							<option value="<?php echo $marca->id; ?>"><?php echo $marca->nombre; ?></option>
+							<?php endforeach; ?>
+						</select>
+						<?php if($errors->has('marca')): ?>
+						 <?php foreach($errors->get('marca') as $err): ?>
+						 	<div class="alert alert-danger">
+						 		<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+						 		<p class="textoPromedio"><?php echo $err; ?></p>
+						 	</div>
+						 <?php endforeach; ?>
+						<?php endif; ?>
+					</div>
+					<div class="col-xs-6">
+						<label class="textoPromedio">Modelo</label>
+						<select name="modelo" class="form-control" id="veiModel">
+							<option value="">Seleccione un modelo</option>
+						</select>
+						<?php if($errors->has('modelo')): ?>
+						 <?php foreach($errors->get('modelo') as $err): ?>
+						 	<div class="alert alert-danger">
+						 		<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+						 		<p class="textoPromedio"><?php echo $err; ?></p>
+						 	</div>
+						 <?php endforeach; ?>
+						<?php endif; ?>
+					</div>
+					<div class="col-xs-6">
+						<label class="textoPromedio">Año</label>
+						<?php echo Form::text('anio',Input::old('anio'),array('class' => 'form-control','placeholder' => 'Año')); ?>
+
+						<?php if($errors->has('anio')): ?>
+						 <?php foreach($errors->get('anio') as $err): ?>
+						 	<div class="alert alert-danger">
+						 		<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+						 		<p class="textoPromedio"><?php echo $err; ?></p>
+						 	</div>
+						 <?php endforeach; ?>
+						<?php endif; ?>
+					</div>
+					<div class="col-xs-6">
+						<label class="textoPromedio">Documentación</label>
+						<?php echo Form::text('doc',Input::old('doc'),array('class' => 'form-control','placeholder' => 'Documentacion')); ?>
+
+						<?php if($errors->has('doc')): ?>
+						 <?php foreach($errors->get('doc') as $err): ?>
+						 	<div class="alert alert-danger">
+						 		<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+						 		<p class="textoPromedio"><?php echo $err; ?></p>
+						 	</div>
+						 <?php endforeach; ?>
+						<?php endif; ?>
+					</div>
+					<div class="col-xs-12">
+						<label class="textoPromedio">Kilometraje</label>
+						<?php echo Form::text('kilo',Input::old('kilo'),array('class' => 'form-control','placeholder' => 'Kilometraje')); ?>
+
+						<?php if($errors->has('kilo')): ?>
+						 <?php foreach($errors->get('kilo') as $err): ?>
+						 	<div class="alert alert-danger">
+						 		<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+						 		<p class="textoPromedio"><?php echo $err; ?></p>
+						 	</div>
+						 <?php endforeach; ?>
+						<?php endif; ?>
+					</div>
+					
+					<div class="col-xs-6">
+						<label class="textoPromedio">(*) Cilindrada</label>
+						<?php echo Form::text('cilin',Input::old('cilin'),array('class' => 'form-control','placeholder' => 'Cilindrada')); ?>
+
+						<?php if($errors->has('cilin')): ?>
+						 <?php foreach($errors->get('cilin') as $err): ?>
+						 	<div class="alert alert-danger">
+						 		<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+						 		<p class="textoPromedio"><?php echo $err; ?></p>
+						 	</div>
+						 <?php endforeach; ?>
+						<?php endif; ?>
+					</div>
+					<div class="col-xs-6">
+						<label class="textoPromedio">(*) Transmisión</label>
+						<?php echo Form::text('trans',Input::old('trans'),array('class' => 'form-control','placeholder' => 'Transmisión')); ?>
+
+						<?php if($errors->has('trans')): ?>
+						 <?php foreach($errors->get('trans') as $err): ?>
+						 	<div class="alert alert-danger">
+						 		<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+						 		<p class="textoPromedio"><?php echo $err; ?></p>
+						 	</div>
+						 <?php endforeach; ?>
+						<?php endif; ?>
+					</div>
+					<div class="col-xs-6">
+						<label class="textoPromedio">(*) Combustible</label>
+						<?php echo Form::text('comb',Input::old('comb'),array('class' => 'form-control','placeholder' => 'Combustible')); ?>
+
+						<?php if($errors->has('comb')): ?>
+						 <?php foreach($errors->get('comb') as $err): ?>
+						 	<div class="alert alert-danger">
+						 		<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+						 		<p class="textoPromedio"><?php echo $err; ?></p>
+						 	</div>
+						 <?php endforeach; ?>
+						<?php endif; ?>
+					</div>
+					<div class="col-xs-6">
+						<label class="textoPromedio">(*) Tracción</label>
+						<?php echo Form::text('trac',Input::old('trac'),array('class' => 'form-control','placeholder' => 'Tracción')); ?>
+
+						<?php if($errors->has('trac')): ?>
+						 <?php foreach($errors->get('trac') as $err): ?>
+						 	<div class="alert alert-danger">
+						 		<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+						 		<p class="textoPromedio"><?php echo $err; ?></p>
+						 	</div>
+						 <?php endforeach; ?>
+						<?php endif; ?>
+					</div>
+				<?php elseif($publicaciones->categoria == 20): ?>
+					<div class="col-xs-12">
+						<label class="textoPromedio">Extension (mt2)</label>
+						<?php echo Form::text('ext',Input::old('ext'),array('class' => 'form-control','placeholder' => 'metros cuadrados')); ?>
+
+						<?php if($errors->has('ext')): ?>
+						 <?php foreach($errors->get('ext') as $err): ?>
+						 	<div class="alert alert-danger">
+						 		<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+						 		<p class="textoPromedio"><?php echo $err; ?></p>
+						 	</div>
+						 <?php endforeach; ?>
+						<?php endif; ?>
+					</div>
+				<?php endif; ?>
+				<div class="col-xs-12">
+					<label class="textoPromedio">Operación</label>
+					<div class="col-xs-12" class="textoPromedio">
+						
+						<span for="tipoTransac" class="textoPromedio">Venta</span>
+						<input type="radio" name="tipoTransac" value="venta" > 
+						<span for="tipoTransac" class="textoPromedio">Alquiler</span>
+						<input type="radio" name="tipoTransac" value="alquiler">
+						<?php if($publicaciones->categoria == 20): ?>
+							<span for="tipoTransac" class="textoPromedio">Anticrético </span>
+							<input type="radio" name="tipoTransac" value="Aticretico">
+							<span for="tipoTransac" class="textoPromedio">otro</span>
+							<input type="radio" name="tipoTransac" value="otro">
+						<?php endif; ?>
+					</div>
+					<?php if($errors->has('tipoTransac')): ?>
+						 <?php foreach($errors->get('tipoTransac') as $err): ?>
+						 	<div class="alert alert-danger">
+						 		<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+						 		<p class="textoPromedio"><?php echo $err; ?></p>
+						 	</div>
+						 <?php endforeach; ?>
+					<?php endif; ?>
+				</div>
+				<div class="col-xs-12">
+					<label for="input" class="textoPromedio">Descripción</label>
+					<textarea id="input" name="input" class="form-control"><?php echo $publicaciones->descripcion; ?></textarea>
+					<?php if($errors->has('input')): ?>
+						 <?php foreach($errors->get('input') as $err): ?>
+						 	<div class="alert alert-danger">
+						 		<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+						 		<p class="textoPromedio"><?php echo $err; ?></p>
+						 	</div>
+						 <?php endforeach; ?>
+					<?php endif; ?>
+				</div>
+				<div class="col-xs-12 textoPromedio">
+					
+					<label>Imagen principal</label>
+					<input type="file" name="img1">
+					<?php if($errors->has('img1')): ?>
+						 <?php foreach($errors->get('img1') as $err): ?>
+						 	<div class="alert alert-danger">
+						 		<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+						 		<p class=""><?php echo $err; ?></p>
+						 	</div>
+						 <?php endforeach; ?>
+					<?php endif; ?>
+				</div>
+				<div class="col-xs-12" style="margin-top:5em;">
+					<legend>Información de contacto</legend>
+				</div>
+				<div class="col-xs-6">
+					<label for="" class="textoPromedio">(*) Nombre de contacto</label>
+					<?php echo Form::text('nomb',$publicaciones->name,array('class' => 'form-control','placeholder' => 'Nombre de contacto')); ?>
+
+				</div>
+				<div class="col-xs-6">
+					<label for="" class="textoPromedio">(*) Teléfono de contacto</label>
+					<?php echo Form::text('phone',$publicaciones->lastname,array('class' => 'form-control','placeholder' => 'Telefono de contacto')); ?>
+
+				</div>
+				<div class="col-xs-6">
+					<label for="" class="textoPromedio">(*) Correo electrónico</label>
+					<?php echo Form::text('email',$publicaciones->email,array('class' => 'form-control', 'placeholder' => 'Correo electronico')); ?>
+
+				</div>
+				<div class="col-xs-6">
+					<label for="" class="textoPromedio">(*) Sitio web</label>
+					<?php echo Form::text('pagina',$publicaciones->pag_web_hab,array('class' => 'form-control', 'placeholder' => 'Sitio web')); ?>
+
+				</div>
+
+				<div class="col-xs-12">
+					<button  value="<?php echo $publicaciones->id; ?>" name="enviarPub" class="btn btn-success">Enviar</button>
+					<input type="reset" value="Borrar" name="borrar" class="btn btn-warning">
+					<a href="<?php echo URL::to('usuario/publicaciones/mis-publicaciones/lider'); ?>" class="btn btn-danger cancel">Cancelar</a>
+				</div>
+
+
+
+			
+
+			<?php elseif($tipo == 'casual'): ?>	
+				<div class="col-xs-12">
+					<ol class="breadcrumb textoPromedio">
+					  <li><a href="<?php echo URL::to('usuario/publicar'); ?>" class="breadcrums"><span class="num">1</span> Elije el tipo de publicación.</a></li>
+					  <li class="active"><a href="<?php echo URL::to('usuario/publicacion/casual'); ?>" class="breadcrums"><span class="num numActivo">2</span> Complete el formulario CASUAL</a></li>
+					</ol>
+				</div>
+				<h4>Publicación CASUAL</h4>
+				<hr>
+				<?php if(Session::has('error')): ?>
+				<div class="col-xs-12">
+					<div class="alert alert-danger">
+						<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+						<p class="textoPromedio"><?php echo Session::get('error'); ?></p>
+					</div>
+				</div>
+				<?php endif; ?>
+				<div class="col-xs-6">
+					<label for="casCat" class="textoPromedio">Categoría</label>
+					<select name="casCat" id="category" class="form-control">
+						<option value="1">Seleccione la categoría</option>
+						<?php foreach($categorias as $categoria): ?>
+						<option value="<?php echo $categoria->id; ?>"><?php echo $categoria->nombre; ?></option>
+						<?php endforeach; ?>
+					</select>
+				</div>
+				<div class="col-xs-6">
+					<label for="casCity" class="textoPromedio">Ciudad</label>
+					<select name="casCity" class="form-control">
+						<option value="">Seleccione la ciudad</option>
+						<option value="la_paz">La Paz</option>
+						<option value="santa_cruz">Santa Cruz</option>
+						<option value="cochabamba">Cochabamba</option>
+						<option value="beni">Beni</option>
+						<option value="potosi">Potosi</option>
+						<option value="tarija">Tarija</option>
+						<option value="chuquisaca">Chuquisaca</option>
+						<option value="oruro">Oruro</option>
+						<option value="pando">Pando</option>
+					</select>
+				</div>
+				<div class="col-xs-12">
+					<label for="casTit" class="textoPromedio">Título</label>
+					<?php echo Form::text('casTit', Input::old('casTit'), array('class' => 'form-control','placeholder' => 'Titulo')); ?>
+
+				</div>
+				<div class="col-xs-6">
+					<p class="bg-info textoPromedio" style="padding:1em;text-align:center;">La imagen debe tener un ancho mínimo de 400px</p>
+					<hr>
+					<label for="casTit" class="textoPromedio">Imagen principal</label>
+					<input type="file" name="img1" class="textoPromedio">
+				</div>
+				<div class="col-xs-6">
+					<label for="casTit" class="textoPromedio">Segunda imagen</label>
+					<input type="file" name="img2" class="textoPromedio">
+				</div>
+				<div class="col-xs-12">
+					<label for="input" class="textoPromedio">Descripción</label>
+					<textarea id="input" name="input" class="form-control descripcionCasual"></textarea>
+					<?php if($errors->has('input')): ?>
+						 <?php foreach($errors->get('input') as $err): ?>
+						 	<div class="alert alert-danger">
+						 		<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+						 		<p class="textoPromedio"><?php echo $err; ?></p>
+						 	</div>
+						 <?php endforeach; ?>
+					<?php endif; ?>
+					<div class="cantCaracteres textoPromedio"></div>
+					<div class="captcha col-xs-qw">
+							<p class="textoPromedio formula">
+							</p>
+							<div class="col-xs-6">
+								<input type="text" name="resultado" class="form-control">
+							</div>
+							
+					</div>
+				</div>
+				<div class="col-xs-12">
+					<button class="btn btn-success">Enviar</button>
+					<a href="#" class="btn btn-danger">Cancelar</a>
+				</div>
+			<?php endif; ?>
+				
+			</form>
+		</div>
+	</div>
+</div>
+<?php $__env->stopSection(); ?>
+<?php echo $__env->make('main', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>

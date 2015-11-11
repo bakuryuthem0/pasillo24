@@ -1,0 +1,139 @@
+
+{
+
+	"expanded:images/logo-01.png":"nil",
+	"pref__general__AutoKeyframeProperties":"true",
+	"expanded:images/Sin%20ti%CC%81tulo-4-03.png":"nil",
+	"expanded:images/Sin%20ti%CC%81tulo-4-01.png":"nil",
+	"expanded:images/Sin%20t%C3%ADtulo-4-02.png":"nil",
+	"pref__general__FilterNonAnimatedElements":"false",
+	"symbol_Nivel inferior":{
+		"defaultStageParentWidth":"1000px",
+		"defaultStageParentHeight":"200px",
+		"dummyStageParentWidth":"1000px",
+		"dummyStageParentHeight":"200px"},
+	"expanded:images/intro-01.png":"nil",
+	"CompZoomFactor":"50",
+	"StageZoomFactor":"50",
+	"pixelsPerMs":"0.010593389074139",
+	"stage-Default Timeline_mark_ms":"-1",
+	"nextElementColorIndex":"14",
+	"stage-Default Timeline_playhead_ms":"18000",
+	"expanded:images/a3-01.png":"nil",
+	"HTMLFileName":"intro agustable.html",
+	"ModelData":"{\
+\"stage\": {\
+   \"timelines\": {\
+      \"Default Timeline\": {\
+      }\
+   }},\
+\"Precargador\": {\
+   \"timelines\": {\
+\
+   }},\
+\"Nivel inferior\": {\
+   \"timelines\": {\
+\
+   }}\
+}",
+	"expanded:images/lampar1-01.png":"nil",
+	"Nivel inferior-Default Timeline_playhead_ms":"0",
+	"expanded:images/Sin%20ti%CC%81tulo-4-02.png":"nil",
+	"PubDPSTransparentPoster":"true",
+	"symbol_Precargador":{
+		"defaultStageParentWidth":"1000px",
+		"defaultStageParentHeight":"200px",
+		"dummyStageParentWidth":"1000px",
+		"dummyStageParentHeight":"200px"},
+	"expanded:images/lampar2-02.png":"nil",
+	"PubDPSUseCDN":"true",
+	"expanded:images/Sin%20t%C3%ADtulo-2-01.png":"nil",
+	"expanded:images/Poster.png":"nil",
+	"expanded:images/a4-01.png":"nil",
+	"pref__general__AutoKeyframePropertiesArmed":"false",
+	"expanded:images/Sin%20ti%CC%81tulo-2-01.png":"nil",
+	"expanded:images/a1-01.png":"nil",
+	"TransitionIdCounter":"189",
+	"expanded:images/Sin%20t%C3%ADtulo-4-03.png":"nil",
+	"viewStartY":"0",
+	"pref__general__GenerateSmoothTransitions":"true",
+	"symbol_stage":{
+		"dummyStageParentWidth":"997px",
+		"dummyStageParentHeight":"566px",
+		"element_${intro-01}":{
+			"timelineColor2":"0xd8b467",
+			"timelineColor3":"0x81714f",
+			"timelineColor":"0xffd46d"},
+		"element_${Sin_ttulo-4-03}":{
+			"timelineColor2":"0xba5b89",
+			"timelineColor3":"0x734a5f",
+			"timelineColor":"0xdb619d",
+			"animationEnabled":"true",
+			"invisible":"false"},
+		"element_${Sin_ttulo-2-012}":{
+			"timelineColor2":"0x4fa275",
+			"timelineColor3":"0x456a55",
+			"animationEnabled":"false",
+			"timelineColor":"0x50bd82"},
+		"element_${a2-01Copy}":{
+			"timelineColor2":"0x326a96",
+			"timelineColor3":"0x385063",
+			"animationEnabled":"true",
+			"timelineColor":"0x2f73ad"},
+		"element_${Sin_ttulo-4-02}":{
+			"timelineColor2":"0xd35d6e",
+			"timelineColor3":"0x7e4b52",
+			"animationEnabled":"true",
+			"timelineColor":"0xfb657a"},
+		"element_${a2-01}":{
+			"timelineColor2":"0x168c84",
+			"timelineColor3":"0x2a605c",
+			"animationEnabled":"true",
+			"timelineColor":"0x00a096"},
+		"element_${a4-01}":{
+			"timelineColor2":"0x107faa",
+			"timelineColor3":"0x295a6d",
+			"timelineColor":"0x008dc8",
+			"animationEnabled":"true",
+			"invisible":"false"},
+		"element_${Sin_ttulo-2-01}":{
+			"timelineColor2":"0x81aa62",
+			"invisible":"false",
+			"timelineColor":"0x91c767",
+			"animationEnabled":"false",
+			"timelineColor3":"0x5b6c4d"},
+		"defaultStageParentHeight":"566px",
+		"element_${a3-01}":{
+			"timelineColor2":"0x1095d2",
+			"timelineColor3":"0x29647e",
+			"animationEnabled":"true",
+			"timelineColor":"0x00a9fa"},
+		"element_${a1-01}":{
+			"timelineColor2":"0x1aa38f",
+			"timelineColor3":"0x2a6a61",
+			"timelineColor":"0x00bda4",
+			"animationEnabled":"true",
+			"invisible":"false"},
+		"defaultStageParentWidth":"997px",
+		"element_${Sin_ttulo-2-013}":{
+			"timelineColor2":"0x5a558a",
+			"timelineColor3":"0x4a485e",
+			"animationEnabled":"false",
+			"timelineColor":"0x63599f"},
+		"element_${Sin_ttulo-4-01}":{
+			"timelineColor2":"0xb099ce",
+			"timelineColor3":"0x70657c",
+			"timelineColor":"0xceaef4",
+			"animationEnabled":"true",
+			"invisible":"false"},
+		"element_${Stage}":{
+			"timelineColor2":"0xcbbd71",
+			"timelineColor3":"0x7b7652",
+			"timelineColor":"0xeedf79"}},
+	"expanded:images/Sin%20t%C3%ADtulo-4-01.png":"nil",
+	"usedBOM":"false",
+	"PubDPS":"true",
+	"expanded:images/a2-01.png":"nil",
+	"expanded:images/Pasted.svg":"nil",
+	"PubWeb":"false",
+	"Precargador-Default Timeline_playhead_ms":"0"}

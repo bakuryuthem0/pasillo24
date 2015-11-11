@@ -1,0 +1,117 @@
+[23-Apr-2015 19:38:20 UTC] PHP Fatal error:  Out of memory (allocated 9699328) (tried to allocate 3072 bytes) in /home/ffasilco/public_html/preview/vendor/laravel/framework/src/Illuminate/View/Compilers/BladeCompiler.php on line 516
+[25-Apr-2015 17:11:17 UTC] PHP Fatal error:  Out of memory (allocated 262144) (tried to allocate 12288 bytes) in /home/ffasilco/public_html/preview/vendor/composer/autoload_real.php on line 38
+[25-Apr-2015 17:11:17 UTC] PHP Fatal error:  Out of memory (allocated 4718592) (tried to allocate 3072 bytes) in /home/ffasilco/public_html/preview/vendor/laravel/framework/src/Illuminate/Http/RedirectResponse.php on line 104
+[25-Apr-2015 17:11:17 UTC] PHP Fatal error:  Out of memory (allocated 4194304) (tried to allocate 3072 bytes) in /home/ffasilco/public_html/preview/vendor/laravel/framework/src/Illuminate/Routing/Router.php on line 875
+[25-Apr-2015 17:11:17 UTC] PHP Fatal error:  Out of memory (allocated 1310720) (tried to allocate 3072 bytes) in /home/ffasilco/public_html/preview/vendor/symfony/http-kernel/Symfony/Component/HttpKernel/TerminableInterface.php on line 38
+[25-Apr-2015 17:11:17 UTC] PHP Fatal error:  Out of memory (allocated 3670016) (tried to allocate 3072 bytes) in /home/ffasilco/public_html/preview/vendor/laravel/framework/src/Illuminate/View/Factory.php on line 436
+[25-Apr-2015 17:11:17 UTC] PHP Fatal error:  Out of memory (allocated 6029312) (tried to allocate 3072 bytes) in /home/ffasilco/public_html/preview/vendor/composer/ClassLoader.php on line 412
+[25-Apr-2015 17:11:17 UTC] PHP Fatal error:  Out of memory (allocated 2883584) (tried to allocate 3072 bytes) in /home/ffasilco/public_html/preview/vendor/symfony/security-core/Symfony/Component/Security/Core/Util/SecureRandom.php on line 40
+[25-Apr-2015 17:11:17 UTC] PHP Fatal error:  Out of memory (allocated 2883584) (tried to allocate 3072 bytes) in /home/ffasilco/public_html/preview/vendor/symfony/security-core/Symfony/Component/Security/Core/Util/SecureRandom.php on line 40
+[25-Apr-2015 17:11:44 UTC] PHP Fatal error:  Out of memory (allocated 6029312) (tried to allocate 3072 bytes) in /home/ffasilco/public_html/preview/vendor/composer/ClassLoader.php on line 412
+[25-Apr-2015 17:11:44 UTC] PHP Fatal error:  Out of memory (allocated 6029312) (tried to allocate 3072 bytes) in /home/ffasilco/public_html/preview/vendor/composer/ClassLoader.php on line 412
+[25-Apr-2015 17:11:45 UTC] PHP Fatal error:  Out of memory (allocated 6029312) (tried to allocate 3072 bytes) in /home/ffasilco/public_html/preview/vendor/composer/ClassLoader.php on line 412
+[25-Apr-2015 17:12:09 UTC] PHP Fatal error:  Out of memory (allocated 1310720) (tried to allocate 3072 bytes) in /home/ffasilco/public_html/preview/vendor/composer/ClassLoader.php on line 412
+[25-Apr-2015 18:02:22 UTC] PHP Fatal error:  Out of memory (allocated 3407872) (tried to allocate 3072 bytes) in /home/ffasilco/public_html/preview/vendor/laravel/framework/src/Illuminate/Database/Eloquent/Model.php on line 2588
+[23-May-2015 15:42:12 UTC] PHP Fatal error:  Call to undefined function encode_base64() in /home/ffasilco/public_html/preview/app/storage/views/24194d55ac78309990c5bf940b25dee7 on line 12
+[05-Jun-2015 18:44:49 UTC] PHP Parse error:  syntax error, unexpected '->' (T_OBJECT_OPERATOR) in /home/ffasilco/public_html/preview/app/controllers/HomeController.php on line 73
+[05-Jun-2015 18:44:51 UTC] PHP Parse error:  syntax error, unexpected '->' (T_OBJECT_OPERATOR) in /home/ffasilco/public_html/preview/app/controllers/HomeController.php on line 73
+[05-Jun-2015 18:44:55 UTC] PHP Parse error:  syntax error, unexpected '->' (T_OBJECT_OPERATOR) in /home/ffasilco/public_html/preview/app/controllers/HomeController.php on line 73
+[05-Jun-2015 18:45:02 UTC] PHP Parse error:  syntax error, unexpected '->' (T_OBJECT_OPERATOR) in /home/ffasilco/public_html/preview/app/controllers/HomeController.php on line 73
+[05-Jun-2015 18:45:04 UTC] PHP Parse error:  syntax error, unexpected '->' (T_OBJECT_OPERATOR) in /home/ffasilco/public_html/preview/app/controllers/HomeController.php on line 73
+[05-Jun-2015 18:45:11 UTC] PHP Parse error:  syntax error, unexpected '->' (T_OBJECT_OPERATOR) in /home/ffasilco/public_html/preview/app/controllers/HomeController.php on line 73
+[05-Jun-2015 18:45:20 UTC] PHP Parse error:  syntax error, unexpected '->' (T_OBJECT_OPERATOR) in /home/ffasilco/public_html/preview/app/controllers/HomeController.php on line 73
+[05-Jun-2015 18:45:20 UTC] PHP Parse error:  syntax error, unexpected '->' (T_OBJECT_OPERATOR) in /home/ffasilco/public_html/preview/app/controllers/HomeController.php on line 73
+[07-Jun-2015 18:20:23 America/La_Paz] PHP Fatal error:  Out of memory (allocated 4718592) (tried to allocate 3072 bytes) in /home/ffasilco/public_html/preview/vendor/laravel/framework/src/Illuminate/Http/RedirectResponse.php on line 104
+[07-Jun-2015 22:20:23 UTC] PHP Warning:  PHP Startup: Unable to load dynamic library '/opt/alt/php54/usr/lib64/php/modules/gd.so' - libjpeg.so.62: cannot map zero-fill pages: Cannot allocate memory in Unknown on line 0
+[07-Jun-2015 18:20:23 America/La_Paz] PHP Fatal error:  Out of memory (allocated 4980736) (tried to allocate 3072 bytes) in /home/ffasilco/public_html/preview/vendor/composer/ClassLoader.php on line 412
+[07-Jun-2015 18:20:23 America/La_Paz] PHP Fatal error:  Out of memory (allocated 4456448) (tried to allocate 384 bytes) in /home/ffasilco/public_html/preview/vendor/laravel/framework/src/Illuminate/Hashing/BcryptHasher.php on line 21
+[07-Jun-2015 18:20:23 America/La_Paz] PHP Fatal error:  Out of memory (allocated 4718592) (tried to allocate 3072 bytes) in /home/ffasilco/public_html/preview/vendor/laravel/framework/src/Illuminate/Http/RedirectResponse.php on line 104
+[07-Jun-2015 18:20:24 America/La_Paz] PHP Fatal error:  Class 'Symfony\Component\HttpFoundation\ResponseHeaderBag' not found in /home/ffasilco/public_html/preview/vendor/symfony/http-foundation/Symfony/Component/HttpFoundation/Response.php on line 201
+[09-Jun-2015 10:33:11 America/La_Paz] PHP Fatal error:  Out of memory (allocated 2621440) (tried to allocate 3072 bytes) in /home/ffasilco/public_html/preview/vendor/laravel/framework/src/Illuminate/View/ViewServiceProvider.php on line 98
+[09-Jun-2015 14:33:11 UTC] PHP Fatal error:  Out of memory (allocated 1310720) (tried to allocate 3072 bytes) in /home/ffasilco/public_html/preview/vendor/symfony/http-kernel/Symfony/Component/HttpKernel/TerminableInterface.php on line 38
+[13-Jun-2015 13:16:27 America/La_Paz] PHP Fatal error:  Out of memory (allocated 4194304) (tried to allocate 3072 bytes) in /home/ffasilco/public_html/preview/vendor/laravel/framework/src/Illuminate/Routing/Router.php on line 875
+[13-Jun-2015 13:16:27 America/La_Paz] PHP Fatal error:  Out of memory (allocated 3145728) (tried to allocate 3072 bytes) in /home/ffasilco/public_html/preview/vendor/laravel/framework/src/Illuminate/Database/Eloquent/Model.php on line 712
+[13-Jun-2015 13:16:27 America/La_Paz] PHP Fatal error:  Out of memory (allocated 4980736) (tried to allocate 3072 bytes) in /home/ffasilco/public_html/preview/vendor/composer/ClassLoader.php on line 412
+[13-Jun-2015 13:16:27 America/La_Paz] PHP Fatal error:  Out of memory (allocated 3670016) (tried to allocate 3072 bytes) in /home/ffasilco/public_html/preview/vendor/laravel/framework/src/Illuminate/View/Factory.php on line 436
+[13-Jun-2015 13:16:28 America/La_Paz] PHP Fatal error:  Class 'Symfony\Component\HttpFoundation\ResponseHeaderBag' not found in /home/ffasilco/public_html/preview/vendor/symfony/http-foundation/Symfony/Component/HttpFoundation/Response.php on line 201
+[13-Jun-2015 13:17:24 America/La_Paz] PHP Fatal error:  Out of memory (allocated 6553600) (tried to allocate 3072 bytes) in /home/ffasilco/public_html/preview/vendor/nesbot/carbon/src/Carbon/Carbon.php on line 1983
+[13-Jun-2015 13:17:24 America/La_Paz] PHP Fatal error:  Out of memory (allocated 6553600) (tried to allocate 3072 bytes) in /home/ffasilco/public_html/preview/vendor/nesbot/carbon/src/Carbon/Carbon.php on line 1983
+[15-Jun-2015 10:43:22 America/La_Paz] PHP Fatal error:  Out of memory (allocated 6029312) (tried to allocate 3072 bytes) in /home/ffasilco/public_html/preview/vendor/laravel/framework/src/Illuminate/Support/Facades/Session.php on line 14
+[15-Jun-2015 10:43:22 America/La_Paz] PHP Fatal error:  Out of memory (allocated 6553600) (tried to allocate 3072 bytes) in /home/ffasilco/public_html/preview/vendor/nesbot/carbon/src/Carbon/Carbon.php on line 1983
+[15-Jun-2015 10:43:22 America/La_Paz] PHP Fatal error:  Out of memory (allocated 6029312) (tried to allocate 3072 bytes) in /home/ffasilco/public_html/preview/vendor/laravel/framework/src/Illuminate/Support/Facades/Session.php on line 14
+[15-Jun-2015 10:43:22 America/La_Paz] PHP Fatal error:  Out of memory (allocated 6029312) (tried to allocate 3072 bytes) in /home/ffasilco/public_html/preview/vendor/laravel/framework/src/Illuminate/Support/Facades/Session.php on line 14
+[16-Jun-2015 10:22:22 UTC] PHP Fatal error:  Out of memory (allocated 1835008) (tried to allocate 3072 bytes) in /home/ffasilco/public_html/preview/vendor/symfony/http-foundation/Symfony/Component/HttpFoundation/HeaderBag.php on line 275
+[17-Jun-2015 02:38:47 UTC] PHP Warning:  PHP Startup: Unable to load dynamic library '/opt/alt/php54/usr/lib64/php/modules/imap.so' - libc-client.so.2007: failed to map segment from shared object: Cannot allocate memory in Unknown on line 0
+[16-Jun-2015 22:38:47 America/La_Paz] PHP Fatal error:  Out of memory (allocated 3145728) (tried to allocate 1280 bytes) in /home/ffasilco/public_html/preview/vendor/laravel/framework/src/Illuminate/Database/Eloquent/Model.php on line 703
+[17-Jun-2015 02:38:47 UTC] PHP Warning:  PHP Startup: Unable to load dynamic library '/opt/alt/php54/usr/lib64/php/modules/gd.so' - /opt/alt/php54/usr/lib64/php/modules/gd.so: failed to map segment from shared object: Cannot allocate memory in Unknown on line 0
+[16-Jun-2015 22:38:48 America/La_Paz] PHP Fatal error:  Out of memory (allocated 6553600) (tried to allocate 3072 bytes) in /home/ffasilco/public_html/preview/vendor/nesbot/carbon/src/Carbon/Carbon.php on line 1983
+[17-Jun-2015 02:39:46 UTC] PHP Fatal error:  Out of memory (allocated 2097152) (tried to allocate 640 bytes) in /home/ffasilco/public_html/preview/vendor/laravel/framework/src/Illuminate/Support/Arr.php on line 265
+[16-Jun-2015 22:39:46 America/La_Paz] PHP Fatal error:  Out of memory (allocated 2883584) (tried to allocate 77 bytes) in /home/ffasilco/public_html/preview/vendor/laravel/framework/src/Illuminate/Encryption/Encrypter.php on line 139
+[16-Jun-2015 23:20:52 America/La_Paz] PHP Fatal error:  Out of memory (allocated 6029312) (tried to allocate 3072 bytes) in /home/ffasilco/public_html/preview/vendor/nesbot/carbon/src/Carbon/Carbon.php on line 2236
+[16-Jun-2015 23:20:52 America/La_Paz] PHP Fatal error:  Out of memory (allocated 3407872) (tried to allocate 640 bytes) in /home/ffasilco/public_html/preview/vendor/laravel/framework/src/Illuminate/Database/Eloquent/Model.php on line 2590
+[19-Jun-2015 06:17:13 America/La_Paz] PHP Fatal error:  Out of memory (allocated 2883584) (tried to allocate 3072 bytes) in /home/ffasilco/public_html/preview/vendor/symfony/security-core/Symfony/Component/Security/Core/Util/SecureRandom.php on line 40
+[19-Jun-2015 06:17:13 America/La_Paz] PHP Fatal error:  Out of memory (allocated 2621440) (tried to allocate 3072 bytes) in /home/ffasilco/public_html/preview/vendor/laravel/framework/src/Illuminate/View/ViewServiceProvider.php on line 98
+[19-Jun-2015 06:17:13 America/La_Paz] PHP Fatal error:  Out of memory (allocated 2621440) (tried to allocate 3072 bytes) in /home/ffasilco/public_html/preview/vendor/laravel/framework/src/Illuminate/View/ViewServiceProvider.php on line 98
+[19-Jun-2015 14:28:39 America/La_Paz] PHP Fatal error:  Out of memory (allocated 5505024) (tried to allocate 3072 bytes) in /home/ffasilco/public_html/preview/vendor/symfony/routing/Symfony/Component/Routing/Route.php on line 425
+[19-Jun-2015 14:28:39 America/La_Paz] PHP Fatal error:  Out of memory (allocated 5505024) (tried to allocate 3072 bytes) in /home/ffasilco/public_html/preview/vendor/symfony/routing/Symfony/Component/Routing/Route.php on line 425
+[25-Jun-2015 02:27:40 UTC] PHP Warning:  PHP Startup: Unable to load dynamic library '/opt/alt/php54/usr/lib64/php/modules/mysql.so' - libmysqlclient.so.18: failed to map segment from shared object: Cannot allocate memory in Unknown on line 0
+[04-Jul-2015 14:38:17 America/La_Paz] PHP Parse error:  syntax error, unexpected '01' (T_LNUMBER), expecting variable (T_VARIABLE) or '$' in /home/ffasilco/public_html/preview/app/controllers/PublicationController.php on line 472
+[09-Jul-2015 19:49:31 UTC] PHP Fatal error:  Out of memory (allocated 786432) (tried to allocate 93440 bytes) in /home/ffasilco/public_html/preview/vendor/composer/autoload_classmap.php on line 1167
+[11-Jul-2015 01:03:21 America/La_Paz] PHP Fatal error:  Class 'Publicidad' not found in /home/ffasilco/public_html/preview/app/controllers/HomeController.php on line 78
+[14-Jul-2015 14:05:28 America/La_Paz] PHP Parse error:  syntax error, unexpected '}' in /home/ffasilco/public_html/preview/app/controllers/AjaxController.php on line 58
+[14-Jul-2015 14:08:35 America/La_Paz] PHP Parse error:  syntax error, unexpected '}' in /home/ffasilco/public_html/preview/app/controllers/AjaxController.php on line 58
+[14-Jul-2015 14:08:56 America/La_Paz] PHP Parse error:  syntax error, unexpected '}' in /home/ffasilco/public_html/preview/app/controllers/AjaxController.php on line 58
+[14-Jul-2015 14:08:58 America/La_Paz] PHP Parse error:  syntax error, unexpected '}' in /home/ffasilco/public_html/preview/app/controllers/AjaxController.php on line 58
+[14-Jul-2015 14:09:49 America/La_Paz] PHP Parse error:  syntax error, unexpected '}' in /home/ffasilco/public_html/preview/app/controllers/AjaxController.php on line 58
+[14-Jul-2015 14:09:50 America/La_Paz] PHP Parse error:  syntax error, unexpected '}' in /home/ffasilco/public_html/preview/app/controllers/AjaxController.php on line 58
+[14-Jul-2015 14:09:50 America/La_Paz] PHP Parse error:  syntax error, unexpected '}' in /home/ffasilco/public_html/preview/app/controllers/AjaxController.php on line 58
+[14-Jul-2015 14:12:18 America/La_Paz] PHP Parse error:  syntax error, unexpected '}' in /home/ffasilco/public_html/preview/app/controllers/AjaxController.php on line 58
+[14-Jul-2015 14:12:19 America/La_Paz] PHP Parse error:  syntax error, unexpected '}' in /home/ffasilco/public_html/preview/app/controllers/AjaxController.php on line 58
+[14-Jul-2015 14:12:19 America/La_Paz] PHP Parse error:  syntax error, unexpected '}' in /home/ffasilco/public_html/preview/app/controllers/AjaxController.php on line 58
+[14-Jul-2015 14:30:13 America/La_Paz] PHP Parse error:  syntax error, unexpected '}' in /home/ffasilco/public_html/preview/app/controllers/AjaxController.php on line 58
+[14-Jul-2015 14:50:42 America/La_Paz] PHP Parse error:  syntax error, unexpected '}' in /home/ffasilco/public_html/preview/app/controllers/AjaxController.php on line 58
+[14-Jul-2015 14:50:57 America/La_Paz] PHP Parse error:  syntax error, unexpected '}' in /home/ffasilco/public_html/preview/app/controllers/AjaxController.php on line 58
+[14-Jul-2015 15:02:35 America/La_Paz] PHP Parse error:  syntax error, unexpected '}' in /home/ffasilco/public_html/preview/app/controllers/AjaxController.php on line 58
+[14-Jul-2015 15:02:44 America/La_Paz] PHP Parse error:  syntax error, unexpected '}' in /home/ffasilco/public_html/preview/app/controllers/AjaxController.php on line 58
+[14-Jul-2015 15:03:03 America/La_Paz] PHP Parse error:  syntax error, unexpected '}' in /home/ffasilco/public_html/preview/app/controllers/AjaxController.php on line 58
+[14-Jul-2015 15:07:02 America/La_Paz] PHP Parse error:  syntax error, unexpected '}' in /home/ffasilco/public_html/preview/app/controllers/AjaxController.php on line 58
+[14-Jul-2015 15:07:04 America/La_Paz] PHP Parse error:  syntax error, unexpected '}' in /home/ffasilco/public_html/preview/app/controllers/AjaxController.php on line 58
+[14-Jul-2015 15:08:08 America/La_Paz] PHP Parse error:  syntax error, unexpected '}' in /home/ffasilco/public_html/preview/app/controllers/AjaxController.php on line 58
+[14-Jul-2015 15:08:11 America/La_Paz] PHP Parse error:  syntax error, unexpected '}' in /home/ffasilco/public_html/preview/app/controllers/AjaxController.php on line 58
+[14-Jul-2015 15:08:12 America/La_Paz] PHP Parse error:  syntax error, unexpected '}' in /home/ffasilco/public_html/preview/app/controllers/AjaxController.php on line 58
+[14-Jul-2015 15:08:12 America/La_Paz] PHP Parse error:  syntax error, unexpected '}' in /home/ffasilco/public_html/preview/app/controllers/AjaxController.php on line 58
+[14-Jul-2015 15:08:12 America/La_Paz] PHP Parse error:  syntax error, unexpected '}' in /home/ffasilco/public_html/preview/app/controllers/AjaxController.php on line 58
+[14-Jul-2015 15:08:12 America/La_Paz] PHP Parse error:  syntax error, unexpected '}' in /home/ffasilco/public_html/preview/app/controllers/AjaxController.php on line 58
+[14-Jul-2015 15:08:12 America/La_Paz] PHP Parse error:  syntax error, unexpected '}' in /home/ffasilco/public_html/preview/app/controllers/AjaxController.php on line 58
+[14-Jul-2015 15:12:01 America/La_Paz] PHP Parse error:  syntax error, unexpected '}' in /home/ffasilco/public_html/preview/app/controllers/AjaxController.php on line 58
+[14-Jul-2015 15:12:13 America/La_Paz] PHP Parse error:  syntax error, unexpected '}' in /home/ffasilco/public_html/preview/app/controllers/AjaxController.php on line 58
+[14-Jul-2015 16:31:21 America/La_Paz] PHP Parse error:  syntax error, unexpected '}' in /home/ffasilco/public_html/preview/app/controllers/AjaxController.php on line 58
+[14-Jul-2015 16:31:51 America/La_Paz] PHP Parse error:  syntax error, unexpected '}' in /home/ffasilco/public_html/preview/app/controllers/AjaxController.php on line 58
+[15-Jul-2015 10:25:03 America/La_Paz] PHP Parse error:  syntax error, unexpected '}' in /home/ffasilco/public_html/preview/app/controllers/AjaxController.php on line 58
+[15-Jul-2015 11:55:31 America/La_Paz] PHP Parse error:  syntax error, unexpected '}' in /home/ffasilco/public_html/preview/app/controllers/AjaxController.php on line 58
+[01-Aug-2015 23:00:44 America/La_Paz] PHP Parse error:  syntax error, unexpected '}' in /home/ffasilco/public_html/preview/app/controllers/AjaxController.php on line 58
+[01-Aug-2015 23:01:26 America/La_Paz] PHP Parse error:  syntax error, unexpected '}' in /home/ffasilco/public_html/preview/app/controllers/AjaxController.php on line 58
+[01-Aug-2015 23:01:27 America/La_Paz] PHP Parse error:  syntax error, unexpected '}' in /home/ffasilco/public_html/preview/app/controllers/AjaxController.php on line 58
+[01-Aug-2015 23:01:40 America/La_Paz] PHP Parse error:  syntax error, unexpected '}' in /home/ffasilco/public_html/preview/app/controllers/AjaxController.php on line 58
+[01-Aug-2015 23:01:40 America/La_Paz] PHP Parse error:  syntax error, unexpected '}' in /home/ffasilco/public_html/preview/app/controllers/AjaxController.php on line 58
+[01-Aug-2015 23:51:28 America/La_Paz] PHP Parse error:  syntax error, unexpected '}' in /home/ffasilco/public_html/preview/app/controllers/AjaxController.php on line 58
+[01-Aug-2015 23:51:38 America/La_Paz] PHP Parse error:  syntax error, unexpected '}' in /home/ffasilco/public_html/preview/app/controllers/AjaxController.php on line 58
+[01-Aug-2015 23:51:39 America/La_Paz] PHP Parse error:  syntax error, unexpected '}' in /home/ffasilco/public_html/preview/app/controllers/AjaxController.php on line 58
+[03-Aug-2015 16:26:20 America/La_Paz] PHP Parse error:  syntax error, unexpected '}' in /home/ffasilco/public_html/preview/app/controllers/AjaxController.php on line 58
+[03-Aug-2015 16:26:20 America/La_Paz] PHP Parse error:  syntax error, unexpected '}' in /home/ffasilco/public_html/preview/app/controllers/AjaxController.php on line 58
+[03-Aug-2015 16:28:20 America/La_Paz] PHP Parse error:  syntax error, unexpected '}' in /home/ffasilco/public_html/preview/app/controllers/AjaxController.php on line 58
+[03-Aug-2015 16:28:20 America/La_Paz] PHP Parse error:  syntax error, unexpected '}' in /home/ffasilco/public_html/preview/app/controllers/AjaxController.php on line 58
+[12-Aug-2015 09:43:05 America/Caracas] PHP Fatal error:  Out of memory (allocated 1835008) (tried to allocate 3072 bytes) in /home/ffasilco/public_html/preview/vendor/symfony/http-foundation/Symfony/Component/HttpFoundation/HeaderBag.php on line 275
+[12-Aug-2015 10:22:36 America/La_Paz] PHP Parse error:  syntax error, unexpected '}' in /home/ffasilco/public_html/preview/app/controllers/AjaxController.php on line 58
+[12-Aug-2015 10:26:55 America/La_Paz] PHP Parse error:  syntax error, unexpected '}' in /home/ffasilco/public_html/preview/app/controllers/AjaxController.php on line 58
+[12-Aug-2015 10:27:41 America/La_Paz] PHP Parse error:  syntax error, unexpected '}' in /home/ffasilco/public_html/preview/app/controllers/AjaxController.php on line 58
+[12-Aug-2015 10:28:51 America/La_Paz] PHP Parse error:  syntax error, unexpected '}' in /home/ffasilco/public_html/preview/app/controllers/AjaxController.php on line 58
+[12-Aug-2015 10:32:35 America/La_Paz] PHP Parse error:  syntax error, unexpected '}' in /home/ffasilco/public_html/preview/app/controllers/AjaxController.php on line 58
+[12-Aug-2015 10:39:05 America/La_Paz] PHP Parse error:  syntax error, unexpected '}' in /home/ffasilco/public_html/preview/app/controllers/AjaxController.php on line 58
+[12-Aug-2015 11:00:01 America/La_Paz] PHP Parse error:  syntax error, unexpected '}' in /home/ffasilco/public_html/preview/app/controllers/AjaxController.php on line 58
+[12-Aug-2015 15:28:08 America/La_Paz] PHP Parse error:  syntax error, unexpected '}' in /home/ffasilco/public_html/preview/app/controllers/AjaxController.php on line 56
+[12-Aug-2015 15:29:05 America/La_Paz] PHP Fatal error:  Can't use function return value in write context in /home/ffasilco/public_html/preview/app/controllers/AjaxController.php on line 66
+[12-Aug-2015 15:29:55 America/La_Paz] PHP Fatal error:  Can't use function return value in write context in /home/ffasilco/public_html/preview/app/controllers/AjaxController.php on line 69
+[12-Aug-2015 15:32:56 America/La_Paz] PHP Fatal error:  Can't use function return value in write context in /home/ffasilco/public_html/preview/app/controllers/AjaxController.php on line 69
+[30-Aug-2015 17:19:20 America/La_Paz] PHP Fatal error:  Call to a member function getClientOriginalName() on a non-object in /home/ffasilco/public_html/preview/app/controllers/AjaxController.php on line 93
+[12-Sep-2015 20:26:27 America/La_Paz] PHP Fatal error:  Class 'Gcm' not found in /home/ffasilco/public_html/preview/app/controllers/PublicationController.php on line 1049

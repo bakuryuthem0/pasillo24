@@ -1,0 +1,1471 @@
+<?php
+
+class PublicationController extends BaseController {
+
+	public function getHabitualForm($type)
+	{
+		return 'hola';
+		$url = 'usuario/publicacion/habitual/'.$type.'/enviar';
+		$title = "Publicacion Habitual / ".ucwords($type)." | ffasil.com";
+		$departamentos = Department::get();
+		$marcas = Marcas::get();
+		
+		return View::make('publications.habitualForm')
+		->with('title',$title)
+		->with('type',$type)
+		->with('url',$url)
+		->with('departamento',$departamentos)
+		->with('marcas',$marcas)
+		->with('categorias',$categorias);
+	}
+	
+
+	public function getPublicationNormalPayment($id)
+	{
+		$id = $id;
+		$title ="Pago publicación habitual";
+		$precioLider = Precios::where('pub_type_id','=',1)->get();
+		$solo = $precioLider[0];
+		$precioCat 	 = Precios::where('pub_type_id','=',2)->get();
+		$numCuentas = NumCuentas::all();
+		return View::make('publications.paymentsNormal')
+		->with('title',$title)
+		->with('id',$id)
+		->with('precLid',$precioLider)
+		->with('precCat',$precioCat)
+		->with('solo',$solo)
+		->with('numCuentas',$numCuentas);
+	}
+
+	public function getMyPublicationsType($type)
+	{
+		$title ="Mis publicaciones";
+		if (strtolower($type) == "lider") {
+			$publications = Publicaciones::where('user_id','=',Auth::id())
+			->leftJoin('categoria','categoria.id','=','publicaciones.categoria')
+			->where('publicaciones.tipo','=',ucfirst(strtolower($type)))
+			->where('publicaciones.deleted','=',0)
+			->get(array('publicaciones.*','categoria.nombre'));	
+		}elseif (strtolower($type) == "habitual") {
+			$publications = Publicaciones::join('categoria','categoria.id','=','publicaciones.categoria')
+			->where('user_id','=',Auth::id())
+			->where('publicaciones.tipo','=','Habitual')
+			->where('publicaciones.deleted','=',0)
+			->get(array('publicaciones.*','categoria.nombre'));	
+		}elseif(strtolower($type) == "casual")
+		{
+			$publications = Publicaciones::join('categoria','categoria.id','=','publicaciones.categoria')
+			->where('publicaciones.user_id','=',Auth::id())
+			->where('publicaciones.tipo','=','Casual')
+			->where('publicaciones.deleted','=',0)
+			->get();
+			$rePub = Publicaciones::where('publicaciones.user_id','=',Auth::id())
+			->where('publicaciones.tipo','=','Casual')
+			->where('publicaciones.deleted','=',0)
+			->orderBy('fechRepub','desc')
+			->first(array('fechRepub'));
+
+		}
+		if (strtolower($type) == "casual") {
+			return View::make('user.publications')
+			->with('title',$title)
+			->with('publications',$publications)
+			->with('type',strtolower($type))
+			->with('rePub',$rePub);
+		}
+		return View::make('user.publications')
+		->with('title',$title)
+		->with('publications',$publications)
+		->with('type',strtolower($type));
+	}
+	public function getPublication($id)
+	{
+		$pub = Publicaciones::find(base64_decode($id));
+		$user = User::find($pub->user_id);
+		$otrasPub = Publicaciones::where('user_id','=',$user->id)
+		->where(function($query)
+		{
+			$query->where('tipo','=','Lider')
+			->where('fechFin','>=',date('Y-m-d',time()));
+		})
+		->orWhere(function($query)
+		{
+			$query->where(function($query){
+				/*Busco las habituales*/
+				$query->where('tipo','=','Habitual')
+				->where(function($query){
+					/*y que sigan activas*/
+					$query->where('fechFin','>=',date('Y-m-d',time()))
+					->orWhere('fechFinNormal','>=',date('Y-m-d',time()));
+
+				})
+				->where('status','=','Aprobado');
+			})
+			->orWhere(function($query){
+				$query->where('tipo','=','Casual')
+				->where('fechFin','>=',date('Y-m-d',time()))
+				->where('status','=','Aprobado');
+
+			});
+		})
+		->orderBy('id','desc')
+		->take(4)
+		->get();
+		if ($pub->tipo == "Lider") {
+			$pub = Publicaciones::join('usuario','usuario.id','=','publicaciones.user_id')
+			->where('publicaciones.id','=',base64_decode($id))
+			->get(array(
+				'publicaciones.titulo',
+				'publicaciones.tipo',
+				'publicaciones.img_1',
+				'publicaciones.img_2',
+				'publicaciones.pag_web',
+				'usuario.id',
+				'usuario.name',
+				'usuario.lastname',
+				'usuario.email',
+				'usuario.phone',
+				'usuario.reputation'
+			));
+			$volver = 'administrador/publicacion/lider';
+			$publication = $pub[0];
+			
+		}elseif($pub->tipo == "Habitual")
+		{
+			if ($pub->categoria == 34) {
+				$pub = DB::table('publicaciones')
+				->join('marcas','marcas.id','=','publicaciones.marca_id')
+				->join('modelo','modelo.id','=','publicaciones.modelo_id')
+				->join('departamento','departamento.id','=','publicaciones.departamento')
+				->join('usuario','usuario.id','=','publicaciones.user_id')
+				->where('publicaciones.id','=',base64_decode($id))
+				->get(array(
+				'usuario.id',
+				'usuario.name as table_name',
+				'usuario.lastname as table_lastname',
+				'usuario.email as table_email',
+				'usuario.phone as table_phone',
+				'usuario.pag_web as table_pag_web',
+				'usuario.reputation',
+				'departamento.nombre as dep',
+				'marcas.nombre as marca',
+				'modelo.nombre as modelo',
+				'publicaciones.*'
+				));
+			}else {
+				$pub = DB::table('publicaciones')
+				->join('usuario','usuario.id','=','publicaciones.user_id')
+				->join('departamento','departamento.id','=','publicaciones.departamento')
+				->where('publicaciones.id','=',base64_decode($id))
+				->get(array(
+				'usuario.id as user_id',
+				'usuario.reputation',
+				'publicaciones.*',
+				'departamento.nombre as dep'
+				));
+			}		
+			
+			
+			$publication = $pub[0];
+			$volver = 'administrador/publicacion/habitual';
+
+		}elseif($pub->tipo == 'Casual')
+		{
+			$pub = Publicaciones::join('categoria','categoria.id','=','publicaciones.categoria')
+			->join('usuario','usuario.id','=','publicaciones.user_id')
+			->join('departamento','departamento.id','=','publicaciones.departamento')
+			->where('publicaciones.id','=',base64_decode($id))
+			->where('publicaciones.tipo','=','Casual')
+			->get(array(
+				'usuario.id as user_id',
+				'usuario.reputation',
+				'categoria.desc as desc',
+				'publicaciones.titulo',
+				'publicaciones.precio',
+				'publicaciones.moneda',
+				'publicaciones.id',
+				'publicaciones.img_1',
+				'publicaciones.img_2',
+				'publicaciones.descripcion',
+				'publicaciones.tipo',
+				'departamento.nombre'
+			));
+			$publication = $pub[0];
+			$volver = 'administrador/publicacion/casual';
+		}
+		$comentarios = DB::table('comentario')
+		->join('usuario','usuario.id','=','comentario.user_id')
+		->where('comentario.pub_id','=',base64_decode($id))
+		->get(array('comentario.id','comentario.comentario','comentario.created_at','usuario.username'));
+
+		$resp = Respuestas::where('pub_id','=',$publication->id)->get();
+		$title = $publication->titulo." | ffasil.com";
+		return View::make('publications.publicationSelf')
+		->with('title',$title)
+		->with('publication',$publication)
+		->with('comentarios',$comentarios)
+		->with('id',base64_decode($id))
+		->with('respuestas',$resp)
+		->with('otrasPub',$otrasPub)
+		->with('username',$user->username)
+		->with('volver',$volver);
+	}
+
+	public function postPublicationNormalPayment()
+	{
+		$input = Input::all();
+		$publication = Publicaciones::find($input['enviarId']);
+		$precio = Precios::all();
+		$solo = $precio[0];
+		$publication->monto = $solo->precio;
+
+		if (!empty($input['durationPrin']) && !empty($input['periodoPrin']) && !empty($input['durationCat']) && !empty($input['periodoCat'])) {
+
+			if ($input['periodoPrin'] == $precio[0]->precio) {
+				$publication->duracion	= ($input['durationPrin']*86400);
+				$publication->monto = ($input['durationPrin']*$precio[0]->precio)+$publication->monto;
+			}elseif($input['periodoPrin'] == $precio[1]->precio)
+			{
+				$publication->duracion	= ($input['durationPrin']*604800);
+				$publication->monto 	= ($input['durationPrin']*$precio[1]->precio)+$publication->monto;
+			}elseif($input['periodoPrin'] == $precio[2]->precio)
+			{
+				$publication->duracion	= ($input['durationPrin']*2629744);
+				$publication->monto 	= ($input['durationPrin']*$precio[2]->precio)+$publication->monto;
+			}
+
+			if ($input['periodoCat'] == $precio[3]->precio) {
+				$publication->duracionNormal	= ($input['durationCat']*86400)+6048000;
+				$publication->monto 	= ($input['durationCat']*$precio[3]->precio)+$publication->monto;
+			}elseif($input['periodoCat'] == $precio[4]->precio)
+			{
+				$publication->duracionNormal	= ($input['durationCat']*604800)+6048000;
+				$publication->monto 	= ($input['durationCat']*$precio[4]->precio)+$publication->monto;
+			}elseif($input['periodoCat'] == $precio[5]->precio)
+			{
+				$publication->duracionNormal	= ($input['durationCat']*2629744)+6048000;
+				$publication->monto 	= ($input['durationCat']*$precio[5]->precio)+$publication->monto;
+			}
+			$publication->ubicacion = "Ambos";
+
+		}elseif(!empty($input['durationPrin']) && !empty($input['periodoPrin']))
+		{
+			if ($input['periodoPrin'] == $precio[0]->precio) {
+
+				$publication->duracion	= ($input['durationPrin']*86400);
+				$publication->monto = ($input['durationPrin']*$precio[0]->precio)+$publication->monto;
+
+			}elseif($input['periodoPrin'] == $precio[1]->precio)
+			{
+
+				$publication->duracion	= ($input['durationPrin']*604800);
+				$publication->monto 	= ($input['durationPrin']*$precio[1]->precio)+$publication->monto;
+
+			}elseif($input['periodoPrin'] == $precio[2]->precio)
+			{
+
+				$publication->duracion	= ($input['durationPrin']*2629744);
+				$publication->monto 	= ($input['durationPrin']*$precio[2]->precio)+$publication->monto;
+
+			}
+			$publication->ubicacion = 'Principal';
+		}elseif(!empty($input['durationCat']) && !empty($input['periodoCat']))
+		{
+			if ($input['periodoCat'] == $precio[3]->precio) {
+
+				$publication->duracionNormal	= ($input['durationCat']*86400)+6048000;
+				$publication->monto 	= ($input['durationCat']*$precio[3]->precio)+$publication->monto;
+
+			}elseif($input['periodoCat'] == $precio[4]->precio)
+			{
+
+				$publication->duracionNormal	= ($input['durationCat']*604800)+6048000;
+				$publication->monto 	= ($input['durationCat']*$precio[4]->precio)+$publication->monto;
+
+			}elseif($input['periodoCat'] == $precio[5]->precio)
+			{
+
+				$publication->duracionNormal	= ($input['durationCat']*2629744)+6048000;
+				$publication->monto 	= ($input['durationCat']*$precio[5]->precio)+$publication->monto;
+
+			}
+			$publication->ubicacion = 'Categoria';
+
+		}else
+		{
+			$publication->duracionNormal = 6048000;
+			$publication->ubicacion = 'Categoria';
+			$publication->monto 	= $solo->precio;
+		}
+				
+		$publication->save();
+		$publication = Publicaciones::find($input['enviarId']);
+		Session::flash('success', 'Publicación creada sactisfactoriamente');
+		return Redirect::to('usuario/publicaciones/pago/'.$publication->id);
+	}
+	public function postComment(){
+		if (Request::ajax()) {
+			$id =Input::get('id');
+			$comentario = Input::get('comment');
+			if (strlen($comentario)<4) {
+				return 'El comentario es muy corto';
+			}
+			$publication = Publicaciones::find($id);
+			$comentarios = new Comentarios;
+			
+			$comentarios->user_id 	 = Auth::id();
+			$comentarios->pub_id  	 = $id;
+			$comentarios->comentario = $comentario;
+			$comentarios->save();
+			$msg = "Han comentado tu publicacion: ".$publication->titulo;
+			$user = User::find($publication->user_id);
+			$data = array(
+				'message' 		=> $msg,
+				'title'   		=> $msg,
+				'msgcnt'  		=> null,
+				'timeToLive' 	=> 3000,
+			);
+			$gcm = GcmDevices::where('usuario','=',$user->username)->orderBy('id','DESC')->get(array('gcm_regid'));
+			$regId = array();
+			$i = 0;
+			foreach($gcm as $g)
+			{
+				$regId[$i] = $g['gcm_regid'];
+				$i++;
+			}
+			$doGcm = new Gcm;
+			$response = $doGcm->send_notification($regId,$data);
+			return $response;
+			return 'Comentario Guardado Sactisfactoriamente';
+		}
+		
+	}
+	public function getMyComment()
+	{
+		$title = "Comentarios | ffasil.om";
+		$hechos 	= Comentarios::join('publicaciones','publicaciones.id','=','comentario.pub_id')
+		->where('publicaciones.user_id','=',Auth::id())
+		->where('comentario.respondido','=',0)
+		->get(array('publicaciones.titulo','comentario.id','comentario.pub_id','comentario.comentario','comentario.created_at','comentario.deleted'));
+
+		$recividos = Respuestas::join('publicaciones','publicaciones.id','=','respuestas.pub_id')
+		->join('comentario','comentario.id','=','respuestas.comentario_id')
+		->where('respuestas.user_id','=',Auth::id())
+		->get(array('publicaciones.id','publicaciones.titulo','comentario.comentario','comentario.created_at','comentario.deleted','respuestas.respuesta'));
+		return View::make('publications.myComments')
+		->with('title',$title)
+		->with('hechos',$hechos)
+		->with('recividos',$recividos);
+	}
+
+	public function getPublicationCasual()
+	{
+		$pub = Publicaciones::where('user_id','=',Auth::id())
+		->where('tipo','=','Casual')
+		->where('fechRepub','>',date('Y-m-d',time()))
+		->orderBy('fechRepub','desc')
+		->first();
+		if (count($pub)>0) {
+			Session::flash('error', 'Usted ha consumido el máximo de publicaciones casuales. Inténtelo nunevamente cuando su última publicación casual expire.');
+			return Redirect::to('usuario/publicar');
+		}
+		$title = "Publicación CASUAL | ffasil.com";
+		$url = 'usuario/publicacion/casual/enviar';
+		$departamentos = Department::get();
+		$categorias = Categorias::where('tipo','=',1)->get();
+		$servicios = Categorias::where('tipo','=',2)->get();
+		$textos = Textos::where('id','=',3)->first();
+		return View::make('publications.publicacion')
+		->with('tipo','casual')
+		->with('url',$url)
+		->with('title',$title)
+		->with('departamento',$departamentos)
+		->with('categorias',$categorias)
+		->with('texto',$textos)
+		->with('servicios',$servicios);
+	}
+	public function getPublicationCategory($id)
+	{
+		$title = "Búsqueda por categorías | ffasil.com";
+		$lider = Publicaciones::where(function($query){
+			$query->where('ubicacion','=','Categoria')
+			->orWhere('ubicacion','=','Ambos');
+		})
+		->where('tipo','=','Lider')
+		->where('fechFin','>=',date('Y-m-d'))
+		->where('status','=','Aprobado')
+		->where('categoria','=',$id)
+		->get(array('id','img_1','titulo','precio'));
+		$publicaciones = Publicaciones::where('categoria','=',$id)
+		->leftJoin('departamento','publicaciones.departamento','=','departamento.id')
+		->where('publicaciones.tipo','=','Habitual')
+		->where(function($query){
+			$query->where('publicaciones.ubicacion','=','Categoria')
+			->orWhere('publicaciones.ubicacion','=','Ambos');
+		})
+		->where(function($query){
+			$query->where('publicaciones.fechFin','>=',date('Y-m-d',time()))
+			->orWhere('publicaciones.fechFinNormal','>=',date('Y-m-d',time()));
+		})		
+		->paginate(5,array(
+			'publicaciones.id',
+			'publicaciones.img_1',
+			'publicaciones.titulo',
+			'publicaciones.precio',
+			'publicaciones.moneda',
+			'departamento.id as dep_id',
+			'departamento.nombre as dep'));
+		$departamentos = Department::get();
+		return View::make('publications.categories')
+		->with('title',$title)
+		->with('publicaciones',$publicaciones)
+		->with('lider',$lider)
+		->with('departamento',$departamentos)
+		->with('busq',$id);
+		
+	}
+	public function getPublicationDepartment($id)
+	{
+		$title = "Búsqueda por departamento | ffasil.com";
+		if ($id != 'todos') {
+			$lider = Publicaciones::where('publicaciones.departamento','=',$id)
+			->where('tipo','=','Lider')
+			->where(function($query){
+				$query->where('fechFin','>=',date('Y-m-d',time()))
+				->orWhere('fechFinNormal','>=',date('Y-m-d',time()));
+			})		
+			->get(array('id','img_1','titulo','precio'));
+			$publicaciones = Publicaciones::where('publicaciones.departamento','=',$id)
+			->where(function($query){
+				$query->where('fechFin','>=',date('Y-m-d',time()))
+				->orWhere('fechFinNormal','>=',date('Y-m-d',time()));
+			})		
+			->paginate(10,array('id','img_1','titulo','precio'));
+		}else
+		{
+			$lider = Publicaciones::where('tipo','=','Lider')
+			->where(function($query){
+				$query->where('fechFin','>=',date('Y-m-d',time()))
+				->orWhere('fechFinNormal','>=',date('Y-m-d',time()));
+			})	
+			->get(array('id','img_1','titulo','precio'));
+
+			$publicaciones = Publicaciones::where(function($query){
+				$query->where('fechFin','>=',date('Y-m-d',time()))
+				->orWhere('fechFinNormal','>=',date('Y-m-d',time()));
+			})		
+			->paginate(5,array('id','img_1','titulo','precio'));
+		}
+		
+
+		return View::make('publications.categories')
+		->with('title',$title)
+		->with('publicaciones',$publicaciones)
+		->with('tipoBusq','dep')
+		->with('lider',$lider)
+		->with('busq','departamentos');
+		
+	}
+	public function postResponse()
+	{
+		$input = Input::all();
+		$rules = array(
+			'id' => 'required|numeric',
+			'respuesta' => 'required',
+			'pub_id' 	=> 'required|numeric'
+		);
+		$validator = Validator::make($input, $rules);
+		if ($validator->fails()) {
+			return Response::json(array('type' => 'danger','msg' => 'Debe enviar un mensaje.'));
+		}
+		$com = Comentarios::find($input['id']);
+		$resp = new Respuestas;
+		$resp->comentario_id = $input['id'];
+		$resp->respuesta 	 = $input['respuesta'];
+		$resp->pub_id 		 = $input['pub_id'];
+		$resp->user_id		 = $com->user_id;
+		$user = User::find($resp->user_id);
+		$to_Email = $user->email;
+		$subject  = "han respondido tu comentario";
+		$data = array(
+			'email' => $to_Email
+		);
+		Mail::send('emails.respuesta', $data, function($message) use ($to_Email,$subject)
+		{
+			$message->to($to_Email)->from('sistema@ffasil.com')->subject($subject);
+		});
+		if ($resp->save()) {
+			
+			$com->respondido = 1;
+			$com->save();
+			$msg = "Han respondido tu comentario: ".$com->comentario;
+			$data = array(
+				'message' 		=> $msg,
+				'title'   		=> $msg,
+				'msgcnt'  		=> null,
+				'timeToLive' 	=> 3000,
+			);
+			$gcm = GcmDevices::where('usuario','=',$user->username)->orderBy('id','DESC')->get(array('gcm_regid'));
+			$regId = array();
+			$i = 0;
+			foreach($gcm as $g)
+			{
+				$regId[$i] = $g['gcm_regid'];
+				$i++;
+			}
+			$doGcm = new Gcm;
+			$response = $doGcm->send_notification($regId,$data);
+			return $response;
+			return Response::json(array('type' => 'success','msg' => 'Respuesta guardada satisfactoriamente'));
+		}else
+		{
+			return Response::json(array('type' => 'danger','msg' => 'Error al guardar la respuesta'));
+		}
+		return Response::json($input);
+	}
+	public function postPublicationCasual()
+	{
+		function chequear($publication,$img1,$donde)
+		{
+			if (file_exists('images/pubImages/'.Auth::user()['username'].'/'.$img1->getClientOriginalName())) {
+				//guardamos la imagen en public/imgs con el nombre original
+	            $i = 0;//indice para el while
+	            //separamos el nombre de la img y la extensión
+	            $info = explode(".",$img1->getClientOriginalName());
+	            //asignamos de nuevo el nombre de la imagen completo
+	            $miImg = $img1->getClientOriginalName();
+	            //mientras el archivo exista iteramos y aumentamos i
+	            while(file_exists('images/pubImages/'.Auth::user()['username'].'/'. $miImg)){
+	                $i++;
+	                $miImg = $info[0]."(".$i.")".".".$info[1];              
+	            }
+	            //guardamos la imagen con otro nombre ej foto(1).jpg || foto(2).jpg etc
+	            $img1->move("images/pubImages/".Auth::user()['username'],$miImg);
+	            $img = Image::make('images/pubImages/'.Auth::user()['username'].'/'.$miImg);
+	            $blank = Image::make('images/blank.jpg');
+	              if ($img->width() > $img->height()) {
+		        	$img->widen(1604);
+		        }else
+		        {
+		        	$img->heighten(804);
+		        }
+		        if ($img->height() > 804) {
+		        	$img->heighten(804);
+		        }
+		        $mark = Image::make('images/watermark.png')->widen(400);
+		        $blank->insert($img,'center');
+		        $blank->insert($mark,'center')
+	           	->interlace()
+	            ->save('images/pubImages/'.Auth::user()['username'].'/'.$miImg);
+	            if($miImg != $img1->getClientOriginalName()){
+	            	if($donde == 1)
+	            	{
+		                $publication->img_1 = Auth::user()['username'].'/'.$miImg;
+	            	}elseif($donde == 2)
+	            	{
+	            		$publication->img_2 = Auth::user()['username'].'/'.$miImg;
+	            	}
+	            }
+			}else
+			{
+				$img1->move("images/pubImages/".Auth::user()['username'],$img1->getClientOriginalName());
+				$img = Image::make('images/pubImages/'.Auth::user()['username'].'/'.$img1->getClientOriginalName());
+	            $blank = Image::make('images/blank.jpg');
+	             if ($img->width() > $img->height()) {
+		        	$img->widen(1604);
+		        }else
+		        {
+		        	$img->heighten(804);
+		        }
+		        if ($img->height() > 804) {
+		        	$img->heighten(804);
+		        }
+		        $mark = Image::make('images/watermark.png')->widen(400);
+		        $blank->insert($img,'center');
+		        $blank->insert($mark,'center')
+	           	->interlace()
+	            ->save("images/pubImages/".Auth::user()['username'].'/'.$img1->getClientOriginalName());
+			}
+		}
+		$input = Input::all();
+		if (!Input::hasFile('img1')) {
+			Session::flash('error', 'La imagen de la portada es obligatoria.');
+			return Redirect::to('usuario/publicacion/casual')->withInput();
+		}
+		$img1 = Input::file('img1');
+
+		$tam   = getimagesize($img1);
+		$width = $tam[0];
+
+		if (Input::hasFile('img2')) {
+			$img2 = Input::file('img2');
+			
+		}
+		if (count(strip_tags($input['input']))>400) {
+			Session::flash('inputError', 'La descripción no debe tener mas de 400 caracteres.');
+			return Redirect::back()->withInput();
+		}
+		
+		$rules = array(
+			'input' => 'required',
+			'img1'  => 'required|image',
+			'img'   => 'image',
+			'precio'=> 'required|numeric',
+			'moneda'=> 'required',
+			'casCity' => 'required',
+			'resultado' => 'required|numeric'
+		);
+		$messages = array(
+			'required' => ':attribute es requerido',
+			'image'    => ':attrubute debe ser una imagen',
+			'numeric'  => ':attribute debe ser numerico',
+			'max'      => ':attribute debe ser no mayor a 400 caracteres'
+		);
+		$customAttributes = array(
+			'input' => 'El campo descripcion',
+			'img1' 	=> 'El archivo',
+			'img2'  => 'El archivo',
+			'resultado'     => 'El captcha',
+			'precio'=> 'El precio',
+			'moneda'=> 'El campo moneda',
+			'casCity' => 'El campo departamento'
+		);
+		if ($input['x']+$input['y'] != $input['resultado']) {
+			Session::flash('error', 'El captcha es incorrecto');
+			return Redirect::to('usuario/publicacion/casual')->withInput();
+		}
+		$validator = Validator::make($input, $rules, $messages, $customAttributes);
+		if ($validator->fails()) {
+			return Redirect::to('usuario/publicacion/casual')->withErrors($validator)->withInput();
+		}else
+		{
+			$pub = new Publicaciones;
+			$pub->img_1 = Auth::user()['username'].'/'.$img1->getClientOriginalName();
+			
+			chequear($pub,$img1,1);
+	        if (Input::hasFile('img2')) {
+				$pub->img_2 = Auth::user()['username'].'/'.$img2->getClientOriginalName();
+				chequear($pub,$img2,2);
+			}
+			$pub->user_id = Auth::id();
+			$pub->tipo 		  = 'Casual';
+			$pub->titulo      = $input['casTit'];
+			$pub->departamento= $input['casCity'];
+			$pub->categoria   = $input['casCat'];
+			$pub->ubicacion   = 'Principal';
+			$pub->precio 	  = $input['precio'];
+			$pub->moneda 	  = $input['moneda'];
+			$pub->descripcion = $input['input'];
+			$pub->fechIni 	  = date('Y-m-d',time());
+			$pub->fechFin	  = date('Y-m-d',time()+604800);
+			$pub->fechRepub	  = date('Y-m-d',time()+2543400);
+			$pub->status 	  = 'Procesando';
+			$pub->save();
+			Session::flash('success','Publicación guardada correctamente');
+			return Redirect::to('usuario/publicaciones/mis-publicaciones');
+		}
+	}
+	public function getPublicationNormalType($id)
+	{
+		$title = "Publicacion habitual | ffasil.com";
+		$subCat = SubCat::where('categoria_id','=',$id)
+		->where('deleted','=',0)
+		->get();
+		$url = "publicacion/habitual/enviar";
+		$departamento = Department::all();
+		$marcas = Marcas::all();
+		return View::make('publications.habitualForm')
+		->with('url',$url)
+		->with('title',$title)
+		->with('cat_id',$id)
+		->with('subCat',$subCat)
+		->with('marcas',$marcas)
+		->with('departamento',$departamento);
+	}
+	public function postPublicationHabitual()
+	{
+		function chequear($publication,$img1,$donde)
+		{
+			if (file_exists('images/pubImages/'.Auth::user()['username'].'/'.$img1->getClientOriginalName())) {
+				//guardamos la imagen en public/imgs con el nombre original
+	            $i = 0;//indice para el while
+	            //separamos el nombre de la img y la extensión
+	            $info = explode(".",$img1->getClientOriginalName());
+	            //asignamos de nuevo el nombre de la imagen completo
+	            $miImg = $img1->getClientOriginalName();
+	            //mientras el archivo exista iteramos y aumentamos i
+	            while(file_exists('images/pubImages/'.Auth::user()['username'].'/'. $miImg)){
+	                $i++;
+	                $miImg = $info[0]."(".$i.")".".".$info[1];              
+	            }
+	            //guardamos la imagen con otro nombre ej foto(1).jpg || foto(2).jpg etc
+	            $img1->move("images/pubImages/".Auth::user()['username'],$miImg);
+	            $img = Image::make('images/pubImages/'.Auth::user()['username'].'/'.$miImg);
+	            $blank = Image::make('images/blank.jpg');
+	             if ($img->width() > $img->height()) {
+		        	$img->widen(1604);
+		        }else
+		        {
+		        	$img->heighten(804);
+		        }
+		        if ($img->height() > 804) {
+		        	$img->heighten(804);
+		        }
+		        $mark = Image::make('images/watermark.png')->widen(400);
+		        $blank->insert($img,'center');
+		        $blank->insert($mark,'center')
+	           	->interlace()
+	            ->save('images/pubImages/'.Auth::user()['username'].'/'.$miImg);
+	            if($miImg != $img1->getClientOriginalName()){
+	            	if($donde == 1)
+	            	{
+		                $publication->img_1 = Auth::user()['username'].'/'.$miImg;
+	            	}elseif($donde == 2)
+	            	{
+	            		$publication->img_2 = Auth::user()['username'].'/'.$miImg;
+	            	}
+	            }
+			}else
+			{
+				$img1->move("images/pubImages/".Auth::user()['username'],$img1->getClientOriginalName());
+				$img = Image::make('images/pubImages/'.Auth::user()['username'].'/'.$img1->getClientOriginalName());
+	            $blank = Image::make('images/blank.jpg');
+	             if ($img->width() > $img->height()) {
+		        	$img->widen(1604);
+		        }else
+		        {
+		        	$img->heighten(804);
+		        }
+		        if ($img->height() > 804) {
+		        	$img->heighten(804);
+		        }
+		        $mark = Image::make('images/watermark.png')->widen(400);
+		        $blank->insert($img,'center');
+		        $blank->insert($mark,'center')
+	           	->interlace()
+	            ->save("images/pubImages/".Auth::user()['username'].'/'.$img1->getClientOriginalName());
+			}
+		}
+		$input = Input::all();
+		$rules = array(
+
+			'departamento'	=> 'required',
+			'ciudad'		=> 'required',
+			'title' 		=> 'required|min:4',
+			'input'			=> 'required|min:4',
+			'moneda'		=> 'required',
+			'precio'		=> 'required|numeric',
+			'moneda'		=> 'required',
+			'img1'			=> 'required|image',
+			'tipoTransac'	=> 'required'
+
+		);
+		$messages = array(
+			'required' 	=> ':attribute es obligatorio',
+			'min'		=> ':attribute debe ser mas largo',
+			'image'		=> ':attribute debe ser una imagen',
+			'numeric'	=> '>attribute debe ser numerico'
+		);
+		$customAttributes = array(
+			'precio'	 	=> 'El campo precio',
+
+			'departamento'  => 'El campo departamento',
+			'title'		 	=> 'El campo titulo',
+			'input' 	 	=> 'El campo descripcion',
+			'img1'		 	=> 'El campo imagen de portada',
+			'moneda'		=> 'El campo moneda',
+			'tipoTransac'	=> 'El campo tipo de operación',
+
+		);
+		if ($input['cat_id'] == 34) {
+			$rules = $rules+array(
+				'marca' 	=> 'required',
+				'modelo'	=> 'required',
+				'anio'		=> 'required|numeric',
+				'kilo'		=> 'required|numeric',
+				'doc'		=> 'required'
+			);
+			$customAttributes = $customAttributes+array(
+				'marca'		=> 'El campo marca',
+				'modelo'	=> 'El campo modelo',
+				'anio'		=> 'El campo año',
+				'doc'		=> 'El campo documentos'
+			);
+
+		}elseif($input['cat_id'] == 20)
+		{
+			$rules = $rules+array(
+				'ext' 	=> 'required'
+			);
+			$customAttributes = $customAttributes+array(
+				'ext'		=> 'El campo extensión'
+			);
+		}
+
+		$validator = Validator::make($input, $rules, $messages, $customAttributes);
+		if ($validator->fails()) {
+			return Redirect::to('publicacion/habitual/crear/'.$input['cat_id'])->withErrors($validator)->withInput();
+		}
+		$img1 = Input::file('img1');
+		$tam   = getimagesize($img1);
+		$width = $tam[0];
+		$pub 				= new Publicaciones;
+		$pub->user_id 		= Auth::id();
+		$pub->titulo 		= $input['title'];
+		$pub->categoria 	= $input['cat_id'];
+		if(!empty($input['subCat']))
+		{
+					$pub->typeCat 		= $input['subCat'];
+		}else
+		{
+		$pub->typeCat = 0;
+		}
+
+		$pub->departamento  = $input['departamento'];
+		$pub->ciudad 		= $input['ciudad'];
+		$pub->descripcion	= $input['input'];
+		$pub->precio 		= $input['precio'];
+		$pub->status  		= 'Pendiente';
+		$pub->moneda 		= $input['moneda'];
+		$pub->tipo 			= 'Habitual';
+		$pub->transaccion	= $input['tipoTransac'];
+		$pub->img_1 		= Auth::user()['username'].'/'.$img1->getClientOriginalName();
+
+if (!empty($input['nomb'])) {
+			$pub->name 			= $input['nomb'];
+		}
+		if (!empty($input['phone'])) {
+			$pub->phone 		= $input['phone'];
+		}
+		if (!empty($input['email'])) {
+			$pub->email 		= $input['email'];
+		}
+		if (!empty($input['pag_web'])) {
+			$pub->pag_web_hab = $input['pag_web'];
+		}
+		chequear($pub,$img1,1);
+		
+		if ($input['cat_id'] == 34) {
+			$pub->marca_id		= $input['marca'];
+			$pub->modelo_id  	= $input['modelo'];
+			$pub->anio 			= $input['anio'];
+			$pub->precio 		= $input['precio'];
+			$pub->kilometraje	= $input['kilo'];
+			if ($input['cilin'] != "") {
+				$pub->cilindraje = $input['cilin'];
+			}
+			if ($input['trans'] != "") {
+				$pub->transmision = $input['trans'];
+			}
+			if ($input['comb'] != "") {
+				$pub->combustible = $input['comb'];
+			}
+			if ($input['doc'] != "") {
+				$pub->documentos = $input['doc'];
+			}
+			if ($input['trac'] != "") {
+				$pub->traccion = $input['trac'];
+			}
+		}elseif($input['cat_id'] == 20)
+		{
+			$pub->extension     = $input['ext'];
+		}
+		if($pub->save())
+		{
+			return Redirect::to('publicacion/habitual/enviar/imagenes/'.$pub->id);
+		}
+
+	}
+	public function getPublicationHabitualImages($id)
+	{
+		$pub = Publicaciones::find($id);
+		$title = "Cargar imagenes extras";
+		return View::make('publications.imagesHabitual')
+		->with('title',$title)
+		->with('pub_id',$pub->id);
+	}
+	public function post_upload(){
+
+		$input = Input::all();
+		$rules = array(
+		    'file' => 'image|max:8000',
+		);
+		$messages = array(
+			'image' => 'Todos los archivos deben ser imagenes',
+			'max'	=> 'Las imagenes deben ser de menos de 3Mb'
+		);
+		$validation = Validator::make($input, $rules, $messages);
+
+		if ($validation->fails())
+		{
+			return Response::make($validation)->withErrors($validation);
+		}
+		$id = Input::get('pub_id');
+		$pub = Publicaciones::find($id);
+		$file = Input::file('file');
+		$campo = "";
+		if (empty($pub->img_2)) {
+			$pub->img_2 = Auth::user()['username'].'/'.$file->getClientOriginalName();
+			$campo = 'img_2';
+		}elseif(empty($pub->img_3))
+		{
+			$pub->img_3 = Auth::user()['username'].'/'.$file->getClientOriginalName();
+			$campo = 'img_3';
+		}elseif(empty($pub->img_4))
+		{
+			$pub->img_4 = Auth::user()['username'].'/'.$file->getClientOriginalName();
+			$campo = 'img_4';
+		}elseif(empty($pub->img_5))
+		{
+			$pub->img_5 = Auth::user()['username'].'/'.$file->getClientOriginalName();
+			$campo = 'img_5';
+		}elseif(empty($pub->img_6))
+		{
+			$pub->img_6 = Auth::user()['username'].'/'.$file->getClientOriginalName();
+			$campo = 'img_6';
+		}elseif(empty($pub->img_7))
+		{
+			$pub->img_7 = Auth::user()['username'].'/'.$file->getClientOriginalName();
+			$campo = 'img_7';
+		}elseif(empty($pub->img_8))
+		{
+			$pub->img_8 = Auth::user()['username'].'/'.$file->getClientOriginalName();
+			$campo = 'img_8';
+		}
+
+		if (file_exists('images/pubImages/'.Auth::user()['username'].'/'.$file->getClientOriginalName())) {
+			//guardamos la imagen en public/imgs con el nombre original
+            $i = 0;//indice para el while
+            //separamos el nombre de la img y la extensión
+            $info = explode(".",$file->getClientOriginalName());
+            //asignamos de nuevo el nombre de la imagen completo
+            $miImg = $file->getClientOriginalName();
+            //mientras el archivo exista iteramos y aumentamos i
+            while(file_exists('images/pubImages/'.Auth::user()['username'].'/'. $miImg)){
+                $i++;
+                $miImg = $info[0]."(".$i.")".".".$info[1];              
+            }
+            //guardamos la imagen con otro nombre ej foto(1).jpg || foto(2).jpg etc
+            $file->move("images/pubImages/".Auth::user()['username'],$miImg);
+            $img = Image::make('images/pubImages/'.Auth::user()['username'].'/'.$miImg);
+            $blank = Image::make('images/blank.jpg');
+	             if ($img->width() > $img->height()) {
+		        	$img->widen(1604);
+		        }else
+		        {
+		        	$img->heighten(804);
+		        }
+		        if ($img->height() > 804) {
+		        	$img->heighten(804);
+		        }
+		        $mark = Image::make('images/watermark.png')->widen(400);
+		        $blank->insert($img,'center');
+		        $blank->insert($mark,'center')
+	           	->interlace()
+	            ->save('images/pubImages/'.Auth::user()['username'].'/'.$miImg);
+            if($miImg != $file->getClientOriginalName()){
+                if ($campo == 'img_2') {
+					$pub->img_2 = Auth::user()['username'].'/'.$miImg;
+				}elseif(empty($pub->img_3))
+				{
+					$pub->img_3 = Auth::user()['username'].'/'.$miImg;
+				}elseif($campo == 'img_4')
+				{
+					$pub->img_4 = Auth::user()['username'].'/'.$miImg;
+				}elseif($campo == 'img_5')
+				{
+					$pub->img_5 = Auth::user()['username'].'/'.$miImg;
+				}elseif($campo == 'img_6')
+				{
+					$pub->img_6 = Auth::user()['username'].'/'.$miImg;
+				}elseif($campo == 'img_7')
+				{
+					$pub->img_7 = Auth::user()['username'].'/'.$miImg;
+				}elseif($campo == 'img_8')
+				{
+					$pub->img_8 = Auth::user()['username'].'/'.$miImg;
+				}
+            }
+		}else
+		{
+			$file->move("images/pubImages/".Auth::user()['username'],$file->getClientOriginalName());
+			$img = Image::make('images/pubImages/'.Auth::user()['username'].'/'.$file->getClientOriginalName());
+	           $blank = Image::make('images/blank.jpg');
+	             if ($img->width() > $img->height()) {
+		        	$img->widen(1604);
+		        }else
+		        {
+		        	$img->heighten(804);
+		        }
+		        if ($img->height() > 804) {
+		        	$img->heighten(804);
+		        }
+		        $mark = Image::make('images/watermark.png')->widen(400);
+		        $blank->insert($img,'center');
+		        $blank->insert($mark,'center')
+	           	->interlace()
+	            ->save("images/pubImages/".Auth::user()['username'].'/'.$file->getClientOriginalName());
+		}
+		$pub->save();
+        return Response::json(array('campo' => $campo));
+
+        if( $upload_success ) {
+        	return Response::json('success', 200);
+        } else {
+        	return Response::json('error', 400);
+        }
+	}
+	public function post_delete()
+	{
+		$campo 		= Input::get('campo');
+		$file 		= Input::get('name');
+		$id     	= Input::get('id');
+		$pub 		= Publicaciones::find($id);
+		if ($campo == 'img_1') {
+			$img = $pub->img_1;
+			File::delete('images/pubImages/'.Auth::user()['username'].'/'.$img);
+			$pub->img_1 = "";
+		}elseif ($campo == 'img_2') {
+			$img = $pub->img_2;
+			File::delete('images/pubImages/'.Auth::user()['username'].'/'.$img);
+			$pub->img_2 = "";
+		}elseif($campo == 'img_3')
+		{
+			$img = $pub->img_3;
+			File::delete('images/pubImages/'.Auth::user()['username'].'/'.$img);
+			$pub->img_3 = "";
+		}elseif($campo == 'img_4')
+		{
+			$img = $pub->img_4;
+			File::delete('images/pubImages/'.Auth::user()['username'].'/'.$img);
+			$pub->img_4 = "";
+		}elseif($campo == 'img_5')
+		{
+			$img = $pub->img_5;
+			File::delete('images/pubImages/'.Auth::user()['username'].'/'.$img);
+			$pub->img_5 = "";
+		}elseif($campo == 'img_6')
+		{
+			$img = $pub->img_6;
+			File::delete('images/pubImages/'.Auth::user()['username'].'/'.$img);
+			$pub->img_6 = "";
+		}elseif($campo == 'img_7')
+		{
+			$img = $pub->img_7;
+			File::delete('images/pubImages/'.Auth::user()['username'].'/'.$img);
+			$pub->img_7 = "";
+		}elseif($campo == 'img_8')
+		{
+			$img = $pub->img_8;
+			File::delete('images/pubImages/'.Auth::user()['username'].'/'.$img);
+			$pub->img_8 = "";
+		}
+		$pub->save();
+		return Response::json(array('llego' => 'llego'));
+        
+	}
+	public function getCompra()
+	{
+		$id = Input::get('id');
+		$aux = Compras::where('pub_id','=',$id)
+		->where('user_id','=',Auth::id())
+		->where(function($query){
+			$query->where('valor_vend','=',0)
+			->orWhere('fechVal','=',date('Y-m-d',time()+172800));
+		})
+		->first();
+
+		if (!empty($aux)) {
+			Session::flash('error', 'Usted ya ha contactado este usuario y aun no se ha valorado');
+			return Redirect::back();
+		}
+		$comp = new Compras;
+		$comp->pub_id  	  = $id;
+		$comp->user_id 	  = Auth::id();
+		$comp->valor_comp = 0;
+		$comp->valor_vend = 0;
+		$comp->fechVal 	  = date('Y-m-d',time()+172800);
+		if ($comp->save()) {
+			$pub = Publicaciones::find($id);
+			$user = User::find($pub->user_id);
+			$msg = "Han respondido tu comentario: ".$pub->titulo;
+			$data = array(
+				'message' 		=> $msg,
+				'title'   		=> $msg,
+				'msgcnt'  		=> null,
+				'timeToLive' 	=> 3000,
+			);
+			$gcm = GcmDevices::where('usuario','=',$user->username)->orderBy('id','DESC')->get(array('gcm_regid'));
+			$regId = array();
+			$i = 0;
+			foreach($gcm as $g)
+			{
+				$regId[$i] = $g['gcm_regid'];
+				$i++;
+			}
+			$doGcm = new Gcm;
+			$response = $doGcm->send_notification($regId,$data);
+			return $response;
+			return Redirect::to('usuario/mis-compras');
+		}
+	}
+	public function getPreview($id)
+	{
+		$title = "Previsualización de publicación HABITUAL | ffasil.com";
+		$pub = Publicaciones::find($id);
+		if ($pub->categoria == 34) {
+			$pub = Publicaciones::join('marcas','marcas.id','=','publicaciones.marca_id')
+			->leftJoin('departamento','publicaciones.departamento','=','departamento.id')
+			->leftJoin('categoria','categoria.id','=','publicaciones.categoria')
+			->leftJoin('subcategoria','subcategoria.id','=','publicaciones.typeCat')
+			->join('modelo','modelo.id','=','publicaciones.modelo_id')
+			->join('usuario','usuario.id','=','publicaciones.user_id')
+			->where('publicaciones.id','=',$id)
+			->get(array(
+					'marcas.nombre as marca',
+					'modelo.nombre as modelo',
+					'publicaciones.*',
+					'departamento.nombre as dep',
+					'categoria.desc as cat',
+					'subcategoria.desc as subCat',
+					));
+		}else
+		{
+			if ($pub->typeCat != 0) {
+				$pub = Publicaciones::join('departamento','publicaciones.departamento','=','departamento.id')
+				->join('categoria','categoria.id','=','publicaciones.categoria')
+				->join('subcategoria','subcategoria.id','=','publicaciones.typeCat')
+				->where('publicaciones.id','=',$id)
+				->get(array(
+						'subcategoria.desc as subCat',
+						'departamento.nombre as dep',
+						'categoria.desc as cat',
+						'publicaciones.*'
+						));
+			}else
+			{
+				$pub = Publicaciones::join('departamento','publicaciones.departamento','=','departamento.id')
+				->join('categoria','categoria.id','=','publicaciones.categoria')
+				->where('publicaciones.id','=',$id)
+				->get(array(
+						'departamento.nombre as dep',
+						'categoria.desc as cat',
+						'publicaciones.*'
+						));
+			}
+			
+		}
+		
+		if (isset($pub[0])) {
+			$publication = $pub[0];
+		}else
+		{
+			$publication = $pub;
+		}
+		return View::make('publications.preview')
+		->with('title',$title)
+		->with('publication',$publication)
+		->with('id',$id);
+	}
+	public function getModifyPub()
+	{
+		$id = Input::get('modificar');
+		$pub = Publicaciones::find($id);
+		$title = "Modificar publicacion | ffasil.com";
+		if ($pub->tipo == 'Lider') {
+			$url = "usuario/publicacion/modificar/lider";
+		}elseif ($pub->tipo == 'Habitual') {
+			$url = "usuario/publicacion/modificar/habitual";
+		}elseif ($pub->tipo == 'Casual') {
+			$url = "usuario/publicacion/modificar/casual";
+		}
+		$categorias = Categorias::all();
+		$subCat = SubCat::all();
+		$departamento = Department::all();
+                $marcas = Marcas::all();
+		return View::make('publications.modifyPub')
+		->with('title',$title)
+		->with('tipo',$pub->tipo)
+		->with('publicaciones',$pub)
+		->with('url',$url)
+		->with('categorias',$categorias)
+		->with('subCat',$subCat)
+		->with('departamento',$departamento)
+->with('marcas',$marcas);
+	}
+	public function postModifyPub()
+	{
+		$input = Input::all();
+		$id = Input::get('enviarPub');
+		$pub = Publicaciones::find($id);
+		$type = $pub->tipo;
+		if ($pub->tipo == 'Lider') {
+			if ($input['cat'] != $pub->categoria && !empty($input['cat'])) {
+				$pub->categoria = $input['cat'];
+			}elseif (!is_null($input['img1'])) {
+				$img1 = Input::file('img1');
+				if (file_exists('images/pubImages/'.Auth::user()['username'].'/'.$img1->getClientOriginalName())) {
+					//guardamos la imagen en public/imgs con el nombre original
+		            $i = 0;//indice para el while
+		            //separamos el nombre de la img y la extensión
+		            $info = explode(".",$img1->getClientOriginalName());
+		            //asignamos de nuevo el nombre de la imagen completo
+		            $miImg = $img1->getClientOriginalName();
+		            //mientras el archivo exista iteramos y aumentamos i
+		            while(file_exists('images/pubImages/'.Auth::user()['username'].'/'. $miImg)){
+		                $i++;
+		                $miImg = $info[0]."(".$i.")".".".$info[1];              
+		            }
+		            //guardamos la imagen con otro nombre ej foto(1).jpg || foto(2).jpg etc
+		            $img1->move("images/pubImages/".Auth::user()['username'],$miImg);
+		            if($miImg != $img1->getClientOriginalName()){
+		                $pub->img_1 = Auth::user()['username'].'/'.$miImg;
+		            }
+				}else
+				{
+					$img1->move("images/pubImages/".Auth::user()['username'],$img1->getClientOriginalName());
+					$pub->img_1 = Auth::user()['username'].'/'.$img1->getClientOriginalName();
+
+				}
+			}elseif (!is_null($input['img2'])) {
+				$img2 = Input::file('img2');
+				if (file_exists('images/pubImages/'.Auth::user()['username'].'/'.$img2->getClientOriginalName())) {
+					//guardamos la imagen en public/imgs con el nombre original
+		            $i = 0;//indice para el while
+		            //separamos el nombre de la img y la extensión
+		            $info = explode(".",$img2->getClientOriginalName());
+		            //asignamos de nuevo el nombre de la imagen completo
+		            $miImg = $img2->getClientOriginalName();
+		            //mientras el archivo exista iteramos y aumentamos i
+		            while(file_exists('images/pubImages/'.Auth::user()['username'].'/'. $miImg)){
+		                $i++;
+		                $miImg = $info[0]."(".$i.")".".".$info[1];              
+		            }
+		            //guardamos la imagen con otro nombre ej foto(1).jpg || foto(2).jpg etc
+		            $img1->move("images/pubImages/".Auth::user()['username'],$miImg);
+		            if($miImg != $img1->getClientOriginalName()){
+		                $pub->img_2 = Auth::user()['username'].'/'.$miImg;
+		            }
+				}else
+				{
+					$img2->move("images/pubImages/".Auth::user()['username'],$img2->getClientOriginalName());
+					$pub->img_2 = Auth::user()['username'].'/'.$img2->getClientOriginalName();
+
+				}
+			}elseif ($input['pagina'] != $pub->pag_web && !empty($input['pagina'])) {
+				$pub->pag_web = $input['pagina'];
+			}elseif ($input['nomb'] != $pub->name && !empty($input['nomb'])) {
+				$pub->name = $input['nomb'];
+			}elseif ($input['phone'] != $pub->phone && !empty($input['phone'])) {
+				$pub->phone = $input['phone'];
+			}elseif ($input['email'] != $pub->email && !empty($input['email'])) {
+				$pub->email = $input['email'];
+			}elseif ($input['pag_web'] != $pub->pag_web_hab && !empty($input['pag_web'])) {
+				$pub->pag_web_hab = $input['pag_web'];
+			}
+		}elseif($pub->tipo == 'Habitual')
+		{
+			if ($input['cat'] != $pub->categoria && !empty($input['cat'])) {
+				$pub->categoria = $input['cat'];
+			}elseif (!is_null($input['img1'])) {
+				$img1 = Input::file('img1');
+				if (file_exists('images/pubImages/'.Auth::user()['username'].'/'.$img1->getClientOriginalName())) {
+					//guardamos la imagen en public/imgs con el nombre original
+		            $i = 0;//indice para el while
+		            //separamos el nombre de la img y la extensión
+		            $info = explode(".",$img1->getClientOriginalName());
+		            //asignamos de nuevo el nombre de la imagen completo
+		            $miImg = $img1->getClientOriginalName();
+		            //mientras el archivo exista iteramos y aumentamos i
+		            while(file_exists('images/pubImages/'.Auth::user()['username'].'/'. $miImg)){
+		                $i++;
+		                $miImg = $info[0]."(".$i.")".".".$info[1];              
+		            }
+		            //guardamos la imagen con otro nombre ej foto(1).jpg || foto(2).jpg etc
+		            $img1->move("images/pubImages/".Auth::user()['username'],$miImg);
+		            if($miImg != $img1->getClientOriginalName()){
+		                $pub->img_1 = Auth::user()['username'].'/'.$miImg;
+		            }
+				}else
+				{
+					$img1->move("images/pubImages/".Auth::user()['username'],$img1->getClientOriginalName());
+					$pub->img_1 = Auth::user()['username'].'/'.$img1->getClientOriginalName();
+
+				}
+			}elseif (isset($input['img2']) && !is_null($input['img2'])) {
+				$img2 = Input::file('img2');
+				if (file_exists('images/pubImages/'.Auth::user()['username'].'/'.$img2->getClientOriginalName())) {
+					//guardamos la imagen en public/imgs con el nombre original
+		            $i = 0;//indice para el while
+		            //separamos el nombre de la img y la extensión
+		            $info = explode(".",$img2->getClientOriginalName());
+		            //asignamos de nuevo el nombre de la imagen completo
+		            $miImg = $img2->getClientOriginalName();
+		            //mientras el archivo exista iteramos y aumentamos i
+		            while(file_exists('images/pubImages/'.Auth::user()['username'].'/'. $miImg)){
+		                $i++;
+		                $miImg = $info[0]."(".$i.")".".".$info[1];              
+		            }
+		            //guardamos la imagen con otro nombre ej foto(1).jpg || foto(2).jpg etc
+		            $img1->move("images/pubImages/".Auth::user()['username'],$miImg);
+		            if($miImg != $img1->getClientOriginalName()){
+		                $pub->img_2 = Auth::user()['username'].'/'.$miImg;
+		            }
+				}else
+				{
+					$img2->move("images/pubImages/".Auth::user()['username'],$img2->getClientOriginalName());
+					$pub->img_2 = Auth::user()['username'].'/'.$img2->getClientOriginalName();
+
+				}
+			}elseif ($input['pagina'] != $pub->pag_web && !empty($input['pagina'])) {
+				$pub->pag_web = $input['pagina'];
+			}elseif ($input['nomb'] != $pub->name && !empty($input['nomb'])) {
+				$pub->name = $input['nomb'];
+			}elseif ($input['phone'] != $pub->phone && !empty($input['phone'])) {
+				$pub->phone = $input['phone'];
+			}elseif ($input['email'] != $pub->email && !empty($input['email'])) {
+				$pub->email = $input['email'];
+			}elseif ($input['pag_web'] != $pub->pag_web_hab && !empty($input['pag_web'])) {
+				$pub->pag_web_hab = $input['pag_web'];
+			}
+		}
+		
+		if($pub->save())
+		{
+			Session::flash('success', 'Publicación modificada satisfactoriamente.');
+			return Redirect::to('usuario/publicaciones/mis-publicaciones/'.strtolower($type));
+		}else
+		{
+			Session::flash('error', 'Error al modificar el usuario.');
+			return Redirect::to('usuario/publicacion/modificar/'.strtolower($type));
+		}
+	}
+	public function getSubCat()
+	{
+		if (Request::ajax()) {
+			$id = Input::get('id');
+			$subCat = SubCat::where('categoria_id','=',$id)->get();
+			return $subCat;
+		}
+	}
+public function postElimPub()
+	{
+		if (Request::ajax()) {
+			$id = Input::get('id');
+			$pub = Publicaciones::find($id);
+			$titulo = $pub->titulo;
+			$comment = Comentarios::where('pub_id','=',$id)->get();
+			$resp    = Respuestas::where('pub_id','=',$id)->get();
+			if (count($comment)>0) {
+				foreach ($comment as $c) 
+				{
+					$c->deleted = 1;
+					$c->save();
+				}
+			}
+			
+			if (count($resp)>0) {
+				foreach ($resp as $r) {
+					$r->deleted = 1;
+					$r->save();
+				}
+			}
+			$userid = $pub->user_id;
+			$user = User::find($userid);
+			$subject = "Correo de Aviso";
+
+			$data = array(
+				'subject' => $subject,
+				'publicacion' => $titulo
+			);
+			$to_Email = $user->email;
+			Mail::send('emails.elimPubUser', $data, function($message) use ($titulo,$to_Email,$subject)
+			{
+				$message->to($to_Email)->from('sistema@ffasil.com')->subject($subject);
+			});
+
+			$pub->deleted = 1;
+			$pub->save();
+
+			return Response::json(array('type' => 'success','msg' => 'Publicación eliminada satisfactoriamente. Hemos enviado un email al correo.'));
+		}
+	}
+	public function postChangePost()
+	{
+		$arr = Input::get('arr');
+		$id  = Input::get('id');
+		$pub = Publicaciones::find($id);
+		$i = 0;
+		$arr2 = array();
+		foreach ($arr as $a) {
+			switch ($a) {
+				case 'img_1':
+					$arr2[$i] = $pub->img_1;
+					break;
+				case 'img_2':
+					$arr2[$i] = $pub->img_2;
+					break;
+				case 'img_3':
+					$arr2[$i] = $pub->img_3;
+					break;
+				case 'img_4':
+					$arr2[$i] = $pub->img_4;
+					break;
+				case 'img_5':
+					$arr2[$i] = $pub->img_5;
+					break;
+				case 'img_6':
+					$arr2[$i] = $pub->img_6;
+					break;
+				case 'img_7':
+					$arr2[$i] = $pub->img_7;
+					break;
+				case 'img_8':
+					$arr2[$i] = $pub->img_8;
+					break;
+				default:
+					break;
+			}
+			$i++;
+		}
+
+		$j = 0;
+		foreach ($arr2 as $a) {
+			switch ($j) {
+				case '0':
+					$pub->img_1 = $arr2[$j];
+					break;
+				case '1':
+					$pub->img_2 = $arr2[$j];
+					break;
+				case '2':
+					$pub->img_3 = $arr2[$j];
+					break;
+				case '3':
+					$pub->img_4 = $arr2[$j];
+					break;
+				case '4':
+					$pub->img_5 = $arr2[$j];
+					break;
+				case '5':
+					$pub->img_6 = $arr2[$j];
+					break;
+				case '6':
+					$pub->img_7 = $arr2[$j];
+					break;
+				case '7':
+					$pub->img_8 = $arr2[$j];
+					break;
+				default:
+					break;
+			}
+			$j++;
+		}
+		if ($pub->save()) {
+			return Response::json(array('type' => 'success','msg' => 'Imagenes cambiadas de posición satisfactoriamente.'));
+		}else
+		{
+			return Response::json(array('type' => 'danger','msg' => 'Error al guardar los cambios.'));
+		}
+	}
+}

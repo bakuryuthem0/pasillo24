@@ -1,0 +1,36 @@
+<?php $__env->startSection('content'); ?>
+<?php echo HTML::style('css/animation.css'); ?>
+
+<div class="container containerPortada">
+<div class="canvas">
+    <div class="carrito">
+        <div class="pepitas">
+            <img src="<?php echo asset('images/Sin_ttulo-4-03.png'); ?>" class="roja">
+            <img src="<?php echo asset('images/Sin_ttulo-4-02.png'); ?>" class="amarilla">
+            <img src="<?php echo asset('images/Sin_ttulo-4-01.png'); ?>" class="verde">
+        </div>
+        <div class="marco">
+            <img src="<?php echo asset('images/a1-01.png'); ?>">
+        </div>
+        <div class="ruedas">
+            <div class="rueda1">
+                <img src="<?php echo asset('images/a2-01.png'); ?>">
+            </div>
+            <div class="rueda2">
+                <img src="<?php echo asset('images/a2-01.png'); ?>">
+            </div>
+        </div>
+    </div>
+    <div class="texto">
+        <img src="<?php echo asset('images/a3-01.png'); ?>">
+        <img src="<?php echo asset('images/a4-01.png'); ?>" class="texto2">
+    </div>
+    <img src="<?php echo asset('images/intro-01.png'); ?>" class="animBanner">
+</div>
+<div class="noCanvas">
+    <img src="<?php echo asset('images/logo2.png'); ?>" class="noAnimationLogo">
+</div>
+</div>
+
+<?php $__env->stopSection(); ?>
+<?php echo $__env->make('main', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>

@@ -1,0 +1,170 @@
+<?php $__env->startSection('content'); ?>
+<div class="container contenedorUnico">
+	<div class="row">
+		<div class="col-xs-12">
+				<div class="col-xs-6 imagesCont">
+					
+					<div class="col-xs-12 imgProd">
+						<div class="cien">
+			              <img src="" class="zoomed">
+			            </div>
+						<img src="<?php echo asset('images/pubImages/'.$publication->img_1); ?>" class="imgPrinc" style="">
+					</div>
+					<div class="col-xs-12 minis">
+						<?php if(!empty($publication->img_1)): ?>
+						<img src="<?php echo asset('images/pubImages/'.$publication->img_1); ?>" class="imgMini" data-value="img_1">
+						<?php endif; ?>
+						<?php if(!empty($publication->img_2)): ?>
+						<img src="<?php echo asset('images/pubImages/'.$publication->img_2); ?>" class="imgMini" data-value="img_2">
+						<?php endif; ?>
+						<?php if(!empty($publication->img_3)): ?>
+						<img src="<?php echo asset('images/pubImages/'.$publication->img_3); ?>" class="imgMini" data-value="img_3">
+						<?php endif; ?>
+						<?php if(!empty($publication->img_4)): ?>
+						<img src="<?php echo asset('images/pubImages/'.$publication->img_4); ?>" class="imgMini" data-value="img_4">
+						<?php endif; ?>
+						<?php if(!empty($publication->img_5)): ?>
+						<img src="<?php echo asset('images/pubImages/'.$publication->img_5); ?>" class="imgMini" data-value="img_5">
+						<?php endif; ?>
+						<?php if(!empty($publication->img_6)): ?>
+						<img src="<?php echo asset('images/pubImages/'.$publication->img_6); ?>" class="imgMini" data-value="img_6">
+						<?php endif; ?>
+						<?php if(!empty($publication->img_7)): ?>
+						<img src="<?php echo asset('images/pubImages/'.$publication->img_7); ?>" class="imgMini" data-value="img_7">
+						<?php endif; ?>
+						<?php if(!empty($publication->img_8)): ?>
+						<img src="<?php echo asset('images/pubImages/'.$publication->img_8); ?>" class="imgMini" data-value="img_8">
+						<?php endif; ?>
+					</div>
+					<div class="col-xs-12">
+						<div class="alert responseDanger">
+							<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+						</div>
+						<button class="btn btn-primary btnChange" >Cambiar Orden</button>
+						<button class="btn btn-success btnChangeEnviar btn-no" value="<?php echo $publication->id; ?>">Enviar</button>
+						<button class="btn btn-danger btnChangeCancel btn-no">Cancelar</button>
+					</div>
+				</div>
+				<div class="col-xs-6 descriptionPub contAnaranjado">
+					<div class="col-xs-12">
+						<legend><h2><?php echo ucfirst($publication->titulo); ?></h2></legend>
+					</div>
+					<div class="col-xs-6 caracteristicasPub">
+						<h3>Precio</h3>
+						<label class="textoPromedio">
+							<?php if($publication->precio == ""): ?> 
+							Sin especificar 
+							<?php else: ?> 
+							<?php echo $publication->precio; ?> <?php endif; ?> 
+								<?php echo ucwords(strtolower($publication->moneda)); ?>
+
+						</label> 
+					</div>
+					
+					<div class="col-xs-6 caracteristicasPub">
+						<h3>Departamento</h3>
+						<label class="textoPromedio">
+							<?php echo $publication->dep; ?>
+
+						</label>
+
+					</div>
+					<div class="col-xs-6 caracteristicasPub">
+						<h3>Ciudad</h3>
+						<label class="textoPromedio">
+							<?php echo $publication->ciudad; ?>
+
+						</label>
+
+					</div>
+					<div class="col-xs-6 caracteristicasPub">
+						<h3>Categoría</h3>
+						<label class="textoPromedio">
+							<?php echo $publication->cat; ?>
+
+						</label>
+
+					</div>
+					<div class="col-xs-6 caracteristicasPub">
+						<h3>Sub-categoría</h3>
+						<label class="textoPromedio">
+							<?php echo $publication->subCat; ?>
+
+						</label>
+
+					</div>
+					<?php if($publication->categoria == 34): ?>
+						<div class="col-xs-6 caracteristicasPub">
+							<h3>Año</h3>
+							<label class="textoPromedio">
+								<?php echo $publication->anio; ?>
+
+							</label>
+
+						</div>
+						<div class="col-xs-6 caracteristicasPub">
+							<h3>Kilometraje</h3><label class="textoPromedio"><?php if(strlen($publication->precio) == 0): ?> Sin especificar <?php else: ?> <?php echo $publication->kilometraje; ?> <?php endif; ?></label>
+						</div>
+						<div class="col-xs-6 caracteristicasPub">
+							<h3>Marca</h3><label class="textoPromedio"><?php if(strlen($publication->precio) == 0): ?> Sin especificar <?php else: ?> <?php echo $publication->marca; ?> <?php endif; ?></label>
+						</div>
+						<div class="col-xs-6 caracteristicasPub">
+							<h3>Modelo</h3><label class="textoPromedio"><?php if(strlen($publication->precio) == 0): ?> Sin especificar <?php else: ?> <?php echo $publication->modelo; ?> <?php endif; ?></label>
+						</div>
+						
+						<div class="col-xs-6 caracteristicasPub">
+							<h3>Documentación</h3><label class="textoPromedio"><?php if(strlen($publication->precio) == 0): ?> Sin especificar <?php else: ?> <?php echo $publication->documentos; ?> <?php endif; ?></label>
+						</div>
+						<?php if(!empty($publication->cilindraje)): ?>
+						<div class="col-xs-6 caracteristicasPub">
+							<h3>Cilindraje</h3><label class="textoPromedio"><?php echo $publication->cilindraje; ?> </label>
+						</div>
+						<?php endif; ?>
+
+						<?php if(!empty($publication->transmicion)): ?>
+						<div class="col-xs-6 caracteristicasPub">
+							<h3>Transmición</h3><label class="textoPromedio"> <?php echo $publication->transmicion; ?> </label>
+						</div>
+						<?php endif; ?>
+
+						<?php if(empty($publication->traccion)): ?>
+						<div class="col-xs-6 caracteristicasPub">
+							<h3>Tracción</h3><label class="textoPromedio"><?php echo $publication->traccion; ?></label>
+						</div>
+						<?php endif; ?>
+
+						<?php if(!empty($publication->combustible)): ?>
+						<div class="col-xs-6 caracteristicasPub">
+							<h3>Documentación</h3><label class="textoPromedio"><?php echo $publication->combustible; ?></label>
+						</div>
+						<?php endif; ?>
+					<?php elseif($publication->categoria == 20): ?>
+						<div class="col-xs-6 caracteristicasPub">
+							<h3>Extensión</h3><label class="textoPromedio"><?php echo $publication->extension; ?> mt<sup>2</sup></label>
+						</div>
+					<?php endif; ?>	
+					<div class="col-xs-6 caracteristicasPub">
+						<h3>Tipo de operación</h3>
+						<label class="textoPromedio">
+							<?php echo $publication->transaccion; ?>
+
+						</label>
+
+					</div>
+				</div>
+			</div>
+			<div class="col-xs-12 textoPromedio descProd contAnaranjado">
+				<div class="col-xs-8 col-sm-offset-2 comentarioBox">
+					<?php echo $publication->descripcion; ?>
+
+				</div>
+				<div class="clearfix"></div>
+				<p class="bg-info" style="padding:0.5em;text-align:center;">Si desea modificar su publicación vaya al menú de usuario > mis publicaciones</p>
+			</div>
+			
+			<div class="clearfix"></div>
+			<a href="<?php echo URL::to('usuario/publicacion/habitual/pago/'.$id); ?>" class="btn btn-success" style="margin:2em auto;width:100px;display:block;">Continuar</a>
+		</div>
+	</div>
+<?php $__env->stopSection(); ?>
+<?php echo $__env->make('main', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
