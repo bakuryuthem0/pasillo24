@@ -67,7 +67,7 @@
 					<label class="textoPromedio">Filtro por departamento</label>
 					<form class="formDepFilter" method="GET" action="{{ URL::to('inicio/buscar') }}">
 						<select name="filter" class="form-control depFilter">
-							<option value="">Bolvia</option>
+							<option value="">Busqueda general</option>
 							@foreach($departamento as $dep)
 								@if(!empty($filter) && $filter->id == $dep->id)
 									<option value="{{ $dep->id }}" selected>{{ ucfirst(strtolower($dep->nombre)) }}</option>

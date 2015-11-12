@@ -367,7 +367,7 @@ margin-left:1em;
 		float: none !important;
 	}
 	.navbar-collapse {
-		background-color: rgba(255, 165, 0, 1) !important;
+		background-color: rgb(19, 63, 30) !important;
 	}
 	.redes{
 		display: none;
@@ -718,7 +718,7 @@ html,body
 }
 .contenedorUnico
 {
-	min-height: 600px;
+	min-height: 85vh;
 }
 .marg
 {
@@ -951,7 +951,10 @@ html,body
 	margin: 0px auto;
 	color: white;
 }
-
+.footerText a
+{
+	color: white;
+}
 .panel-footer
 {
 	background: #133F1E;
@@ -1076,6 +1079,10 @@ margin-right: 0.5em;
 	padding-left: 0px;
 	text-align: left;
 	font-size: 1.5em;
+}
+.categorias a
+{
+	color: black;
 }
 .catInv
 {
