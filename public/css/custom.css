@@ -439,7 +439,7 @@ margin-left:1em;
 		display: none !important;
 	}
 	.navbar-collapse{
-		background-color: orange;
+		background-color: #133F1E;
 		position: relative;
 		z-index: 3;
 	}
@@ -808,11 +808,11 @@ html,body
 }
 .btn-buscar
 {
-	background-image: linear-gradient(to bottom, #DDA41C 0px, #FEA100 100%);
+	background-image: linear-gradient(to bottom, #133F1E 0px, #133F1E 100%);
 	margin-top: 0.5em;
 }
 .btn-buscar:hover, .btn-buscar:focus {
-    background-color: rgba(255, 180, 0, 0.26);
+    background-color: rgb(30, 95, 46);
     background-position: 0px 0px;
 }
 .drop-menu
@@ -828,7 +828,7 @@ html,body
 }
 .header
 {
-	background: orange;
+	background: #133F1E;
 	height: 100px;
 	width: 100%;	
 	max-height: 70px;
@@ -949,11 +949,12 @@ html,body
 .footerText{
 	text-align: center;
 	margin: 0px auto;
+	color: white;
 }
 
 .panel-footer
 {
-	background: orange;
+	background: #133F1E;
 }
 /*-------------End-------------*/
 
