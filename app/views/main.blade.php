@@ -189,17 +189,18 @@ margin-top: 0.5em;display:inline-block;">
 												<li><a href="{{ URL::to('usuario/publicaciones/comentarios') }}">
 													<span class="fa fa-comments-o"></span><sup class="subComentario"></sup> Comentarios</a></li>
 												@else
+												@if(Auth::getUser()['role'] == 'Administrador')
 												<li>
 													<a href="{{ URL::to('administrador/pagos') }}">
 														<i class="fa fa-credit-card"></i> Ver Pagos
 													</a>
 												</li>
+												@endif
 												<li>
 													<a href="{{ URL::to('administrador/publicaciones') }}">
 														<i class="fa fa-book"></i> Ver Publicaciones
 													</a>
 												</li>
-												@if(Auth::getUser()['role'] == 'Administrador')
 												<li class="showMovil">
 													<a href="{{ URL::to('administrador/modificar-publicaciones') }}">
 														<i class="fa fa-list-alt"></i>Modifica textos de publicaciones
@@ -269,7 +270,6 @@ margin-top: 0.5em;display:inline-block;">
 														<i class="fa fa-university"></i> Agregar cuenta
 													</a>
 												</li>
-												@endif
 												
 												@endif
 												<li>
