@@ -109,7 +109,7 @@ Route::group(array('before' =>'auth'),function()
 	Route::get('usuario/longitud', 'PublicationController@getLength');
 	
 	//rutas del admin
-	Route::group(array('before' => 'rol_check'), function()
+	Route::group(array('before' => 'role_check'), function()
 	{
 		Route::get('administrador/pagos', 'AdministratorController@getPagos');
 		Route::get('administrador/pagos/{type}', 'AdministratorController@getPagosType');
@@ -117,20 +117,24 @@ Route::group(array('before' =>'auth'),function()
 		Route::post('administrador/pagos/cancelar', 'AdministratorController@postPagosCancel');
 		Route::get('administrador/publicaciones', 'AdministratorController@getPublication');
 		Route::get('administrador/publicacion/{type}','AdministratorController@getPublicationType');
-		Route::post('administrador/publicacion/eliminar-publicacion/enviar','AdministratorController@postElimPub');
-		Route::get('administrador/modificar-publicaciones','AdministratorController@getModifyPub');
-		Route::post('administrador/modificar-textos','AdministratorController@postModifyPub');
-		Route::get('administrador/modificar-precios','AdministratorController@getModifyPrice');
-		Route::post('administrador/modificar-precios/enviar','AdministratorController@postModifyPrice');
-		Route::get('administrador/crear-nuevo', 'AdministratorController@getNewAdmin');
-		Route::post('administrador/crear-nuevo/enviar', 'AdministratorController@postNewAdmin');
-		Route::get('administrador/eliminar-usuario','AdministratorController@getUserElim');
-		Route::post('administrador/eliminar-usuario/enviar','AdministratorController@postUserElim');
-		Route::get('administrador/agregar-cuenta','AdministratorController@getAddAccount');
-		Route::post('administrador/agregar-cuenta/procesar','AdministratorController@postAddAccount');
-                Route::get('administrador/editar-publicidad','AdministratorController@getEditPub');
-		Route::post('administrador/modificar-publicidad/{pos}','AdministratorController@postEditPublicidad');
-		Route::post('administrador/editar-publicidad/eliminar','AdministratorController@postElimSlides');
+		
+		Route::group(array('before' => 'admin_check'),function(){
+			Route::post('administrador/publicacion/eliminar-publicacion/enviar','AdministratorController@postElimPub');
+			Route::get('administrador/modificar-publicaciones','AdministratorController@getModifyPub');
+			Route::post('administrador/modificar-textos','AdministratorController@postModifyPub');
+			Route::get('administrador/modificar-precios','AdministratorController@getModifyPrice');
+			Route::post('administrador/modificar-precios/enviar','AdministratorController@postModifyPrice');
+			Route::get('administrador/crear-nuevo', 'AdministratorController@getNewAdmin');
+			Route::post('administrador/crear-nuevo/enviar', 'AdministratorController@postNewAdmin');
+			Route::get('administrador/eliminar-usuario','AdministratorController@getUserElim');
+			Route::post('administrador/eliminar-usuario/enviar','AdministratorController@postUserElim');
+			Route::get('administrador/agregar-cuenta','AdministratorController@getAddAccount');
+			Route::post('administrador/agregar-cuenta/procesar','AdministratorController@postAddAccount');
+	        Route::get('administrador/editar-publicidad','AdministratorController@getEditPub');
+			Route::post('administrador/modificar-publicidad/{pos}','AdministratorController@postEditPublicidad');
+			Route::post('administrador/editar-publicidad/eliminar','AdministratorController@postElimSlides');
+
+		});
 	});
 	
 	

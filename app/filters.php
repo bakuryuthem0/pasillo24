@@ -40,11 +40,19 @@ Route::filter('auth', function()
 	}
 });
 
-if ( (Auth::getUser()['role'] !== 'Administrador') )
-{
-	return Redirect::to('inicio');		
-} 
+Route::filter('role_check',function(){
+	if ( (Auth::getUser()['role'] !== 'Administrador' && Auth::getUser()['role'] !== 'Gestor') )
+	{
+		return Redirect::to('inicio');		
+	} 
+});
 
+Route::filter('admin_check',function(){
+	if ( (Auth::getUser()['role'] !== 'Administrador') )
+	{
+		return Redirect::to('inicio');		
+	} 
+});
 Route::filter('auth.basic', function()
 {
 	return Auth::basic();

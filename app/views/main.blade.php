@@ -150,7 +150,7 @@ margin-top: 0.5em;display:inline-block;">
 												<i class="fa fa-user menu-icon" role="button" data-toggle="popover" data-trigger="hover" data-placement="bottom" data-content="{{ Auth::user()['username'] }}"></i>
 												<span class="caret"></span></a>
 											<ul class="dropdown-menu multi-level" role="menu">
-												@if(Auth::getUser()['role'] != 'Administrador')
+												@if(Auth::getUser()['role'] != 'Administrador' && Auth::getUser()['role'] != 'Gestor')
 												<li>
 													<a href="{{ URL::to('usuario/perfil') }}">
 														<span class="fa fa-cog"></span> Perfil
@@ -199,6 +199,7 @@ margin-top: 0.5em;display:inline-block;">
 														<i class="fa fa-book"></i> Ver Publicaciones
 													</a>
 												</li>
+												@if(Auth::getUser()['role'] == 'Administrador')
 												<li class="showMovil">
 													<a href="{{ URL::to('administrador/modificar-publicaciones') }}">
 														<i class="fa fa-list-alt"></i>Modifica textos de publicaciones
@@ -237,7 +238,7 @@ margin-top: 0.5em;display:inline-block;">
 												</li>
 												<li class="showMovil">
 													<a href="{{ URL::to('administrador/crear-nuevo') }}">
-														<i class="fa fa-user-plus"></i> Crear Administrador
+														<i class="fa fa-user-plus"></i> Crear gestor
 													</a>
 												</li>
 												<li class="showMovil">
@@ -252,7 +253,7 @@ margin-top: 0.5em;display:inline-block;">
 													<ul class="dropdown-menu" role="menu">
 														<li>
 															<a href="{{ URL::to('administrador/crear-nuevo') }}">
-																<i class="fa fa-user-plus"></i> Crear Administrador
+																<i class="fa fa-user-plus"></i> Crear gestor
 															</a>
 														</li>
 														<li>
@@ -268,7 +269,7 @@ margin-top: 0.5em;display:inline-block;">
 														<i class="fa fa-university"></i> Agregar cuenta
 													</a>
 												</li>
-													
+												@endif
 												
 												@endif
 												<li>
@@ -312,7 +313,7 @@ margin-top: 0.5em;display:inline-block;">
 	
 	{{ HTML::script('js/jquery.min.js') }}
 	{{ HTML::script('js/bootstrap.min.js') }}
-	{{ HTML::script('js/custom-preview.js')}}
+	{{ HTML::script('js/custom-local.js')}}
 	
 	{{ HTML::script('js/ckeditor.js') }}
 	{{ HTML::script('js/jquery.ckeditor.js') }}

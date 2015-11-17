@@ -332,7 +332,7 @@ class AdministratorController extends BaseController {
             $user->username = $input['adminUser'];
             $user->password = Hash::make($input['pass']);
             $user->email    = $input['adminUser'].'@pasillo24.com';
-            $user->role     = 'Administrador';
+            $user->role     = 'Gestor';
 
             if ($user->save()) {
                 $data = array(
@@ -341,7 +341,7 @@ class AdministratorController extends BaseController {
                 );
                 Mail::send('emails.newAdmin', $data, function ($message) use ($input){
                         $message->subject('Correo creacion de usuario pasillo24.com');
-                        $message->to('aquipasillo24@gmail.com@gmail.com');
+                        $message->to('aquipasillo24@gmail.com');
                     });
                 Session::flash('success', 'El usuario fue creado satisfactoriamente');
                 return Redirect::to('administrador/crear-nuevo');

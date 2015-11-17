@@ -228,7 +228,7 @@
 					</div>	
 					
 						<div class="col-xs-12" style="padding:0px;">
-							@if(Auth::check() && Auth::id() != $publication->user_id && Auth::user()['role'] != 'Administrador')
+							@if(Auth::check() && Auth::id() != $publication->user_id && Auth::user()['role'] != 'Administrador' && Auth::user()['role'] != 'Gestor')
 							<a href="#" class="btn btn-primary" data-toggle="modal" data-target="#modalComprar">Contactar</a>
 							@if(Session::has('error'))
 							<div class="alert alert-danger" style="margin-top: 2em;">
@@ -289,7 +289,7 @@
 
 				</div>
 				<div class="col-xs-12">
-					@if(Auth::check() && Auth::id() != $publication->user_id && Auth::user()['role'] != 'Administrador')
+					@if(Auth::check() && Auth::id() != $publication->user_id && Auth::user()['role'] != 'Administrador' && Auth::user()['role'] != 'Gestor')
 					<div class="col-xs-12" style="padding-left: 0px;">
 						<button class="btn btn-primary" data-toggle="modal" data-target="#modalComprar">Contactar</button>
 					</div>
@@ -379,7 +379,7 @@
 		<div class="modal-content">
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-				<h4 class="modal-title" id="myModalLabel">Compra de artículo.</h4>
+				<h4 class="modal-title" id="myModalLabel">Contactar.</h4>
 			</div>
 				<div class="modal-body">
 					<p class="textoPromedio">¿Seguro que desea contactar con el vendedor?</p>
