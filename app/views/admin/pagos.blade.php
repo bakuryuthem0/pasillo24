@@ -79,8 +79,9 @@
 								<input type="hidden" class="nit-{{ $publicacion->id }}" value="{{ $publicacion->nit }}">
 								<form method="post" action="{{ URL::to('administrador/pagos/confirmar') }}">
 								<td class="textoMedio">
+									@if(Auth::user()['role'] == 'Administrador')
 										<button class="btn btn-success btn-xs btnAprovar" name="id" value="{{ $publicacion->id }}" >Aprobar</button>
-
+									@endif
 								</td>
 								</form>
 								<td class="textoMedio">
@@ -154,7 +155,9 @@
 								<input type="hidden" class="nit-{{ $publicacion->id }}" value="{{ $publicacion->nit }}">
 							<form method="post" action="{{ URL::to('administrador/pagos/confirmar') }}">
 							<td class="textoMedio">
+								@if(Auth::user()['role'] == 'Administrador')
 								<button class="btn btn-success btnAprovar btn-xs" name="id" value="{{ $publicacion->id }}" >Aprobar</button>
+								@endif
 							</td>
 							</form>
 							
@@ -225,7 +228,9 @@
 								<input type="hidden" class="nit-{{ $publicacion->id }}" value="{{ $publicacion->nit }}">
 							<form method="post" action="{{ URL::to('administrador/pagos/confirmar') }}">
 							<td class="textoMedio">
+								@if(Auth::user()['role'] == 'Administrador')
 								<button class="btn btn-success btnAprovar btn-xs" name="id" value="{{ $publicacion->id }}" >Aprobar</button>
+								@endif
 							</td>
 							</form>
 							

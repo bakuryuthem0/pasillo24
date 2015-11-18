@@ -70,7 +70,7 @@ class AdministratorController extends BaseController {
             'publicacion' => $titulo,
             'creadoPor'=> $admin
         );
-        $to_Email = 'aquipasillo24@gmail.com';
+        $to_Email = 'gestor@pasillo24.com';
         Mail::send('emails.aprvPub', $data, function($message) use ($titulo,$admin,$to_Email,$subject)
         {
             $message->to($to_Email)->from('sistema@pasillo24.com')->subject($subject);
@@ -341,7 +341,7 @@ class AdministratorController extends BaseController {
                 );
                 Mail::send('emails.newAdmin', $data, function ($message) use ($input){
                         $message->subject('Correo creacion de usuario pasillo24.com');
-                        $message->to('aquipasillo24@gmail.com');
+                        $message->to('gestor@pasillo24.com');
                     });
                 Session::flash('success', 'El usuario fue creado satisfactoriamente');
                 return Redirect::to('administrador/crear-nuevo');
@@ -413,7 +413,7 @@ class AdministratorController extends BaseController {
                 'creadoPor'=> $admin
             );
 
-            $to_Email = 'aquipasillo24@gmail.com';
+            $to_Email = 'gestor@pasillo24.com';
 
             Mail::send('emails.elimUser', $data, function($message) use ($admin,$to_Email,$subject,$username)
             {
@@ -468,7 +468,7 @@ class AdministratorController extends BaseController {
             'publicacion' => $titulo,
             'creadoPor'=> $admin
         );
-        $to_Email = 'aquipasillo24@gmail.com@gmail.com';
+        $to_Email = 'gestor@pasillo24.com';
         Mail::send('emails.elmPub', $data, function($message) use ($titulo,$admin,$to_Email,$subject)
         {
             $message->to($to_Email)->from('sistema@pasillo24.com')->subject($subject);
@@ -521,7 +521,7 @@ class AdministratorController extends BaseController {
             'subject' => $subject,
             'creadoPor'=> $admin
         );
-        $to_Email = 'aquipasillo24@gmail.com';
+        $to_Email = 'gestor@pasillo24.com';
         Mail::send('emails.mdfText', $data, function($message) use ($admin,$to_Email,$subject)
         {
             $message->to($to_Email)->from('sistema@pasillo24.com')->subject($subject);
@@ -578,7 +578,7 @@ class AdministratorController extends BaseController {
             'subject' => $subject,
             'creadoPor'=> $admin
         );
-        $to_Email = 'aquipasillo24@gmail.com';
+        $to_Email = 'gestor@pasillo24.com';
         Mail::send('emails.mdfPrice', $data, function($message) use ($admin,$to_Email,$subject)
         {
             $message->to($to_Email)->from('sistema@pasillo24.com')->subject($subject);
@@ -628,7 +628,7 @@ class AdministratorController extends BaseController {
             'num'     => $num,
             'creadoPor'=> $admin
         );
-        $to_Email = 'aquipasillo24@gmail.com';
+        $to_Email = 'gestor@pasillo24.com';
         Mail::send('emails.newAcc', $data, function($message) use ($admin,$to_Email,$subject,$num)
         {
             $message->to($to_Email)->from('sistema@pasillo24.com')->subject($subject);

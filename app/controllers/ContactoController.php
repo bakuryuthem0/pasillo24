@@ -20,7 +20,7 @@ class ContactoController extends BaseController {
 
 			return Redirect::to('inicio/contactenos')->withErrors($validator)->withInput();
 		}
-		$to_Email     = 'aquipasillo24@gmail.com';
+		$to_Email     = 'contact@pasillo24.com';
 		$user_Name    = $input['nombre'];
 		$subject      = $input['asunto'];
 		$user_Email   = $input['email'];

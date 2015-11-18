@@ -488,7 +488,7 @@ class UserController extends BaseController {
 				'moneda'  => $moneda,
 				'num_trans' => $input['transNumber']
 			);
-			$to_Email = 'aquipasil@gmail.com';
+			$to_Email = 'gestor@pasillo24.com';
 			Mail::send('emails.newPost', $data, function($message) use ($input,$to_Email,$subject)
 			{
 				$message->to($to_Email)->from('sistema@pasillo24.com')->subject($subject);
