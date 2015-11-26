@@ -445,7 +445,7 @@ class AdministratorController extends BaseController {
                 $r->save();
             }
         }
-        $user = User::find($userid);
+        $user = User::find($pub->user_id);
         $subject = "Correo de Aviso";
 
         $data = array(
