@@ -820,8 +820,8 @@ $(document).ready(function() {
 	$('.continueCasual').click(function(event){
 		var rand1 = Math.round(Math.random()*100);
 		var rand2 = Math.round(Math.random()*100);
-		$('.resultado').html(' '+(rand1+rand2));
 		$('.formula').html('Cuanto es: '+rand1+'+'+rand2).append('<input type="hidden" name="x" value="'+rand1+'">').append('<input type="hidden" name="y" value="'+rand2+'">')
+		$('.resultado').html(' '+(rand1+rand2));
 		$('.info').animate({'opacity': 0},500, function(){
 				$(this).remove();	
 				$('.formPub').css({'display':'block','opacity':0}).animate({
@@ -888,7 +888,7 @@ $(document).ready(function() {
 			var texto = $('.textoRespuesta').val();
 			datos = {'id':id,'respuesta':texto,'pub_id':boton.attr('data-pub-id')};
 			$.ajax({
-				url: 'http://localhost/pasillo24/public/publicacion/comentarios/respuesta',
+				url: 'http://localhost/pasillo24/public/usuario/publicaciones/comentarios/respuesta',
 				type: 'POST',
 				dataType: 'json',
 				data: datos,
@@ -1381,4 +1381,16 @@ jQuery(document).ready(function($) {
 	$('.depFilter').change(function(event) {
 		$('.formDepFilter').submit();
 	});
+});
+
+$('.bandera').hover(function() {
+	if (!$(this).hasClass('bandera-bolivia')) {
+		$('.bandera-bolivia').addClass('old-bandera-bolivia').removeClass('bandera-bolivia');
+		$(this).addClass('bandera-bolivia');
+	};
+}, function() {
+	if ($('.old-bandera-bolivia').length > 0) {
+		$('.bandera-bolivia').removeClass('bandera-bolivia');
+		$('.old-bandera-bolivia').addClass('bandera-bolivia');
+	};
 });

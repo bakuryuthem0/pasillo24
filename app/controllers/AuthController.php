@@ -173,7 +173,7 @@ return Redirect::to('inicio/login');
 					    $message->subject('Correo de restablecimiento de contraseña pasillo24.com');
 					    $message->to($email);
 					});
-					return Response::json(array('type' => 'success','msg' => 'Se ha enviado un email con una clave provisional.'));
+					return Response::json(array('type' => 'success','msg' => 'Se enviara un email con una clave provisional. Esto puede tomar varios segundos.'));
 
 			  	}else
 			  	{

@@ -401,6 +401,7 @@ class AdministratorController extends BaseController {
                     $r->save();
                 }
             }
+            $user->username = NULL;
             $user->user_deleted = 1;
             $username = $user->username;
 

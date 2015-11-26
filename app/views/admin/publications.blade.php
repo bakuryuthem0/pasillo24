@@ -83,7 +83,7 @@
 								@if($publication->fechFin < date('Y-m-d')) Publicación expirada @else {{ date('d/m/Y',strtotime($publication->fechFin)) }} @endif
 							</td>
 							<td class="textoMedio">
-								<a href="{{URL::to('publicacion/lider/'.base64_encode($publication->id)) }}" class="btn btn-xs btn-primary" style="width: 100%;">Ver</a>
+								<a target="_blank" href="{{URL::to('publicacion/lider/'.base64_encode($publication->id)) }}" class="btn btn-xs btn-primary" style="width: 100%;">Ver</a>
 							</td>
 							<td class="textoMedio noMovil"><button class="btn btn-success btn-xs ver" data-toggle="modal" data-target="#showUserData" value="{{ $publication->id }}" style="width:100%;">Ver</button></td>
 								<input type="hidden" class="username-{{ $publication->id }}" value="{{ $publication->username }}">
@@ -208,7 +208,7 @@
 								@endif
 							</td>
 							<td class="textoMedio">
-								<a href="{{URL::to('publicacion/lider/'.base64_encode($publication->id))}}" class="btn btn-primary btn-xs">Ver</a>
+								<a target="_blank" href="{{URL::to('publicacion/lider/'.base64_encode($publication->id))}}" class="btn btn-primary btn-xs">Ver</a>
 							</td>
 							<td class="textoMedio noMovil"><button class="btn btn-success btn-xs ver" data-toggle="modal" data-target="#showUserData" value="{{ $publication->id }}" style="width:100%;">Ver</button></td>
 								<input type="hidden" class="username-{{ $publication->id }}" value="{{ $publication->username }}">
@@ -291,7 +291,7 @@
 								@endif
 							</td>
 							<td class="textoMedio">
-								<a href="{{URL::to('publicacion/lider/'.base64_encode($publication->id))}}" class="btn btn-primary btn-xs">Ver</a>
+								<a target="_blank" href="{{URL::to('publicacion/lider/'.base64_encode($publication->id))}}" class="btn btn-primary btn-xs">Ver</a>
 							</td>
 							<td class="textoMedio noMovil"><button class="btn btn-success btn-xs ver" data-toggle="modal" data-target="#showUserData" value="{{ $publication->id }}" style="width:100%;">Ver</button></td>
 								<input type="hidden" class="username-{{ $publication->id }}" value="{{ $publication->username }}">

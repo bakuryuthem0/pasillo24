@@ -9,7 +9,7 @@ class HomeController extends BaseController {
 	}
 	public function showIndex($id = null)
 	{
-                if (!is_null($id)) {
+        if (!is_null($id)) {
 			$dep = Department::find($id);
 		}
 		$title ="Inicio | pasillo24.com";
@@ -41,6 +41,7 @@ class HomeController extends BaseController {
 				})
 				->where('departamento','=',$id);
 			})
+			->where('deleted','=',0)
 			->orWhere(function($query) use($id){
 				$query->where('tipo','=','Lider')
 				->where('ubicacion','=','Principal')
@@ -84,6 +85,7 @@ class HomeController extends BaseController {
 
 				});
 			})
+			->where('deleted','=',0)
 			->orWhere(function($query){
 				$query->where('tipo','=','Lider')
 				->where('ubicacion','=','Principal')
@@ -92,7 +94,6 @@ class HomeController extends BaseController {
 
 			})
 			->orderBy('fechFin','desc')->get();
-
 			$casual = Publicaciones::where('tipo','=','Casual')
 			->where('fechFin','>=',date('Y-m-d',time()))
 			->where('status','=','Aprobado')

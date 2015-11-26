@@ -1836,3 +1836,20 @@ animated buttons - animate the text inside prev and next buttons
 	     -o-transform: translate(-50%,-50%);
 	        transform: translate(-50%,-50%);
 }
+
+.alert
+{
+	margin-top: 1em;
+}
+.comentarioBox .fa
+{
+	display: inline;
+}
+.bandera
+{
+	-webkit-transition: width .15s ease-in;
+	   -moz-transition: width .15s ease-in;
+	    -ms-transition: width .15s ease-in;
+	     -o-transition: width .15s ease-in;
+	        transition: width .15s ease-in;
+}

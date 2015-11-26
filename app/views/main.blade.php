@@ -62,7 +62,7 @@
 										</a>
 									</li>
 									<li>
-										<a target="_blank" href="https://youtube.com">
+										<a target="_blank" href="https://www.youtube.com/channel/UCIMKRE2kcjEQ4KgbiuX-AwQ">
 											<i class="fa fa-youtube menu-icon" role="button" data-toggle="popover" data-trigger="hover" data-placement="bottom" data-content="Youtube"></i>
 
 										</a>
@@ -70,6 +70,12 @@
 									<li>
 										<a target="_blank" href="http://blog.pasillo24.com">
 											<i class="fa fa-wordpress menu-icon" role="button" data-toggle="popover" data-trigger="hover" data-placement="bottom" data-content="Blog"></i>
+
+										</a>
+									</li>
+									<li>
+										<a target="_blank" href="https://www.instagram.com/pasillo24/">
+											<i class="fa fa-instagram menu-icon" role="button" data-toggle="popover" data-trigger="hover" data-placement="bottom" data-content="Instagram"></i>
 
 										</a>
 									</li>
@@ -90,7 +96,7 @@
 										</a>
 									</li>
 									<li>
-										<a target="_blank" href="https://youtube.com">
+										<a target="_blank" href="https://www.youtube.com/channel/UCIMKRE2kcjEQ4KgbiuX-AwQ">
 											<i class="fa fa-youtube menu-icon" role="button" data-toggle="popover" data-trigger="hover" data-placement="bottom" data-content="Youtube"></i>
 
 										</a>
@@ -98,6 +104,12 @@
 									<li>
 										<a target="_blank" href="http://blog.pasillo24.com">
 											<i class="fa fa-wordpress menu-icon" role="button" data-toggle="popover" data-trigger="hover" data-placement="bottom" data-content="Blog"></i>
+
+										</a>
+									</li>
+									<li>
+										<a target="_blank" href="https://www.instagram.com/pasillo24/">
+											<i class="fa fa-instagram menu-icon" role="button" data-toggle="popover" data-trigger="hover" data-placement="bottom" data-content="Instagram"></i>
 
 										</a>
 									</li>
@@ -311,7 +323,7 @@ margin-top: 0.5em;display:inline-block;">
 	
 	{{ HTML::script('js/jquery.min.js') }}
 	{{ HTML::script('js/bootstrap.min.js') }}
-	{{ HTML::script('js/custom-preview.js')}}
+	{{ HTML::script('js/custom-local.js')}}
 	
 	{{ HTML::script('js/ckeditor.js') }}
 	{{ HTML::script('js/jquery.ckeditor.js') }}

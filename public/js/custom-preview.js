@@ -785,7 +785,7 @@ $(document).ready(function() {
 					location.reload();
 				},
 				error:function(){
-					console.log('error');
+					
 				}	
 			})
 		};
@@ -882,13 +882,13 @@ $(document).ready(function() {
 				'opacity': 0
 			});
 			$('.enviarRespuesta').prop('disabled',false)
-	});
+		});
 		$('.enviarRespuesta').click(function(event) {
 
 			var texto = $('.textoRespuesta').val();
 			datos = {'id':id,'respuesta':texto,'pub_id':boton.attr('data-pub-id')};
 			$.ajax({
-				url: 'http://preview.pasillo24.com/publicacion/comentarios/respuesta',
+				url: 'http://preview.pasillo24.com/usuario/publicaciones/comentarios/respuesta',
 				type: 'POST',
 				dataType: 'json',
 				data: datos,
@@ -904,6 +904,8 @@ $(document).ready(function() {
 					'opacity': 1},
 					500);
 					boton.parent().parent().remove();
+					window.location.reload();
+
 				},
 				error:function()
 				{
@@ -1381,4 +1383,15 @@ jQuery(document).ready(function($) {
 	$('.depFilter').change(function(event) {
 		$('.formDepFilter').submit();
 	});
+});
+$('.bandera').hover(function() {
+	if (!$(this).hasClass('bandera-bolivia')) {
+		$('.bandera-bolivia').addClass('old-bandera-bolivia').removeClass('bandera-bolivia');
+		$(this).addClass('bandera-bolivia');
+	};
+}, function() {
+	if ($('.old-bandera-bolivia').length > 0) {
+		$('.bandera-bolivia').removeClass('bandera-bolivia');
+		$('.old-bandera-bolivia').addClass('bandera-bolivia');
+	};
 });

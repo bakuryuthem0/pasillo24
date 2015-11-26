@@ -109,6 +109,7 @@ class PublicationController extends BaseController {
 
 			});
 		})
+		->where('deleted','=',0)
 		->orderBy('id','desc')
 		->take(4)
 		->get();
@@ -336,7 +337,6 @@ class PublicationController extends BaseController {
 			}
 			$doGcm = new Gcm;
 			$response = $doGcm->send_notification($regId,$data);
-			return $response;
 			return 'Comentario Guardado Sactisfactoriamente';
 		}
 		
@@ -516,7 +516,6 @@ class PublicationController extends BaseController {
 			}
 			$doGcm = new Gcm;
 			$response = $doGcm->send_notification($regId,$data);
-			return $response;
 			return Response::json(array('type' => 'success','msg' => 'Respuesta guardada satisfactoriamente'));
 		}else
 		{
