@@ -303,7 +303,7 @@ margin-left:1em;
 	position: relative !important;
 }
 
-.publication .footerText,.imgLiderUp .footerText
+.publication .footerText,.imgLiderUp h3.footerText
 {
 	color: black;
 }
