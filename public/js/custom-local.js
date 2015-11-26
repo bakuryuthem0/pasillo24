@@ -3,12 +3,12 @@ jQuery(document).ready(function($) {
 		var id = $(this).val(),status = $(this).data('status');
 		var boton = $(this);
 		$.ajax({
-			url: 'http://localhost/administrador/editar-publicidad/eliminar',
+			url: 'http://localhost/pasillo24/public/administrador/editar-publicidad/eliminar',
 			type: 'POST',
 			dataType: 'json',
 			data: {'id': id,'status':status},
 			beforeSend:function () {
-				boton.after('<img src="http://localhost/images/loading.gif" class="loading">');
+				boton.after('<img src="http://localhost/pasillo24/public/images/loading.gif" class="loading">');
 				boton.animate({
 						'opacity': 0},
 						250,function(){
@@ -69,12 +69,12 @@ jQuery(document).ready(function($) {
 		$('.envElim').click(function(event) {
 			var boton = $(this);
 			$.ajax({
-				url: 'http://localhost/administrador/editar-publicidad/eliminar',
+				url: 'http://localhost/pasillo24/public/administrador/editar-publicidad/eliminar',
 				type: 'POST',
 				dataType: 'json',
 				data: {'id': id},
 				beforeSend:function() {
-					boton.after('<img src="http://localhost/images/loading.gif" class="loading">');
+					boton.after('<img src="http://localhost/pasillo24/public/images/loading.gif" class="loading">');
 					boton.animate({
 						'opacity': 0},
 						250,function(){
@@ -144,12 +144,12 @@ jQuery(document).ready(function($) {
 		});
 		var id = $(this).val();
 		$.ajax({
-			url: 'http://localhost/cambiar/posiciones',
+			url: 'http://localhost/pasillo24/public/publicacion/habitual/previsualizar/cambiar/posiciones',
 			type: 'POST',
 			dataType: 'json',
 			data: {'arr': arr,'id':id},
 			beforeSend:function () {
-				$('.btnChangeEnviar').before('<img src="http://localhost/images/loading.gif" class="loading">');
+				$('.btnChangeEnviar').before('<img src="http://localhost/pasillo24/public/images/loading.gif" class="loading">');
 				$('.loading').css({
 					'display': 'block',
 					'margin': '2em auto'
@@ -260,12 +260,12 @@ jQuery(document).ready(function($) {
 		$('.btnElimPublicacion').val(val);
 		$('.btnElimPublicacion').click(function(event) {
 			$.ajax({
-				url: 'http://localhost/eliminar/publicacion',
+				url: 'http://localhost/pasillo24/public/eliminar/publicacion',
 				type: 'POST',
 				dataType: 'json',
 				data: {'id': $(this).val()},
 				beforeSend:function(){
-					$('.btnElimPublicacion').before('<img src="http://localhost/images/loading.gif" class="loading">');
+					$('.btnElimPublicacion').before('<img src="http://localhost/pasillo24/public/images/loading.gif" class="loading">');
 					$('.btnElimPublicacion').addClass('disabled')
 					$('.loading').css({
 						'display': 'block',
@@ -398,7 +398,7 @@ $(document).ready(function() {
 		x = confirm('¿Seguro desea eliminar?. Esta accion es irreversible');
 		if (x) {
 			$.ajax({
-				url: 'http://localhost/user/items/delete',
+				url: 'http://localhost/pasillo24/public/user/items/delete',
 				type: 'POST',
 				dataType: 'json',
 				data: {'id': $(this).attr('data-id-delete')},
@@ -485,7 +485,7 @@ $('#veiMarca').change(function(){
 	var data = {'id':$(this).val()};
 	if (id != "") {
 		$.ajax({
-			url: 'http://localhost/publicacion/model',
+			url: 'http://localhost/pasillo24/public/publicacion/model',
 			type: 'GET',
 			data: data,
 			success:function(response){
@@ -609,7 +609,7 @@ $('.continue').click(function(event) {
 		$('input').css('box-shadow','none');
 		$('.finalFecha').remove();
 		$.ajax({
-				url: 'http://localhost/usuario/publicacion/lider/fecha',
+				url: 'http://localhost/pasillo24/public/usuario/publicacion/lider/fecha',
 				type: 'get',
 				data: {'fecha':fecha,'timestamp':total,'period':period,'duration':duration},
 				beforeSend:function()
@@ -777,7 +777,7 @@ $(document).ready(function() {
 				'comment': $('#inputComentario').val()
 			}
 			$.ajax({
-				url:'http://localhost/publicacion/comentario',
+				url:'http://localhost/pasillo24/public/publicacion/comentario',
 				type: 'POST',
 				data: data,
 				success:function(response){
@@ -820,6 +820,7 @@ $(document).ready(function() {
 	$('.continueCasual').click(function(event){
 		var rand1 = Math.round(Math.random()*100);
 		var rand2 = Math.round(Math.random()*100);
+		$('.resultado').html(' '+(rand1+rand2));
 		$('.formula').html('Cuanto es: '+rand1+'+'+rand2).append('<input type="hidden" name="x" value="'+rand1+'">').append('<input type="hidden" name="y" value="'+rand2+'">')
 		$('.info').animate({'opacity': 0},500, function(){
 				$(this).remove();	
@@ -887,7 +888,7 @@ $(document).ready(function() {
 			var texto = $('.textoRespuesta').val();
 			datos = {'id':id,'respuesta':texto,'pub_id':boton.attr('data-pub-id')};
 			$.ajax({
-				url: 'http://localhost/publicacion/comentarios/respuesta',
+				url: 'http://localhost/pasillo24/public/publicacion/comentarios/respuesta',
 				type: 'POST',
 				dataType: 'json',
 				data: datos,
@@ -961,13 +962,13 @@ jQuery(document).ready(function($) {
 				'disabled': true
 			})
 			$.ajax({
-				url: 'http://localhost/chequear/email',
+				url: 'http://localhost/pasillo24/public/chequear/email',
 				type: 'POST',
 				dataType: 'json',
 				data: {'email': email},
 				beforeSend:function()
 				{
-					$('.envForgot').after('<img src="http://localhost/images/loading.gif" class="loading">');
+					$('.envForgot').after('<img src="http://localhost/pasillo24/public/images/loading.gif" class="loading">');
 					$('.loading').css({
 						'display': 'block',
 						'margin': '2em auto'
@@ -1073,7 +1074,7 @@ $('.btn-elim').click(function(event) {
 	$('#eliminarUsuarioModal').click(function(event) {
 		$(this).prop('disabled', true)
 		$.ajax({
-			url: 'http://localhost/administrador/eliminar-usuario/enviar',
+			url: 'http://localhost/pasillo24/public/administrador/eliminar-usuario/enviar',
 			type: 'POST',
 			dataType: 'json',
 			data: {'id': id},
@@ -1113,7 +1114,7 @@ $('.btn-elim-pub').click(function(event) {
 	$('#eliminarPublicacionModal').click(function(event) {
 		$(this).prop('disabled', true)
 		$.ajax({
-			url: 'http://localhost/administrador/publicacion/eliminar-publicacion/enviar',
+			url: 'http://localhost/pasillo24/public/administrador/publicacion/eliminar-publicacion/enviar',
 			type: 'POST',
 			dataType: 'json',
 			data: {'id': id},
@@ -1151,7 +1152,7 @@ jQuery(document).ready(function($) {
 			var dataPost = {'tipo':tipo,'id':id};
 			var neg = $('#neg'),pos = $('#pos');
 			$.ajax({
-				url: 'http://localhost/usuario/valorar-vendedor',
+				url: 'http://localhost/pasillo24/public/usuario/valorar-vendedor',
 				type: 'POST',
 				dataType: 'json',
 				data: dataPost,
@@ -1166,7 +1167,7 @@ jQuery(document).ready(function($) {
 						
 						'opacity': 0},
 						50, function() {
-							$(this).after('<img src="http://localhost/images/loading.gif" style="width:25px;height:25px;display:inline-block;" class="loading">')
+							$(this).after('<img src="http://localhost/pasillo24/public/images/loading.gif" style="width:25px;height:25px;display:inline-block;" class="loading">')
 							$(this).css({'display':'none'});
 					});
 				},
@@ -1208,7 +1209,7 @@ jQuery(document).ready(function($) {
 			var dataPost = {'tipo':tipo,'id':id};
 			
 			$.ajax({
-				url: 'http://localhost/usuario/valorar-comprador',
+				url: 'http://localhost/pasillo24/public/usuario/valorar-comprador',
 				type: 'POST',
 				dataType: 'json',
 				data: dataPost,
@@ -1223,7 +1224,7 @@ jQuery(document).ready(function($) {
 						
 						'opacity': 0},
 						50, function() {
-							$(this).after('<img src="http://localhost/images/loading.gif" style="width:25px;height:25px;" class="loading">')
+							$(this).after('<img src="http://localhost/pasillo24/public/images/loading.gif" style="width:25px;height:25px;" class="loading">')
 							$(this).css({'display':'none'});;
 					});
 				},
@@ -1299,7 +1300,7 @@ $('#category').change(function(event) {
 	var data = {'id':$(this).val()};
 	if (id != "") {
 		$.ajax({
-			url: 'http://localhost/usuario/sub-categoria',
+			url: 'http://localhost/pasillo24/public/usuario/sub-categoria',
 			type: 'GET',
 			data: data,
 			success:function(response){
@@ -1359,7 +1360,7 @@ jQuery(document).ready(function($) {
 	{
 
 		$.ajax({
-			url: ' http://localhost/verificar-comentarios',
+			url: ' http://localhost/pasillo24/public/verificar-comentarios',
 			type: 'GET',
 			success:function(response)
 			{
@@ -1373,7 +1374,7 @@ jQuery(document).ready(function($) {
 		
 	}
 	setTimeout(function(){ verificarComentario(); }, 1);
-	setInterval(verificarComentario,5000)
+	setInterval(verificarComentario,120000)
 });
 
 jQuery(document).ready(function($) {

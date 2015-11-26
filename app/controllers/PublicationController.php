@@ -86,7 +86,8 @@ class PublicationController extends BaseController {
 		->where(function($query)
 		{
 			$query->where('tipo','=','Lider')
-			->where('fechFin','>=',date('Y-m-d',time()));
+			->where('fechFin','>=',date('Y-m-d',time()))
+			->where('status','=','Aprobado');
 		})
 		->orWhere(function($query)
 		{

@@ -144,7 +144,7 @@ jQuery(document).ready(function($) {
 		});
 		var id = $(this).val();
 		$.ajax({
-			url: 'http://preview.pasillo24.com/cambiar/posiciones',
+			url: 'http://preview.pasillo24.com/publicacion/habitual/previsualizar/cambiar/posiciones',
 			type: 'POST',
 			dataType: 'json',
 			data: {'arr': arr,'id':id},

@@ -302,6 +302,11 @@ margin-left:1em;
 {
 	position: relative !important;
 }
+
+.publication .footerText
+{
+	color: black;
+}
 @media(min-width: 1080px){
 	.nav>li>a{
 		padding: 10px 2em !important;
