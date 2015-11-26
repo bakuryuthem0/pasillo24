@@ -101,7 +101,7 @@ display: block;">
 									<img src="{{ asset('images/pubpeq.png') }}" style="width:100%;">
 								@else
 									<a href="{{ URL::to($publi[2]->pag_web) }}">
-									<img src="{{ asset('images/publicidad'.$publi[2]->image) }}" style="width:100%;">
+									<img src="{{ asset('images/publicidad/'.$publi[2]->image) }}" style="width:100%;">
 								</a>
 								@endif
 							</div>
