@@ -81,7 +81,7 @@ display: block;">
 
 								<img src="{{ asset('images/pubgrande.png') }}" style="width:100%;">
 							@else
-								<a href="{{ URL::to($publi[0]->pag_web) }}">
+								<a href="@if($publi[0]->pag_web == "http://") # @else {{ URL::to($publi[0]->pag_web) }} @endif">
 								<img src="{{ asset('images/publicidad/'.$publi[0]->image) }}" style="width:100%;">
 							</a>
 							@endif
@@ -91,7 +91,7 @@ display: block;">
 								@if($publi[1]->activo == 0)
 									<img src="{{ asset('images/pubpeq.png') }}" style="width:100%;">
 								@else
-									<a href="{{ URL::to($publi[1]->pag_web) }}">
+									<a href="@if($publi[1]->pag_web == "http://") # @else {{ URL::to($publi[1]->pag_web) }} @endif">
 									<img src="{{ asset('images/publicidad/'.$publi[1]->image) }}" style="width:100%;">
 								</a>
 								@endif
@@ -100,7 +100,7 @@ display: block;">
 								@if($publi[2]->activo == 0)
 									<img src="{{ asset('images/pubpeq.png') }}" style="width:100%;">
 								@else
-									<a href="{{ URL::to($publi[2]->pag_web) }}">
+									<a href="@if($publi[2]->pag_web == "http://") # @else {{ URL::to($publi[2]->pag_web) }} @endif">
 									<img src="{{ asset('images/publicidad/'.$publi[2]->image) }}" style="width:100%;">
 								</a>
 								@endif
