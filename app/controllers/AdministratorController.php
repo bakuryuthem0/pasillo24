@@ -657,12 +657,11 @@ public function getEditPub()
 
         $input = Input::all();
         $rules = array(
-            'pag_web'   => 'required|url',
             'imagen'    => 'required|image'
         );
         $validator = Validator::make($input,$rules);
         if ($validator->fails()) {
-            Session::flash('danger', 'Error, compruebe que el url sea valido, o el archivo sea una imagen.');
+            Session::flash('danger', 'Error, compruebe que el archivo sea una imagen.');
             return Redirect::back();
         }
         $publi = Publicidad::where('pos','=',$pos)->first();
