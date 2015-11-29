@@ -1070,17 +1070,17 @@ html,body
 }
 .bandera-bolivia
 {
-	width: 100px !important;
+	opacity: 1 !important;
 }
 .bandera
 {
 	padding:0px;
 	width: 80px;
 	margin-bottom: 1em;
-	vertical-align: bottom;
  	display: inline-block;
     vertical-align: middle;
-margin-right: 0.5em;
+	margin-right: 0.5em;
+	opacity: 0.5;
 }
 .categorias
 {
@@ -1849,14 +1849,7 @@ animated buttons - animate the text inside prev and next buttons
 {
 	display: inline;
 }
-.bandera
-{
-	-webkit-transition: width .15s ease-in;
-	   -moz-transition: width .15s ease-in;
-	    -ms-transition: width .15s ease-in;
-	     -o-transition: width .15s ease-in;
-	        transition: width .15s ease-in;
-}
+
 .img
 {
 	width: 100%;
