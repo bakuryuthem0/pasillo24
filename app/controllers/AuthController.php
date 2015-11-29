@@ -138,7 +138,7 @@ return Redirect::to('inicio/login');
 	{
 		if (Request::ajax()) {
 			$email = Input::get('email');
-			$user = User::where('email','=',$email)->get();
+			$user = User::where('email','=',$email)->first();
 			if (count($user)<1) {
 				return Response::json(array('type' => 'danger','msg' => 'Error, el email no existe.'));
 			}else
@@ -161,14 +161,14 @@ return Redirect::to('inicio/login');
 			        //Vamos formando la contraseña en cada iteraccion del bucle, añadiendo a la cadena $pass la letra correspondiente a la posicion $pos en la cadena de caracteres definida.
 			        $pass .= substr($cadena,$pos,1);
 			    }
-			    $user[0]->password = Hash::make($pass);
+			    $user->password = Hash::make($pass);
 			  	$data = array(
 					'pass' => $pass,
 					'texto' => 'Usted ha solicitado recuperar su contraseña',
 					'title' => 'recuperar contraseña'
 				);
 
-			  	if ($user[0]->save()) {
+			  	if ($user->save()) {
 			  		Mail::send('emails.passNew', $data, function ($message) use ($pass,$email){
 					    $message->subject('Correo de restablecimiento de contraseña pasillo24.com');
 					    $message->to($email);

@@ -79,7 +79,7 @@
 				<div class="bg-info textoPromedio textoInfoContactUs" style="padding:2em 1em 2em 4em;border-radius: 16px;">
 					<p>Números telefónicos</p>
 					<ul>
-						<li>44226775</li>
+						<li>4 4226775</li>
 						<li>61592263</li>
 						<li>69542394</li>
 					</ul>
