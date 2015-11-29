@@ -205,7 +205,7 @@
 						<p>Cualquier controversia derivada del presente acuerdo, su existencia, validez, interpretación, alcance o cumplimiento, será sometida al arbitraje del Centro Empresarial de Mediación y Arbitraje de la Cámara de Industria y Comercio de Cochabamba, de acuerdo con la reglamentación vigente de dicho tribunal. La sede de dicho arbitraje será la Ciudad de Cochabamba y los procedimientos se llevarán a cabo en idioma castellano.</p>
 					</li>
 					<li>DOMICILIO Y PROPIEDAD DEL SITIO<br>
-						<p>Se fija como domicilio de <strong>pasillo24.com</strong>, página de propiedad de la Sociedad pasillo24 S.R.L. en la Avenida Circunvalación, Zona pacata Baja N° 1887 del departamento de Cochabamba, Bolivia.</p>
+						<p>Se fija como domicilio de <strong>pasillo24.com</strong>, página de propiedad de la Sociedad pasillo24. en la Avenida Circunvalación, Zona pacata Baja N° 1887 del departamento de Cochabamba, Bolivia.</p>
 					</li>
 				</ol>
 

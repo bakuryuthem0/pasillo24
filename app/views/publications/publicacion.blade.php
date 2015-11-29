@@ -79,12 +79,14 @@
 					</div>
 				</div>
 				@endif
-				<div class="col-xs-12 inputLider">
+				<div class="@if ($errors->has('cat')) col-xs-6 @else col-xs-12 @endif inputLider">
 					<label for="department" class="textoPromedio">(*) Ubicación:</label>
 					<select name="ubication" class="form-control" id="ubication" required>
 						<option value="">Seleccione la ubicación a publicar</option>
 						<option value="Principal">Menú principal</option>
-						<option value="Categoria">Menú por categorías</option>
+						@if($errors->has('cat'))<option value="Categoria" selected>Menú por categorías</option>
+						@else <option value="Categoria">Menú por categorías</option>
+						@endif
 					</select>
 					@if ($errors->has('ubication'))
 						 @foreach($errors->get('ubication') as $err)
@@ -95,18 +97,34 @@
 						 @endforeach
 					@endif
 				</div>
-				<div class="col-xs-6 contCatLider inputLider">
+				<div class="col-xs-6 contCatLider inputLider @if($errors->has('cat')) showit @endif">
 					<label for="cat" class="textoPromedio">(*) Categoría</label>
 					<select name="cat" id="category" class="form-control">
 						<option value="">Seleccione la categoría</option>
 						<optgroup label="Categoría">
 						@foreach($categorias as $categoria)
-							<option value="{{ $categoria->id }}">{{ $categoria->nombre }}</option>
+							@if($errors->has('cat'))
+								@if(Input::old('cat') == $categoria->id)
+									<option value="{{ $categoria->id }}" selected>{{ $categoria->nombre }}</option>
+								@else
+									<option value="{{ $categoria->id }}">{{ $categoria->nombre }}</option>
+								@endif
+							@else
+								<option value="{{ $categoria->id }}">{{ $categoria->nombre }}</option>
+							@endif
 						@endforeach
 						</optgroup>
 						<optgroup label="Servicios">
 						@foreach($servicios as $servicio)
-							<option value="{{ $servicio->id }}">{{ $servicio->nombre }}</option>
+							@if($errors->has('cat'))
+								@if(Input::old('cat') == $servicio->id)
+									<option value="{{ $servicio->id }}" selected>{{ $servicio->nombre }}</option>
+								@else
+									<option value="{{ $servicio->id }}">{{ $servicio->nombre }}</option>
+								@endif
+							@else
+									<option value="{{ $servicio->id }}">{{ $servicio->nombre }}</option>
+							@endif
 						@endforeach
 						</optgroup>
 					</select>
@@ -123,7 +141,7 @@
 					<label for="namePub">(*) Nombre / Título de la publicación:</label>
 					{{ Form::text('namePub',
 					 Input::old('namePub'),
-					 array('class' => 'form-control','id' => 'name','placeholder' => 'Titulo')) }}
+					 array('class' => 'form-control','id' => 'name','placeholder' => 'Titulo','required' => 'required')) }}
 					@if ($errors->has('namePub'))
 						 @foreach($errors->get('namePub') as $err)
 						 	<div class="alert alert-danger">
@@ -139,7 +157,7 @@
 					<label for="fechIni" class="textoPromedio">(*) Fecha de inicio</label>
 					{{ Form::text('fechIni',
 						 '',
-						 array('class' => 'form-control','id' => 'fechIni','placeholder' =>'DD-MM-AAAA','style' => 'margin-top:1em;')) }}
+						 array('class' => 'form-control','id' => 'fechIni','placeholder' =>'DD-MM-AAAA','required' => 'required','style' => 'margin-top:1em;')) }}
 					@if ($errors->has('fechIni'))
 						 @foreach($errors->get('fechIni') as $err)
 						 	<div class="alert alert-danger">
@@ -160,7 +178,7 @@
 					<div class="col-xs-2 inputLider sinPadding">
 						{{ Form::text('duration',
 						 Input::old('duration'),
-						 array('class' => 'form-control','id' => 'duration')) }}
+						 array('class' => 'form-control','id' => 'duration','required' => 'required')) }}
 						@if ($errors->has('duration'))
 						 @foreach($errors->get('duration') as $err)
 						 	<div class="alert alert-danger">
@@ -175,7 +193,7 @@
 						'' => 'Seleccione el período',
 						'd' => 'Día(s)',
 						's' => 'Semana(s)',
-						'm' => 'Mes(es)'),Input::old('time'),array('class' => 'form-control fech','id'=>'period','requied' => 'required')
+						'm' => 'Mes(es)'),Input::old('time'),array('class' => 'form-control fech','id'=>'period','required' => 'required')
 					)}}
 						@if ($errors->has('time'))
 						 @foreach($errors->get('time') as $err)
@@ -196,7 +214,7 @@
 					<p class="bg-info textoPromedio" style="padding:1em;text-align:center;">Se recomienda que la imagen tenga un mínimo de 400px</p>
 					<div class="col-xs-6 textoPromedio imgLiderUp">
 						<label>(*) Imagen de la Publicación</label>
-						<input type="file" name="portada">
+						<input type="file" name="portada" required>
 						@if ($errors->has('portada'))
 						 @foreach($errors->get('portada') as $err)
 						 	<div class="alert alert-danger">
@@ -302,6 +320,7 @@
 			
 
 			@elseif($tipo == 'casual')	
+			<input type="hidden" name="casual" class="casual-form">
 				<div class="col-xs-12">
 					<ol class="breadcrumb textoPromedio">
 					  <li><a href="{{ URL::to('usuario/publicar') }}" class="breadcrums"><span class="num">1</span> Elije el tipo de publicación.</a></li>
@@ -320,8 +339,8 @@
 				</div>
 				@endif
 				<div class="col-xs-6">
-					<label for="casCat" class="textoPromedio">Categoría</label>
-					<select name="casCat" id="category" class="form-control">
+					<label for="casCat" class="textoPromedio">(*) Categoría</label>
+					<select name="casCat" id="category" class="form-control" required>
 						<option value="">Seleccione la categoría</option>
 						<optgroup label="Categoría">
 						@foreach($categorias as $categoria)
@@ -336,7 +355,7 @@
 					</select>
 				</div>
 				<div class="col-xs-6">
-					<label for="casCity" class="textoPromedio">Departamento</label>
+					<label for="casCity" class="textoPromedio">(*) Departamento</label>
 					<?php $arr = array(
 							'' => 'Seleccione su departamento');
 							 ?>
@@ -344,7 +363,7 @@
 						<?php $arr = $arr+array($department->id => $department->nombre);  ?>
 					@endforeach
 					
-					{{ Form::select('casCity',$arr,Input::old('casCity'),array('class' => 'form-control','requied' => 'required')
+					{{ Form::select('casCity',$arr,Input::old('casCity'),array('class' => 'form-control','required' => 'required')
 						)}}
 					@if ($errors->has('casCity'))
 						 @foreach($errors->get('casCity') as $err)
@@ -356,12 +375,12 @@
 					@endif
 				</div>
 				<div class="col-xs-12">
-					<label for="casTit" class="textoPromedio">Titulo</label>
-					{{ Form::text('casTit', Input::old('casTit'), array('class' => 'form-control','placeholder' => 'Titulo')) }}
+					<label for="casTit" class="textoPromedio">(*) Titulo</label>
+					{{ Form::text('casTit', Input::old('casTit'), array('class' => 'form-control','placeholder' => 'Titulo','required' => 'required')) }}
 				</div>
 				<div class="col-xs-6">
 					<label for="precio" class="textoPromedio">(*) Precio</label>
-					{{ Form::text('precio',Input::old('precio'),array('placeholder' => 'Precio','class' => 'form-control')) }}
+					{{ Form::text('precio',Input::old('precio'),array('placeholder' => 'Precio','class' => 'form-control','required' => 'required')) }}
 					@if ($errors->has('precio'))
 						 @foreach($errors->get('precio') as $err)
 						 	<div class="alert alert-danger">
@@ -375,9 +394,9 @@
 					<label class="textoPromedio">(*) Moneda</label>
 					<div class="col-xs-12" class="textoPromedio">
 						<span for="moneda" class="textoPromedio">USD</span>
-						{{ Form::radio('moneda','Usd',Input::old('moneda')) }}
+						{{ Form::radio('moneda','Usd',Input::old('moneda'),array('required' => 'required')) }}
 						<span for="moneda" class="textoPromedio">BS</span>
-						{{ Form::radio('moneda','Bs',Input::old('moneda')) }}
+						{{ Form::radio('moneda','Bs',Input::old('moneda'),array('required' => 'required')) }}
 					</div>
 					@if ($errors->has('moneda'))
 						 @foreach($errors->get('moneda') as $err)
@@ -393,8 +412,8 @@
 					<hr>
 				</div>
 				<div class="col-xs-6">
-					<label for="casTit" class="textoPromedio">Imagen principal</label>
-					<input type="file" name="img1" class="textoPromedio">
+					<label for="casTit" class="textoPromedio">(*) Imagen principal</label>
+					<input type="file" name="img1" class="textoPromedio" required>
 				</div>
 				<div class="col-xs-6">
 					<label for="casTit" class="textoPromedio">Segunda imagen</label>
@@ -404,7 +423,7 @@
 					<p class="bg-info textoPromedio" style="text-align:center;padding:1em;">La descripción deberá tener máximo 400 caracteres.</p>
 					<label for="input" class="textoPromedio">Descripción</label>
 					<!--<textarea id="input" name="input" class="form-control descripcionCasual"></textarea>-->
-					<textarea  id="editor1" name="input" class="form-control descripcionCasual"></textarea>
+					<textarea  id="editor1" name="input" class="form-control descripcionCasual" required></textarea>
 					@if ($errors->has('input'))
 						 @foreach($errors->get('input') as $err)
 						 	<div class="alert alert-danger">
@@ -419,7 +438,7 @@
 							<p class="textoPromedio formula">
 							</p>
 							<div class="col-xs-6" style="padding-left:0px;">
-								<input type="text" name="resultado" class="form-control">
+								<input type="text" name="resultado" class="form-control" required>
 							</div>
 							<div class="col-xs-12"><p class="textoPromedio">El resultado es <span class="resultado"> </span></p></div>
 					</div>
@@ -442,6 +461,37 @@
 	CKEDITOR.disableAutoInline = true;
 	$( document ).ready( function() {
 		$( '#editor1' ).ckeditor(); // Use CKEDITOR.replace() if element is <textarea>.
+		CKEDITOR.on("instanceReady", function(event)
+		{
+			if ($('.casual-form').length > 0) {
+				var total = 400;
+				var texto = $('.cke_wysiwyg_frame').contents().find('body').html();
+				texto2 = $(texto).text();
+				
+				
+				var actual = total - parseInt(texto2.length);
+				$('.cantCaracteres').html('Caracteres restantes: '+actual);
+				$('.cke_wysiwyg_frame').contents().on('keyup',function(event){
+					var texto = $('.cke_wysiwyg_frame').contents().find('body').html();
+					texto2 = $(texto).text();
+					actual = total - parseInt(texto2.length);
+					$('.cantCaracteres').html('Caracteres restantes: '+actual);
+					if (texto2.length>400) {
+						if (event.which != 8) {
+							event.preventDefault();
+							var newText = texto.substr(0,400);
+							$('.cke_wysiwyg_frame').contents().find('body').html(newText);
+							$('.cantCaracteres').html('Caracteres restantes: '+0);
+							alert('Ha alcanzado el limite de caracteres.')
+						}
+						
+
+					};
+				})
+
+			};
+	 		//put your code here
+		});
 	} );
 
 </script>

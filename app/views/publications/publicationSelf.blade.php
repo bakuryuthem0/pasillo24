@@ -333,12 +333,13 @@
 	<legend>Comentarios</legend>
 	<div class="row">
 		<div class="container comentarioBox">
+			
 			@if(empty($comentarios) || is_null($comentarios) || count($comentarios)<1)
 				@if(Auth::check())
 				<div class="contComment">
 					<div class="col-xs-12">
 						<textarea id="inputComentario" class="inputComentario textoPromedio" name="inputComentario" placeholder="Escriba su pregunta"></textarea>
-						<button id="enviarComentario" name="enviarComentario" class="btn btn-success" value="{{ $id }}">Enviar</button>
+						<button id="enviarComentario" name="enviarComentario" class="btn btn-success" value="{{ $id }}">Enviar</button><img src="{{ asset('images/loading.gif') }}" class="miniLoader">
 					</div>
 				</div>
 				@else
@@ -348,12 +349,6 @@
 					<p class="textoPromedio">No hay comentarios</p>
 				</div>
 			@else
-				@if(Auth::check())
-					<div class="col-xs-12">
-						<textarea id="inputComentario" class="inputComentario textoPromedio" name="inputComentario" placeholder="Escriba su pregunta"></textarea>
-						<button id="enviarComentario" name="enviarComentario" class="btn btn-success" value="{{ $id }}">Enviar</button>
-					</div>
-				@endif
 				@foreach($comentarios as $comentario)
 				<div class="col-xs-12 comentario">
 					<p class="textoPromedio"><i class="fa fa-comment"></i> {{ $comentario->comentario }}</p>
@@ -370,7 +365,18 @@
 				<div class="col-xs-8 respuesta">
 				</div>
 				@endforeach
+				@if(Auth::check())
+					<div class="col-xs-12 comentario new-comment">
+						<p class="textoPromedio comment-text"></p>
+						<p class="textoMedio comment-date" style="float:right;"></p>
+					</div>
+					<div class="col-xs-12">
+						<textarea id="inputComentario" class="inputComentario textoPromedio" name="inputComentario" placeholder="Escriba su pregunta"></textarea>
+						<button id="enviarComentario" name="enviarComentario" class="btn btn-success" value="{{ $id }}">Enviar</button><img src="{{ asset('images/loading.gif') }}" class="miniLoader">
+					</div>
+				@endif
 			@endif
+
 		</div>
 	</div>
 </div>

@@ -46,7 +46,7 @@
 						<div class="col-xs-6" style="padding-left:0px;">
 							<div class="col-xs-12 formulario textoPromedio" required>
 				                <label>Banco de destino</label>
-				                  <select name="banco" class="form-control">
+				                  <select name="banco" class="form-control" required>
 				                    <option value="">Seleccione el banco</option>
 				                    @foreach($bancos as $b)
 				                      <option value="{{ $b->id }}">{{ $b->nombre }}</option>

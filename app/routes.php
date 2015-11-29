@@ -92,7 +92,7 @@ Route::group(array('before' =>'auth'),function()
 	Route::post('usuario/publicaciones/pago/enviar', 'UserController@postPublicationPayment');
 
 	//comentario
-	Route::post('publicacion/comentario', 'PublicationController@postComment');
+	Route::get('publicacion/comentario', 'PublicationController@postComment');
 	Route::post('publicacion/comentario/respuesta', 'PublicationController@postResponse');
 	//compra
 	Route::post('publicacion/comprar','PublicationController@getCompra');

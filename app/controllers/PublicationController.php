@@ -2,6 +2,63 @@
 
 class PublicationController extends BaseController {
 
+	public function upload_images($file)
+	{
+		if (file_exists('images/pubImages/'.Auth::user()['username'].'/'.$file->getClientOriginalName())) {
+			//guardamos la imagen en public/imgs con el nombre original
+            $i = 0;//indice para el while
+            //separamos el nombre de la img y la extensión
+            $info = explode(".",$file->getClientOriginalName());
+            //asignamos de nuevo el nombre de la imagen completo
+            $miImg = $file->getClientOriginalName();
+            //mientras el archivo exista iteramos y aumentamos i
+            while(file_exists('images/pubImages/'.Auth::user()['username'].'/'. $miImg)){
+                $i++;
+                $miImg = $info[0]."(".$i.")".".".$info[1];              
+            }
+            //guardamos la imagen con otro nombre ej foto(1).jpg || foto(2).jpg etc
+            $file->move("images/pubImages/".Auth::user()['username'],$miImg);
+            $img = Image::make('images/pubImages/'.Auth::user()['username'].'/'.$miImg);
+            $blank = Image::make('images/blank.jpg');
+	             if ($img->width() > $img->height()) {
+		        	$img->widen(1604);
+		        }else
+		        {
+		        	$img->heighten(804);
+		        }
+		        if ($img->height() > 804) {
+		        	$img->heighten(804);
+		        }
+		        $mark = Image::make('images/watermark.png')->widen(400);
+		        $blank->insert($img,'center');
+		        $blank->insert($mark,'center')
+	           	->interlace()
+	            ->save('images/pubImages/'.Auth::user()['username'].'/'.$miImg);
+            if($miImg != $file->getClientOriginalName()){
+				return Auth::user()['username'].'/'.$miImg;
+            }
+		}else
+		{
+			$file->move("images/pubImages/".Auth::user()['username'],$file->getClientOriginalName());
+			$img = Image::make('images/pubImages/'.Auth::user()['username'].'/'.$file->getClientOriginalName());
+	           $blank = Image::make('images/blank.jpg');
+	             if ($img->width() > $img->height()) {
+		        	$img->widen(1604);
+		        }else
+		        {
+		        	$img->heighten(804);
+		        }
+		        if ($img->height() > 804) {
+		        	$img->heighten(804);
+		        }
+		        $mark = Image::make('images/watermark.png')->widen(400);
+		        $blank->insert($img,'center');
+		        $blank->insert($mark,'center')
+	           	->interlace()
+	            ->save("images/pubImages/".Auth::user()['username'].'/'.$file->getClientOriginalName());
+	            return Auth::user()['username'].'/'.$file->getClientOriginalName();
+		}
+	}
 	public function getHabitualForm($type)
 	{
 		return 'hola';
@@ -337,7 +394,7 @@ class PublicationController extends BaseController {
 			}
 			$doGcm = new Gcm;
 			$response = $doGcm->send_notification($regId,$data);
-			return 'Comentario Guardado Sactisfactoriamente';
+			return Response::json(array('type' => 'success', 'msg' => 'Comentario Guardado Sactisfactoriamente','date' => date('d-m-Y H:i:s',strtotime($comentarios->created_at))));
 		}
 		
 	}
@@ -789,6 +846,7 @@ class PublicationController extends BaseController {
 				'marca'		=> 'El campo marca',
 				'modelo'	=> 'El campo modelo',
 				'anio'		=> 'El campo año',
+				'kilo' 		=> 'El campo kilometraje',
 				'doc'		=> 'El campo documentos'
 			);
 
@@ -1005,6 +1063,27 @@ if (!empty($input['nomb'])) {
 		        $blank->insert($mark,'center')
 	           	->interlace()
 	            ->save("images/pubImages/".Auth::user()['username'].'/'.$file->getClientOriginalName());
+	            if ($campo == 'img_2') {
+					$pub->img_2 = Auth::user()['username'].'/'.$file->getClientOriginalName();
+				}elseif(empty($pub->img_3))
+				{
+					$pub->img_3 = Auth::user()['username'].'/'.$file->getClientOriginalName();
+				}elseif($campo == 'img_4')
+				{
+					$pub->img_4 = Auth::user()['username'].'/'.$file->getClientOriginalName();
+				}elseif($campo == 'img_5')
+				{
+					$pub->img_5 = Auth::user()['username'].'/'.$file->getClientOriginalName();
+				}elseif($campo == 'img_6')
+				{
+					$pub->img_6 = Auth::user()['username'].'/'.$file->getClientOriginalName();
+				}elseif($campo == 'img_7')
+				{
+					$pub->img_7 = Auth::user()['username'].'/'.$file->getClientOriginalName();
+				}elseif($campo == 'img_8')
+				{
+					$pub->img_8 = Auth::user()['username'].'/'.$file->getClientOriginalName();
+				}
 		}
 		$pub->save();
         return Response::json(array('campo' => $campo));
@@ -1182,16 +1261,30 @@ if (!empty($input['nomb'])) {
 		$categorias = Categorias::all();
 		$subCat = SubCat::all();
 		$departamento = Department::all();
-                $marcas = Marcas::all();
-		return View::make('publications.modifyPub')
-		->with('title',$title)
-		->with('tipo',$pub->tipo)
-		->with('publicaciones',$pub)
-		->with('url',$url)
-		->with('categorias',$categorias)
-		->with('subCat',$subCat)
-		->with('departamento',$departamento)
-->with('marcas',$marcas);
+		if ($pub->categoria == 34) {
+			$marcas = Marcas::all();
+			$modelos = Modelo::where('marca_id','=',$pub->marca_id)->get();
+			return View::make('publications.modifyPub')
+			->with('title',$title)
+			->with('tipo',$pub->tipo)
+			->with('publicaciones',$pub)
+			->with('url',$url)
+			->with('categorias',$categorias)
+			->with('subCat',$subCat)
+			->with('departamento',$departamento)
+			->with('marcas',$marcas)
+			->with('modelos',$modelos);
+		}else
+		{
+			return View::make('publications.modifyPub')
+			->with('title',$title)
+			->with('tipo',$pub->tipo)
+			->with('publicaciones',$pub)
+			->with('url',$url)
+			->with('categorias',$categorias)
+			->with('subCat',$subCat)
+			->with('departamento',$departamento);
+		}
 	}
 	public function postModifyPub()
 	{
@@ -1200,58 +1293,17 @@ if (!empty($input['nomb'])) {
 		$pub = Publicaciones::find($id);
 		$type = $pub->tipo;
 		if ($pub->tipo == 'Lider') {
-			if ($input['cat'] != $pub->categoria && !empty($input['cat'])) {
+			if ($pub->ubicacion != "Principal") {
 				$pub->categoria = $input['cat'];
-			}elseif (!is_null($input['img1'])) {
+			}
+			if (!empty($input['img1'])) {
 				$img1 = Input::file('img1');
-				if (file_exists('images/pubImages/'.Auth::user()['username'].'/'.$img1->getClientOriginalName())) {
-					//guardamos la imagen en public/imgs con el nombre original
-		            $i = 0;//indice para el while
-		            //separamos el nombre de la img y la extensión
-		            $info = explode(".",$img1->getClientOriginalName());
-		            //asignamos de nuevo el nombre de la imagen completo
-		            $miImg = $img1->getClientOriginalName();
-		            //mientras el archivo exista iteramos y aumentamos i
-		            while(file_exists('images/pubImages/'.Auth::user()['username'].'/'. $miImg)){
-		                $i++;
-		                $miImg = $info[0]."(".$i.")".".".$info[1];              
-		            }
-		            //guardamos la imagen con otro nombre ej foto(1).jpg || foto(2).jpg etc
-		            $img1->move("images/pubImages/".Auth::user()['username'],$miImg);
-		            if($miImg != $img1->getClientOriginalName()){
-		                $pub->img_1 = Auth::user()['username'].'/'.$miImg;
-		            }
-				}else
-				{
-					$img1->move("images/pubImages/".Auth::user()['username'],$img1->getClientOriginalName());
-					$pub->img_1 = Auth::user()['username'].'/'.$img1->getClientOriginalName();
-
-				}
-			}elseif (!is_null($input['img2'])) {
+				$pub->img_1 = $this->upload_images($img1);
+			}
+			if (!empty($input['img2'])) {
 				$img2 = Input::file('img2');
-				if (file_exists('images/pubImages/'.Auth::user()['username'].'/'.$img2->getClientOriginalName())) {
-					//guardamos la imagen en public/imgs con el nombre original
-		            $i = 0;//indice para el while
-		            //separamos el nombre de la img y la extensión
-		            $info = explode(".",$img2->getClientOriginalName());
-		            //asignamos de nuevo el nombre de la imagen completo
-		            $miImg = $img2->getClientOriginalName();
-		            //mientras el archivo exista iteramos y aumentamos i
-		            while(file_exists('images/pubImages/'.Auth::user()['username'].'/'. $miImg)){
-		                $i++;
-		                $miImg = $info[0]."(".$i.")".".".$info[1];              
-		            }
-		            //guardamos la imagen con otro nombre ej foto(1).jpg || foto(2).jpg etc
-		            $img1->move("images/pubImages/".Auth::user()['username'],$miImg);
-		            if($miImg != $img1->getClientOriginalName()){
-		                $pub->img_2 = Auth::user()['username'].'/'.$miImg;
-		            }
-				}else
-				{
-					$img2->move("images/pubImages/".Auth::user()['username'],$img2->getClientOriginalName());
-					$pub->img_2 = Auth::user()['username'].'/'.$img2->getClientOriginalName();
+				$pub->img_2 = $this->upload_images($img2);
 
-				}
 			}elseif ($input['pagina'] != $pub->pag_web && !empty($input['pagina'])) {
 				$pub->pag_web = $input['pagina'];
 			}elseif ($input['nomb'] != $pub->name && !empty($input['nomb'])) {
@@ -1263,70 +1315,129 @@ if (!empty($input['nomb'])) {
 			}elseif ($input['pag_web'] != $pub->pag_web_hab && !empty($input['pag_web'])) {
 				$pub->pag_web_hab = $input['pag_web'];
 			}
+			if (!empty($input['namePub'])) {
+				$pub->titulo = $input['namePub'];
+			}
+			
 		}elseif($pub->tipo == 'Habitual')
 		{
-			if ($input['cat'] != $pub->categoria && !empty($input['cat'])) {
+			if (!empty($input['cat'])) {
 				$pub->categoria = $input['cat'];
-			}elseif (!is_null($input['img1'])) {
+			}
+			if (isset($input['img1']) && !empty($input['img1'])) {
 				$img1 = Input::file('img1');
-				if (file_exists('images/pubImages/'.Auth::user()['username'].'/'.$img1->getClientOriginalName())) {
-					//guardamos la imagen en public/imgs con el nombre original
-		            $i = 0;//indice para el while
-		            //separamos el nombre de la img y la extensión
-		            $info = explode(".",$img1->getClientOriginalName());
-		            //asignamos de nuevo el nombre de la imagen completo
-		            $miImg = $img1->getClientOriginalName();
-		            //mientras el archivo exista iteramos y aumentamos i
-		            while(file_exists('images/pubImages/'.Auth::user()['username'].'/'. $miImg)){
-		                $i++;
-		                $miImg = $info[0]."(".$i.")".".".$info[1];              
-		            }
-		            //guardamos la imagen con otro nombre ej foto(1).jpg || foto(2).jpg etc
-		            $img1->move("images/pubImages/".Auth::user()['username'],$miImg);
-		            if($miImg != $img1->getClientOriginalName()){
-		                $pub->img_1 = Auth::user()['username'].'/'.$miImg;
-		            }
-				}else
-				{
-					$img1->move("images/pubImages/".Auth::user()['username'],$img1->getClientOriginalName());
-					$pub->img_1 = Auth::user()['username'].'/'.$img1->getClientOriginalName();
-
-				}
-			}elseif (isset($input['img2']) && !is_null($input['img2'])) {
+				$pub->img_1 = $this->upload_images($img1);
+				
+			}
+			if (isset($input['img2']) && !empty($input['img2'])) {
 				$img2 = Input::file('img2');
-				if (file_exists('images/pubImages/'.Auth::user()['username'].'/'.$img2->getClientOriginalName())) {
-					//guardamos la imagen en public/imgs con el nombre original
-		            $i = 0;//indice para el while
-		            //separamos el nombre de la img y la extensión
-		            $info = explode(".",$img2->getClientOriginalName());
-		            //asignamos de nuevo el nombre de la imagen completo
-		            $miImg = $img2->getClientOriginalName();
-		            //mientras el archivo exista iteramos y aumentamos i
-		            while(file_exists('images/pubImages/'.Auth::user()['username'].'/'. $miImg)){
-		                $i++;
-		                $miImg = $info[0]."(".$i.")".".".$info[1];              
-		            }
-		            //guardamos la imagen con otro nombre ej foto(1).jpg || foto(2).jpg etc
-		            $img1->move("images/pubImages/".Auth::user()['username'],$miImg);
-		            if($miImg != $img1->getClientOriginalName()){
-		                $pub->img_2 = Auth::user()['username'].'/'.$miImg;
-		            }
-				}else
-				{
-					$img2->move("images/pubImages/".Auth::user()['username'],$img2->getClientOriginalName());
-					$pub->img_2 = Auth::user()['username'].'/'.$img2->getClientOriginalName();
-
-				}
-			}elseif ($input['pagina'] != $pub->pag_web && !empty($input['pagina'])) {
+				$pub->img_2 = $this->upload_images($img2);
+			
+			}
+			if (isset($input['img3']) && !empty($input['img3'])) {
+				$img3 = Input::file('img3');
+				$pub->img_3 = $this->upload_images($img3);
+			
+			}
+			if (isset($input['img4']) && !empty($input['img4'])) {
+				$img4 = Input::file('img4');
+				$pub->img_4 = $this->upload_images($img4);
+			
+			}
+			if (isset($input['img5']) && !empty($input['img5'])) {
+				$img5 = Input::file('img5');
+				$pub->img_5 = $this->upload_images($img5);
+			
+			}
+			if (isset($input['img6']) && !empty($input['img6'])) {
+				$img6 = Input::file('img6');
+				$pub->img_6 = $this->upload_images($img6);
+			
+			}
+			if (isset($input['img7']) && !empty($input['img7'])) {
+				$img7 = Input::file('img7');
+				$pub->img_7 = $this->upload_images($img7);
+			
+			}
+			if (isset($input['img8']) && !empty($input['img8'])) {
+				$img8 = Input::file('img8');
+				$pub->img_8 = $this->upload_images($img8);
+			
+			}
+			if (!empty($input['pagina'])) {
 				$pub->pag_web = $input['pagina'];
-			}elseif ($input['nomb'] != $pub->name && !empty($input['nomb'])) {
+			}
+			if (!empty($input['nomb'])) {
 				$pub->name = $input['nomb'];
-			}elseif ($input['phone'] != $pub->phone && !empty($input['phone'])) {
+			}
+			if (!empty($input['phone'])) {
 				$pub->phone = $input['phone'];
-			}elseif ($input['email'] != $pub->email && !empty($input['email'])) {
+			}
+			if (!empty($input['email'])) {
 				$pub->email = $input['email'];
-			}elseif ($input['pag_web'] != $pub->pag_web_hab && !empty($input['pag_web'])) {
-				$pub->pag_web_hab = $input['pag_web'];
+			}
+			if (!empty($input['pagina'])) {
+				$pub->pag_web_hab = $input['pagina'];
+			}
+			if (!empty($input['subCat'])) {
+				$pub->typeCat = $input['subCat'];
+			}
+			if (!empty($input['title'])) {
+				$pub->titulo = $input['title'];
+			}
+			if (!empty($input['precio'])) {
+				$pub->precio = $input['precio'];
+			}
+			if (!empty($input['moneda'])) {
+				$pub->moneda = $input['moneda'];
+			}
+			if (!empty($input['departamento'])) {
+				$pub->departamento = $input['departamento'];
+			}
+			if (!empty($input['ciudad'])) {
+				$pub->ciudad = $input['ciudad'];
+			}
+			if ($pub->categoria == 34) {
+				if (!empty($input['marca'])) {
+					$pub->marca_id = $input['marca'];
+				}
+				if (!empty($input['modelo'])) {
+					$pub->modelo_id = $input['modelo'];
+				}
+				if (!empty($input['anio'])) {
+					$pub->anio = $input['anio'];
+				}
+				if (!empty($input['doc'])) {
+					$pub->documentos = $input['doc'];
+				}
+				if (!empty($input['kilo'])) {
+					$pub->kilometraje = $input['kilo'];
+				}
+				if (!empty($input['cilin'])) {
+					$pub->cilindraje = $input['cilin'];
+				}
+				if (!empty($input['trans'])) {
+					$pub->transmision = $input['trans'];
+				}
+				if (!empty($input['comb'])) {
+					$pub->combustible = $input['comb'];
+				}
+				if (!empty($input['trac'])) {
+					$pub->traccion = $input['trac'];
+				}
+				
+			}elseif($pub->categoria == 20)
+			{
+				if (!empty($input['ext'])) {
+					$pub->extension = $input['ext'];
+				}
+			}
+			
+			if (!empty($input['tipoTransac'])) {
+				$pub->transaccion = $input['tipoTransac'];
+			}
+			if (!empty($input['input'])) {
+				$pub->descripcion = $input['input'];
 			}
 		}
 		

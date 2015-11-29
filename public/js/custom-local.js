@@ -565,7 +565,19 @@ $(document).ready(function() {
 });
 
 /*------------------ Publicacion lider --------------*/
-
+jQuery(document).ready(function($) {
+	$('#ubication').change(function(){
+		var esto = $(this);
+		if (esto.val() == 'Categoria') {
+			esto.parent().removeClass('col-xs-12').addClass('col-xs-6');
+			$('.contCatLider').addClass('showit')
+		}else
+		{
+			esto.parent().removeClass('col-xs-6').addClass('col-xs-12');
+			$('.contCatLider').removeClass('showit');
+		}
+	})
+});
 $('.continue').click(function(event) {
 	$('.info').animate({'opacity': 0},500, function(){
 			$(this).remove();	
@@ -576,21 +588,7 @@ $('.continue').click(function(event) {
 				500
 			);
 	});
-	$('#ubication').change(function(){
-		var esto = $(this);
-		if (esto.val() == 'Categoria') {
-			esto.parent().removeClass('col-xs-12').addClass('col-xs-6');
-			$('.contCatLider').css({
-				'display': 'block'
-			});
-		}else
-		{
-			esto.parent().removeClass('col-xs-6').addClass('col-xs-12');
-			$('.contCatLider').css({
-				'display': 'none'
-			});
-		}
-	})
+	
 	function cambiarFecha()
 	{
 		var period = $('#period').val();
@@ -752,43 +750,49 @@ $(document).ready(function() {
 		$(this).stop().animate({
 			'height' : '150px'
 		},100,function(){;
-			$('#enviarComentario').css({
-				'display': 'inline-block'
-			});
+			$('#enviarComentario').addClass('active')
 		})
 	});
 
-	$('#enviarComentario').click(function(event) {
-		$('#enviarComentario').prop({
-			'disabled': true
-		})
-		$('.error').remove();
-		var procede = 1;
-		if ($('#inputComentario').val().length<4) {
-			procede = 0;
-			$('#inputComentario').css({
-				'box-shadow': '0px 0px 1px 1px red'
-			});
-			$('#inputComentario').before('<div class="alert alert-danger error"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button><p class="textoPromedio">La pregunta debe de ser mas larga</p></div>');
-		}
-		if (procede == 1) {
-			var data = {
-				'id' : $(this).val(),
-				'comment': $('#inputComentario').val()
-			}
-			$.ajax({
-				url:'http://localhost/pasillo24/public/publicacion/comentario',
-				type: 'POST',
-				data: data,
-				success:function(response){
-					alert(response);
-					location.reload();
-				},
-				error:function(){
-					console.log('error');
-				}	
-			})
+	$('#enviarComentario').on('click',function(event) {
+		var btn = $(this);
+		btn.addClass('disabled')
+		 var data = {
+			'id' : $(this).val(),
+			'comment': $('#inputComentario').val()
+		}	    
+		var proceed = 1;
+		if ($('#inputComentario').val() == "") {
+			proceed = 0;
+			$('#enviarComentario').removeClass('disabled')
 		};
+	    if (proceed == 1) {
+	        $.ajax({
+	          url: 'http://localhost/pasillo24/public/publicacion/comentario',
+	          type: 'GET',
+	          dataType: 'json',
+	          data: data,
+	          beforeSend:function() {
+	            $('.miniLoader').addClass('active');
+	            $('#inputComentario').addClass('disabled')
+	          },
+	          success:function(response)
+	          {
+	            $('.miniLoader').removeClass('active');
+	            $('#inputComentario').removeClass('disabled')
+	            btn.removeClass('disabled');
+	            if (response.type == 'success') {
+	              var clon = $('.new-comment').clone();
+	              $('.new-comment').children('.comment-text').html('<i class="fa fa-comment"></i> '+data['comment'])
+	              $('.new-comment').children('.comment-date').html(response.date)
+	              $('.new-comment').removeClass('new-comment').after(clon);
+	              $('#inputComentario').val('')
+	              alert(response.msg);
+	            }
+	          }
+	        })
+	        
+      	};
 
 	});
 });
@@ -817,44 +821,23 @@ $(document).ready(function() {
 	});
 });
 /*-------------------Casual------------------------------*/
-	$('.continueCasual').click(function(event){
-		var rand1 = Math.round(Math.random()*100);
-		var rand2 = Math.round(Math.random()*100);
-		$('.formula').html('Cuanto es: '+rand1+'+'+rand2).append('<input type="hidden" name="x" value="'+rand1+'">').append('<input type="hidden" name="y" value="'+rand2+'">')
-		$('.resultado').html(' '+(rand1+rand2));
-		$('.info').animate({'opacity': 0},500, function(){
-				$(this).remove();	
-				$('.formPub').css({'display':'block','opacity':0}).animate({
-					
-					'opacity': 1
-				},
-					500
-				);
-		});	
-		var total = 400;
-		var texto = $('.cke_wysiwyg_frame').contents().find('body').html();
-		texto2 = $(texto).text();
-		
-		
-		var actual = total - parseInt(texto2.length);
-		$('.cantCaracteres').html('Caracteres restantes: '+actual);
-		$('.cke_wysiwyg_frame').contents().keyup(function(event){
-			var texto = $('.cke_wysiwyg_frame').contents().find('body').html();
-			texto2 = $(texto).text();
-			actual = total - parseInt(texto2.length);
-			$('.cantCaracteres').html('Caracteres restantes: '+actual);
-			if (texto2.length>400) {
-				if (event.which != 8) {
-					event.preventDefault();
-					var newText = texto.substr(0,400);
-					$('.cke_wysiwyg_frame').contents().find('body').html(newText);
-					$('.cantCaracteres').html('Caracteres restantes: '+0);
-					alert('Ha alcanzado el limite de caracteres.')
-				}
-				
-
-			};
-		})
+	jQuery(document).ready(function($) {
+		if ($('.casual-form').length > 0) {
+			var rand1 = Math.round(Math.random()*100);
+			var rand2 = Math.round(Math.random()*100);
+			$('.formula').html('Cuanto es: '+rand1+'+'+rand2).append('<input type="hidden" name="x" value="'+rand1+'">').append('<input type="hidden" name="y" value="'+rand2+'">')
+			$('.resultado').html(' '+(rand1+rand2));
+			$('.info').animate({'opacity': 0},500, function(){
+					$(this).remove();	
+					$('.formPub').css({'display':'block','opacity':0}).animate({
+						
+						'opacity': 1
+					},
+						500
+					);
+			});	
+			
+		};
 	});
 /*------------Responder---------------*/
 $(document).ready(function() {
@@ -1303,10 +1286,13 @@ $('#category').change(function(event) {
 			url: 'http://localhost/pasillo24/public/usuario/sub-categoria',
 			type: 'GET',
 			data: data,
-			success:function(response){
+			beforeSend:function()
+			{
 				$('.optiongroup').remove();
+			},
+			success:function(response){
 				for (var i = 0 ; i < response.length; i++) {
-					$('#subCat').append('<option class="optionModel" value="'+response[i].id+'">'+response[i].desc+'</option>');
+					$('#subCat').append('<option class="optiongroup" value="'+response[i].id+'">'+response[i].desc+'</option>');
 				};
 				
 			}
@@ -1381,16 +1367,30 @@ jQuery(document).ready(function($) {
 	$('.depFilter').change(function(event) {
 		$('.formDepFilter').submit();
 	});
+	$('.bandera').hover(function() {
+		if (!$(this).hasClass('bandera-bolivia')) {
+			$('.bandera-bolivia').addClass('old-bandera-bolivia').removeClass('bandera-bolivia');
+			$(this).addClass('bandera-bolivia');
+		};
+	}, function() {
+		if ($('.old-bandera-bolivia').length > 0) {
+			$('.bandera-bolivia').removeClass('bandera-bolivia');
+			$('.old-bandera-bolivia').addClass('bandera-bolivia');
+		};
+	});
 });
 
-$('.bandera').hover(function() {
-	if (!$(this).hasClass('bandera-bolivia')) {
-		$('.bandera-bolivia').addClass('old-bandera-bolivia').removeClass('bandera-bolivia');
-		$(this).addClass('bandera-bolivia');
-	};
-}, function() {
-	if ($('.old-bandera-bolivia').length > 0) {
-		$('.bandera-bolivia').removeClass('bandera-bolivia');
-		$('.old-bandera-bolivia').addClass('bandera-bolivia');
-	};
+
+jQuery(document).ready(function($) {
+	$('.addNewimage').on('click', function(event) {
+		event.preventDefault();
+		$('.new-imagen:first').removeClass('new-imagen');
+	});
+	$('.dismiss-new-imagen').on('click', function(event) {
+		event.preventDefault();
+		var btn = $(this)
+		btn.next().next().replaceWith(btn.next().next().clone());;
+		$(this).parent('.col-xs-6').addClass('new-imagen');
+	});
+ 	
 });

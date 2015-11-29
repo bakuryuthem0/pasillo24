@@ -37,7 +37,7 @@
 							<?php $arr = $arr+array($sub->id => $sub->desc);  ?>
 						@endforeach
 					@endif
-					{{ Form::select('subCat',$arr,Input::old('subCat'),array('class' => 'form-control','requied' => 'required')
+					{{ Form::select('subCat',$arr,Input::old('subCat'),array('class' => 'form-control','required' => 'required')
 						)}}
 					
 					@if ($errors->has('subCat'))
@@ -52,7 +52,7 @@
 				
 				<div class="col-xs-12">
 					<label for="title" class="textoPromedio">(*) Título</label>
-					{{ Form::text('title',Input::old('title'),array('placeholder' => 'Titulo','class' => 'form-control')) }}
+					{{ Form::text('title',Input::old('title'),array('placeholder' => 'Titulo','class' => 'form-control','required' => 'required')) }}
 					@if ($errors->has('title'))
 						 @foreach($errors->get('title') as $err)
 						 	<div class="alert alert-danger">
@@ -64,7 +64,7 @@
 				</div>
 				<div class="col-xs-6">
 					<label for="precio" class="textoPromedio">(*) Precio</label>
-					{{ Form::text('precio',Input::old('precio'),array('placeholder' => 'Precio','class' => 'form-control')) }}
+					{{ Form::text('precio',Input::old('precio'),array('placeholder' => 'Precio','class' => 'form-control','required' => 'required')) }}
 					@if ($errors->has('precio'))
 						 @foreach($errors->get('precio') as $err)
 						 	<div class="alert alert-danger">
@@ -78,9 +78,9 @@
 					<label class="textoPromedio">(*) Moneda</label>
 					<div class="col-xs-12" class="textoPromedio">
 						<span for="moneda" class="textoPromedio">USD</span>
-						{{ Form::radio('moneda','Usd',Input::old('moneda')) }}
+						{{ Form::radio('moneda','Usd',Input::old('moneda'),array('required' => 'required')) }}
 						<span for="moneda" class="textoPromedio">BS</span>
-						{{ Form::radio('moneda','Bs',Input::old('moneda')) }}
+						{{ Form::radio('moneda','Bs',Input::old('moneda'),array('required' => 'required')) }}
 					</div>
 					@if ($errors->has('moneda'))
 						 @foreach($errors->get('moneda') as $err)
@@ -101,7 +101,7 @@
 						<?php $arr = $arr+array($department->id => $department->nombre);  ?>
 					@endforeach
 					
-					{{ Form::select('departamento',$arr,Input::old('departamento'),array('class' => 'form-control','requied' => 'required')
+					{{ Form::select('departamento',$arr,Input::old('departamento'),array('class' => 'form-control','required' => 'required')
 						)}}
 					
 					@if ($errors->has('departamento'))
@@ -115,7 +115,7 @@
 				</div>
 				<div class="col-xs-6">
 					<label for="" class="textoPromedio">(*) Ciudad</label>
-					{{ Form::text('ciudad',Input::old('ciudad'),array('class' => 'form-control','placeholder' => 'Ciudad')) }}
+					{{ Form::text('ciudad',Input::old('ciudad'),array('class' => 'form-control','placeholder' => 'Ciudad','required' => 'required')) }}
 					@if ($errors->has('ciudad'))
 						 @foreach($errors->get('ciudad') as $err)
 						 	<div class="alert alert-danger">
@@ -129,7 +129,7 @@
 				@if($cat_id == 34)
 					<div class="col-xs-6">
 						<label class="textoPromedio">(*) Marca</label>
-						<select name="marca" class="form-control" id="veiMarca">
+						<select name="marca" class="form-control" id="veiMarca" required>
 							<option value="">Seleccione una marca</option>
 							@foreach($marcas as $marca)
 							<option value="{{ $marca->id }}">{{ $marca->nombre }}</option>
@@ -146,7 +146,7 @@
 					</div>
 					<div class="col-xs-6">
 						<label class="textoPromedio">(*) Modelo</label>
-						<select name="modelo" class="form-control" id="veiModel">
+						<select name="modelo" class="form-control" id="veiModel" required>
 							<option value="">Seleccione un modelo</option>
 						</select>
 						@if ($errors->has('modelo'))
@@ -160,7 +160,7 @@
 					</div>
 					<div class="col-xs-6">
 						<label class="textoPromedio">(*) Año</label>
-						{{ Form::text('anio',Input::old('anio'),array('class' => 'form-control','placeholder' => 'Año')) }}
+						{{ Form::text('anio',Input::old('anio'),array('class' => 'form-control','placeholder' => 'Año','required' => 'required')) }}
 						@if ($errors->has('anio'))
 						 @foreach($errors->get('anio') as $err)
 						 	<div class="alert alert-danger">
@@ -172,7 +172,7 @@
 					</div>
 					<div class="col-xs-6">
 						<label class="textoPromedio">(*) Documentación</label>
-						{{ Form::text('doc',Input::old('doc'),array('class' => 'form-control','placeholder' => 'Documentacion')) }}
+						{{ Form::text('doc',Input::old('doc'),array('class' => 'form-control','placeholder' => 'Documentacion','required' => 'required')) }}
 						@if ($errors->has('doc'))
 						 @foreach($errors->get('doc') as $err)
 						 	<div class="alert alert-danger">
@@ -184,7 +184,7 @@
 					</div>
 					<div class="col-xs-12">
 						<label class="textoPromedio">(*) Kilometraje</label>
-						{{ Form::text('kilo',Input::old('kilo'),array('class' => 'form-control','placeholder' => 'Kilometraje')) }}
+						{{ Form::text('kilo',Input::old('kilo'),array('class' => 'form-control','placeholder' => 'Kilometraje','required' => 'required')) }}
 						@if ($errors->has('kilo'))
 						 @foreach($errors->get('kilo') as $err)
 						 	<div class="alert alert-danger">
@@ -246,7 +246,7 @@
 				@elseif($cat_id == 20)
 					<div class="col-xs-12">
 						<label class="textoPromedio">(*) Extensión (mt<sup>2</sup>)</label>
-						{{ Form::text('ext',Input::old('ext'),array('class' => 'form-control','placeholder' => 'metros cuadrados')) }}
+						{{ Form::text('ext',Input::old('ext'),array('class' => 'form-control','placeholder' => 'metros cuadrados','required' => 'required')) }}
 						@if ($errors->has('ext'))
 						 @foreach($errors->get('ext') as $err)
 						 	<div class="alert alert-danger">
@@ -261,14 +261,14 @@
 					<label class="textoPromedio">(*) Operación</label>
 					<div class="col-xs-12" class="textoPromedio">
 						<span for="tipoTransac" class="textoPromedio">Venta</span>
-						{{ Form::radio('tipoTransac','venta',Input::old('tipoTransac')) }}
+						{{ Form::radio('tipoTransac','venta',Input::old('tipoTransac'),array('required' => 'required')) }}
 						<span for="tipoTransac" class="textoPromedio">Alquiler</span>
-						{{ Form::radio('tipoTransac','alquiler',Input::old('tipoTransac')) }}
+						{{ Form::radio('tipoTransac','alquiler',Input::old('tipoTransac'),array('required' => 'required')) }}
 						@if($cat_id == 20)
 							<span for="tipoTransac" class="textoPromedio">Anticrético </span>
-							{{ Form::radio('tipoTransac','Aticretico',Input::old('tipoTransac')) }}
+							{{ Form::radio('tipoTransac','Aticretico',Input::old('tipoTransac'),array('required' => 'required')) }}
 							<span for="tipoTransac" class="textoPromedio">otro</span>
-							{{ Form::radio('tipoTransac','otro',Input::old('tipoTransac')) }}
+							{{ Form::radio('tipoTransac','otro',Input::old('tipoTransac'),array('required' => 'required')) }}
 						@endif
 					</div>
 					@if ($errors->has('tipoTransac'))
@@ -283,7 +283,7 @@
 				<div class="col-xs-12">
 					<label for="input" class="textoPromedio">(*) Descripción</label>
 					<!--<textarea id="input" name="input" class="form-control descHabitual"></textarea>-->
-					<textarea  id="editor1" name="input" >{{ Input::old('input') }}</textarea>
+					<textarea  id="editor1" name="input" required>{{ Input::old('input') }}</textarea>
 					@if ($errors->has('input'))
 						 @foreach($errors->get('input') as $err)
 						 	<div class="alert alert-danger">
@@ -297,7 +297,7 @@
 				<div class="col-xs-12 textoPromedio">
 					
 					<label>(*) Imagen principal</label>
-					<input type="file" name="img1">
+					<input type="file" name="img1" required>
 					@if ($errors->has('img1'))
 						 @foreach($errors->get('img1') as $err)
 						 	<div class="alert alert-danger">
