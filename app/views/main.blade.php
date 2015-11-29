@@ -315,7 +315,7 @@ margin-top: 0.5em;display:inline-block;">
 		<div class="row @if(isset($portada)) portadaFooter @else @endif" style="margin-right:0px;">
 			<footer>
 				<div class="panel-footer col-xs-12">
-					<p class="footerText textoPromedio"><strong>pasillo24.com</strong> S.R.L. Todos los derechos reservados &copy 2015| <a href="{{ URL::to('inicio/terminos-y-condiciones') }}">Términos y condiciones de uso</a> | <a href="{{ URL::to('inicio/politica-de-privacidad') }}">Política de privacidad</a></p>
+					<p class="footerText textoPromedio"><strong>pasillo24.com</strong>. Todos los derechos reservados &copy 2015| <a href="{{ URL::to('inicio/terminos-y-condiciones') }}">Términos y condiciones de uso</a> | <a href="{{ URL::to('inicio/politica-de-privacidad') }}">Política de privacidad</a></p>
 				</div>
 			</footer>
 		</div>
@@ -323,7 +323,7 @@ margin-top: 0.5em;display:inline-block;">
 	
 	{{ HTML::script('js/jquery.min.js') }}
 	{{ HTML::script('js/bootstrap.min.js') }}
-	{{ HTML::script('js/custom-local.js')}}
+	{{ HTML::script('js/custom-preview.js')}}
 	
 	{{ HTML::script('js/ckeditor.js') }}
 	{{ HTML::script('js/jquery.ckeditor.js') }}
