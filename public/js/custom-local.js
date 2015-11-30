@@ -1382,11 +1382,47 @@ jQuery(document).ready(function($) {
 		event.preventDefault();
 		$('.new-imagen:first').removeClass('new-imagen');
 	});
-	$('.dismiss-new-imagen').on('click', function(event) {
+	function dimiss(event) {
 		event.preventDefault();
 		var btn = $(this)
 		btn.next().next().replaceWith(btn.next().next().clone());;
 		$(this).parent('.col-xs-6').addClass('new-imagen');
-	});
- 	
+	}
+	$('.dismiss-new-imagen').on('click', dimiss);
+ 	$('.remove-imagen').on('click', function(event) {
+ 		event.preventDefault();
+ 		var btn = $(this);
+ 		var x = confirm('¿Seguro desea eliminar esta imagen?');
+
+ 		if (x) {
+ 			var dataPost = {
+ 				'img' : btn.data('img'),
+ 				'id'  : btn.data('id')
+ 			};
+ 			$.ajax({
+ 				url: 'http://localhost/pasillo24/public/modificar/publicacion/eliminar/imagen',
+ 				type: 'POST',
+ 				dataType: 'json',
+ 				data: dataPost,
+ 				beforeSend:function()
+ 				{
+ 					$('.contLoading').fadeIn('fast',function(){
+						$(this).show('fast')
+					})
+ 				},success:function(response){
+					btn.parent().parent().addClass('new-imagen');
+					btn.parent().prev().addClass('input-new-imagen');
+ 					btn.parent().parent().prepend('<button type="button" class="close dismiss-new-imagen" >&times;</button>')
+ 					$('.dismiss-new-imagen').bind('click',dimiss);
+ 					btn.parent().remove();
+ 					$('.contLoading').fadeOut('fast',function(){
+						$(this).hide('fast')
+					})
+ 				}
+ 			})
+ 			
+ 			
+
+ 		};
+ 	});
 });

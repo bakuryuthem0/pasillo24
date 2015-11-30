@@ -477,9 +477,11 @@
 						<div class="col-xs-6">
 								<label>Imagen</label>
 							<input type="file" name="img2">
-							<div class="formulario text-centered">
+							<div class="formulario text-centered contImages">
+								<button type="button" class="close remove-imagen" data-id="{{ $publicaciones->id }}" data-img="img2">&times;</button>
 								<h3>Imagen Actual</h3>
 								<img src="{{ asset('images/pubImages/'.$publicaciones->img_2) }}" class="img">
+
 							</div>
 						</div>
 						@else
@@ -493,9 +495,11 @@
 						<div class="col-xs-6">
 							<label>imagen</label>
 							<input type="file" name="img3">
-							<div class="formulario text-centered">
+							<div class="formulario text-centered contImages">
+								<button type="button" class="close remove-imagen" data-id="{{ $publicaciones->id }}" data-img="img3">&times;</button>
 								<h3>Imagen Actual</h3>
 								<img src="{{ asset('images/pubImages/'.$publicaciones->img_3) }}" class="img">
+
 							</div>
 						</div>
 						@else
@@ -510,9 +514,11 @@
 						<div class="col-xs-6">
 							<label>imagen</label>
 							<input type="file" name="img4">
-							<div class="formulario text-centered">
+							<div class="formulario text-centered contImages">
+								<button type="button" class="close remove-imagen" data-id="{{ $publicaciones->id }}" data-img="img4">&times;</button>
 								<h3>Imagen Actual</h3>
 								<img src="{{ asset('images/pubImages/'.$publicaciones->img_4) }}" class="img">
+
 							</div>
 						</div>
 						@else
@@ -527,9 +533,11 @@
 						<div class="col-xs-6">
 							<label>imagen</label>
 							<input type="file" name="img5">
-							<div class="formulario text-centered">
+							<div class="formulario text-centered contImages">
+								<button type="button" class="close remove-imagen" data-id="{{ $publicaciones->id }}" data-img="img5">&times;</button>
 								<h3>Imagen Actual</h3>
 								<img src="{{ asset('images/pubImages/'.$publicaciones->img_5) }}" class="img">
+
 							</div>
 						</div>
 						@else
@@ -544,9 +552,11 @@
 						<div class="col-xs-6">
 							<label>imagen</label>
 							<input type="file" name="img6">
-							<div class="formulario text-centered">
+							<div class="formulario text-centered contImages">
+								<button type="button" class="close remove-imagen" data-id="{{ $publicaciones->id }}" data-img="img6">&times;</button>
 								<h3>Imagen Actual</h3>
 								<img src="{{ asset('images/pubImages/'.$publicaciones->img_6) }}" class="img">
+
 							</div>
 						</div>
 						@else
@@ -561,9 +571,11 @@
 						<div class="col-xs-6">
 							<label>imagen</label>
 							<input type="file" name="img7">
-							<div class="formulario text-centered">
+							<div class="formulario text-centered contImages">
+								<button type="button" class="close remove-imagen" data-id="{{ $publicaciones->id }}" data-img="img7">&times;</button>
 								<h3>Imagen Actual</h3>
 								<img src="{{ asset('images/pubImages/'.$publicaciones->img_7) }}" class="img">
+
 							</div>
 						</div>
 						@else
@@ -578,9 +590,11 @@
 						<div class="col-xs-6">
 							<label>imagen</label>
 							<input type="file" name="img8">
-							<div class="formulario text-centered">
+							<div class="formulario text-centered contImages">
+								<button type="button" class="close remove-imagen" data-id="{{ $publicaciones->id }}" data-img="img8">&times;</button>
 								<h3>Imagen Actual</h3>
 								<img src="{{ asset('images/pubImages/'.$publicaciones->img_8) }}" class="img">
+
 							</div>
 						</div>
 						@else

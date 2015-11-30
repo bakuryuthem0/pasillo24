@@ -801,6 +801,13 @@ class PublicationController extends BaseController {
 		        $blank->insert($mark,'center')
 	           	->interlace()
 	            ->save("images/pubImages/".Auth::user()['username'].'/'.$img1->getClientOriginalName());
+	            if($donde == 1)
+            	{
+	                $publication->img_1 = Auth::user()['username'].'/'.$img1->getClientOriginalName();
+            	}elseif($donde == 2)
+            	{
+            		$publication->img_2 = Auth::user()['username'].'/'.$img1->getClientOriginalName();
+            	}
 			}
 		}
 		$input = Input::all();
@@ -1578,5 +1585,50 @@ public function postElimPub()
 		{
 			return Response::json(array('type' => 'danger','msg' => 'Error al guardar los cambios.'));
 		}
+	}
+	public function postElimImage()
+	{
+		$id = Input::get('id');
+		$pub = Publicaciones::find($id);
+		$img = Input::get('img');
+		switch ($img) {
+			case 'img2':
+				File::delete('images/pubImages/'.$pub->img_2);
+				$pub->img_2 = '';
+				break;
+			case 'img3':
+				File::delete('images/pubImages/'.$pub->img_3);
+				$pub->img_3 = '';
+				break;
+			case 'img4':
+				File::delete('images/pubImages/'.$pub->img_4);
+				$pub->img_4 = '';
+				break;
+			case 'img5':
+				File::delete('images/pubImages/'.$pub->img_5);
+				$pub->img_5 = '';
+				break;
+			case 'img6':
+				File::delete('images/pubImages/'.$pub->img_6);
+				$pub->img_6 = '';
+				break;
+			case 'img7':
+				File::delete('images/pubImages/'.$pub->img_7);
+				$pub->img_7 = '';
+				break;
+			case 'img8':
+				File::delete('images/pubImages/'.$pub->img_8);
+				$pub->img_8 = '';
+				break;
+			default:
+				break;
+		}
+		if ($pub->save()) {
+			return Response::json(array('type' => 'success'));
+		}else
+		{
+			return Response::json(array('type' => 'danger'));
+		}
+		
 	}
 }
