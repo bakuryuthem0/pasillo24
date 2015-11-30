@@ -842,59 +842,58 @@ $(document).ready(function() {
 /*------------Responder---------------*/
 $(document).ready(function() {
 	$('.btn-responder').click(function(event) {
-		var id = $(this).val();
+		var id 	  = $(this).val();
+		var pubid = $(this).data('pub-id');
 		var boton = $(this);
-		
-		$('.textoRespuesta').click(function(event) {
+		boton.addClass('to-elim');
+		$('.enviarRespuesta').val(id);
+		$('.enviarRespuesta').attr('data-pub-id',pubid);
+		$('.textoRespuesta').on('click',function(event) {
 			$('.responseDanger').css({'display':'none'})
 		});
-		$('.modal-backdrop').click(function(event) {
+		$('.modal').on('hide.bs.modal', function(event) {
 			$('.responseDanger').removeClass('alert-danger');
 			$('.responseDanger').removeClass('alert-success');
 			$('.responseDanger').css({
 				'display': 'none',
 				'opacity': 0
 			});
-			$('.enviarRespuesta').prop('disabled',false);
+			$('.enviarRespuesta').removeClass('disabled');
 		});
-		$('.close').click(function(event) {
-			$('.responseDanger').removeClass('alert-danger');
-			$('.responseDanger').removeClass('alert-success');	
-			$('.responseDanger').css({
-				'display': 'none',
-				'opacity': 0
-			});
-			$('.enviarRespuesta').prop('disabled',false)
 	});
-		$('.enviarRespuesta').click(function(event) {
+	$('.enviarRespuesta').on('click',function(event) {
 
-			var texto = $('.textoRespuesta').val();
-			datos = {'id':id,'respuesta':texto,'pub_id':boton.attr('data-pub-id')};
-			$.ajax({
-				url: 'http://localhost/pasillo24/public/usuario/publicaciones/comentarios/respuesta',
-				type: 'POST',
-				dataType: 'json',
-				data: datos,
-				beforeSend:function()
-				{
-					$('.enviarRespuesta').prop('disabled',true)
-				},
-				success:function(response)
-				{
-					$('.responseDanger').removeClass('alert-danger');
-					$('.responseDanger').removeClass('alert-success');
-					$('.responseDanger').stop().css({'display':'block'}).addClass('alert-'+response.type).html('<p class="textoPromedio">'+response.msg+'</p>').animate({
-					'opacity': 1},
-					500);
-					boton.parent().parent().remove();
-				},
-				error:function()
-				{
-					console.log('error');
-				}
-			})
-			
-		});
+		var texto = $('.textoRespuesta').val();
+		var id    = $(this).val(),
+			pubid = $(this).data('pub-id')
+		datos = {'id':id,'respuesta':texto,'pub_id':pubid};
+		$.ajax({
+			url: 'http://localhost/pasillo24/public/usuario/publicaciones/comentarios/respuesta',
+			type: 'POST',
+			dataType: 'json',
+			data: datos,
+			beforeSend:function()
+			{
+				$('.miniLoader').addClass('active');
+				$('.enviarRespuesta').addClass('disabled');
+			},
+			success:function(response)
+			{
+				$('.textoRespuesta').val('');
+				$('.miniLoader').removeClass('active');
+				$('.responseDanger').removeClass('alert-danger');
+				$('.responseDanger').removeClass('alert-success');
+				$('.responseDanger').stop().css({'display':'block'}).addClass('alert-'+response.type).html('<p class="textoPromedio text-centered">'+response.msg+'</p>').animate({
+				'opacity': 1},
+				500);
+				$('.to-elim').parent().parent().remove();
+			},
+			error:function()
+			{
+				console.log('error');
+			}
+		})
+		
 	});
 });
 
@@ -1389,6 +1388,11 @@ jQuery(document).ready(function($) {
 		$(this).parent('.col-xs-6').addClass('new-imagen');
 	}
 	$('.dismiss-new-imagen').on('click', dimiss);
+	$('.change-response-text').on('click', function(event) {
+		event.preventDefault();
+		var txt = $(this).data('txt');
+		$('.response-text').html(txt);
+	});
  	$('.remove-imagen').on('click', function(event) {
  		event.preventDefault();
  		var btn = $(this);

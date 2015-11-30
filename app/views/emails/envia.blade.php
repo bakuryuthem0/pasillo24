@@ -91,7 +91,7 @@ fieldset[disabled] .btn-success.active {
          <p class="bg-primary" style="padding:1em;">Enviado el: {{ $fecha }}</p>
          <ul>
             <li>Si usted no solicitó el registro en <strong>pasillo24.com</strong>, por favor ignore o borre este mensaje</li>
-            <li>Si tiene alguna duda o necesita mas información. llámenos al teléfono (x)xxx-xxxx o escríbanos a los correos electrónicos <span class="bg-primary" style="padding:0px 0.5em;">123456789@hotmail.com</span> o <span class="bg-primary" style="padding:0px 0.5em;">123456789@hotmail.com</span> sera un placer atenderle</li>
+            <li>Si tiene alguna duda o necesita mas información. llámenos a los teléfonos 4 4226775, 61592263, 69542394 o escríbanos al correo electrónico <span class="bg-primary" style="padding:0px 0.5em;">contacto@pasillo24.com</span> sera un placer atenderle</li>
          </ul>
 	      <p  style="text-align:center;">Gracias por unirse a nuestra comunidad. Atentamente <span class="bg-primary" style="color:white;">pasillo24.com</span></p>
 	  </div>
