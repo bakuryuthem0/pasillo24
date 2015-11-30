@@ -437,7 +437,6 @@ class UserController extends BaseController {
 			Session::flash('error', 'Debe seleccionar una publicación para enviar el pago');
 			return Redirect::to('usuario/publicaciones/mis-publicaciones');
 		}
-		return $pub_id;
 		$pub = Publicaciones::find($pub_id);
 		$title = "Pago de publicación";
 		$bancos     = Bancos::all();
