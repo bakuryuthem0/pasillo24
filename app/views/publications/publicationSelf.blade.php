@@ -312,6 +312,7 @@
 		@endif
 	</div>
 	<hr>
+	@if(count($otrasPub) > 0)
 	<div class="col-xs-12">
 		<h2>Otras publicaciones de: {{ $username }}</h2>
 		<div class="owl-carousel1">
@@ -327,8 +328,10 @@
 				</div>
 			</div>
 			@endforeach
+				
 		</div>
 	</div>
+	@endif
 	<hr>
 	<legend>Comentarios</legend>
 	<div class="row">
