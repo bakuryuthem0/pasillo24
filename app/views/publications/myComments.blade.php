@@ -29,7 +29,9 @@
 								<p class="textoPromedio">El comentario fue borrado</p>
 							</div></td>
 							@else
-							<td><button class="btn btn-primary btn-responder" data-toggle="modal" data-target="#myComment" data-pub-id="{{ $comentario->pub_id }}" value="{{ $comentario->id }}">Responder</button></td>
+							<td>
+								<button class="btn btn-primary btn-responder" data-toggle="modal" data-target="#myComment" data-pub-id="{{ $comentario->pub_id }}" value="{{ $comentario->id }}">Responder</button>
+							</td>
 							@endif
 						</tr>
 						@endforeach
@@ -63,7 +65,11 @@
 							</div></td>
 							@else
 							<td>
-								{{ $respuesta->respuesta }}
+								@if(strlen($respuesta->respuesta) > 10)
+									{{ substr($respuesta->respuesta,0,10) }}... <a class="change-response-text" data-toggle="modal" data-txt="{{ $respuesta->respuesta }}" href='#modal-id'>Leer Mas</a>
+								@else
+									{{$respuesta->respuesta}}
+								@endif
 							</td>
 							@endif
 						</tr>
@@ -86,16 +92,33 @@
 					<p class="textoPromedio">Introduzca su respuesta</p>
 
 				</div>
-				<div class="modal-footer " style="text-align:center;">
+				<div class="modal-footer " style="text-align:right;">
 					<div class="alert responseDanger">
 					<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
 					</div>
 					<textarea name="respuesta" class="form-control textoRespuesta" placeholder="Enviar respuesta"></textarea>
-					<button class="btn btn-success enviarRespuesta" style="margin-top:1em;">Enviar</button>
+					<img src="{{ asset('images/loading.gif') }}" class="miniLoader">
+					<button class="btn btn-success enviarRespuesta" style="margin-top:1em;margin-left:1em;" data-pub-id="" value="">Enviar</button>
 				</div>
 		</div>
 	</div>
 </div>
 
+<div class="modal fade" id="modal-id">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+				<h4 class="modal-title">Respuesta</h4>
+			</div>
+			<div class="modal-body">
+				<p class="response-text textoPromedio"></p>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+			</div>
+		</div>
+	</div>
+</div>
 
 @stop

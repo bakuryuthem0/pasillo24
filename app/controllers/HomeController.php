@@ -161,16 +161,15 @@ class HomeController extends BaseController {
 		$lider = DB::select("SELECT `publicaciones`.`id`,`publicaciones`.`img_1`,`publicaciones`.`titulo` 
 			FROM  `publicaciones` 
 			LEFT JOIN  `categoria` ON  `categoria`.`id` =  `publicaciones`.`categoria` 
-			WHERE (
-			LOWER(  `publicaciones`.`titulo` ) LIKE  '%".strtolower($input['busq'])."%'
-			OR LOWER( `publicaciones`.`pag_web` ) LIKE  '%".strtolower($input['busq'])."%'
-			OR LOWER( `publicaciones`.`descripcion` ) LIKE  '%".strtolower($input['busq'])."%'
-			OR LOWER( `categoria`.`desc` ) LIKE  '%".strtolower($input['busq'])."%'
-			)
-			AND  `publicaciones`.`tipo` =  'Lider'
-                        OR   `publicaciones`.`ubicacion` = 'Ambos'
-			AND  `publicaciones`.`status` =  'Aprobado'
-			AND  `publicaciones`.`deleted` =0");
+			WHERE `publicaciones`.`status` =  'Aprobado' AND (
+				LOWER(  `publicaciones`.`titulo` ) LIKE  '%".strtolower($input['busq'])."%'
+				OR LOWER( `publicaciones`.`pag_web` ) LIKE  '%".strtolower($input['busq'])."%'
+				OR LOWER( `publicaciones`.`descripcion` ) LIKE  '%".strtolower($input['busq'])."%'
+				OR LOWER( `categoria`.`desc` ) LIKE  '%".strtolower($input['busq'])."%'
+			) 
+			AND  `publicaciones`.`deleted` = 0
+			AND  (`publicaciones`.`tipo` =  'Lider'
+            OR   `publicaciones`.`ubicacion` = 'Ambos')");
 
 		if (Input::has('filter')) {
 			$inp = Department::find(Input::get('filter'));

@@ -1255,7 +1255,7 @@ jQuery(document).ready(function($) {
 jQuery(document).ready(function($) {
 	$('#enviarNumTrans').click(function(event) {
 		$('.numTransDanger').remove();
-		if ($('#numTransVal').val().length<8) {
+		if ($('#numTransVal').val().length<4) {
 			event.preventDefault();
 			$('#numTransVal').after('<p class="textoPromedio numTransDanger bg-danger" style="padding:1em;">El numero de transacción debe ser mas largo.</p>')
 		};

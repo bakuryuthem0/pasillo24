@@ -77,13 +77,13 @@
 			<div class="col-xs-6 formCambio" style="margin-top:2em;">
 				<legend>También podrá contactarnos mediante:</legend>
 				<div class="bg-info textoPromedio textoInfoContactUs" style="padding:2em 1em 2em 4em;border-radius: 16px;">
-					<p>Números telefónicos</p>
+					<p><i class="fa fa-phone"></i> Números telefónicos</p>
 					<ul>
 						<li>4 4226775</li>
 						<li>61592263</li>
 						<li>69542394</li>
 					</ul>
-					<p><i class="fa fa-envelope"></i> contacto@pasillo24.com</p>
+					<p><i class="fa fa-envelope"></i> Email: contacto@pasillo24.com</p>
 				</div>
 			</div>
 			<div class="clearfix"></div>

@@ -357,7 +357,11 @@
 								</form>
 							</td>-->
 							<td class="textoMedio">
+								@if($publication->status == 'Procesando')
+								    <i class="fa fa-clock-o btn-xs" style="font-size:2em;margin-top:0px;color:orange;"></i>
+								@else
 									<i class="fa fa-check-circle btn-xs" style="font-size:2em;margin-top:0px;color:green;"></i>	
+								@endif
 							</td>
 							<td>
 								<button class="btn btn-danger btn-xs btnEliminarPub" value="{{ $publication->id }}" data-toggle="modal" href="#modalElimUserPub">Eliminar</button>

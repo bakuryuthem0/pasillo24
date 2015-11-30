@@ -451,7 +451,6 @@ class UserController extends BaseController {
 		$id = $input['enviarPago'];
 		$rules = array(
 			'transNumber' => 'required',
-
 			'fecha'		  => 'required',
 			'banco'		  => 'required'
 		);
