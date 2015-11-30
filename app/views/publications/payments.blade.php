@@ -125,7 +125,7 @@
 							<input type="hidden" name="no_note" value="0">
 							<input type="hidden" name="cn" value="Dar instrucciones especiales al vendedor:">
 							<input type="hidden" name="no_shipping" value="2">
-							<input type="hidden" name="amount" value="{{ $pub->monto*6.94 }}">
+							<input type="hidden" name="amount" value="{{ number_format(($pub->monto/6.94),2,',','') }}">
 							<input type="hidden" name="currency_code" value="USD">
 							<input type="hidden" name="bn" value="PP-BuyNowBF:btn_paynowCC_LG.gif:NonHosted">
 							<input type="image" src="https://www.paypalobjects.com/es_XC/i/btn/btn_paynowCC_LG.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!">
@@ -135,7 +135,7 @@
 					</div>
 					<div class="col-xs-12" style="margin-top:1em;">
 						<p class="textoPromedio">Si usa el metodo de pago por PayPal, una vez realizado el pago debe seleccionar PayPal en el campo bancos e ingresar el numero de referencia mediante nuestro formulario de pago.</p>
-						<p class="textoPromedio">La tasa de Cambio es 6.94 Bs. El monto a pagar en dolares es: ${{ $pub->monto*6.94 }} </p>
+						<p class="textoPromedio">La tasa de Cambio es 6.94 Bs. El monto a pagar en dolares es: ${{ number_format(($pub->monto/6.94),2,',','') }} </p>
 					</div>
 				</div>
 				<div class="clearfix"></div>
