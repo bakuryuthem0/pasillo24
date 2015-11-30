@@ -445,7 +445,8 @@ class UserController extends BaseController {
 		->with('title',$title)
 		->with('pub_id',$pub_id)
 		->with('bancos',$bancos)
-		->with('numCuentas',$numCuentas);
+		->with('numCuentas',$numCuentas)
+		->with('pub',$pub);
 	}
 	public function postPublicationPayment(){
 		$input = Input::all();
