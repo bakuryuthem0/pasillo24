@@ -139,31 +139,29 @@ class PublicationController extends BaseController {
 	{
 		$pub = Publicaciones::find(base64_decode($id));
 		$user = User::find($pub->user_id);
-		$otrasPub = Publicaciones::where('user_id','=',$user->id)
+		$otrasPub = Publicaciones::where('user_id','=',$pub->user_id)
+		->where('status','=','Aprobado')
 		->where(function($query)
 		{
 			$query->where('tipo','=','Lider')
 			->where('fechFin','>=',date('Y-m-d',time()))
-			->where('status','=','Aprobado');
-		})
-		->orWhere(function($query)
-		{
-			$query->where(function($query){
-				/*Busco las habituales*/
-				$query->where('tipo','=','Habitual')
-				->where(function($query){
-					/*y que sigan activas*/
-					$query->where('fechFin','>=',date('Y-m-d',time()))
-					->orWhere('fechFinNormal','>=',date('Y-m-d',time()));
+			->orWhere(function($query)
+			{
+				$query->where(function($query){
+					/*Busco las habituales*/
+					$query->where('tipo','=','Habitual')
+					->where(function($query){
+						/*y que sigan activas*/
+						$query->where('fechFin','>=',date('Y-m-d',time()))
+						->orWhere('fechFinNormal','>=',date('Y-m-d',time()));
 
+					});
 				})
-				->where('status','=','Aprobado');
-			})
-			->orWhere(function($query){
-				$query->where('tipo','=','Casual')
-				->where('fechFin','>=',date('Y-m-d',time()))
-				->where('status','=','Aprobado');
+				->orWhere(function($query){
+					$query->where('tipo','=','Casual')
+					->where('fechFin','>=',date('Y-m-d',time()));
 
+				});
 			});
 		})
 		->where('deleted','=',0)

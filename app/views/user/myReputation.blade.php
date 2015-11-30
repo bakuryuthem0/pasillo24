@@ -265,7 +265,7 @@
 
 						<li>Una valoración negativa anula a una positiva.</li>
 						<li>Evite utilizar vocabulario inadecuado, recuerde que los Bolivianos nos caracterizamos por la amabilidad ante todo.</li>
-						<li>La comunidad pasillo24.com le desea éxitos, no olvide comunicarse al: atencionalclientepasillo24@gmail.com estamos  para servirle.</li>
+						<li>La comunidad pasillo24.com le desea éxitos, no olvide comunicarse al: <strong>contacto@pasillo24.com</strong> estamos  para servirle.</li>
 					</ul>
 				</div>
 				<div class="modal-footer " style="text-align:center;">
