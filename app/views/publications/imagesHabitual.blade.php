@@ -49,7 +49,7 @@
                 var url = JSON.parse(file.xhr.response);
                 var imagepath = url.url;
                 $.ajax({
-                    url: '../imagenes/eliminar',
+                    url: 'http://preview.pasillo24.com/publicacion/habitual/enviar/imagenes/eliminar',
                     type: 'POST',
                     dataType: 'json',
                     data: {
