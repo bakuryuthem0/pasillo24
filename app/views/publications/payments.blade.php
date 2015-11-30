@@ -125,7 +125,7 @@
 							<input type="hidden" name="no_note" value="0">
 							<input type="hidden" name="cn" value="Dar instrucciones especiales al vendedor:">
 							<input type="hidden" name="no_shipping" value="2">
-							<input type="hidden" name="amount" value="{{ number_format(($pub->monto/6.94),2,',','') }}">
+							<input type="hidden" name="amount" value="{{ $pub->monto/6.94 }}">
 							<input type="hidden" name="currency_code" value="USD">
 							<input type="hidden" name="bn" value="PP-BuyNowBF:btn_paynowCC_LG.gif:NonHosted">
 							<input type="image" src="https://www.paypalobjects.com/es_XC/i/btn/btn_paynowCC_LG.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!">
