@@ -102,6 +102,10 @@
 						<a class="btn btn-primary"  data-toggle="modal" data-target="#myModalBancos" style="margin-top:2em;">CUENTAS Y ENTIDADES BANCARIAS.</a>
 							
 						</div>
+						<div class="col-xs-6">
+							<h2 class="payment-text">Total a pagar:</h2>
+							<h3 class="payment-amount">{{ $pub->monto }} Bs.</h3>
+						</div>
 					</div>
 				</form>
 				
@@ -110,16 +114,28 @@
 			<div class="contAnaranjado">
 				<div class="col-xs-12">
 					<legend>Pago con <strong>PayPal</strong></legend>
-					<p class="textoPromedio">pasillo24.com le ofrece la facilidad de pagar mediante nuestra cuenta paypal.</p>
+					<div class="col-xs-12"><p class="textoPromedio">pasillo24.com le ofrece la facilidad de pagar mediante nuestra cuenta paypal.</p></div>
 					<div class="col-xs-12">
-						<form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
-							<input type="hidden" name="cmd" value="_s-xclick">
-							<input type="hidden" name="hosted_button_id" value="CP4S7VE2F595G">
-							<input type="image" src="https://www.paypalobjects.com/es_XC/i/btn/btn_buynowCC_LG.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!">
+						<form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_blank">
+							<input type="hidden" name="cmd" value="_xclick">
+							<input type="hidden" name="business" value="32XX7VACEPPQ4">
+							<input type="hidden" name="lc" value="AL">
+							<input type="hidden" name="item_name" value="Pago de publicacion | pasillo24.com">
+							<input type="hidden" name="button_subtype" value="services">
+							<input type="hidden" name="no_note" value="0">
+							<input type="hidden" name="cn" value="Dar instrucciones especiales al vendedor:">
+							<input type="hidden" name="no_shipping" value="2">
+							<input type="hidden" name="amount" value="{{ $pub->monto*6.94 }}">
+							<input type="hidden" name="currency_code" value="USD">
+							<input type="hidden" name="bn" value="PP-BuyNowBF:btn_paynowCC_LG.gif:NonHosted">
+							<input type="image" src="https://www.paypalobjects.com/es_XC/i/btn/btn_paynowCC_LG.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!">
 							<img alt="" border="0" src="https://www.paypalobjects.com/es_XC/i/scr/pixel.gif" width="1" height="1">
 						</form>
 
-
+					</div>
+					<div class="col-xs-12" style="margin-top:1em;">
+						<p class="textoPromedio">Si usa el metodo de pago por PayPal, una vez realizado el pago debe seleccionar PayPal en el campo bancos e ingresar el numero de referencia mediante nuestro formulario de pago.</p>
+						<p class="textoPromedio">La tasa de Cambio es 6.94 Bs. El monto a pagar en dolares es: ${{ $pub->monto*6.94 }} </p>
 					</div>
 				</div>
 				<div class="clearfix"></div>

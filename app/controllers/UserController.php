@@ -437,6 +437,8 @@ class UserController extends BaseController {
 			Session::flash('error', 'Debe seleccionar una publicación para enviar el pago');
 			return Redirect::to('usuario/publicaciones/mis-publicaciones');
 		}
+		return $pub_id;
+		$pub = Publicaciones::find($pub_id);
 		$title = "Pago de publicación";
 		$bancos     = Bancos::all();
 		$numCuentas = NumCuentas::all();
@@ -766,10 +768,12 @@ class UserController extends BaseController {
 		$numCuentas = NumCuentas::all();
 		$bancos     = Bancos::all();
 		$title = 'Pago de publicación';
+		$pub = Publicaciones::find($id);
 		return View::make('publications.payments')
 		->with('title',$title)
 		->with('pub_id',$id)
 		->with('numCuentas',$numCuentas)
-		->with('bancos',$bancos);
+		->with('bancos',$bancos)
+		->with('pub',$pub);
 	}
 }
