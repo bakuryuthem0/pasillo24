@@ -273,7 +273,7 @@ jQuery(document).ready(function($) {
 		});
 	$('.btnElimPublicacion').on('click',function(event) {
 			$.ajax({
-				url: 'http://localhost/pasillo24/public/usuario/publicaciones/mis-publicaciones/eliminar/publicacion',
+				url: 'http://preview.pasillo24.com/usuario/publicaciones/mis-publicaciones/eliminar/publicacion',
 				type: 'POST',
 				dataType: 'json',
 				data: {'id': $(this).val()},
