@@ -45,7 +45,7 @@
 					<div class="col-xs-12">
 						<div class="col-xs-6" style="padding-left:0px;">
 							<div class="col-xs-12 formulario textoPromedio" required>
-				                <label>Banco de destino</label>
+				                <label>Banco de destino/ PayPal</label>
 				                  <select name="banco" class="form-control" required>
 				                    <option value="">Seleccione el banco</option>
 				                    @foreach($bancos as $b)
@@ -87,7 +87,7 @@
 								@endif
 			              	</div>
 			              	<div class="col-xs-12 formulario textoPromedio">
-				                <label>Numero de transacción</label>
+				                <label>Numero de transacción / Codigo de transacción de PayPal</label>
 								<input type="text" id="numTransVal" name="transNumber" placehlder="Numero de transaccion" class="form-control" required>
 								@if ($errors->has('transNumber'))
 									 @foreach($errors->get('transNumber') as $err)
@@ -153,18 +153,17 @@
 				<form method="POST" action="">
 					<div class="modal-body">
 						<p class="textoPromedio">Haga click en el banco de su preferencia para ver la sucursal mas cercana a su domicilio.</p>
-						<div class="col-xs-12" style="margin-top:2em;">
-							<p class="textoPromedio">Numero(s) de cuenta(s)</p>
+						<div class="col-xs-12">
+							<p class="textoPromedio">Número(s) de cuenta(s)</p>
 							<ul class="textoPromedio">
 							@foreach($numCuentas as $num)
-								@if($num->banco_id == 1)
+								@if($num->banco_id == 2)
 									<li><label>Número de cuenta:</label>{{$num->num_cuenta}} - <label>Tipo de cuenta:</label> {{ $num->tipoCuenta }}</li>
 								@endif
 							@endforeach
 							</ul>
-							<a target="_blank" href="https://www.bmsc.com.bo/Puntos%20de%20Atencion/redDeOficinas.aspx
-">
-								<img src="{{ asset('images/bancos/1.png') }}" style="width:100%;margin-bottom:2em;"/>
+							<a target="_blank" href="http://www.bnb.com.bo/portal/frmpaginaprincipal.html">
+								<img src="{{ asset('images/bancos/bnb.jpg') }}" style="width:100%;margin-bottom:2em;">
 							</a>
 						</div>
 						<div class="col-xs-12">
@@ -193,28 +192,20 @@
 								<img src="{{ asset('images/bancos/3.png') }}" style="width:100%;margin-bottom:2em;">
 							</a>
 						</div>
-						<div class="col-xs-12">
-							<p class="textoPromedio">Número(s) de cuenta(s)</p>
+						<div class="col-xs-12" style="margin-top:2em;">
+							<p class="textoPromedio">Numero(s) de cuenta(s)</p>
 							<ul class="textoPromedio">
 							@foreach($numCuentas as $num)
-								@if($num->banco_id == 4)
+								@if($num->banco_id == 1)
 									<li><label>Número de cuenta:</label>{{$num->num_cuenta}} - <label>Tipo de cuenta:</label> {{ $num->tipoCuenta }}</li>
 								@endif
 							@endforeach
 							</ul>
-							<a target="_blank" href="http://www.losandesprocredit.com.bo/bolivia.aspx">
-								<img src="{{ asset('images/bancos/4.png') }}" style="width:100%;margin-bottom:2em;"></a></div>
-						<div class="col-xs-12">
-							<p class="textoPromedio">Número(s) de cuenta(s)</p>
-							<ul class="textoPromedio">
-							@foreach($numCuentas as $num)
-								@if($num->banco_id == 5)
-									<li><label>Número de cuenta:</label>{{$num->num_cuenta}} - <label>Tipo de cuenta:</label> {{ $num->tipoCuenta }}</li>
-								@endif
-							@endforeach
-							</ul>
-							<a target="_blank" href="https://www.bg.com.bo/atms.aspx">
-								<img src="{{ asset('images/bancos/5.png') }}" style="width:100%;margin-bottom:2em;"></a></div>
+							<a target="_blank" href="https://www.bmsc.com.bo/Puntos%20de%20Atencion/redDeOficinas.aspx
+">
+								<img src="{{ asset('images/bancos/1.png') }}" style="width:100%;margin-bottom:2em;"/>
+							</a>
+						</div>
 						<div class="col-xs-12">
 							<p class="textoPromedio">Número(s) de cuenta(s)</p>
 							<ul class="textoPromedio">
@@ -224,31 +215,9 @@
 								@endif
 							@endforeach
 							</ul>
-							<a target="_blank" href="http://bisa.com/buscarPuntoAtencion.php
-"><img src="{{ asset('images/bancos/6.png') }}" style="width:100%;margin-bottom:2em;"></a></div>
-						<div class="col-xs-12">
-							<p class="textoPromedio">Número(s) de cuenta(s)</p>
-							<ul class="textoPromedio">
-							@foreach($numCuentas as $num)
-								@if($num->banco_id == 7)
-									<li><label>Número de cuenta:</label>{{$num->num_cuenta}} - <label>Tipo de cuenta:</label> {{ $num->tipoCuenta }}</li>
-								@endif
-							@endforeach
-							</ul>
-							<a target="_blank" href="https://www.baneco.com.bo/oficinas/oficinas-santacruz
-"><img src="{{ asset('images/bancos/7.png') }}" style="width:100%;margin-bottom:2em;"></a></div>
-						<div class="col-xs-12">
-							<p class="textoPromedio">Número(s) de cuenta(s)</p>
-							<ul class="textoPromedio">
-							@foreach($numCuentas as $num)
-								@if($num->banco_id == 8)
-									<li><label>Número de cuenta:</label>{{$num->num_cuenta}} - <label>Tipo de cuenta:</label> {{ $num->tipoCuenta }}</li>
-								@endif
-							@endforeach
-							</ul>
-							<a target="_blank" href="http://www.bancosol.com.bo/contactenos/direcciones-de-agencias
-"><img src="{{ asset('images/bancos/8.png') }}" style="width:100%;margin-bottom:2em;"></a></div>
-					</div>
+							<a target="_blank" href="http://bisa.com/buscarPuntoAtencion.php">
+								<img src="{{ asset('images/bancos/6.png') }}" style="width:100%;margin-bottom:2em;"></a>
+						</div>
 					<div class="modal-footer">
 					</div>
 			</div>
