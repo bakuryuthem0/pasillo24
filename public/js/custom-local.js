@@ -898,7 +898,10 @@ $(document).ready(function() {
 				$('.responseDanger').stop().css({'display':'block'}).addClass('alert-'+response.type).html('<p class="textoPromedio text-centered">'+response.msg+'</p>').animate({
 				'opacity': 1},
 				500);
-				$('.to-elim').parent().parent().remove();
+				if (response.type == 'success') {
+					$('.to-elim').parent().parent().remove();
+					
+				};
 			},
 			error:function()
 			{

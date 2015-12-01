@@ -18,7 +18,7 @@
 						</tr>
 					</thead>
 					<tbody>
-						@foreach($hechos as $comentario)
+						@foreach($recividos as $comentario)
 						<tr class="textoPromedio">
 							<td>{{ $comentario->titulo }}</td>
 							<td>{{ $comentario->comentario }}</td>
@@ -53,7 +53,7 @@
 						</tr>
 					</thead>
 					<tbody>
-						@foreach($recividos as $respuesta)
+						@foreach($hechos as $respuesta)
 						<tr class="textoPromedio">
 							<td>{{ $respuesta->titulo }}</td>
 							<td>{{ $respuesta->comentario }}</td>
@@ -65,10 +65,14 @@
 							</div></td>
 							@else
 							<td>
-								@if(strlen($respuesta->respuesta) > 10)
-									{{ substr($respuesta->respuesta,0,10) }}... <a class="change-response-text" data-toggle="modal" data-txt="{{ $respuesta->respuesta }}" href='#modal-id'>Leer Mas</a>
+								@if($respuesta->respuesta)
+									@if(strlen($respuesta->respuesta) > 10)
+										{{ substr($respuesta->respuesta,0,10) }}... <a class="change-response-text" data-toggle="modal" data-txt="{{ $respuesta->respuesta }}" href='#modal-id'>Leer Mas</a>
+									@else
+										{{$respuesta->respuesta}}
+									@endif
 								@else
-									{{$respuesta->respuesta}}
+									Sin Respuesta
 								@endif
 							</td>
 							@endif

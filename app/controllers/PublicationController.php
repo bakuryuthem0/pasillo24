@@ -404,15 +404,30 @@ class PublicationController extends BaseController {
 	public function getMyComment()
 	{
 		$title = "Comentarios | pasillo24.om";
-		$hechos 	= Comentarios::join('publicaciones','publicaciones.id','=','comentario.pub_id')
-		->where('publicaciones.user_id','=',Auth::id())
+		$recividos = Comentarios::leftJoin('publicaciones','publicaciones.id','=','comentario.pub_id')
+		->where('publicaciones.user_id','=',Auth::user()['id'])
 		->where('comentario.respondido','=',0)
-		->get(array('publicaciones.titulo','comentario.id','comentario.pub_id','comentario.comentario','comentario.created_at','comentario.deleted'));
+		->get(array(
+			'publicaciones.titulo',
+			'comentario.id',
+			'comentario.pub_id',
+			'comentario.comentario',
+			'comentario.created_at',
+			'comentario.deleted'
+		));
+		
+		$hechos 	= Comentarios::leftJoin('publicaciones','publicaciones.id','=','comentario.pub_id')
+		->leftJoin('respuestas','respuestas.comentario_id','=','comentario.id')
+		->where('comentario.user_id','=',Auth::id())
+		->get(array(
+			'publicaciones.titulo',
+			'comentario.id',
+			'comentario.comentario',
+			'comentario.created_at',
+			'comentario.deleted',
+			'respuestas.respuesta'
+		));
 
-		$recividos = Respuestas::join('publicaciones','publicaciones.id','=','respuestas.pub_id')
-		->join('comentario','comentario.id','=','respuestas.comentario_id')
-		->where('respuestas.user_id','=',Auth::id())
-		->get(array('publicaciones.id','publicaciones.titulo','comentario.comentario','comentario.created_at','comentario.deleted','respuestas.respuesta'));
 		return View::make('publications.myComments')
 		->with('title',$title)
 		->with('hechos',$hechos)
@@ -540,6 +555,9 @@ class PublicationController extends BaseController {
 			return Response::json(array('type' => 'danger','msg' => 'Debe enviar un mensaje.'));
 		}
 		$com = Comentarios::find($input['id']);
+		if ($com->respondido == 1) {
+			return Response::json(array('type' => 'danger','msg' => 'El comantario ya fue respondido.'));	
+		}
 		$resp = new Respuestas;
 		$resp->comentario_id = $input['id'];
 		$resp->respuesta 	 = $input['respuesta'];

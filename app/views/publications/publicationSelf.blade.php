@@ -345,6 +345,10 @@
 			@if(empty($comentarios) || is_null($comentarios) || count($comentarios)<1)
 				@if(Auth::check())
 				<div class="contComment">
+					<div class="col-xs-12 comentario new-comment">
+						<p class="textoPromedio comment-text"></p>
+						<p class="textoMedio comment-date" style="float:right;"></p>
+					</div>
 					<div class="col-xs-12">
 						<textarea id="inputComentario" class="inputComentario textoPromedio" name="inputComentario" placeholder="Escriba su pregunta"></textarea>
 						<button id="enviarComentario" name="enviarComentario" class="btn btn-success" value="{{ $id }}">Enviar</button><img src="{{ asset('images/loading.gif') }}" class="miniLoader">
