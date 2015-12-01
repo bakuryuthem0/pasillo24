@@ -33,7 +33,7 @@
 				<div class="col-xs-12 ">
 					<img src="{{ asset('images/portada.png') }}">
 				</div>
-				<div class="col-xs-12 banderas">
+				<div class="col-xs-12 banderas hidden-xs hidden-md">
 					<h3>Filtro de búsqueda:</h3>
 					<a href="{{ URL::to('inicio') }}">
 						<div class="bandera @if(!isset($depFilter)) bandera-bolivia @endif">
@@ -47,6 +47,29 @@
 					</div>
 					</a>
 					@endforeach
+				</div>
+				<div class="col-xs-12 banderas visible-xs visible-md hidden-lg">
+					<h3>Filtro de búsqueda:</h3>
+					<div class="dropdown">
+					  <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-expanded="true" style="color:black;margin: 0 auto;display: block;">
+					    Departamentos
+					    <span class="caret"></span>
+					  </button>
+					  <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu2">
+					  	<li>
+					  		<a href="{{ URL::to('inicio') }}" class="@if(!isset($depFilter)) link-activo @endif">
+					  			Bolivia
+					  		</a>
+					  	</li>
+					  	@foreach($departamentos as $departamento)
+					  		<li role="presentation">
+					  			<a  role="menuitem" tabindex="-1" href="{{ URL::to('inicio/departamentos/'.$departamento->id) }}" class="@if(isset($depFilter) && $depFilter == $departamento->id) link-activo @endif">
+					  				{{ ucfirst(strtolower(str_replace('_',' ',$departamento->nombre))) }}
+					  			</a>
+					  		</li>
+						@endforeach
+					  </ul>
+					</div>
 				</div>
 			</div>
 		</div>
@@ -87,7 +110,7 @@ display: block;">
 							@endif
 						</div>
 						<div class="col-xs-12" style="padding-left:0px;padding-right:0px;">
-							<div class="col-xs-6" style="padding-left:0px;">
+							<div class="col-xs-12 col-md-6 pubLeft" >
 								@if($publi[1]->activo == 0)
 									<img src="{{ asset('images/pubpeq.png') }}" style="width:100%;">
 								@else
@@ -96,7 +119,7 @@ display: block;">
 								</a>
 								@endif
 							</div>
-							<div class="col-xs-6" style="padding-right: 0px;">
+							<div class="col-xs-12 col-md-6 pubRight" >
 								@if($publi[2]->activo == 0)
 									<img src="{{ asset('images/pubpeq.png') }}" style="width:100%;">
 								@else
@@ -307,8 +330,12 @@ display: block;">
 		        0:{
 		            items:1
 		        },
-		        800:{
+	        	650:{
 		            items:2
+		        },
+		        850:
+		        {
+		        	items: 3
 		        },
 		        1200:{
 		            items:4
@@ -332,8 +359,12 @@ display: block;">
 		        0:{
 		            items:1
 		        },
-		        800:{
+		        650:{
 		            items:2
+		        },
+		        850:
+		        {
+		        	items: 3
 		        },
 		        1200:{
 		            items:4
@@ -357,8 +388,12 @@ display: block;">
 		        0:{
 		            items:1
 		        },
-		        800:{
+		        650:{
 		            items:2
+		        },
+		        850:
+		        {
+		        	items: 3
 		        },
 		        1200:{
 		            items:4

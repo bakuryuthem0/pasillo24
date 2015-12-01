@@ -14,7 +14,7 @@
 		{{ HTML::style('css/bootstrap.min.css') }}
 		{{ HTML::style('//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css') }}
 		{{ HTML::style('css/bootstrap-theme.min.css')}}
-		{{ HTML::style('css/custom.css?v=0.1') }}
+		{{ HTML::style('css/custom.css?v=0.3') }}
 		{{ HTML::style('css/jquery.cleditor.css') }}
 		{{ HTML::style('css/owl.carousel.css') }}
 		{{ HTML::style('css/owl.theme.default.css') }}
@@ -34,7 +34,11 @@
 			<header class="header">
 				<div class="container">
 					<a href="{{ URL::to('inicio') }}">
-						<img src="{{ asset('images/logo.png') }}" class="logo">
+						@if($title != "pasillo24.com el portal de comercio  creado por bolivianos para bolivianos")
+							<img src="{{ asset('images/logo.png') }}" class="logo ">
+						@else
+							<img src="{{ asset('images/logo.png') }}" class="logo logoFront">
+						@endif
 					</a>
 					@if($title != "pasillo24.com el portal de comercio  creado por bolivianos para bolivianos")
 					<nav class="navbar navbar-default">
@@ -49,7 +53,7 @@
 								<span class="icon-bar"></span>
 								<span class="icon-bar"></span>
 								</button>
-								<ul class="navbar-nav redes2" style="float:right;">
+								<ul class="navbar-nav redes2 hidden-xs hidden-md" style="float:right;">
 
 									<li>
 										<a target="_blank" href="https://twitter.com/pasillo_24">
@@ -304,7 +308,7 @@ margin-top: 0.5em;display:inline-block;">
 					</nav>
 					@else
 					<ul class="mainMenu nav navbar-nav menuFront">
-						<li><a href="{{ URL::to('mision-y-vision') }}" class="btn log"><strong>¿Qué es pasillo24.com?</strong></a></li>
+						<li><a href="{{ URL::to('mision-y-vision') }}" class="btn log hidden-xs"><strong>¿Qué es pasillo24.com?</strong></a></li>
 						<li><a href="{{ URL::to('inicio') }}" class="btn log"><strong>Ingresar</strong></a></li>
 					</ul>
 					@endif
@@ -323,7 +327,7 @@ margin-top: 0.5em;display:inline-block;">
 	
 	{{ HTML::script('js/jquery.min.js') }}
 	{{ HTML::script('js/bootstrap.min.js') }}
-	{{ HTML::script('js/custom-preview.js?v=0.2')}}
+	{{ HTML::script('js/custom-preview.js?v=0.3')}}
 	
 	{{ HTML::script('js/ckeditor.js') }}
 	{{ HTML::script('js/jquery.ckeditor.js') }}
