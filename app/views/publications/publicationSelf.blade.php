@@ -322,7 +322,12 @@
 					<img src="{{ asset('images/pubImages/'.$o->img_1) }}" class="imgPubCarousel">
 				</a>
 				<div class="dataIndex textoPromedio">
-					<div class="col-xs-6" style="padding-top:0px;margin-top:0px;">{{ $o->titulo }}</div>
+					<div class="col-xs-6" style="margin-top:0.5em;">{{ $o->titulo }}</div>
+					@if($o->precio)
+					<div class="col-xs-6" style="margin-top:0.5em;">
+					 <label>Precio: </label>{{ $o->precio.' '.ucfirst(strtolower($o->moneda)).'.' }}
+					</div>
+					@endif
 					<div class="col-xs-12"><a href="{{ URL::to('publicacion/lider/'.base64_encode($o->id)) }}" style="color:white;"><i class="fa fa-hand-o-right"></i> Ver publicación</a>
 					</div>
 				</div>

@@ -425,7 +425,7 @@ class UserController extends BaseController {
 	public function getMyPublications()
 	{
 		$title ="Mis publicaciones";
-		$publications = Publicaciones::where('user_id','=',Auth::id())->get();
+		$publications = Publicaciones::where('user_id','=',Auth::id())->where('deleted','=',0)->get();
 		return View::make('user.publications')->with('title',$title)->with('publications',$publications);
 	}
 	public function getPublicationPayment($id = null)

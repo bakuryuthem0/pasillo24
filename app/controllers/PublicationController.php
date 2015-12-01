@@ -115,7 +115,10 @@ class PublicationController extends BaseController {
 			->where('publicaciones.user_id','=',Auth::id())
 			->where('publicaciones.tipo','=','Casual')
 			->where('publicaciones.deleted','=',0)
-			->get();
+			->get(array(
+				'publicaciones.*',
+				'categoria.desc'
+			));
 			$rePub = Publicaciones::where('publicaciones.user_id','=',Auth::id())
 			->where('publicaciones.tipo','=','Casual')
 			->where('publicaciones.deleted','=',0)
@@ -140,6 +143,7 @@ class PublicationController extends BaseController {
 		$pub = Publicaciones::find(base64_decode($id));
 		$user = User::find($pub->user_id);
 		$otrasPub = Publicaciones::where('user_id','=',$pub->user_id)
+		->where('id','!=',base64_decode($id))
 		->where('status','=','Aprobado')
 		->where(function($query)
 		{
@@ -166,7 +170,6 @@ class PublicationController extends BaseController {
 		})
 		->where('deleted','=',0)
 		->orderBy('id','desc')
-		->take(4)
 		->get();
 		if ($pub->tipo == "Lider") {
 			$pub = Publicaciones::join('usuario','usuario.id','=','publicaciones.user_id')
@@ -174,6 +177,8 @@ class PublicationController extends BaseController {
 			->get(array(
 				'publicaciones.titulo',
 				'publicaciones.tipo',
+				'publicaciones.precio',
+				'publicaciones.moneda',
 				'publicaciones.img_1',
 				'publicaciones.img_2',
 				'publicaciones.pag_web',
@@ -448,7 +453,6 @@ class PublicationController extends BaseController {
 			$query->where('ubicacion','=','Categoria')
 			->orWhere('ubicacion','=','Ambos');
 		})
-		->where('tipo','=','Lider')
 		->where('fechFin','>=',date('Y-m-d'))
 		->where('categoria','=',$id)
 		->get(array('id','img_1','titulo','precio'));
@@ -1190,7 +1194,6 @@ if (!empty($input['nomb'])) {
 			}
 			$doGcm = new Gcm;
 			$response = $doGcm->send_notification($regId,$data);
-			return $response;
 			return Redirect::to('usuario/mis-compras');
 		}
 	}
@@ -1491,6 +1494,8 @@ public function postElimPub()
 			$user = User::find($userid);
 			$subject = "Correo de Aviso";
 
+			$pub->deleted = 1;
+			$pub->save();
 			$data = array(
 				'subject' => $subject,
 				'publicacion' => $titulo
@@ -1501,8 +1506,6 @@ public function postElimPub()
 				$message->to($to_Email)->from('sistema@pasillo24.com')->subject($subject);
 			});
 
-			$pub->deleted = 1;
-			$pub->save();
 
 			return Response::json(array('type' => 'success','msg' => 'Publicación eliminada satisfactoriamente. Hemos enviado un email al correo.'));
 		}

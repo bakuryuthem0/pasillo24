@@ -253,19 +253,32 @@ $(document).ready(function() {
 });
 
 jQuery(document).ready(function($) {
-	$('.btnEliminarPub').click(function(event) {
-		$(this).unbind('click');
+	$('.btnEliminarPub').on('click',function(event) {
 		var boton = $(this);
 		var val = $(this).val();
 		$('.btnElimPublicacion').val(val);
-		$('.btnElimPublicacion').click(function(event) {
+		boton.addClass('to-elim')
+		
+	});
+	$('.modal').on('hide.bs.modal', function(event) {
+			$('.responseDanger').removeClass('alert-danger');
+			$('.responseDanger').removeClass('alert-success');
+			$('.responseDanger').css({
+				'display': 'none',
+				'opacity': 0
+			});
+			if ($('.to-elim').length > 0) {
+				$('.to-elim').removeClass('to-elim')
+			};
+		});
+	$('.btnElimPublicacion').on('click',function(event) {
 			$.ajax({
-				url: 'http://preview.pasillo24.com/eliminar/publicacion',
+				url: 'http://localhost/pasillo24/public/usuario/publicaciones/mis-publicaciones/eliminar/publicacion',
 				type: 'POST',
 				dataType: 'json',
 				data: {'id': $(this).val()},
 				beforeSend:function(){
-					$('.btnElimPublicacion').before('<img src="http://preview.pasillo24.com/images/loading.gif" class="loading">');
+					$('.btnElimPublicacion').before('<img src="http://localhost/pasillo24/public/images/loading.gif" class="loading">');
 					$('.btnElimPublicacion').addClass('disabled')
 					$('.loading').css({
 						'display': 'block',
@@ -280,12 +293,12 @@ jQuery(document).ready(function($) {
 						500,function(){
 							$(this).remove();
 						});
-					$('.disabled').removeClass('disabled');
+					$('.btnElimPublicacion').removeClass('disabled');
 					$('.responseDanger').stop().css({'display':'block'}).addClass('alert-'+response.type).html('<p class="textoPromedio">'+response.msg+'</p>').animate({
 					'opacity': 1},
 					500);
 					if (response.type == 'success') {
-						boton.parent().parent().remove();
+						$('.to-elim').parent().parent().remove();
 					};
 					$('#modalElimUserPub').modal('hide')
 
@@ -293,8 +306,8 @@ jQuery(document).ready(function($) {
 			})
 			
 		});
-	});
 });
+
 
 $(document).ready(function(){
 	$('.agg').click(function(event) {

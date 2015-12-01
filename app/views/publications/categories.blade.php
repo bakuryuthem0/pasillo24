@@ -7,15 +7,15 @@
 		<div class="col-xs-12">
 
 			<legend style="margin-bottom:1em;margin-top:2em;text-align:center;">Publicaciones LÍDER de esta categoría</legend>
-                                                @if(isset($publi))
-                                                        @if($publi->activo == 0)
+                        @if(isset($publi))
+                            @if($publi->activo == 0)
 								<img src="{{ asset('images/pubgrande.png') }}" style="width:100%;margin-bottom:2em;">
 							@else
 								<img src="{{ asset('images/publicidad/'.$publi->image) }}" style="width:100%;margin-bottom:2em;">
 							@endif
-                                                @else
-                                                      <img src="{{ asset('images/pubgrande.png') }}" style="width:100%;margin-bottom:2em;">
-                                                @endif
+                        @else
+                              <img src="{{ asset('images/pubgrande.png') }}" style="width:100%;margin-bottom:2em;">
+                        @endif
 			<div class="owl-carousel1">
 				@foreach($lider as $pubLider)
 				<div class="item contCatCat">
@@ -23,7 +23,12 @@
 						<img src="{{ asset('images/pubImages/'.$pubLider->img_1) }}" class="imgPubCarousel">
 <div class="dataIndex textoPromedio">
 							<div class="col-xs-6">{{ $pubLider->titulo }}</div>
+							@if($pubLider->precio)
 							<div class="col-xs-6">
+							 <label>Precio: </label>{{ $pubLider->precio.' '.ucfirst(strtolower($pubLider->moneda)).'.' }}
+							</div>
+							@endif
+							<div class="col-xs-12">
 								<a href="{{ URL::to('publicacion/lider/'.base64_encode($pubLider->id)) }}" style="color:white;">
 									<i class="fa fa-hand-o-right"></i> Ver publicación
 								</a>

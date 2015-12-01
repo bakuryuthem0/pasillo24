@@ -158,7 +158,7 @@ class HomeController extends BaseController {
 		$title = "Búsqueda | pasillo24.com";
 		
 		
-		$lider = DB::select("SELECT `publicaciones`.`id`,`publicaciones`.`img_1`,`publicaciones`.`titulo` 
+		$lider = DB::select("SELECT `publicaciones`.`id`,`publicaciones`.`img_1`,`publicaciones`.`titulo` ,`publicaciones`.`precio`, `publicaciones`.`moneda` 
 			FROM  `publicaciones` 
 			LEFT JOIN  `categoria` ON  `categoria`.`id` =  `publicaciones`.`categoria` 
 			WHERE `publicaciones`.`status` =  'Aprobado' AND (
