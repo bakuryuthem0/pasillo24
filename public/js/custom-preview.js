@@ -278,7 +278,7 @@ jQuery(document).ready(function($) {
 				dataType: 'json',
 				data: {'id': $(this).val()},
 				beforeSend:function(){
-					$('.btnElimPublicacion').before('<img src="http://localhost/pasillo24/public/images/loading.gif" class="loading">');
+					$('.btnElimPublicacion').before('<img src="http://preview.pasillo24.com/images/loading.gif" class="loading">');
 					$('.btnElimPublicacion').addClass('disabled')
 					$('.loading').css({
 						'display': 'block',
