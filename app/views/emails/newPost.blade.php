@@ -81,7 +81,7 @@ fieldset[disabled] .btn-success.active {
    <body style="font-family:'Roboto','san serif';padding:2em 4em;">
       <img src="http://preview.pasillo24.com/images/logo.png" style="width:40%;">
       <div>
-      	<legend>Estimado Roberto</legend>
+      	<legend>Estimado Administrador</legend>
          <ul>
             <li>Este mensaje le fue enviado debido a la creacion de un nuev pago para una publicaión en <strong>pasillo24.com</strong>. .</li>
          </ul>

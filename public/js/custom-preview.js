@@ -825,7 +825,7 @@ $(document).ready(function() {
 		boton = $(this);
 		var btn = $(this);
 		var id = btn.val();
-		$(this).parent().append('<div class="col-xs-6" style="margin-top:0px;"><input type="text" name="motivo" placeholder="Motivo" class="form-control textoMedio"></div><button value="'+id+'" class="btn btn-danger" class="enviarRechazo" name="id">Enviar</button>')
+		$(this).parent().append('<div class="col-xs-6" style="margin-top:0px;"><input type="text" name="motivo" placeholder="Motivo" class="form-control textoMedio"></div><button value="'+id+'" class="btn btn-danger btn-xs" class="enviarRechazo" name="id">Enviar</button>')
 		$(this).remove();
 		$('.enviarRechazo').click(function(event) {
 			$(this).parent().submit();

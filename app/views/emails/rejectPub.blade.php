@@ -83,13 +83,12 @@ fieldset[disabled] .btn-success.active {
       <div>
       	<legend>Estimado Administrador</legend>
          <ul>
-            <li>Este mensaje le fue enviado debido a la creacion de un nuevo administrador en <strong>pasillo24.com</strong>. .</li>
+            <li>Este mensaje le fue enviado debido a que se rechazo una publicación en <strong>pasillo24.com</strong>.</li>
          </ul>
-	     
-         <p class="bg-primary" style="padding:1em;">Username: {{ $username }}</p>
-          <p class="bg-primary" style="padding:1em;">Creado por: {{ $createBy }}</p>
+	       <p class="bg-primary" style="padding:1em;">Titulo de la publicacion: {{ $publicacion }} </p>
+         <p class="bg-primary" style="padding:1em;">Rechazado por: {{ $createBy }}</p>
          <ul>
-            <li>Si usted no aprobo esta creacion de usuario, por favor elimine a dicho usuario y tome las medidas necesarias.</li>
+            <li>Si usted no aprueba esta accion <strong>pasillo24.com</strong>, por favor tome las medidas necesarias</li>
             
          </ul>
 	      <p  style="text-align:center;">Atentamente <span class="bg-primary" style="color:white;">pasillo24.com</span></p>

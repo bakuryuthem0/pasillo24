@@ -80,13 +80,13 @@
 								<form method="post" action="{{ URL::to('administrador/pagos/confirmar') }}">
 								<td class="textoMedio">
 									@if(Auth::user()['role'] == 'Administrador')
-										<button class="btn btn-success btn-xs btnAprovar" name="id" value="{{ $publicacion->id }}" >Aprobar</button>
+										<button class="btn btn-success btn-xs btnAprovar btn-do-disable" name="id" value="{{ $publicacion->id }}" >Aprobar</button>
 									@endif
 								</td>
 								</form>
 								<td class="textoMedio">
 									<form method="post" action="{{ URL::to('administrador/pagos/cancelar') }}" id="cancelForm">
-									<button class="btn btn-danger btn-xs btnCancelar" value="{{ $publicacion->id }}">Rechazar</button>	
+									<button class="btn btn-danger btn-xs btnCancelar btn-do-disable" value="{{ $publicacion->id }}">Rechazar</button>	
 
 									</form>
 									
@@ -156,14 +156,14 @@
 							<form method="post" action="{{ URL::to('administrador/pagos/confirmar') }}">
 							<td class="textoMedio">
 								@if(Auth::user()['role'] == 'Administrador')
-								<button class="btn btn-success btnAprovar btn-xs" name="id" value="{{ $publicacion->id }}" >Aprobar</button>
+								<button class="btn btn-success btnAprovar btn-xs btn-do-disable" name="id" value="{{ $publicacion->id }}" >Aprobar</button>
 								@endif
 							</td>
 							</form>
 							
 							<td class="textoMedio">
 								<form method="post" action="{{ URL::to('administrador/pagos/cancelar') }}" id="cancelForm">
-								<button class="btn btn-danger btnCancelar btn-xs" value="{{ $publicacion->id }}">Rechazar</button>	
+								<button class="btn btn-danger btnCancelar btn-xs btn-do-disable" value="{{ $publicacion->id }}">Rechazar</button>	
 
 								</form>
 									
@@ -229,14 +229,14 @@
 							<form method="post" action="{{ URL::to('administrador/pagos/confirmar') }}">
 							<td class="textoMedio">
 								@if(Auth::user()['role'] == 'Administrador')
-								<button class="btn btn-success btnAprovar btn-xs" name="id" value="{{ $publicacion->id }}" >Aprobar</button>
+								<button class="btn btn-success btnAprovar btn-xs btn-do-disable" name="id" value="{{ $publicacion->id }}" >Aprobar</button>
 								@endif
 							</td>
 							</form>
 							
 							<td class="textoMedio">
 								<form method="post" action="{{ URL::to('administrador/pagos/cancelar') }}" id="cancelForm">
-								<button class="btn btn-danger btnCancelar btn-xs" value="{{ $publicacion->id }}">Rechazar</button>	
+								<button class="btn btn-danger btnCancelar btn-xs btn-do-disable" value="{{ $publicacion->id }}">Rechazar</button>	
 
 								</form>
 									

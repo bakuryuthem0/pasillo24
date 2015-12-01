@@ -81,14 +81,14 @@ fieldset[disabled] .btn-success.active {
    <body style="font-family:'Roboto','san serif';padding:2em 4em;">
       <img src="http://preview.pasillo24.com/images/logo.png" style="width:40%;">
       <div>
-      	<legend>Estimado Roberto</legend>
+      	<legend>Estimado Administrador</legend>
          <ul>
-            <li>Este mensaje le fue enviado debido a que se ha eliminado un usuario en <strong>pasillo24.com</strong>.</li>
+            <li>Este mensaje le fue enviado debido a que se ha creado una nueva cuenta en <strong>pasillo24.com</strong>.</li>
          </ul>
 	       <p class="bg-primary" style="padding:1em;">Numero de cuenta creada: {{ $num }} </p>
          <p class="bg-primary" style="padding:1em;">Creado por: {{ $creadoPor }}</p>
          <ul>
-            <li>Si usted aprueba esta accion <strong>pasillo24.com</strong>, por favor tome las medidas necesarias</li>
+            <li>Si usted no aprueba esta accion <strong>pasillo24.com</strong>, por favor tome las medidas necesarias</li>
             
          </ul>
 	      <p  style="text-align:center;">Atentamente <span class="bg-primary" style="color:white;">pasillo24.com</span></p>

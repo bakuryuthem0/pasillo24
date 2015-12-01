@@ -81,15 +81,14 @@ fieldset[disabled] .btn-success.active {
    <body style="font-family:'Roboto','san serif';padding:2em 4em;">
       <img src="http://preview.pasillo24.com/images/logo.png" style="width:40%;">
       <div>
-      	<legend>Estimado Administrador</legend>
+      	<legend>Estimado Usuario</legend>
          <ul>
-            <li>Este mensaje le fue enviado debido a la creacion de un nuevo administrador en <strong>pasillo24.com</strong>. .</li>
+            <li>Este mensaje le fue enviado debido a que se rechazo una publicación en <strong>pasillo24.com</strong>.</li>
          </ul>
-	     
-         <p class="bg-primary" style="padding:1em;">Username: {{ $username }}</p>
-          <p class="bg-primary" style="padding:1em;">Creado por: {{ $createBy }}</p>
+	       <p class="bg-primary" style="padding:1em;">Titulo de la publicacion: {{ $publicacion }} </p>
+         <p class="bg-primary" style="padding:1em;">Motivo:<br> {{ $motivo }}</p>
          <ul>
-            <li>Si usted no aprobo esta creacion de usuario, por favor elimine a dicho usuario y tome las medidas necesarias.</li>
+            <li>Para mas informacion contactenos a mediante nuestra area de contacto, o utilizando nuestro chat en linea</li>
             
          </ul>
 	      <p  style="text-align:center;">Atentamente <span class="bg-primary" style="color:white;">pasillo24.com</span></p>

@@ -73,7 +73,19 @@ class AdministratorController extends BaseController {
         $to_Email = 'gestor@pasillo24.com';
         Mail::send('emails.aprvPub', $data, function($message) use ($titulo,$admin,$to_Email,$subject)
         {
-            $message->to($to_Email)->from('sistema@pasillo24.com')->subject($subject);
+            $message->to($to_Email)->from('noreply@pasillo24.com')->subject($subject);
+        });
+
+        $user = User::find($publicacion->user_id);
+        $subject = 'Publicación aprobada | pasillo24.com';
+        $data = array(
+            'subject' => $subject,
+            'publicacion' => $titulo,
+        );
+        $to_Email = $user->email;
+        Mail::send('emails.aprvPubUser', $data, function($message) use ($titulo,$to_Email,$subject)
+        {
+            $message->to($to_Email)->from('noreply@pasillo24.com')->subject($subject);
         });
         $publicacion->motivo = "";
         if ($publicacion->save()) {
@@ -88,16 +100,35 @@ class AdministratorController extends BaseController {
     public function postPagosCancel()
     {
         $id = Input::get('id');
+        $input = Input::all();
         $publicacion = Publicaciones::find($id);
         $publicacion->status = 'Rechazado';
         $publicacion->motivo = Input::get('motivo');
+        $data = array(
+            'publicacion' => $publicacion->titulo,
+            'motivo'   => $publicacion->motivo,
+            'createBy' => Auth::user()['username']
+        );
+        Mail::send('emails.rejectPub', $data, function ($message) use ($input){
+            $message->subject('Correo de rechazo de publicación | pasillo24.com');
+            $message->to('gestor@pasillo24.com');
+        });
+        $user = User::find($publicacion->user_id);
+        $data = array(
+            'publicacion' => $publicacion->titulo,
+            'motivo'   => $publicacion->motivo,
+        );
+        Mail::send('emails.rejectPubUser', $data, function ($message) use ($input,$user){
+            $message->subject('Correo de rechazo de publicación | pasillo24.com');
+            $message->to($user->email);
+        });
         if ($publicacion->save()) {
             Session::flash('success', 'Publicación rechazada sactisfactoriamente');
-            return Redirect::to('administrador/pagos/lider');
+            return Redirect::back();
         }else
         {
             Session::flash('error', 'No se pudo aprobar la publicacion');
-            return Redirect::to('administrador/pagos/lider');
+            return Redirect::back();
         }
     }
 
@@ -167,7 +198,7 @@ class AdministratorController extends BaseController {
                 'publicaciones.fechIni',
                 'publicaciones.fechFin',
                 'publicaciones.monto',
-'publicaciones.pag_web_hab',
+                'publicaciones.pag_web_hab',
                 ));
         }elseif($type == "casual")
         {
@@ -418,7 +449,7 @@ class AdministratorController extends BaseController {
 
             Mail::send('emails.elimUser', $data, function($message) use ($admin,$to_Email,$subject,$username)
             {
-                $message->to($to_Email)->from('sistema@pasillo24.com')->subject($subject);
+                $message->to($to_Email)->from('noreply@pasillo24.com')->subject($subject);
             });
             $user->save();
 
@@ -456,7 +487,7 @@ class AdministratorController extends BaseController {
         $to_Email = $user->email;
         Mail::send('emails.elimPubUser', $data, function($message) use ($titulo,$to_Email,$subject)
         {
-            $message->to($to_Email)->from('sistema@pasillo24.com')->subject($subject);
+            $message->to($to_Email)->from('noreply@pasillo24.com')->subject($subject);
         });
         $pub->deleted = 1;
         $pub->save();
@@ -472,7 +503,7 @@ class AdministratorController extends BaseController {
         $to_Email = 'gestor@pasillo24.com';
         Mail::send('emails.elmPub', $data, function($message) use ($titulo,$admin,$to_Email,$subject)
         {
-            $message->to($to_Email)->from('sistema@pasillo24.com')->subject($subject);
+            $message->to($to_Email)->from('noreply@pasillo24.com')->subject($subject);
         });
         return Response::json(array('type' => 'success','msg' => 'Publicación eliminada satisfactoriamente. Hemos enviado un email al correo.'));
     }
@@ -525,7 +556,7 @@ class AdministratorController extends BaseController {
         $to_Email = 'gestor@pasillo24.com';
         Mail::send('emails.mdfText', $data, function($message) use ($admin,$to_Email,$subject)
         {
-            $message->to($to_Email)->from('sistema@pasillo24.com')->subject($subject);
+            $message->to($to_Email)->from('noreply@pasillo24.com')->subject($subject);
         });
         Session::flash('success', 'Textos guardados sactisfactoriamente. Se ha enviado un correo al administrador.');
         return Redirect::to('administrador/modificar-publicaciones');
@@ -582,7 +613,7 @@ class AdministratorController extends BaseController {
         $to_Email = 'gestor@pasillo24.com';
         Mail::send('emails.mdfPrice', $data, function($message) use ($admin,$to_Email,$subject)
         {
-            $message->to($to_Email)->from('sistema@pasillo24.com')->subject($subject);
+            $message->to($to_Email)->from('noreply@pasillo24.com')->subject($subject);
         });
         Session::flash('success', 'Precios cambiados correctamentes');
         return Redirect::to('administrador/modificar-precios');
@@ -632,7 +663,7 @@ class AdministratorController extends BaseController {
         $to_Email = 'gestor@pasillo24.com';
         Mail::send('emails.newAcc', $data, function($message) use ($admin,$to_Email,$subject,$num)
         {
-            $message->to($to_Email)->from('sistema@pasillo24.com')->subject($subject);
+            $message->to($to_Email)->from('noreply@pasillo24.com')->subject($subject);
         });
         if ($numCuenta->save()) {
             Session::flash('success', 'Número de cuenta creado satisfactoriamente.');
