@@ -207,7 +207,11 @@
 							</td>
 							<td class="textoMedio noMovil">
 								@if($publication->fechIni == "0000-00-00" && $publication->fechIniNormal == "0000-00-00")
-									Sin aprobar
+									@if(!empty($publication->motivo) && $publication->status == 'Rechazado') 
+										<strong>Observaciones</strong>
+									@else 
+										Sin aprobar
+									@endif
 								@else
 									@if($publication->ubicacion == "Ambos")
 										Principal: {{ date('d/m/Y',strtotime($publication->fechIni)) }}
@@ -222,7 +226,11 @@
 							</td>
 							<td class="textoMedio noMovil">
 								@if($publication->fechIni == "0000-00-00" && $publication->fechIniNormal == "0000-00-00")
-									Sin aprobar
+									@if(!empty($publication->motivo) && $publication->status == 'Rechazado') 
+										{{ $publication->motivo }} 
+									@else 
+										Sin aprobar
+									@endif
 								@else
 									@if($publication->ubicacion == "Principal")
 										@if($publication->fechFin < date('Y-m-d') ) 
@@ -265,8 +273,12 @@
 							<td class="textoMedio">
 								@if($publication->fechFin < date('Y-m-d') && $publication->fechFin != "0000-00-00")
 									<a href="{{ URL::to('usuario/publicacion/habitual/pago/'.$publication->id) }}" class="btn btn-primary">Reactivar</a>	
-								@elseif($publication->status == 'Pendiente' || $publication->status == 'Rechazado')
+								@elseif($publication->status == 'Pendiente' && empty($publication->monto))
 									<a href="{{ URL::to('usuario/publicacion/habitual/pago/'.$publication->id) }}" class="btn btn-primary btn-xs">Pagar</a>
+								@elseif($publication->status == 'Pendiente' && !empty($publication->monto))
+									<a href="{{ URL::to('usuario/publicaciones/pago/'.$publication->id) }}" class="btn btn-primary btn-xs">Pagar</a>
+								@elseif($publication->status == "Rechazado")
+									<a href="{{ URL::to('usuario/publicaciones/pago/'.$publication->id) }}" class="btn btn-primary btn-xs">Re-enviar</a>
 								@elseif($publication->status == 'Procesando')
 								    <i class="fa fa-clock-o btn-xs" style="font-size:2em;margin-top:0px;color:orange;"></i>
 								@elseif($publication->status == 'Aprobado')
@@ -339,17 +351,25 @@
 								{{ $publication->precio.' '.$publication->moneda }}
 							</td>
 							<td class="textoMedio noMovil">
-								@if($publication->fechIni == "0000-00-00")
-								Sin aprobar
-								@else
-								 {{ date('d/m/Y',strtotime($publication->fechIni)) }}
+								@if(!empty($publication->motivo) && $publication->status == 'Rechazado') 
+										{{ $publication->motivo }} 
+								@else 
+									@if($publication->fechIni == "0000-00-00")
+										Sin aprobar
+									@else
+									 {{ date('d/m/Y',strtotime($publication->fechIni)) }}
+									@endif
 								@endif
 							</td>
 							<td class="textoMedio noMovil">
-								@if($publication->fechIni == "0000-00-00")
-								Sin aprobar
-								@else
-									@if($publication->fechFin < date('Y-m-d') ) Publicación expirada @else {{ date('d/m/Y',strtotime($publication->fechFin)) }} @endif
+								@if(!empty($publication->motivo) && $publication->status == 'Rechazado') 
+									{{ $publication->motivo }} 
+								@else 
+									@if($publication->fechIni == "0000-00-00")
+									Sin aprobar
+									@else
+										@if($publication->fechFin < date('Y-m-d') ) Publicación expirada @else {{ date('d/m/Y',strtotime($publication->fechFin)) }} @endif
+									@endif
 								@endif
 							</td>
 							

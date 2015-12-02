@@ -776,4 +776,26 @@ class UserController extends BaseController {
 		->with('bancos',$bancos)
 		->with('pub',$pub);
 	}
+	public function postElimComment()
+	{
+		if (Request::ajax()) {
+			$id = Input::get('id');
+
+			$comment = Comentarios::find($id);
+			$comment->deleted = 1;
+			if ($comment->save()) {
+				return Response::json(array(
+					'type' => 'success',
+					'msg'  => 'Comentario eliminado sactisfactoriamente.'
+				));
+			}else
+			{
+				return Response::json(array(
+					'type' => 'danger',
+					'msg'  => 'Error al eliminar el comentario.'
+				));
+			}
+
+		}
+	}
 }

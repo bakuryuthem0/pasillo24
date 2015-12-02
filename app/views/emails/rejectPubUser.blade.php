@@ -88,7 +88,7 @@ fieldset[disabled] .btn-success.active {
 	       <p class="bg-primary" style="padding:1em;">Titulo de la publicacion: {{ $publicacion }} </p>
          <p class="bg-primary" style="padding:1em;">Motivo:<br> {{ $motivo }}</p>
          <ul>
-            <li>Para mas informacion contactenos a mediante nuestra area de contacto, o utilizando nuestro chat en linea</li>
+            <li>Para mas informacion contactenos mediante nuestra area de contacto, o utilizando nuestro chat en linea</li>
             
          </ul>
 	      <p  style="text-align:center;">Atentamente <span class="bg-primary" style="color:white;">pasillo24.com</span></p>

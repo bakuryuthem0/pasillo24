@@ -7,6 +7,9 @@
 
 		<div class="col-xs-12 contAnaranjado">
 			<legend>Comentarios recibidos</legend>
+			<div class="alert responseDanger">
+				<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+			</div>
 			<div class="table-responsive">
 				<table class="table table-hover">
 					<thead>
@@ -50,30 +53,31 @@
 							<th>Comentario</th>
 							<th>Creado el</th>
 							<th>Respuesta(s)</th>
+							<th>Borrar</th>
 						</tr>
 					</thead>
 					<tbody>
-						@foreach($hechos as $respuesta)
+						@foreach($hechos as $h)
 						<tr class="textoPromedio">
-							<td>{{ $respuesta->titulo }}</td>
-							<td>{{ $respuesta->comentario }}</td>
-							<td>{{ date('d-m-Y H:i:s',strtotime($respuesta->created_at)) }}</td>
-							@if($respuesta->deleted == 1)
-							<td><div class="alert alert-danger">
-								<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-								<p class="textoPromedio">El comentario fue borrado</p>
-							</div></td>
+							<td>{{ $h->titulo }}</td>
+							<td>{{ $h->h }}</td>
+							<td>{{ date('d-m-Y H:i:s',strtotime($h->created_at)) }}</td>
+							@if($h->deleted == 1)
+							<td></td>
 							@else
 							<td>
-								@if($respuesta->respuesta)
-									@if(strlen($respuesta->respuesta) > 10)
-										{{ substr($respuesta->respuesta,0,10) }}... <a class="change-response-text" data-toggle="modal" data-txt="{{ $respuesta->respuesta }}" href='#modal-id'>Leer Mas</a>
+								@if($h->respuesta)
+									@if(strlen($h->respuesta) > 10)
+										{{ substr($h->respuesta,0,10) }}... <a class="change-response-text" data-toggle="modal" data-txt="{{ $h->respuesta }}" href='#modal-id'>Leer Mas</a>
 									@else
-										{{$respuesta->respuesta}}
+										{{$h->respuesta}}
 									@endif
 								@else
 									Sin Respuesta
 								@endif
+							</td>
+							<td>
+								<button class="btn btn-danger btn-xs elimComentario" value="{{ $h->id }}"  data-toggle="modal" href="#deleteComment">Borrar</button>
 							</td>
 							@endif
 						</tr>
@@ -97,9 +101,7 @@
 
 				</div>
 				<div class="modal-footer " style="text-align:right;">
-					<div class="alert responseDanger">
-					<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-					</div>
+					
 					<textarea name="respuesta" class="form-control textoRespuesta" placeholder="Enviar respuesta"></textarea>
 					<img src="{{ asset('images/loading.gif') }}" class="miniLoader">
 					<button class="btn btn-success enviarRespuesta" style="margin-top:1em;margin-left:1em;" data-pub-id="" value="">Enviar</button>
@@ -124,5 +126,21 @@
 		</div>
 	</div>
 </div>
-
+<div class="modal fade" id="deleteComment">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+				<h4 class="modal-title">Borrar comentario</h4>
+			</div>
+			<div class="modal-body">
+				<p class="textoPromedio">¿Seguro desea borrar el comentario?</p>
+			</div>
+			<div class="modal-footer">
+				<img src="{{ asset('images/loading.gif') }}" class="miniLoader">
+				<button type="button" class="btn btn-danger btnElimCommentSend">borrar</button>
+			</div>
+		</div>
+	</div>
+</div>
 @stop

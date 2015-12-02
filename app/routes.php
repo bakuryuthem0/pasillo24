@@ -108,6 +108,7 @@ Route::group(array('before' =>'auth'),function()
 	Route::get('usuario/sub-categoria', 'PublicationController@getSubCat');
 	Route::get('usuario/longitud', 'PublicationController@getLength');
 	
+	Route::post('usuario/comentarios/eliminar','UserController@postElimComment');
 	Route::post('modificar/publicacion/eliminar/imagen','PublicationController@postElimImage');
 	//rutas del admin
 	Route::group(array('before' => 'role_check'), function()

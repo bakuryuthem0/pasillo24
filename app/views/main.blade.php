@@ -14,7 +14,7 @@
 		{{ HTML::style('css/bootstrap.min.css') }}
 		{{ HTML::style('//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css') }}
 		{{ HTML::style('css/bootstrap-theme.min.css')}}
-		{{ HTML::style('css/custom.css?v=0.3') }}
+		{{ HTML::style('css/custom.css?v=0.4') }}
 		{{ HTML::style('css/jquery.cleditor.css') }}
 		{{ HTML::style('css/owl.carousel.css') }}
 		{{ HTML::style('css/owl.theme.default.css') }}
@@ -61,7 +61,7 @@
 										</a>
 									</li>
 									<li>
-										<a target="_blank" href="https://www.facebook.com/pages/pasillo24">
+										<a target="_blank" href="http://www.facebook.com/Pasillo24-906179522768848/?ref=ts&fref=ts">
 											<i class="fa fa-facebook menu-icon" role="button" data-toggle="popover" data-trigger="hover" data-placement="bottom" data-content="Facebook"></i>
 										</a>
 									</li>
@@ -95,7 +95,7 @@
 										</a>
 									</li>
 									<li>
-										<a target="_blank" href="https://www.facebook.com/pages/pasillo24">
+										<a target="_blank" href="http://www.facebook.com/Pasillo24-906179522768848/?ref=ts&fref=ts">
 											<i class="fa fa-facebook menu-icon" role="button" data-toggle="popover" data-trigger="hover" data-placement="bottom" data-content="Facebook"></i>
 										</a>
 									</li>
@@ -279,6 +279,7 @@ margin-top: 0.5em;display:inline-block;">
 														</li>
 													</ul>
 												</li>
+
 												
 												<li>
 													<a href="{{ URL::to('administrador/agregar-cuenta') }}">
@@ -327,7 +328,7 @@ margin-top: 0.5em;display:inline-block;">
 	
 	{{ HTML::script('js/jquery.min.js') }}
 	{{ HTML::script('js/bootstrap.min.js') }}
-	{{ HTML::script('js/custom-preview.js?v=0.3')}}
+	{{ HTML::script('js/custom-preview.js?v=0.4')}}
 	
 	{{ HTML::script('js/ckeditor.js') }}
 	{{ HTML::script('js/jquery.ckeditor.js') }}

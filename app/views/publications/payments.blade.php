@@ -45,7 +45,7 @@
 					<div class="col-xs-12">
 						<div class="col-xs-6" style="padding-left:0px;">
 							<div class="col-xs-12 formulario textoPromedio" required>
-				                <label>Banco de destino/ PayPal</label>
+				                <label>Banco de destino</label>
 				                  <select name="banco" class="form-control" required>
 				                    <option value="">Seleccione el banco</option>
 				                    @foreach($bancos as $b)
@@ -134,7 +134,7 @@
 
 					</div>
 					<div class="col-xs-12" style="margin-top:1em;">
-						<p class="textoPromedio">Si usa el metodo de pago por PayPal, una vez realizado el pago debe seleccionar PayPal en el campo bancos e ingresar el numero de referencia mediante nuestro formulario de pago.</p>
+						<p class="textoPromedio">Si usa el método de pago por PayPal, una vez realizado el pago debe seleccionar la opción <strong>Cuenta PayPal pasillo24</strong> que se encuentra en la lista desplegable <strong>Banco de destino</strong> e ingresar el número de transacción mediante nuestro formulario de pago.Recuerde que el correo para el pago por PayPal es <a href="mailto:aquipasillo24@gmail.com">aquipasillo24@gmail.com</a></p>
 						<p class="textoPromedio">La tasa de Cambio es 6.94 Bs. El monto a pagar en dolares es: ${{ number_format(($pub->monto/6.94),2,',','') }} </p>
 					</div>
 				</div>
@@ -175,7 +175,7 @@
 								@endif
 							@endforeach
 							</ul>
-							<a target="_blank" href="http://www.bancounion.com.bo/index.php?option=com_content&task=view&id=177&Itemid=234">
+							<a target="_blank" href="http://www.bancounion.com.bo/pub/pub/AgenciasCajeros.aspx?rbtAgencia=true&rbtCajero=false&rbtRecinto=false&Buscar=no">
 								<img src="{{ asset('images/bancos/2.png') }}" style="width:100%;margin-bottom:2em;">
 							</a>
 						</div>
@@ -188,7 +188,7 @@
 								@endif
 							@endforeach
 							</ul>
-							<a target="_blank" href="http://www.bcp.com.bo/nuestrobanco/oficinas.asp">
+							<a target="_blank" href="http://www3.bcp.com.bo/nuestrobanco/oficinas.asp">
 								<img src="{{ asset('images/bancos/3.png') }}" style="width:100%;margin-bottom:2em;">
 							</a>
 						</div>
@@ -201,8 +201,7 @@
 								@endif
 							@endforeach
 							</ul>
-							<a target="_blank" href="https://www.bmsc.com.bo/Puntos%20de%20Atencion/redDeOficinas.aspx
-">
+							<a target="_blank" href="https://www.bmsc.com.bo/Paginas/reddeoficinas.aspx">
 								<img src="{{ asset('images/bancos/1.png') }}" style="width:100%;margin-bottom:2em;"/>
 							</a>
 						</div>
@@ -215,7 +214,7 @@
 								@endif
 							@endforeach
 							</ul>
-							<a target="_blank" href="http://bisa.com/buscarPuntoAtencion.php">
+							<a target="_blank" href="http://www.bisa.com/mapav4.php?lat=-17.772131&lon=-63.182598&dep=10">
 								<img src="{{ asset('images/bancos/6.png') }}" style="width:100%;margin-bottom:2em;"></a>
 						</div>
 					<div class="modal-footer">

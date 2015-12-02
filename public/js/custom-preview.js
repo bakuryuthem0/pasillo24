@@ -820,17 +820,53 @@ $(document).ready(function() {
 			event.preventDefault();
 		}
 	});
-	$('.btnCancelar').click(function(event) {
-		event.preventDefault();
-		boton = $(this);
+	$('.btnCancelar').on('click',function(event) {
 		var btn = $(this);
-		var id = btn.val();
-		$(this).parent().append('<div class="col-xs-6" style="margin-top:0px;"><input type="text" name="motivo" placeholder="Motivo" class="form-control textoMedio"></div><button value="'+id+'" class="btn btn-danger btn-xs" class="enviarRechazo" name="id">Enviar</button>')
-		$(this).remove();
-		$('.enviarRechazo').click(function(event) {
-			$(this).parent().submit();
-		});
+		btn.addClass('to-elim');
+		$('.send-elim').val(btn.val());
+		$('.responseDanger').removeClass('alert-danger');
+		$('.responseDanger').removeClass('alert-success').removeClass('active');
 
+	});
+	$('#eliminar-publicacion').on('hide.bs.modal', function(event) {
+		$('.to-elim').removeClass('to-elim');
+		$('.miniLoader').removeClass('active');
+		$('.send-elim').removeClass('disabled');
+		$('.motivo').val('');
+	});
+	$('.send-elim').on('click', function(event) {
+		event.preventDefault();
+		var proceed = 1;
+		if ($('.motivo').val().length < 5) {
+			proceed = 0;
+		};
+		if (proceed == 1) {
+			var dataPost = {
+				'id' 	: $(this).val(),
+				'motivo': $('.motivo').val()
+			}
+			$.ajax({
+				url: 'http://preview.pasillo24.com/administrador/pagos/cancelar',
+				type: 'post',
+				dataType: 'json',
+				data: dataPost,
+				beforeSend: function(){
+					$('.miniLoader').addClass('active');
+					$('.send-elim').addClass('disabled');
+				},
+				success:function(response)
+				{
+					$('.motivo').val('');
+					$('.miniLoader').removeClass('active');
+					
+					$('.responseDanger').addClass('alert-'+response.type).html('<p class="textoPromedio text-centered">'+response.msg+'</p>').addClass('active')
+					if (response.type == 'success') {
+						$('.to-elim').parent().parent().remove();
+						
+					};
+				}
+			})
+		};
 	});
 });
 /*-------------------Casual------------------------------*/
@@ -1445,5 +1481,42 @@ jQuery(document).ready(function($) {
 
  		};
  	});
- 	
+ 	$('.elimComentario').on('click', function(event) {
+ 		$('.responseDanger').removeClass('alert-danger');
+		$('.responseDanger').removeClass('alert-success');
+		$('.responseDanger').removeClass('active')
+ 		event.preventDefault();
+ 		var btn = $(this);
+ 		btn.addClass('to-elim');
+ 		$('.btnElimCommentSend').val(btn.val());
+ 	});
+ 	$('#deleteComment').on('hide.bs.modal', function(event) {
+		if ($('.to-elim').length > 0) {
+			$('.to-elim').removeClass('to-elim')
+		};
+	});
+ 	$('.btnElimCommentSend').on('click', function(event) {
+ 		event.preventDefault();
+ 		var dataPost = {
+ 			'id' : $(this).val()
+ 		}
+ 		$.ajax({
+ 			url: 'http://preview.pasillo24.com/usuario/comentarios/eliminar',
+ 			type: 'post',
+ 			dataType: 'json',
+ 			data: dataPost,
+ 			beforeSend:function(){
+ 				$('.btnElimCommentSend').addClass('disabled');
+ 				$('.miniLoader').addClass('active');
+ 			},
+ 			success:function(response){
+ 				$('.miniLoader').removeClass('active');
+ 				$('.responseDanger').addClass('active').addClass('alert-'+response.type).html('<p class="textoPromedio">'+response.msg+'</p>');
+ 				if (response.type == 'success') {
+ 					$('.to-elim').parent().parent().remove();
+ 				};
+ 			}
+ 		})
+ 		
+ 	});
 });

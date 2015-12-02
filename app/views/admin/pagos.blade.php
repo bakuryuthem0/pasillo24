@@ -15,6 +15,9 @@
 				</div>
 			@endif
 			<legend>Administrar pagos</legend>
+			<div class="responseDanger">
+
+			</div>
 			@if(isset($type))
 			@if(!is_null($publicaciones) && !empty($publicaciones))
 				@if($type == "lider")
@@ -85,11 +88,7 @@
 								</td>
 								</form>
 								<td class="textoMedio">
-									<form method="post" action="{{ URL::to('administrador/pagos/cancelar') }}" id="cancelForm">
-									<button class="btn btn-danger btn-xs btnCancelar btn-do-disable" value="{{ $publicacion->id }}">Rechazar</button>	
-
-									</form>
-									
+									<button class="btn btn-danger btn-xs btnCancelar btn-do-disable" value="{{ $publicacion->id }}" data-toggle="modal" href="#eliminar-publicacion">Rechazar</button>	
 								</td>
 							</tr>
 							@endforeach
@@ -162,11 +161,7 @@
 							</form>
 							
 							<td class="textoMedio">
-								<form method="post" action="{{ URL::to('administrador/pagos/cancelar') }}" id="cancelForm">
-								<button class="btn btn-danger btnCancelar btn-xs btn-do-disable" value="{{ $publicacion->id }}">Rechazar</button>	
-
-								</form>
-									
+								<button class="btn btn-danger btnCancelar btn-xs btn-do-disable" value="{{ $publicacion->id }}" data-toggle="modal" href="#eliminar-publicacion">Rechazar</button>	
 							</td>
 							
 							
@@ -235,11 +230,7 @@
 							</form>
 							
 							<td class="textoMedio">
-								<form method="post" action="{{ URL::to('administrador/pagos/cancelar') }}" id="cancelForm">
-								<button class="btn btn-danger btnCancelar btn-xs btn-do-disable" value="{{ $publicacion->id }}">Rechazar</button>	
-
-								</form>
-									
+								<button class="btn btn-danger btnCancelar btn-xs btn-do-disable" value="{{ $publicacion->id }}" data-toggle="modal" href="#eliminar-publicacion">Rechazar</button>	
 							</td>
 							
 							
@@ -376,6 +367,24 @@ float: none;">
 			</div>
 			<div class="modal-footer " style="text-align:center;">
 				
+			</div>
+		</div>
+	</div>
+</div>
+<div class="modal fade" id="eliminar-publicacion">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+				<h4 class="modal-title">Rechazar Publicación</h4>
+			</div>
+			<div class="modal-body">
+				<p class="textoPromedio">Motivo</p>
+				<textarea class="form-control motivo"></textarea>
+			</div>
+			<div class="modal-footer">
+				<img src="{{ asset('images/loading.gif') }}" class="miniLoader">
+				<button type="button" class="btn btn-danger send-elim" >Enviar</button>
 			</div>
 		</div>
 	</div>

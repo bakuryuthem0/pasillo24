@@ -279,7 +279,6 @@ class PublicationController extends BaseController {
 		$publication = Publicaciones::find($input['enviarId']);
 		$precio = Precios::all();
 		$solo = $precio[0];
-		$publication->monto = $solo->precio;
 
 		if (!empty($input['durationPrin']) && !empty($input['periodoPrin']) && !empty($input['durationCat']) && !empty($input['periodoCat'])) {
 
@@ -357,7 +356,6 @@ class PublicationController extends BaseController {
 		{
 			$publication->duracionNormal = 6048000;
 			$publication->ubicacion = 'Categoria';
-			$publication->monto 	= $solo->precio;
 		}
 				
 		$publication->save();
@@ -407,6 +405,7 @@ class PublicationController extends BaseController {
 		$recividos = Comentarios::leftJoin('publicaciones','publicaciones.id','=','comentario.pub_id')
 		->where('publicaciones.user_id','=',Auth::user()['id'])
 		->where('comentario.respondido','=',0)
+		->where('comentario.deleted','=',0)
 		->get(array(
 			'publicaciones.titulo',
 			'comentario.id',
@@ -419,6 +418,7 @@ class PublicationController extends BaseController {
 		$hechos 	= Comentarios::leftJoin('publicaciones','publicaciones.id','=','comentario.pub_id')
 		->leftJoin('respuestas','respuestas.comentario_id','=','comentario.id')
 		->where('comentario.user_id','=',Auth::id())
+		->where('comentario.deleted','=',0)
 		->get(array(
 			'publicaciones.titulo',
 			'comentario.id',
@@ -442,7 +442,7 @@ class PublicationController extends BaseController {
 		->orderBy('fechRepub','desc')
 		->first();
 		if (count($pub)>0) {
-			Session::flash('error', 'Usted ha consumido el máximo de publicaciones casuales. Inténtelo nunevamente cuando su última publicación casual expire.');
+			Session::flash('error', 'Usted ha consumido el máximo de publicaciones casuales. Inténtelo nuevamente cuando su última publicación casual expire.');
 			return Redirect::to('usuario/publicar');
 		}
 		$title = "Publicación CASUAL | pasillo24.com";
@@ -911,6 +911,7 @@ class PublicationController extends BaseController {
 		$pub->ciudad 		= $input['ciudad'];
 		$pub->descripcion	= $input['input'];
 		$pub->precio 		= $input['precio'];
+		$pub->monto 		= 40;
 		$pub->status  		= 'Pendiente';
 		$pub->moneda 		= $input['moneda'];
 		$pub->tipo 			= 'Habitual';

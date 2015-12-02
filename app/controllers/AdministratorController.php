@@ -99,36 +99,39 @@ class AdministratorController extends BaseController {
     }
     public function postPagosCancel()
     {
-        $id = Input::get('id');
-        $input = Input::all();
-        $publicacion = Publicaciones::find($id);
-        $publicacion->status = 'Rechazado';
-        $publicacion->motivo = Input::get('motivo');
-        $data = array(
-            'publicacion' => $publicacion->titulo,
-            'motivo'   => $publicacion->motivo,
-            'createBy' => Auth::user()['username']
-        );
-        Mail::send('emails.rejectPub', $data, function ($message) use ($input){
-            $message->subject('Correo de rechazo de publicación | pasillo24.com');
-            $message->to('gestor@pasillo24.com');
-        });
-        $user = User::find($publicacion->user_id);
-        $data = array(
-            'publicacion' => $publicacion->titulo,
-            'motivo'   => $publicacion->motivo,
-        );
-        Mail::send('emails.rejectPubUser', $data, function ($message) use ($input,$user){
-            $message->subject('Correo de rechazo de publicación | pasillo24.com');
-            $message->to($user->email);
-        });
-        if ($publicacion->save()) {
-            Session::flash('success', 'Publicación rechazada sactisfactoriamente');
-            return Redirect::back();
-        }else
-        {
-            Session::flash('error', 'No se pudo aprobar la publicacion');
-            return Redirect::back();
+        if (Request::ajax()) {
+            $id = Input::get('id');
+            $input = Input::all();
+            $publicacion = Publicaciones::find($id);
+            if ($publicacion->tipo == 'Casual') {
+                $publicacion->fechRepub = date('Y-m-d',strtotime("-1 days"));
+            }
+            $publicacion->status    = 'Rechazado';
+            $publicacion->motivo    = Input::get('motivo');
+            $data = array(
+                'publicacion' => $publicacion->titulo,
+                'motivo'   => $publicacion->motivo,
+                'createBy' => Auth::user()['username']
+            );
+            Mail::send('emails.rejectPub', $data, function ($message) use ($input){
+                $message->subject('Correo de rechazo de publicación | pasillo24.com');
+                $message->to('gestor@pasillo24.com');
+            });
+            $user = User::find($publicacion->user_id);
+            $data = array(
+                'publicacion' => $publicacion->titulo,
+                'motivo'   => $publicacion->motivo,
+            );
+            Mail::send('emails.rejectPubUser', $data, function ($message) use ($input,$user){
+                $message->subject('Correo de rechazo de publicación | pasillo24.com');
+                $message->to($user->email);
+            });
+            if ($publicacion->save()) {
+                return Response::json(array('type' => 'success','msg' => 'Publicación rechazada satisfactoriamente.'));
+            }else
+            {
+                return Response::json(array('type' => 'danger','msg' => 'Error al rechazar la publicación.'));
+            }
         }
     }
 

@@ -749,6 +749,16 @@ html,body
 .responseDanger{
 	display: none;
 	opacity: 0;
+	-webkit-transition: all .25s linear;
+	   -moz-transition: all .25s linear;
+	    -ms-transition: all .25s linear;
+	     -o-transition: all .25s linear;
+	        transition: all .25s linear;
+}
+.responseDanger.active
+{
+	display: block;
+	opacity: 1;
 }
 .textoPromedio
 {
@@ -1947,4 +1957,8 @@ animated buttons - animate the text inside prev and next buttons
 
 .link-activo{
 	box-shadow: 0px 0px 45px -16px black inset;
+}
+.pika-thumbs
+{
+	height: auto !important;
 }

@@ -47,7 +47,7 @@
 				</div>
 			</div>
 			<div class="col-xs-5 contCien contAnaranjado" style="margin-left:1em;margin-top: 1em;">
-					<h3 id="totalTexto">El total a pagar será de: {{ $solo->precio }}Bs</h3>
+					<h3 id="totalTexto">El total a pagar será de: {{ $solo->monto }}Bs</h3>
 					<button id="enviarPago" class="btn btn-success" style="margin-top:2em;" value="{{ $id }}" name="enviarId">Continuar</button>
 			</div>
 			</form>
