@@ -786,16 +786,36 @@ class UserController extends BaseController {
 			if ($comment->save()) {
 				return Response::json(array(
 					'type' => 'success',
-					'msg'  => 'Comentario eliminado sactisfactoriamente.'
+					'msg'  => 'Comentario borrado sactisfactoriamente.'
 				));
 			}else
 			{
 				return Response::json(array(
 					'type' => 'danger',
-					'msg'  => 'Error al eliminar el comentario.'
+					'msg'  => 'Error al borrar el comentario.'
 				));
 			}
 
+		}
+	}
+	public function postElimCommentrecividos()
+	{
+		if (Request::ajax()) {
+			$id = Input::get('id');
+			$comment = Comentarios::find($id);
+			$comment->respondido = 1;
+			if ($comment->save()) {
+				return Response::json(array(
+					'type' => 'success',
+					'msg'  => 'Comentario borrado sactisfactoriamente.'
+				));
+			}else
+			{
+				return Response::json(array(
+					'type' => 'danger',
+					'msg'  => 'Error al borrar el comentario.'
+				));
+			}
 		}
 	}
 }

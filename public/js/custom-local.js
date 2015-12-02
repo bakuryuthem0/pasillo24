@@ -1484,7 +1484,7 @@ jQuery(document).ready(function($) {
  		$('.responseDanger').removeClass('alert-danger');
 		$('.responseDanger').removeClass('alert-success');
 		$('.responseDanger').removeClass('active')
- 		event.preventDefault();
+		$('.btnElimCommentSend').removeClass('disabled')
  		var btn = $(this);
  		btn.addClass('to-elim');
  		$('.btnElimCommentSend').val(btn.val());
@@ -1495,12 +1495,11 @@ jQuery(document).ready(function($) {
 		};
 	});
  	$('.btnElimCommentSend').on('click', function(event) {
- 		event.preventDefault();
  		var dataPost = {
  			'id' : $(this).val()
  		}
  		$.ajax({
- 			url: 'http://localhost/pasillo24/public/usuario/comentarios/eliminar',
+ 			url: $('.to-elim').data('url'),
  			type: 'post',
  			dataType: 'json',
  			data: dataPost,

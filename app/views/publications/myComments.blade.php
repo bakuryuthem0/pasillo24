@@ -18,6 +18,7 @@
 							<th>Comentario</th>
 							<th>Creado el</th>
 							<th>Respuesta(s)</th>
+							<th>Quitar de la lista</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -33,9 +34,12 @@
 							</div></td>
 							@else
 							<td>
-								<button class="btn btn-primary btn-responder" data-toggle="modal" data-target="#myComment" data-pub-id="{{ $comentario->pub_id }}" value="{{ $comentario->id }}">Responder</button>
+								<button class="btn btn-primary btn-responder btn-xs" data-toggle="modal" data-target="#myComment" data-pub-id="{{ $comentario->pub_id }}" value="{{ $comentario->id }}">Responder</button>
 							</td>
 							@endif
+							<td>
+								<button class="btn btn-danger btn-xs elimComentario" value="{{ $comentario->id }}" data-url="{{ URL::to('usuario/comentarios/recividos/eliminar') }}"  data-toggle="modal" href="#deleteComment">Quitar</button>
+							</td>
 						</tr>
 						@endforeach
 					</tbody>
@@ -53,7 +57,7 @@
 							<th>Comentario</th>
 							<th>Creado el</th>
 							<th>Respuesta(s)</th>
-							<th>Borrar</th>
+							<th>Quitar de la lista</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -77,7 +81,7 @@
 								@endif
 							</td>
 							<td>
-								<button class="btn btn-danger btn-xs elimComentario" value="{{ $h->id }}"  data-toggle="modal" href="#deleteComment">Borrar</button>
+								<button class="btn btn-danger btn-xs elimComentario" value="{{ $h->id }}" data-url="{{ URL::to('usuario/comentarios/hechos/eliminar') }}"  data-toggle="modal" href="#deleteComment">Quitar</button>
 							</td>
 							@endif
 						</tr>
