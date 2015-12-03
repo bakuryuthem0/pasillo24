@@ -12,7 +12,7 @@
 				  <li class="active"><a href="{{ URL::to('usuario/publicacion/lider') }}" class="breadcrums"><span class="num numActivo">2</span> Complete el formulario LÍDER</a></li>
 				</ol>
 			</div>
-			<div class="container">
+			<div class="col-xs-12">
 				<h3>ANUNCIO LÍDER</h3>
 				
 				<p class="textoPromedio" style="text-align:justify;padding-right: 2em;">{{ $texto->desc }}</p>
@@ -33,7 +33,7 @@
 				  <li class="active"><a href="{{ URL::to('usuario/publicacion/habitual') }}" class="breadcrums"><span class="num numActivo">2</span> Elija la categoría de su publicación</a></li>
 				</ol>
 			</div>
-			<div class="container">
+			<div class="col-xs-12">
 				<h3>ANUNCIO HABITUAL</h3>
 
 				<p class="textoPromedio" style="text-align:justify;padding-right: 2em;">{{ $texto->desc}}</p>
@@ -47,7 +47,7 @@
 				  <li class="active"><a href="{{ URL::to('usuario/publicacion/casual') }}" class="breadcrums"><span class="num numActivo">2</span> Complete el formulario CASUAL</a></li>
 				</ol>
 			</div>
-			<div class="container">
+			<div class="col-xs-12">
 				<h3>ANUNCIO CASUAL.</h3>
 				<p class="textoPromedio" style="text-align:justify;padding-right: 2em;">{{ $texto->desc }}</p>
 			</div>

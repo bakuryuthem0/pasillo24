@@ -112,7 +112,12 @@ class AjaxController extends BaseController{
 			->where('departamento','=',$id)
 			->where('fechFin','>=',date('Y-m-d',time()))
 			->where('deleted','=',0)
-			->orderBy('fechFin','desc')->get();	
+			->orderBy('fechFin','desc')
+			->get(array(
+				'id',
+				'titulo',
+				'img_1'
+			));	
 			$habitual = Publicaciones::where(function($query) use($id){
 				/*Busco las habituales*/
 				$query->where('tipo','=','Habitual')
@@ -141,14 +146,27 @@ class AjaxController extends BaseController{
 				->where('departamento','=',$id);
 
 			})
-			->orderBy('fechFin','desc')->get();
+			->orderBy('fechFin','desc')->get(array(
+				'id',
+				'titulo',
+				'precio',
+				'moneda',
+				'img_1'
+			));
 			
 			$casual = Publicaciones::where('tipo','=','Casual')
 			->where('fechFin','>=',date('Y-m-d',time()))
 			->where('status','=','Aprobado')
 			->where('departamento','=',$id)
 			->where('deleted','=',0)
-			->get();
+			->get(
+			array(
+				'id',
+				'titulo',
+				'precio',
+				'moneda',
+				'img_1'
+			));
 		}else
 		{
 			$lider = Publicaciones::where('status','=','Aprobado')
@@ -157,7 +175,11 @@ class AjaxController extends BaseController{
 			->where('pag_web','!=',"")
 			->where('fechFin','>=',date('Y-m-d',time()))
 			->where('deleted','=',0)
-			->orderBy('fechFin','desc')->get();
+			->orderBy('fechFin','desc')->get(array(
+				'id',
+				'titulo',
+				'img_1'
+			));
 			$habitual = Publicaciones::where(function($query){
 				/*Busco las habituales*/
 				$query->where('tipo','=','Habitual')
@@ -184,12 +206,24 @@ class AjaxController extends BaseController{
 				->where('status','=','Aprobado');
 
 			})
-			->orderBy('fechFin','desc')->get();
+			->orderBy('fechFin','desc')->get(array(
+				'id',
+				'titulo',
+				'precio',
+				'moneda',
+				'img_1'
+			));
 			$casual = Publicaciones::where('tipo','=','Casual')
 			->where('fechFin','>=',date('Y-m-d',time()))
 			->where('status','=','Aprobado')
 			->where('deleted','=',0)
-			->get();
+			->get(array(
+				'id',
+				'titulo',
+				'precio',
+				'moneda',
+				'img_1'
+			));
 		}
 
 		$categories = Categorias::where('deleted','=',0)->where('tipo','=',1)->orderBy('nombre')->get();
