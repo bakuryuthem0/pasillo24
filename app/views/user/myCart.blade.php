@@ -6,7 +6,10 @@
 	<div class="row">
 		<div class="col-xs-12">
 				<legend>Sistema de reputación de pasillo24.com</legend>
-				<p class=textoPromedio>Una vez que hayas realizado tu compra, podrás valorar al vendedor según tus experiencias, pasadas las 48 horas. </p>
+				<div class="alert responseDanger">
+					<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+				</div>
+				<p class=textoPromedio>Una vez que hayas realizado tu compra, podrás valorar al vendedor según tus experiencias, pasadas las 48 horas.</p>
 				<table class="table table-striped table-hover textoPromedio">
 					<thead>
 						<tr>
@@ -57,8 +60,8 @@
 								@endif
 							</td>
 							<td>
-								@if($compra->fechVal <= date('Y-m-d'))
-								<button class="btn btn-primary sendPubValue" data-toggle="modal" data-target="#modalComprar" value={{ $compra->id }}>Valorar</button>
+								@if($compra->fechVal <= date('Y-m-d',time()))
+								<button class="btn btn-primary sendPubValue btn-xs" data-toggle="modal" data-target="#modalComprar" value={{ $compra->id }}>Valorar</button>
 								@else
 									<i class="fa fa-clock-o btn-xs" style="font-size:2em;margin-top:0px;color:orange;"></i>
 								@endif
@@ -82,11 +85,9 @@
 					
 				</div>
 				<div class="modal-footer">
-					<div class="alert responseDanger" style="text-align:center;">
-						<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-					</div>
-						<button class="btn btn-success sendValueSeller" value="pos" id="pos">Positivo</button>
-						<button class="btn btn-danger sendValueSeller" value="neg" id="neg">Negativo</button>
+						<img src="{{ asset('images/loading.gif') }}" class="miniLoader">
+						<button class="btn btn-success sendValueType" data-url="{{ URL::to('usuario/valorar-vendedor') }}" value="pos" id="pos">Positivo</button>
+						<button class="btn btn-danger sendValueType" data-url="{{ URL::to('usuario/valorar-vendedor') }}" value="neg" id="neg">Negativo</button>
 				</div>
 		</div>
 	</div>

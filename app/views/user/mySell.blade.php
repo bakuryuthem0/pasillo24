@@ -5,7 +5,12 @@
 <div class="container contenedorUnico">
 	<div class="row">
 		<div class="col-xs-12">
-			<div class="col-xs-6">
+			<div class="col-xs-12 col-md-6">
+				<legend>Sistema de reputación de pasillo24.com</legend>
+				<div class="alert responseDanger" style="text-align:center;">
+					<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+				</div>
+				<p class=textoPromedio>Una vez que hayas realizado la compra, podrás valorar al comprador según tus experiencias, pasadas las 48 horas.</p>
 				<table class="table table-striped table-hover textoPromedio">
 					<thead>
 						<tr>
@@ -22,12 +27,12 @@
 							<td>{{ $compra->name.' '.$compra->lastname }}</td>
 							
 							<td>
-                                                        @if($compra->fechVal < $hoy)
-									<i class="fa fa-clock-o btn-xs" style="font-size:2em;margin-top:0px;color:orange;"></i>
+								@if($compra->fechVal <= date('Y-m-d',time()))
+									<button class="btn btn-primary sendPubValue btn-xs" data-toggle="modal" data-target="#modalComprar" value={{ $compra->id }}>Valorar</button>
 								@else
-									<button class="btn btn-primary sendPubValue" data-toggle="modal" data-target="#modalComprar" value={{ $compra->id }}>Valorar</button>
+									<i class="fa fa-clock-o btn-xs" style="font-size:2em;margin-top:0px;color:orange;"></i>
 								@endif
-                                                        </td>
+                            </td>
 						</tr>
 					@endforeach
 					</tbody>
@@ -48,11 +53,10 @@
 					
 				</div>
 				<div class="modal-footer">
-					<div class="alert responseDanger" style="text-align:center;">
-						<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-					</div>
-						<button class="btn btn-success sendValueBuyer" name="pos" value="pos" id="pos">Positivo</button>
-						<button class="btn btn-danger sendValueBuyer" name="neg" value="neg" id="neg">Negativo</button>
+					
+						<img src="{{ asset('images/loading.gif') }}" class="miniLoader">
+						<button class="btn btn-success sendValueType" name="pos" data-url="{{ URL::to('usuario/valorar-comprador') }}" value="pos" id="pos">Positivo</button>
+						<button class="btn btn-danger sendValueType" name="neg" data-url="{{ URL::to('usuario/valorar-comprador') }}" value="neg" id="neg">Negativo</button>
 				</div>
 		</div>
 	</div>

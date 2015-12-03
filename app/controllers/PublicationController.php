@@ -558,6 +558,9 @@ class PublicationController extends BaseController {
 		if ($com->respondido == 1) {
 			return Response::json(array('type' => 'danger','msg' => 'El comantario ya fue respondido.'));	
 		}
+		if ($com->deleted == 1) {
+			$com->deleted = 0;
+		}
 		$resp = new Respuestas;
 		$resp->comentario_id = $input['id'];
 		$resp->respuesta 	 = $input['respuesta'];

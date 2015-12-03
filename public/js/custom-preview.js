@@ -876,15 +876,6 @@ $(document).ready(function() {
 			var rand2 = Math.round(Math.random()*100);
 			$('.formula').html('Cuanto es: '+rand1+'+'+rand2).append('<input type="hidden" name="x" value="'+rand1+'">').append('<input type="hidden" name="y" value="'+rand2+'">')
 			$('.resultado').html(' '+(rand1+rand2));
-			$('.info').animate({'opacity': 0},500, function(){
-					$(this).remove();	
-					$('.formPub').css({'display':'block','opacity':0}).animate({
-						
-						'opacity': 1
-					},
-						500
-					);
-			});	
 			
 		};
 	});
@@ -1169,65 +1160,61 @@ $('.btn-elim-pub').click(function(event) {
 	});
 });
 
+function sendValueReputation(event) {
+	var tipo = $(this).val();
+	var dataPost = {'tipo':tipo,'id':$(this).data('id')};
+	$.ajax({
+		url: $(this).data('url'),
+		type: 'POST',
+		dataType: 'json',
+		data: dataPost,
+		beforeSend:function()
+		{
+			$('.sendValueType').addClass('disabled');
+			$('.miniLoader').addClass('active');
+		},
+		success:function(response)
+		{
+			$('.responseDanger').addClass('alert-'+response.type).addClass('active').html('<p class="textoPromedio">'+response.msg+'</p>');
+			if (response.type == 'success') {
+				$('.to-elim').parent().parent().remove();
+				$('#modalComprar').modal('hide');
+			};
+		}
+	})
+	
+	
+}
 jQuery(document).ready(function($) {
 	$('.sendPubValue').on('click',function(event) {
 		$('.responseDanger').removeClass('alert-danger');
 		$('.responseDanger').removeClass('alert-success');
 		var id = $(this).val();
 		var boton = $(this);
+		boton.addClass('to-elim')
+		$('.sendValueType').attr('data-id',boton.val());
+	});
+	$('#modalComprar').on('hide.bs.modal', function(event) {
+		if ($('.to-elim').length > 0) {
+			$('.to-elim').removeClass('to-elim');
+		};
+	});
+	$('.sendValueType').click(sendValueReputation);
+});
 
-		$('.sendValueSeller').click(function(event) {
-			event.stopImmediatePropagation();
-			var tipo = $(this).val();
-			var dataPost = {'tipo':tipo,'id':id};
-			var neg = $('#neg'),pos = $('#pos');
-			$.ajax({
-				url: 'http://preview.pasillo24.com/usuario/valorar-vendedor',
-				type: 'POST',
-				dataType: 'json',
-				data: dataPost,
-				beforeSend:function()
-				{
-					$('#pos').animate({
-						'opacity': 0},
-						500, function() {
-							$(this).css({'display':'none'});
-					});
-					$('#neg').animate({
-						
-						'opacity': 0},
-						50, function() {
-							$(this).after('<img src="http://preview.pasillo24.com/images/loading.gif" style="width:25px;height:25px;display:inline-block;" class="loading">')
-							$(this).css({'display':'none'});
-					});
-				},
-				success:function(response)
-				{
-					
-					$('.loading').remove();
-					$('.sendValueSeller').css({'opacity':1,'display':'inline-block'})
-					$('.responseDanger').stop().css({'display':'block'}).addClass('alert-'+response.type).html('<p class="textoPromedio">'+response.msg+'</p>').animate({
-					'opacity': 1},
-					500,function()
-					{
-						if (response.type == 'danger') {
-							pos.css({'opacity':1,'display':'inline-block'});
-							neg.css({'opacity':1,'display':'inline-block'});
-						}else
-						{
-							boton.parent().parent().remove();
-							
-						}
-					});
-					$('#modalComprar').modal('hide');
-					window.location.reload();
-				}
-			})
-			
-			
-		});
+jQuery(document).ready(function($) {
+	$('#enviarNumTrans').click(function(event) {
+		$('.numTransDanger').remove();
+		if ($('#numTransVal').val().length<4) {
+			event.preventDefault();
+			$('#numTransVal').after('<p class="textoPromedio numTransDanger bg-danger" style="padding:1em;">El numero de transacción debe ser mas largo.</p>')
+		};
+	});
+	$('#numTransVal').click(function(event) {
+		$('.numTransDanger').remove();
 	});
 });
+
 jQuery(document).ready(function($) {
 	$('.sendPubValue').on('click',function(event) {
 		var id = $(this).val();

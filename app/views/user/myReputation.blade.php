@@ -12,7 +12,7 @@
 					<thead>
 						<tr>
 							<th>Título</th>
-							<th>Comprador</th>
+							<th>Vendedor</th>
 							<th>Valoraciones dadas</th>
 							<th>Valoraciones recibidas</th>
 						</tr>
