@@ -99,6 +99,127 @@ class AjaxController extends BaseController{
 			return Response::json(array('danger' => 'Error al registrar al usuario.'));
 		}
 	}
+	public function showIndex($id = null)
+	{
+        if (!is_null($id)) {
+			$dep = Department::find($id);
+		}
+		if (!is_null($id)) {
+			$lider = Publicaciones::where('status','=','Aprobado')
+			->where('ubicacion','=','Principal')
+			->where('tipo','=','Lider')
+			->where('pag_web','!=',"")
+			->where('departamento','=',$id)
+			->where('fechFin','>=',date('Y-m-d',time()))
+			->where('deleted','=',0)
+			->orderBy('fechFin','desc')->get();	
+			$habitual = Publicaciones::where(function($query) use($id){
+				/*Busco las habituales*/
+				$query->where('tipo','=','Habitual')
+				->where(function($query){
+					/*Que vayan en la principal*/
+					$query->where('ubicacion','=','Principal')
+					->orWhere('ubicacion','=','Ambos')
+					->where('status','=','Aprobado');
+
+				})
+				->where(function($query){
+					/*y que sigan activas*/
+					$query->where('fechFin','>=',date('Y-m-d',time()))
+					->orWhere('fechFinNormal','>=',date('Y-m-d',time()))
+					->where('status','=','Aprobado');
+
+				})
+				->where('departamento','=',$id);
+			})
+			->where('deleted','=',0)
+			->orWhere(function($query) use($id){
+				$query->where('tipo','=','Lider')
+				->where('ubicacion','=','Principal')
+				->where('pag_web','=',"")
+				->where('status','=','Aprobado')
+				->where('departamento','=',$id);
+
+			})
+			->orderBy('fechFin','desc')->get();
+			
+			$casual = Publicaciones::where('tipo','=','Casual')
+			->where('fechFin','>=',date('Y-m-d',time()))
+			->where('status','=','Aprobado')
+			->where('departamento','=',$id)
+			->where('deleted','=',0)
+			->get();
+		}else
+		{
+			$lider = Publicaciones::where('status','=','Aprobado')
+			->where('ubicacion','=','Principal')
+			->where('tipo','=','Lider')
+			->where('pag_web','!=',"")
+			->where('fechFin','>=',date('Y-m-d',time()))
+			->where('deleted','=',0)
+			->orderBy('fechFin','desc')->get();
+			$habitual = Publicaciones::where(function($query){
+				/*Busco las habituales*/
+				$query->where('tipo','=','Habitual')
+				->where(function($query){
+					/*Que vayan en la principal*/
+					$query->where('ubicacion','=','Principal')
+					->orWhere('ubicacion','=','Ambos')
+					->where('status','=','Aprobado');
+
+				})
+				->where(function($query){
+					/*y que sigan activas*/
+					$query->where('fechFin','>=',date('Y-m-d',time()))
+					->orWhere('fechFinNormal','>=',date('Y-m-d',time()))
+					->where('status','=','Aprobado');
+
+				});
+			})
+			->where('deleted','=',0)
+			->orWhere(function($query){
+				$query->where('tipo','=','Lider')
+				->where('ubicacion','=','Principal')
+				->where('pag_web','=',"")
+				->where('status','=','Aprobado');
+
+			})
+			->orderBy('fechFin','desc')->get();
+			$casual = Publicaciones::where('tipo','=','Casual')
+			->where('fechFin','>=',date('Y-m-d',time()))
+			->where('status','=','Aprobado')
+			->where('deleted','=',0)
+			->get();
+		}
+
+		$categories = Categorias::where('deleted','=',0)->where('tipo','=',1)->orderBy('nombre')->get();
+		$servicios  = Categorias::where('deleted','=',0)->where('tipo','=',2)->get();
+		$departamentos = Department::get();
+                $publi = Publicidad::get();
+		if (!is_null($id)) {
+        	return Response::json(array(
+        		'pubLider' 		=> $lider,
+        		'pubHabitual' 	=> $habitual,
+        		'pubCasual' 	=> $casual,	
+        		'categorias' 	=> $categories,
+        		'servicios'     => $servicios,
+        		'departamentos' => $departamentos,
+        		'publi' 		=> $publi,
+        		'depFilter' 	=> $dep->id)
+          	));
+        }else
+        {
+        	return Response::json(array(
+        		'pubLider' 		=> $lider,
+        		'pubHabitual' 	=> $habitual,
+        		'pubCasual' 	=> $casual,	
+        		'categorias' 	=> $categories,
+        		'servicios'     => $servicios,
+        		'departamentos' => $departamentos,
+        		'publi' 		=> $publi,
+          	));
+        }
+	}
 	public function upload_image($carpeta)
 	{
 		$ruta 	 = "images/pubImages/".$carpeta."/";
