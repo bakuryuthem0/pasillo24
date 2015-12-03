@@ -205,7 +205,7 @@ class AjaxController extends BaseController{
         		'servicios'     => $servicios,
         		'departamentos' => $departamentos,
         		'publi' 		=> $publi,
-        		'depFilter' 	=> $dep->id)
+        		'depFilter' 	=> $dep->id
           	));
         }else
         {

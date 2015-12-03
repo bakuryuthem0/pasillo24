@@ -64,7 +64,7 @@
 						@foreach($hechos as $h)
 						<tr class="textoPromedio">
 							<td>{{ $h->titulo }}</td>
-							<td>{{ $h->h }}</td>
+							<td>{{ $h->comentario }}</td>
 							<td>{{ date('d-m-Y H:i:s',strtotime($h->created_at)) }}</td>
 							@if($h->deleted == 1)
 							<td></td>
