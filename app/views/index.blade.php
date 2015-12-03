@@ -2,7 +2,7 @@
 @section('content')
 <div class="container contenedorUnico">
 	<div class="row">
-		<div class="col-xs-12">
+		<div class="col-xs-12" style="margin-top:0;">
 			<div class="col-xs-2 contCategorias contAnaranjado">
 				
 				<h3 style="text-align:left;">Categorías</h3>
@@ -20,17 +20,17 @@
                                         <li><a href="{{ URL::to('publicaciones/categorias/100') }}">Otros</a></li>
 				</ul>
 			</div>
-			<div class="col-xs-10 contBanner">
-				<div class="col-xs-12">
-					@if(Session::has('error'))
+			<div class="col-xs-10 contBanner" style="margin-top:0;">
+				@if(Session::has('error'))
+				<div class="col-xs-12" >
 					<div class="alert alert-danger">
 						<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
 						<p class="textoPromedio">{{ Session::get('error') }}.</p>
 					</div>
 					
-					@endif
 				</div>
-				<div class="col-xs-12 ">
+				@endif
+				<div class="col-xs-12 " style="margin-top:0;padding:0;">
 					<img src="{{ asset('images/portada.png') }}">
 				</div>
 				<div class="col-xs-12 banderas hidden-xs hidden-md">
