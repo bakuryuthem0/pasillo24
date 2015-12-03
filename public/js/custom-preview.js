@@ -479,7 +479,17 @@ $(document).ready(function() {
 		
 	});
 });
-
+$('.continueCasual').click(function(event){
+	$('.info').animate({'opacity': 0},500, function(){
+			$(this).remove();	
+			$('.formPub').css({'display':'block','opacity':0}).animate({
+				
+				'opacity': 1
+			},
+				500
+			);
+	});
+})
 /*------------------ Publicacion normal --------------*/
 
 $('.continueNormal').click(function(event){
