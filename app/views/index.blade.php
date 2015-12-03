@@ -2,7 +2,7 @@
 @section('content')
 <div class="container contenedorUnico">
 	<div class="row">
-		<div class="col-xs-12" style="margin-top:0;">
+		<div class="col-xs-12 no-padding-movil" style="margin-top:0;">
 			<div class="col-xs-2 contCategorias contAnaranjado">
 				
 				<h3 style="text-align:left;">Categorías</h3>
@@ -20,7 +20,7 @@
                                         <li><a href="{{ URL::to('publicaciones/categorias/100') }}">Otros</a></li>
 				</ul>
 			</div>
-			<div class="col-xs-10 contBanner" style="margin-top:0;">
+			<div class="col-xs-10 contBanner no-padding-movil" style="margin-top:0;">
 				@if(Session::has('error'))
 				<div class="col-xs-12" >
 					<div class="alert alert-danger">
