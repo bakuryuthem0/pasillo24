@@ -66,7 +66,7 @@ App::error(function(Exception $exception, $code)
 
 App::down(function()
 {
-	return View::make("down");
+	return View::make("maintenance.down");
 });
 
 /*
