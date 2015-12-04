@@ -674,22 +674,22 @@ class PublicationController extends BaseController {
 			return Redirect::to('usuario/publicacion/casual')->withInput();
 		}
 		$img1 = Input::file('img1');
-		$rules = array('img1' => $img1);
+		$rules = array('img1' => 'image');
 		$validator = Validator::make(array('img1' => $img1), $rules);
 		if ($validator->fails()) {
-			Session::flash('danger','Error, el archivo '.$img1->getClientOriginalName().' debe ser una imagen en formato: jpg, png o gif');
-			return Redirect::back();
+			Session::flash('error','Error, el archivo '.$img1->getClientOriginalName().' debe ser una imagen en formato: jpg, png o gif');
+			return Redirect::back()->withInput();
 		}
 		$tam   = getimagesize($img1);
 		$width = $tam[0];
 
 		if (Input::hasFile('img2')) {
 			$img2 = Input::file('img2');
-			$rules = array('img2' => $img2);
+			$rules = array('img2' => 'image');
 			$validator = Validator::make(array('img2' => $img2), $rules);
 			if ($validator->fails()) {
-				Session::flash('danger','Error, el archivo '.$img2->getClientOriginalName().' debe ser una imagen en formato: jpg, png o gif');
-				return Redirect::back();
+				Session::flash('error','Error, el archivo '.$img2->getClientOriginalName().' debe ser una imagen en formato: jpg, png o gif');
+				return Redirect::back()->withInput();
 			}
 			
 		}
@@ -724,11 +724,11 @@ class PublicationController extends BaseController {
 		);
 		if ($input['x']+$input['y'] != $input['resultado']) {
 			Session::flash('error', 'El captcha es incorrecto');
-			return Redirect::to('usuario/publicacion/casual')->withInput();
+			return Redirect::back()->withInput();
 		}
 		$validator = Validator::make($input, $rules, $messages, $customAttributes);
 		if ($validator->fails()) {
-			return Redirect::to('usuario/publicacion/casual')->withErrors($validator)->withInput();
+			return Redirect::back()->withErrors($validator)->withInput();
 		}else
 		{
 			$pub = new Publicaciones;
