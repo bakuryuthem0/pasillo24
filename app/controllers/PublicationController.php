@@ -674,12 +674,23 @@ class PublicationController extends BaseController {
 			return Redirect::to('usuario/publicacion/casual')->withInput();
 		}
 		$img1 = Input::file('img1');
-
+		$rules = array('img1' => $img1);
+		$validator = Validator::make(array('img1' => $img1), $rules);
+		if ($validator->fails()) {
+			Session::flash('danger','Error, el archivo '.$img1->getClientOriginalName().' debe ser una imagen en formato: jpg, png o gif');
+			return Redirect::back();
+		}
 		$tam   = getimagesize($img1);
 		$width = $tam[0];
 
 		if (Input::hasFile('img2')) {
 			$img2 = Input::file('img2');
+			$rules = array('img2' => $img2);
+			$validator = Validator::make(array('img2' => $img2), $rules);
+			if ($validator->fails()) {
+				Session::flash('danger','Error, el archivo '.$img2->getClientOriginalName().' debe ser una imagen en formato: jpg, png o gif');
+				return Redirect::back();
+			}
 			
 		}
 		if (count(strip_tags($input['input']))>400) {
@@ -1277,17 +1288,16 @@ if (!empty($input['nomb'])) {
 		->with('publication',$publication)
 		->with('id',$id);
 	}
-	public function getModifyPub()
+	public function getModifyPub($id)
 	{
-		$id = Input::get('modificar');
 		$pub = Publicaciones::find($id);
 		$title = "Modificar publicacion | pasillo24.com";
 		if ($pub->tipo == 'Lider') {
-			$url = "usuario/publicacion/modificar/lider";
+			$url = "usuario/publicacion/modificar/lider/".$id;
 		}elseif ($pub->tipo == 'Habitual') {
-			$url = "usuario/publicacion/modificar/habitual";
+			$url = "usuario/publicacion/modificar/habitual/".$id;
 		}elseif ($pub->tipo == 'Casual') {
-			$url = "usuario/publicacion/modificar/casual";
+			$url = "usuario/publicacion/modificar/casual/".$id;
 		}
 		$categorias = Categorias::all();
 		$subCat = SubCat::all();
@@ -1317,23 +1327,37 @@ if (!empty($input['nomb'])) {
 			->with('departamento',$departamento);
 		}
 	}
-	public function postModifyPub()
+	public function postModifyPub($type, $id)
 	{
 		$input = Input::all();
-		$id = Input::get('enviarPub');
 		$pub = Publicaciones::find($id);
-		$type = $pub->tipo;
 		if ($pub->tipo == 'Lider') {
 			if ($pub->ubicacion != "Principal") {
 				$pub->categoria = $input['cat'];
 			}
-			if (!empty($input['img1'])) {
+			if (!empty($input['img1']) ) {
 				$img1 = Input::file('img1');
-				$pub->img_1 = $this->upload_images($img1);
+				$rules = array('img1' => 'image');
+				$validator = Validator::make(array('img1' => $img1), $rules);
+				if ($validator->fails()) {
+					Session::flash('danger','Error, el archivo '.$img1->getClientOriginalName().' debe ser una imagen en formato: jpg, png o gif');
+				}else
+				{
+					$pub->img_1 = $this->upload_images($img1);
+					
+				}
 			}
-			if (!empty($input['img2'])) {
+			if (!empty($input['img2']) ) {
 				$img2 = Input::file('img2');
-				$pub->img_2 = $this->upload_images($img2);
+				$rules = array('img2' => 'image');
+				$validator = Validator::make(array('img2' => $img2), $rules);
+				if ($validator->fails()) {
+					Session::flash('danger','Error, el archivo '.$img2->getClientOriginalName().' debe ser una imagen en formato: jpg, png o gif');
+				}else
+				{
+					$pub->img_2 = $this->upload_images($img2);
+					
+				}
 
 			}elseif ($input['pagina'] != $pub->pag_web && !empty($input['pagina'])) {
 				$pub->pag_web = $input['pagina'];
@@ -1355,44 +1379,108 @@ if (!empty($input['nomb'])) {
 			if (!empty($input['cat'])) {
 				$pub->categoria = $input['cat'];
 			}
-			if (isset($input['img1']) && !empty($input['img1'])) {
+			if (isset($input['img1']) && !empty($input['img1']) ) {
 				$img1 = Input::file('img1');
-				$pub->img_1 = $this->upload_images($img1);
+				$rules = array('img1' => 'image');
+				$validator = Validator::make(array('img1' => $img1), $rules);
+				if ($validator->fails()) {
+					Session::flash('danger','Error, el archivo '.$img1->getClientOriginalName().' debe ser una imagen en formato: jpg, png o gif');
+				}else
+				{
+					$pub->img_1 = $this->upload_images($img1);
+					
+				}
 				
 			}
-			if (isset($input['img2']) && !empty($input['img2'])) {
+			if (isset($input['img2']) && !empty($input['img2']) ) {
 				$img2 = Input::file('img2');
-				$pub->img_2 = $this->upload_images($img2);
+				$rules = array('img2' => 'image');
+				$validator = Validator::make(array('img2' => $img2), $rules);
+				if ($validator->fails()) {
+					Session::flash('danger','Error, el archivo '.$img2->getClientOriginalName().' debe ser una imagen en formato: jpg, png o gif');
+				}else
+				{
+					$pub->img_2 = $this->upload_images($img2);
+					
+				}
 			
 			}
-			if (isset($input['img3']) && !empty($input['img3'])) {
+			if (isset($input['img3']) && !empty($input['img3']) ) {
 				$img3 = Input::file('img3');
-				$pub->img_3 = $this->upload_images($img3);
+				$rules = array('img3' => 'image');
+				$validator = Validator::make(array('img3' => $img3), $rules);
+				if ($validator->fails()) {
+					Session::flash('danger','Error, el archivo '.$img3->getClientOriginalName().' debe ser una imagen en formato: jpg, png o gif');
+				}else
+				{
+					$pub->img_3 = $this->upload_images($img3);
+					
+				}
 			
 			}
-			if (isset($input['img4']) && !empty($input['img4'])) {
+			if (isset($input['img4']) && !empty($input['img4']) ) {
 				$img4 = Input::file('img4');
-				$pub->img_4 = $this->upload_images($img4);
+				$rules = array('img4' => 'image');
+				$validator = Validator::make(array('img4' => $img4), $rules);
+				if ($validator->fails()) {
+					Session::flash('danger','Error, el archivo '.$img4->getClientOriginalName().' debe ser una imagen en formato: jpg, png o gif');
+				}else
+				{
+					$pub->img_4 = $this->upload_images($img4);
+					
+				}
 			
 			}
-			if (isset($input['img5']) && !empty($input['img5'])) {
+			if (isset($input['img5']) && !empty($input['img5']) ) {
 				$img5 = Input::file('img5');
-				$pub->img_5 = $this->upload_images($img5);
+				$rules = array('img5' => 'image');
+				$validator = Validator::make(array('img5' => $img5), $rules);
+				if ($validator->fails()) {
+					Session::flash('danger','Error, el archivo '.$img5->getClientOriginalName().' debe ser una imagen en formato: jpg, png o gif');
+				}else
+				{
+					$pub->img_5 = $this->upload_images($img5);
+					
+				}
 			
 			}
-			if (isset($input['img6']) && !empty($input['img6'])) {
+			if (isset($input['img6']) && !empty($input['img6']) ) {
 				$img6 = Input::file('img6');
-				$pub->img_6 = $this->upload_images($img6);
+				$rules = array('img6' => 'image');
+				$validator = Validator::make(array('img6' => $img6), $rules);
+				if ($validator->fails()) {
+					Session::flash('danger','Error, el archivo '.$img6->getClientOriginalName().' debe ser una imagen en formato: jpg, png o gif');
+				}else
+				{
+					$pub->img_6 = $this->upload_images($img6);
+					
+				}
 			
 			}
-			if (isset($input['img7']) && !empty($input['img7'])) {
+			if (isset($input['img7']) && !empty($input['img7']) ) {
 				$img7 = Input::file('img7');
-				$pub->img_7 = $this->upload_images($img7);
+				$rules = array('img7' => 'image');
+				$validator = Validator::make(array('img7' => $img7), $rules);
+				if ($validator->fails()) {
+					Session::flash('danger','Error, el archivo '.$img7->getClientOriginalName().' debe ser una imagen en formato: jpg, png o gif');
+				}else
+				{
+					$pub->img_7 = $this->upload_images($img7);
+					
+				}
 			
 			}
-			if (isset($input['img8']) && !empty($input['img8'])) {
+			if (isset($input['img8']) && !empty($input['img8']) ) {
 				$img8 = Input::file('img8');
-				$pub->img_8 = $this->upload_images($img8);
+				$rules = array('img8' => 'image');
+				$validator = Validator::make(array('img8' => $img8), $rules);
+				if ($validator->fails()) {
+					Session::flash('danger','Error, el archivo '.$img8->getClientOriginalName().' debe ser una imagen en formato: jpg, png o gif');
+				}else
+				{
+					$pub->img_8 = $this->upload_images($img8);
+					
+				}
 			
 			}
 			if (!empty($input['pagina'])) {
@@ -1475,11 +1563,11 @@ if (!empty($input['nomb'])) {
 		if($pub->save())
 		{
 			Session::flash('success', 'Publicación modificada satisfactoriamente.');
-			return Redirect::to('usuario/publicaciones/mis-publicaciones/'.strtolower($type));
+			return Redirect::back();
 		}else
 		{
-			Session::flash('error', 'Error al modificar el usuario.');
-			return Redirect::to('usuario/publicacion/modificar/'.strtolower($type));
+			Session::flash('danger', 'Error al modificar el usuario.');
+			return Redirect::back();
 		}
 	}
 	public function getSubCat()

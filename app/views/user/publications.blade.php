@@ -112,9 +112,9 @@
 								@if($publication->motivo != "" && $publication->status == 'Rechazado') {{ $publication->motivo }} @else Sin observaciones @endif
 							</td>
 							<td>
-								<form method="post" action="{{ URL::to('usuario/publicacion/modificar') }}">
-									<button class="btn btn-success btn-xs" name="modificar" value="{{ $publication->id }}">Modificar</button>
-								</form>
+								
+									<a href="{{ URL::to('usuario/publicacion/modificar/'.$publication->id) }}" class="btn btn-success btn-xs" name="modificar" >Modificar</a>
+								
 							</td>
 							<td class="textoMedio">
 								@if($publication->fechFin < date('Y-m-d'))
@@ -266,9 +266,7 @@
 							</td>
 							
 							<td>
-								<form method="post" action="{{ URL::to('usuario/publicacion/modificar') }}">
-									<button class="btn btn-success btn-xs" name="modificar" value="{{ $publication->id }}">Modificar</button>
-								</form>
+								<a href="{{ URL::to('usuario/publicacion/modificar/'.$publication->id) }}" class="btn btn-success btn-xs" name="modificar" >Modificar</a>
 							</td>
 							<td class="textoMedio">
 								@if($publication->fechFin < date('Y-m-d') && $publication->fechFin != "0000-00-00")

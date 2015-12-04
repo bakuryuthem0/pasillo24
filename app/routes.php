@@ -104,8 +104,8 @@ Route::group(array('before' =>'auth'),function()
 
 	Route::get('usuario/mi-reputacion','UserController@getMyReputation');
 
-	Route::post('usuario/publicacion/modificar','PublicationController@getModifyPub');
-	Route::post('usuario/publicacion/modificar/{type}','PublicationController@postModifyPub');
+	Route::get('usuario/publicacion/modificar/{id}','PublicationController@getModifyPub');
+	Route::post('usuario/publicacion/modificar/{type}/{id}','PublicationController@postModifyPub');
 	Route::get('usuario/sub-categoria', 'PublicationController@getSubCat');
 	Route::get('usuario/longitud', 'PublicationController@getLength');
 	

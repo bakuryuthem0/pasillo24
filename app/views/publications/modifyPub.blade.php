@@ -10,11 +10,19 @@
 
 				<h4>Modificar publicación LÍDER</h4>
 				<hr>
-				@if(Session::has('error'))
+				@if(Session::has('danger'))
 				<div class="col-xs-12">
 					<div class="alert alert-danger">
 						<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-						<p class="textoPromedio">{{ Session::get('error') }}</p>
+						<p class="textoPromedio">{{ Session::get('danger') }}</p>
+					</div>
+				</div>
+				@endif
+				@if(Session::has('success'))
+				<div class="col-xs-12">
+					<div class="alert alert-success">
+						<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+						<p class="textoPromedio">{{ Session::get('success') }}</p>
 					</div>
 				</div>
 				@endif
@@ -133,19 +141,23 @@
 					<a href="{{ URL::to('usuario/publicaciones/mis-publicaciones/lider') }}" class="btn btn-danger cancel">Cancelar</a>
 				</div>
 				
-			@elseif($tipo == 'Habitual')
-			
-
-
-
+			@elseif($tipo == 'Habitual')			
 			<div class="col-xs-12">
 					<legend>Modificación de publicación HABITUAL</legend>
 				</div>
-				@if(Session::has('error'))
+				@if(Session::has('danger'))
 				<div class="col-xs-12">
 					<div class="alert alert-danger">
 						<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-						<p class="textoPromedio">{{ Session::get('error') }}</p>
+						<p class="textoPromedio">{{ Session::get('danger') }}</p>
+					</div>
+				</div>
+				@endif
+				@if(Session::has('success'))
+				<div class="col-xs-12">
+					<div class="alert alert-success">
+						<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+						<p class="textoPromedio">{{ Session::get('success') }}</p>
 					</div>
 				</div>
 				@endif
