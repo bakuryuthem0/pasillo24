@@ -208,12 +208,24 @@ class UserController extends BaseController {
 
 		if (Input::hasFile('portada')) {
 			$img1  = Input::file('portada');
+			$rules = array('img1' => 'image');
+			$validator = Validator::make(array('img1' => $img1), $rules);
+			if ($validator->fails()) {
+				Session::flash('error','Error, el archivo '.$img1->getClientOriginalName().' debe ser una imagen en formato: jpg, png o gif');
+				return Redirect::back()->withInput();
+			}
 			$tam = getimagesize($img1);
 			$width = $tam[0];
 		}
 
 		if (Input::hasFile('portada2')) {
 			$img2  = Input::file('portada2');
+			$rules = array('img2' => 'image');
+			$validator = Validator::make(array('img2' => $img2), $rules);
+			if ($validator->fails()) {
+				Session::flash('error','Error, el archivo '.$img2->getClientOriginalName().' debe ser una imagen en formato: jpg, png o gif');
+				return Redirect::back();
+			}
 			$tam2 = getimagesize($img2);
 			$width2 = $tam2[0];
 		}

@@ -79,12 +79,12 @@
 					</div>
 				</div>
 				@endif
-				<div class="@if ($errors->has('cat')) col-xs-6 @else col-xs-12 @endif inputLider">
+				<div class="@if (Input::old('ubication') && Input::old('ubication') == 'Categoria') col-xs-6 @else col-xs-12 @endif inputLider">
 					<label for="department" class="textoPromedio">(*) Ubicación:</label>
 					<select name="ubication" class="form-control" id="ubication" required>
 						<option value="">Seleccione la ubicación a publicar</option>
 						<option value="Principal">Menú principal</option>
-						@if($errors->has('cat'))<option value="Categoria" selected>Menú por categorías</option>
+						@if(Input::old('ubication') && Input::old('ubication') == 'Categoria')<option value="Categoria" selected>Menú por categorías</option>
 						@else <option value="Categoria">Menú por categorías</option>
 						@endif
 					</select>
@@ -97,13 +97,13 @@
 						 @endforeach
 					@endif
 				</div>
-				<div class="col-xs-6 contCatLider inputLider @if($errors->has('cat')) showit @endif">
+				<div class="col-xs-6 contCatLider inputLider @if(Input::old('ubication') && Input::old('ubication') == 'Categoria') showit @endif">
 					<label for="cat" class="textoPromedio">(*) Categoría</label>
 					<select name="cat" id="category" class="form-control">
 						<option value="">Seleccione la categoría</option>
 						<optgroup label="Categoría">
 						@foreach($categorias as $categoria)
-							@if($errors->has('cat'))
+							@if(Input::old('ubication') && Input::old('ubication') == 'Categoria')
 								@if(Input::old('cat') == $categoria->id)
 									<option value="{{ $categoria->id }}" selected>{{ $categoria->nombre }}</option>
 								@else
@@ -155,9 +155,8 @@
 				<div class="col-xs-6 inputLider">
 
 					<label for="fechIni" class="textoPromedio">(*) Fecha de inicio</label>
-					{{ Form::text('fechIni',
-						 '',
-						 array('class' => 'form-control','id' => 'fechIni','placeholder' =>'DD-MM-AAAA','required' => 'required','style' => 'margin-top:1em;')) }}
+					<input type="text" class="form-control" id="fechIni" name="fechIni" placeholder="DD-MM-AAAA" style="margin-top:1em;" required>
+					
 					@if ($errors->has('fechIni'))
 						 @foreach($errors->get('fechIni') as $err)
 						 	<div class="alert alert-danger">
