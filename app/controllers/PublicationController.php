@@ -82,7 +82,7 @@ class PublicationController extends BaseController {
 		$id = $id;
 		$title ="Pago publicación habitual";
 		$precioLider = Precios::where('pub_type_id','=',1)->get();
-		$solo = $precioLider[0];
+		$pub = Publicaciones::find($id);
 		$precioCat 	 = Precios::where('pub_type_id','=',2)->get();
 		$numCuentas = NumCuentas::all();
 		return View::make('publications.paymentsNormal')
@@ -90,7 +90,7 @@ class PublicationController extends BaseController {
 		->with('id',$id)
 		->with('precLid',$precioLider)
 		->with('precCat',$precioCat)
-		->with('solo',$solo)
+		->with('pub',$pub)
 		->with('numCuentas',$numCuentas);
 	}
 
