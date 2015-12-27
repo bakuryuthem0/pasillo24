@@ -115,7 +115,17 @@ Route::group(array('before' =>'auth'),function()
 	//rutas del admin
 	Route::group(array('before' => 'role_check'), function()
 	{
-		
+		Route::get('administrador/categorias','AdministratorController@getCategories');
+		Route::get('administrador/categoria/modificar/{id}','AdministratorController@getModifyCategories');
+		Route::post('administrador/categoria/modificar','AdministratorController@postModifyCategories');
+		Route::post('administrador/categorias/eliminar','AdministratorController@postElimCat');
+		Route::get('administrador/sub-categorias','AdministratorController@getSubCat');
+		Route::get('administrador/sub-categoria/modificar/{id}','AdministratorController@getModifySubCategories');
+		Route::post('administrador/sub-categoria/modificar','AdministratorController@postModifySubCategories');
+		Route::post('administrador/subcategorias/eliminar','AdministratorController@postElimSubCat');
+		Route::post('administrador/categoria/nueva','AdministratorController@postNewCat');
+		Route::post('administrador/sub-categoria/nueva','AdministratorController@postNewSubCat');
+
 		Route::get('administrador/pagos', 'AdministratorController@getPagos');
 		Route::get('administrador/pagos/{type}', 'AdministratorController@getPagosType');
 		Route::post('administrador/pagos/cancelar', 'AdministratorController@postPagosCancel');
@@ -140,7 +150,4 @@ Route::group(array('before' =>'auth'),function()
 
 		});
 	});
-	
-	
-
 });

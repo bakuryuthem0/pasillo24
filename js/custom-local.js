@@ -3,12 +3,12 @@ jQuery(document).ready(function($) {
 		var id = $(this).val(),status = $(this).data('status');
 		var boton = $(this);
 		$.ajax({
-			url: 'http://localhost/pasillo24/public/administrador/editar-publicidad/eliminar',
+			url: 'http://localhost/pasillo24/administrador/editar-publicidad/eliminar',
 			type: 'POST',
 			dataType: 'json',
 			data: {'id': id,'status':status},
 			beforeSend:function () {
-				boton.after('<img src="http://localhost/pasillo24/public/images/loading.gif" class="loading">');
+				boton.after('<img src="http://localhost/pasillo24/images/loading.gif" class="loading">');
 				boton.animate({
 						'opacity': 0},
 						250,function(){
@@ -69,12 +69,12 @@ jQuery(document).ready(function($) {
 		$('.envElim').click(function(event) {
 			var boton = $(this);
 			$.ajax({
-				url: 'http://localhost/pasillo24/public/administrador/editar-publicidad/eliminar',
+				url: 'http://localhost/pasillo24/administrador/editar-publicidad/eliminar',
 				type: 'POST',
 				dataType: 'json',
 				data: {'id': id},
 				beforeSend:function() {
-					boton.after('<img src="http://localhost/pasillo24/public/images/loading.gif" class="loading">');
+					boton.after('<img src="http://localhost/pasillo24/images/loading.gif" class="loading">');
 					boton.animate({
 						'opacity': 0},
 						250,function(){
@@ -144,12 +144,12 @@ jQuery(document).ready(function($) {
 		});
 		var id = $(this).val();
 		$.ajax({
-			url: 'http://localhost/pasillo24/public/publicacion/habitual/previsualizar/cambiar/posiciones',
+			url: 'http://localhost/pasillo24/publicacion/habitual/previsualizar/cambiar/posiciones',
 			type: 'POST',
 			dataType: 'json',
 			data: {'arr': arr,'id':id},
 			beforeSend:function () {
-				$('.btnChangeEnviar').before('<img src="http://localhost/pasillo24/public/images/loading.gif" class="loading">');
+				$('.btnChangeEnviar').before('<img src="http://localhost/pasillo24/images/loading.gif" class="loading">');
 				$('.loading').css({
 					'display': 'block',
 					'margin': '2em auto'
@@ -273,12 +273,12 @@ jQuery(document).ready(function($) {
 		});
 	$('.btnElimPublicacion').on('click',function(event) {
 			$.ajax({
-				url: 'http://localhost/pasillo24/public/usuario/publicaciones/mis-publicaciones/eliminar/publicacion',
+				url: 'http://localhost/pasillo24/usuario/publicaciones/mis-publicaciones/eliminar/publicacion',
 				type: 'POST',
 				dataType: 'json',
 				data: {'id': $(this).val()},
 				beforeSend:function(){
-					$('.btnElimPublicacion').before('<img src="http://localhost/pasillo24/public/images/loading.gif" class="loading">');
+					$('.btnElimPublicacion').before('<img src="http://localhost/pasillo24/images/loading.gif" class="loading">');
 					$('.btnElimPublicacion').addClass('disabled')
 					$('.loading').css({
 						'display': 'block',
@@ -410,7 +410,7 @@ $(document).ready(function() {
 		x = confirm('¿Seguro desea eliminar?. Esta accion es irreversible');
 		if (x) {
 			$.ajax({
-				url: 'http://localhost/pasillo24/public/user/items/delete',
+				url: 'http://localhost/pasillo24/user/items/delete',
 				type: 'POST',
 				dataType: 'json',
 				data: {'id': $(this).attr('data-id-delete')},
@@ -507,7 +507,7 @@ $('#veiMarca').change(function(){
 	var data = {'id':$(this).val()};
 	if (id != "") {
 		$.ajax({
-			url: 'http://localhost/pasillo24/public/publicacion/model',
+			url: 'http://localhost/pasillo24/publicacion/model',
 			type: 'GET',
 			data: data,
 			success:function(response){
@@ -629,7 +629,7 @@ $('.continue').click(function(event) {
 		$('input').css('box-shadow','none');
 		$('.finalFecha').remove();
 		$.ajax({
-				url: 'http://localhost/pasillo24/public/usuario/publicacion/lider/fecha',
+				url: 'http://localhost/pasillo24/usuario/publicacion/lider/fecha',
 				type: 'get',
 				data: {'fecha':fecha,'timestamp':total,'period':period,'duration':duration},
 				beforeSend:function()
@@ -790,7 +790,7 @@ $(document).ready(function() {
 		};
 	    if (proceed == 1) {
 	        $.ajax({
-	          url: 'http://localhost/pasillo24/public/publicacion/comentario',
+	          url: 'http://localhost/pasillo24/publicacion/comentario',
 	          type: 'GET',
 	          dataType: 'json',
 	          data: data,
@@ -855,7 +855,7 @@ $(document).ready(function() {
 				'motivo': $('.motivo').val()
 			}
 			$.ajax({
-				url: 'http://localhost/pasillo24/public/administrador/pagos/cancelar',
+				url: 'http://localhost/pasillo24/administrador/pagos/cancelar',
 				type: 'post',
 				dataType: 'json',
 				data: dataPost,
@@ -917,7 +917,7 @@ $(document).ready(function() {
 			pubid = $(this).data('pub-id')
 		datos = {'id':id,'respuesta':texto,'pub_id':pubid};
 		$.ajax({
-			url: 'http://localhost/pasillo24/public/usuario/publicaciones/comentarios/respuesta',
+			url: 'http://localhost/pasillo24/usuario/publicaciones/comentarios/respuesta',
 			type: 'POST',
 			dataType: 'json',
 			data: datos,
@@ -996,13 +996,13 @@ jQuery(document).ready(function($) {
 		event.preventDefault();
 		boton.addClass('disabled')
 		$.ajax({
-			url: 'http://localhost/pasillo24/public/chequear/email',
+			url: 'http://localhost/pasillo24/chequear/email',
 			type: 'POST',
 			dataType: 'json',
 			data: {'email': email},
 			beforeSend:function()
 			{
-				$('.envForgot').after('<img src="http://localhost/pasillo24/public/images/loading.gif" class="loading">');
+				$('.envForgot').after('<img src="http://localhost/pasillo24/images/loading.gif" class="loading">');
 				$('.loading').css({
 					'display': 'block',
 					'margin': '2em auto'
@@ -1104,7 +1104,7 @@ $('.btn-elim').click(function(event) {
 	$('#eliminarUsuarioModal').click(function(event) {
 		$(this).prop('disabled', true)
 		$.ajax({
-			url: 'http://localhost/pasillo24/public/administrador/eliminar-usuario/enviar',
+			url: 'http://localhost/pasillo24/administrador/eliminar-usuario/enviar',
 			type: 'POST',
 			dataType: 'json',
 			data: {'id': id},
@@ -1144,7 +1144,7 @@ $('.btn-elim-pub').click(function(event) {
 	$('#eliminarPublicacionModal').click(function(event) {
 		$(this).prop('disabled', true)
 		$.ajax({
-			url: 'http://localhost/pasillo24/public/administrador/publicacion/eliminar-publicacion/enviar',
+			url: 'http://localhost/pasillo24/administrador/publicacion/eliminar-publicacion/enviar',
 			type: 'POST',
 			dataType: 'json',
 			data: {'id': id},
@@ -1237,7 +1237,7 @@ $('#category').change(function(event) {
 	var data = {'id':$(this).val()};
 	if (id != "") {
 		$.ajax({
-			url: 'http://localhost/pasillo24/public/usuario/sub-categoria',
+			url: 'http://localhost/pasillo24/usuario/sub-categoria',
 			type: 'GET',
 			data: data,
 			beforeSend:function()
@@ -1300,7 +1300,7 @@ jQuery(document).ready(function($) {
 	{
 
 		$.ajax({
-			url: ' http://localhost/pasillo24/public/verificar-comentarios',
+			url: ' http://localhost/pasillo24/verificar-comentarios',
 			type: 'GET',
 			success:function(response)
 			{
@@ -1363,7 +1363,7 @@ jQuery(document).ready(function($) {
  				'id'  : btn.data('id')
  			};
  			$.ajax({
- 				url: 'http://localhost/pasillo24/public/modificar/publicacion/eliminar/imagen',
+ 				url: 'http://localhost/pasillo24/modificar/publicacion/eliminar/imagen',
  				type: 'POST',
  				dataType: 'json',
  				data: dataPost,
@@ -1424,5 +1424,81 @@ jQuery(document).ready(function($) {
  			}
  		})
  		
+ 	});
+ 	$('.btn-elim-cat').on('click', function(event) {
+		var btn = $(this);
+		var id = btn.val();
+		btn.addClass('to-elim'); 		
+		$('.eliminar-categoria').val(id);
+ 	});
+ 	$('.eliminar-categoria').on('click', function(event) {
+ 		var btn = $(this);
+ 		dataPost = { 'id': btn.val() }
+ 		$.ajax({
+ 				url: 'http://localhost/pasillo24/administrador/categorias/eliminar',
+ 				type: 'POST',
+ 				dataType: 'json',
+ 				data: dataPost,
+ 				beforeSend:function()
+ 				{
+ 					$('.miniLoader').addClass('active');
+ 					btn.addClass('disabled');
+ 				},success:function(response){
+ 					$('.responseDanger').addClass('alert-'+response.type).addClass('active');
+ 					$('.responseDanger .responseDanger-text').html(response.msg);
+ 					$('.miniLoader').removeClass('active')
+					if (response.type == 'danger') {
+						btn.removeClass('disabled');
+						$('.miniLoader').removeClass('active');
+					}else
+					{
+						$('.to-elim').parent().parent().remove();
+					}
+ 				}
+ 			})
+ 	});
+ 	$('.modal-elim-cat').on('hide.bs.modal', function(event) {
+ 		$('.to-elim').removeClass('to-elim');
+ 		$('.responseDanger').removeClass('alert-danger').removeClass('alert-success').removeClass('active');
+ 		$('.responseDanger .responseDanger-text').html('');
+ 		$('.eliminar-categoria').removeClass('disabled');
+ 	});
+ 	$('.btn-elim-subcat').on('click', function(event) {
+		var btn = $(this);
+		var id = btn.val();
+		btn.addClass('to-elim'); 		
+		$('.eliminar-subcategoria').val(id);
+ 	});
+ 	$('.eliminar-subcategoria').on('click', function(event) {
+ 		var btn = $(this);
+ 		dataPost = { 'id': btn.val() }
+ 		$.ajax({
+ 				url: 'http://localhost/pasillo24/administrador/subcategorias/eliminar',
+ 				type: 'POST',
+ 				dataType: 'json',
+ 				data: dataPost,
+ 				beforeSend:function()
+ 				{
+ 					$('.miniLoader').addClass('active');
+ 					btn.addClass('disabled');
+ 				},success:function(response){
+ 					$('.responseDanger').addClass('alert-'+response.type).addClass('active');
+ 					$('.responseDanger .responseDanger-text').html(response.msg);
+ 					$('.miniLoader').removeClass('active')
+					if (response.type == 'danger') {
+						btn.removeClass('disabled');
+						$('.miniLoader').removeClass('active');
+					}else
+					{
+						$('.to-elim').parent().parent().remove();
+					}
+ 				}
+ 			})
+ 	});
+ 	$('.modal-elim-subcat').on('hide.bs.modal', function(event) {
+ 		$('.to-elim').removeClass('to-elim');
+ 		$('.responseDanger').removeClass('alert-danger').removeClass('alert-success').removeClass('active');
+ 		$('.responseDanger .responseDanger-text').html('');
+ 		$('.eliminar-categoria').removeClass('disabled');
  	});
 });

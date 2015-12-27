@@ -102,7 +102,31 @@ class HomeController extends BaseController {
 		}
 
 		$categories = Categorias::where('deleted','=',0)->where('tipo','=',1)->orderBy('nombre')->get();
+		$otros = new StdClass;
+		foreach ($categories as $c) {
+			if (strtolower($c->nombre) == 'otros') {
+				$otros->id 		= $c->id;
+				$otros->nombre	= $c->nombre;			
+			}
+		}
+		if(!isset($otros->id))
+		{
+			$otros->id = '1000';
+			$otros->nombre = 'Otros';
+		}
 		$servicios  = Categorias::where('deleted','=',0)->where('tipo','=',2)->get();
+		$otros2 = new StdClass;
+		foreach ($categories as $c) {
+			if (strtolower($c->nombre) == 'otros') {
+				$otros2->id 		= $c->id;
+				$otros2->nombre	= $c->nombre;			
+			}
+		}
+		if(!isset($otros2->id))
+		{
+			$otros2->id = '1000';
+			$otros2->nombre = 'Otros';
+		}
 		$departamentos = Department::get();
                 $publi = Publicidad::get();
 		if (!is_null($id)) {
@@ -114,6 +138,8 @@ class HomeController extends BaseController {
 				->with('departamentos',$departamentos)
 				->with('habitual',$habitual)
 				->with('casual',$casual)
+				->with('otros',$otros)
+				->with('otros2',$otros2)
 				->with('servicios',$servicios)
 				->with('depFilter',$dep->id);
         }else
@@ -126,6 +152,8 @@ class HomeController extends BaseController {
 			->with('departamentos',$departamentos)
 			->with('habitual',$habitual)
 			->with('casual',$casual)
+			->with('otros',$otros)
+			->with('otros2',$otros2)
 			->with('servicios',$servicios);
         }
 	}

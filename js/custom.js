@@ -1425,4 +1425,75 @@ jQuery(document).ready(function($) {
  		})
  		
  	});
+
+ 	$('.btn-elim-cat').on('click', function(event) {
+		var btn = $(this);
+		var id = btn.val();
+		btn.addClass('to-elim'); 		
+		$('.eliminar-categoria').val(id);
+ 	});
+ 	$('.eliminar-categoria').on('click', function(event) {
+ 		var btn = $(this);
+ 		dataPost = { 'id': btn.val() }
+ 		$.ajax({
+ 				url: 'http://pasillo24.com/administrador/categorias/eliminar',
+ 				type: 'POST',
+ 				dataType: 'json',
+ 				data: dataPost,
+ 				beforeSend:function()
+ 				{
+ 					$('.miniLoader').addClass('active');
+ 					btn.addClass('disabled');
+ 				},success:function(response){
+ 					$('.responseDanger').addClass('alert-'+response.type).addClass('active');
+ 					$('.responseDanger .responseDanger-text').html(response.msg);
+ 					$('.miniLoader').removeClass('active')
+					if (response.type == 'danger') {
+						btn.removeClass('disabled');
+						$('.miniLoader').removeClass('active');
+					}
+ 				}
+ 			})
+ 	});
+ 	$('.modal-elim-cat').on('hide.bs.modal', function(event) {
+ 		$('.to-elim').removeClass('to-elim');
+ 		$('.responseDanger').removeClass('alert-danger').removeClass('alert-success').removeClass('active');
+ 		$('.responseDanger .responseDanger-text').html('');
+ 		$('.eliminar-categoria').removeClass('disabled');
+ 	});
+ 	$('.btn-elim-subcat').on('click', function(event) {
+		var btn = $(this);
+		var id = btn.val();
+		btn.addClass('to-elim'); 		
+		$('.eliminar-subcategoria').val(id);
+ 	});
+ 	$('.eliminar-subcategoria').on('click', function(event) {
+ 		var btn = $(this);
+ 		dataPost = { 'id': btn.val() }
+ 		$.ajax({
+ 				url: 'http://pasillo24.com/administrador/subcategorias/eliminar',
+ 				type: 'POST',
+ 				dataType: 'json',
+ 				data: dataPost,
+ 				beforeSend:function()
+ 				{
+ 					$('.miniLoader').addClass('active');
+ 					btn.addClass('disabled');
+ 				},success:function(response){
+ 					$('.responseDanger').addClass('alert-'+response.type).addClass('active');
+ 					$('.responseDanger .responseDanger-text').html(response.msg);
+ 					$('.miniLoader').removeClass('active')
+					if (response.type == 'danger') {
+						btn.removeClass('disabled');
+						$('.miniLoader').removeClass('active');
+					}
+ 				}
+ 			})
+ 	});
+ 	$('.modal-elim-subcat').on('hide.bs.modal', function(event) {
+ 		$('.to-elim').removeClass('to-elim');
+ 		$('.responseDanger').removeClass('alert-danger').removeClass('alert-success').removeClass('active');
+ 		$('.responseDanger .responseDanger-text').html('');
+ 		$('.eliminar-categoria').removeClass('disabled');
+ 	});
 });

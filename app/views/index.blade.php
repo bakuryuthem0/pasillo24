@@ -10,14 +10,14 @@
 				@foreach($categories as $category)
 					<li><a href="{{ URL::to('publicaciones/categorias/'.$category->id) }}">{{$category->nombre }}</a></li>
 				@endforeach
-                                        <li><a href="{{ URL::to('publicaciones/categorias/100') }}">Otros</a></li>
+                    <li><a href="{{ URL::to('publicaciones/categorias/'.$otros->id) }}">{{ $otros->nombre }}</a></li>
 				</ul>
 				<h3 style="text-align:left;">Servicios</h3>
 				<ul class="categorias">
 				@foreach($servicios as $servicio)
 					<li><a href="{{ URL::to('publicaciones/categorias/'.$servicio->id) }}">{{$servicio->nombre }}</a></li>
 				@endforeach
-                                        <li><a href="{{ URL::to('publicaciones/categorias/100') }}">Otros</a></li>
+                    <li><a href="{{ URL::to('publicaciones/categorias/'.$otros2->id) }}">{{ $otros2->nombre }}</a></li>
 				</ul>
 			</div>
 			<div class="col-xs-10 contBanner no-padding-movil" style="margin-top:0;">

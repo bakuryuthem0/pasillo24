@@ -227,6 +227,16 @@ margin-top: 0.5em;display:inline-block;">
 														Modifica Precios
 													</a>
 												</li>
+												<li class="showMovil">
+													<a href="{{ URL::to('administrador/categorias') }}">
+														<i class="fa fa-list"></i> Ver Categorias / Servicios
+													</a>
+												</li>
+												<li class="showMovil">
+													<a href="{{ URL::to('administrador/sub-categorias') }}">
+														<i class="fa fa-list-alt"></i> Ver Sub-categorias
+													</a>
+												</li>
 												<li class="dropdown-submenu noDisplay">
 													<a href="#" >
 														<i class="fa fa-cogs"></i> Modificaciones
@@ -249,7 +259,18 @@ margin-top: 0.5em;display:inline-block;">
 																Cambiar publicidad
 															</a>
 														</li>
-									
+														<li>
+															<a href="{{ URL::to('administrador/categorias') }}">
+																<i class="fa fa-list"></i>
+																Ver Categorias / Servicios
+															</a>
+														</li>
+														<li>
+															<a href="{{ URL::to('administrador/sub-categorias') }}">
+																<i class="fa fa-list-alt"></i>
+																Ver sub-ategorias
+															</a>
+														</li>
 													</ul>
 												</li>
 												<li class="showMovil">
@@ -328,7 +349,7 @@ margin-top: 0.5em;display:inline-block;">
 	
 	{{ HTML::script('js/jquery.min.js') }}
 	{{ HTML::script('js/bootstrap.min.js') }}
-	{{ HTML::script('js/custom.js?v=0.4')}}
+	{{ HTML::script('js/custom-local.js?v=0.4')}}
 	
 	{{ HTML::script('js/ckeditor.js') }}
 	{{ HTML::script('js/jquery.ckeditor.js') }}

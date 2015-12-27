@@ -89,7 +89,7 @@ class AdministratorController extends BaseController {
         });
         $publicacion->motivo = "";
         if ($publicacion->save()) {
-            Session::flash('success', 'Publicación aprobada sactisfactoriamente');
+            Session::flash('success', 'Publicación aprobada satisfactoriamente');
             return Redirect::to('administrador/pagos/'.$url);
         }else
         {
@@ -561,7 +561,7 @@ class AdministratorController extends BaseController {
         {
             $message->to($to_Email)->from('noreply@pasillo24.com')->subject($subject);
         });
-        Session::flash('success', 'Textos guardados sactisfactoriamente. Se ha enviado un correo al administrador.');
+        Session::flash('success', 'Textos guardados satisfactoriamente. Se ha enviado un correo al administrador.');
         return Redirect::to('administrador/modificar-publicaciones');
     }
     public function getModifyPrice()
@@ -758,6 +758,216 @@ public function getEditPub()
                 return Response::json(array('type' =>'danger','msg' =>'Error al eliminar el slide'));
             }
 
+        }
+    }
+
+    public function getCategories()
+    {
+        $title = "Categorias | pasillo24";
+        $cat = Categorias::where('deleted','=',0)->get();
+        return View::make('admin.categories')
+        ->with('title',$title)
+        ->with('cat',$cat);
+    }
+    public function getModifyCategories($id)
+    {
+        $cat = Categorias::find($id);
+        $title = "Modificar Categorias | pasillo24";
+        return View::make('admin.modifyCat')
+        ->with('title',$title)
+        ->with("cat",$cat)
+        ->with('id',$id);
+    }
+    public function postModifyCategories()
+    {
+        $dat = Input::all();
+        $rules = array(
+            'name' => 'required|min:4|max:64',
+            'type' => 'required',
+        );
+        $msg = array(
+            'name.required' => 'El nombre de la categoria es obligatorio',
+            'type.required' => 'El tipo de la categoria es obligatorio',
+
+            'min'      => 'El nombre de la categoria debe tener un minimo de 4 caracteres',
+            'max'      => 'El nombre de la categoria debe tener un maximo de 64 caracteres'
+        );
+        $validator = Validator::make($dat, $rules, $msg);
+        if ($validator->fails()) {
+            return Redirect::back()->withErrors($validator);
+        }
+        $id = Input::get('id');
+        $cat = Categorias::find($id);
+        $cat->nombre = $dat['name'];
+        $cat->tipo   = $dat['type'];
+        if ($cat->save()) {
+            Session::flash('success','Se ha modificado satisfactoriamente la categoria.');
+            return Redirect::to('administrador/categorias');
+        }else
+        {
+            Session::flash('error','Error al modificar la categoria.');
+            return Redirect::back();
+        }
+    }
+    public function postElimCat()
+    {
+        if (Request::ajax()) {
+            $id = Input::get('id');
+            $cat = Categorias::find($id);
+            $cat->deleted = 1;
+            if ($cat->save()) {
+                return Response::json(array(
+                    'type' => 'success',
+                    'msg'  => 'Se ha eliminado satisfactoriamente la categoria.'
+                ));
+            }else
+            {
+                 return Response::json(array(
+                    'type' => 'danger',
+                    'msg'  => 'Error al eliminar la categoria.'
+                ));
+            }
+        }
+    }
+    public function getSubCat()
+    {
+        $title = "Categorias | pasillo24";
+        $cats = Categorias::where('deleted','=',0)->get();
+        $cat = SubCat::leftJoin('categoria','categoria.id','=','subcategoria.categoria_id')
+        ->where('subcategoria.deleted','=',0)
+        ->get(array(
+            'subcategoria.id',
+            'subcategoria.desc',
+            'categoria.nombre',
+        ));
+        return View::make('admin.subcategories')
+        ->with('title',$title)
+        ->with('cat',$cat)
+        ->with('cats',$cats);
+    }
+    public function getModifySubCategories($id)
+    {
+        $sc = SubCat::find($id);
+        $cat = Categorias::where('deleted','=',0)->get();
+        $title = "Modificar Sub-categorias | pasillo24";
+        return View::make('admin.modifySubCat')
+        ->with('title',$title)
+        ->with("sc",$sc)
+        ->with('cat',$cat)
+        ->with('id',$id);
+    }
+    public function postModifySubCategories()
+    {
+        $dat = Input::all();
+        $rules = array(
+            'name'      => 'required|min:4|max:64',
+            'categoria' => 'required',
+        );
+        $msg = array(
+            'name.required'      => 'El campo nombre de la categoria es obligatorio',
+            'categoria.required' => 'El campo categoria es obligatorio',
+            'min'                => 'El campo nombre de la categoria debe tener un minimo de 4 caracteres',
+            'max'                => 'El campo nombre de la categoria debe tener un maximo de 64 caracteres'
+        );
+        $validator = Validator::make($dat, $rules, $msg);
+        if ($validator->fails()) {
+            return Redirect::back()->withErrors($validator);
+        }
+        $id                 = Input::get('id');
+        $cat                = SubCat::find($id);
+        $cat->desc          = $dat['name'];
+        $cat->categoria_id  = $dat['categoria'];
+        if ($cat->save()) {
+            Session::flash('success','Se ha modificado satisfactoriamente la sub-categoria.');
+            return Redirect::to('administrador/sub-categorias');
+        }else
+        {
+            Session::flash('error','Error al modificar la sub-categoria.');
+            return Redirect::back();
+        }
+    }
+    public function postElimSubCat()
+    {
+        if (Request::ajax()) {
+            $id = Input::get('id');
+            $cat = SubCat::find($id);
+            $cat->deleted = 1;
+            if ($cat->save()) {
+                return Response::json(array(
+                    'type' => 'success',
+                    'msg'  => 'Se ha eliminado satisfactoriamente la sub-categoria.'
+                ));
+            }else
+            {
+                 return Response::json(array(
+                    'type' => 'danger',
+                    'msg'  => 'Error al eliminar la sub-categoria.'
+                ));
+            }
+        }
+    }
+    public function postNewCat()
+    {
+        $dat = Input::all();
+        $rules = array(
+            'name' => 'required|min:4|max:64',
+            'type' => 'required',
+        );
+        $msg = array(
+            'name.required' => 'El nombre de la categoria es obligatorio',
+            'type.required' => 'El tipo es obligatorio',
+            'min'      => 'El nombre de la categoria debe tener un minimo de 4 caracteres',
+            'max'      => 'El nombre de la categoria debe tener un maximo de 64 caracteres'
+        );
+        $validator = Validator::make($dat, $rules, $msg);
+        if ($validator->fails()) {
+            return Redirect::back()->withErrors($validator);
+        }
+
+        $nomb = Input::get('name');
+        $type = Input::get('type');
+        $cat = new Categorias;
+        $cat->nombre = $nomb;
+        $cat->tipo   = $type;
+        if ($cat->save()) {
+            Session::flash('success','Se ha creado la categoria satisfactoriamente.');
+            return Redirect::back();
+        }else
+        {
+            Session::flash('danger','Error al guardar la nueva categoria.');
+            return Redirect::back();
+        }
+    }
+    public function postNewSubCat()
+    {
+        $dat = Input::all();
+        $rules = array(
+            'name' => 'required|min:4|max:64',
+            'cat'  => 'required'
+        );
+        $msg = array(
+            'name.required'      => 'El campo nombre de la categoria es obligatorio',
+            'categoria.required' => 'El campo categoria es obligatorio',
+            'min'                => 'El campo nombre de la categoria debe tener un minimo de 4 caracteres',
+            'max'                => 'El campo nombre de la categoria debe tener un maximo de 64 caracteres'
+        );
+        $validator = Validator::make($dat, $rules, $msg);
+        if ($validator->fails()) {
+            return Redirect::back()->withErrors($validator);
+        }
+
+        $nomb               = Input::get('name');
+        $cat_id             = Input::get('cat');
+        $cat                = new SubCat;
+        $cat->desc          = $nomb;
+        $cat->categoria_id  = $cat_id;
+        if ($cat->save()) {
+            Session::flash('success','Se ha creado la sub-categoria satisfactoriamente.');
+            return Redirect::back();
+        }else
+        {
+            Session::flash('danger','Error al guardar la nueva sub-categoria.');
+            return Redirect::back();
         }
     }
 }
