@@ -189,7 +189,8 @@ class HomeController extends BaseController {
 		$lider = DB::select("SELECT `publicaciones`.`id`,`publicaciones`.`img_1`,`publicaciones`.`titulo` ,`publicaciones`.`precio`, `publicaciones`.`moneda` 
 			FROM  `publicaciones` 
 			LEFT JOIN  `categoria` ON  `categoria`.`id` =  `publicaciones`.`categoria` 
-			WHERE `publicaciones`.`status` =  'Aprobado' AND (
+			WHERE `publicaciones`.`fechFin` >= '".date('Y-m-d',time())."' 
+			AND `publicaciones`.`status` =  'Aprobado' AND (
 				LOWER(  `publicaciones`.`titulo` ) LIKE  '%".strtolower($input['busq'])."%'
 				OR LOWER( `publicaciones`.`pag_web` ) LIKE  '%".strtolower($input['busq'])."%'
 				OR LOWER( `publicaciones`.`descripcion` ) LIKE  '%".strtolower($input['busq'])."%'
@@ -215,6 +216,11 @@ class HomeController extends BaseController {
 			})->where('publicaciones.tipo','!=','Lider')
 			->where('publicaciones.status','=','Aprobado')
 			->where('publicaciones.deleted','=',0)
+			->where(function($query)
+			{
+				$query->where('publicaciones.fechFin','>=',date('Y-m-d'))
+				->orWhere('publicaciones.fechFinNormal','>=',date('Y-m-d'));
+			})
 			->where('publicaciones.departamento','=',Input::get('filter'))
 			->paginate(5,array('publicaciones.id',
 				'publicaciones.img_1',
@@ -233,6 +239,11 @@ class HomeController extends BaseController {
 			})->where('publicaciones.tipo','!=','Lider')
 			->where('publicaciones.status','=','Aprobado')
 			->where('publicaciones.deleted','=',0)
+			->where(function($query)
+			{
+				$query->where('publicaciones.fechFin','>=',date('Y-m-d'))
+				->orWhere('publicaciones.fechFinNormal','>=',date('Y-m-d'));
+			})
 			->paginate(5,array('publicaciones.id',
 				'publicaciones.img_1',
 				'publicaciones.titulo',
@@ -248,6 +259,7 @@ class HomeController extends BaseController {
 		{
 			$busq = $input['busq'];
 		}
+
 		return View::make('publications.busq')
 		->with('publicaciones',$res)
 		->with('title',$title)
