@@ -835,7 +835,8 @@ public function getEditPub()
         $cats = Categorias::where('deleted','=',0)->get();
         $cat = SubCat::leftJoin('categoria','categoria.id','=','subcategoria.categoria_id')
         ->where('subcategoria.deleted','=',0)
-        ->get(array(
+        ->orderBy('categoria.id')
+        ->paginate(50,array(
             'subcategoria.id',
             'subcategoria.desc',
             'categoria.nombre',

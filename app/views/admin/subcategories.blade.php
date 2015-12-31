@@ -102,7 +102,11 @@
 								{{ $c->desc }}
 							</td>	
 							<td>
-								{{ $c->nombre }}
+								@if(empty($c->nombre))
+									Sin especificar
+								@else
+									{{ $c->nombre }}
+								@endif
 							</td>	
 							<td>
 								<a href="{{ URL::to('administrador/sub-categoria/modificar/'.$c->id) }}" class="btn btn-xs btn-warning" style="width:100%;">Modificar</a>
@@ -114,6 +118,120 @@
 					@endforeach
 				</tbody>
 			</table>
+				<nav role="navigation">
+		          <?php  $presenter = new Illuminate\Pagination\BootstrapPresenter($cat); ?>
+		          @if ($cat->getLastPage() > 1)
+		          <ul class="cd-pagination no-space">
+		            <?php
+		              $beforeAndAfter = 3;
+		           
+		              //Página actual
+		              $currentPage = $cat->getCurrentPage();
+		           	
+		              //Última página
+		              $lastPage = $cat->getLastPage();
+		           
+		              //Comprobamos si las páginas anteriores y siguientes de la actual existen
+		              $start = $currentPage - $beforeAndAfter;
+		           		
+		                  //Comprueba si la primera página en la paginación está por debajo de 1
+		                  //para saber como colocar los enlaces
+		              if($start < 1)
+		              {
+		                $pos = $start - 1;
+		                $start = $currentPage - ($beforeAndAfter + $pos);
+		              }
+		              //Último enlace a mostrar
+		              $end = $currentPage + $beforeAndAfter;
+		           
+		              if($end > $lastPage)
+		              {
+		                $pos = $end - $lastPage;
+		                $end = $end - $pos;
+		              }
+		           
+		              //Si es la primera página mostramos el enlace desactivado
+		              if ($currentPage <= 1)
+		              {
+		                echo '<li class="disabled"><span class="textoMedio">Primera</span></li>';
+		              }
+		              //en otro caso obtenemos la url y mostramos en forma de link
+		              else
+		              {
+		                $url = $cat->getUrl(1);
+		           
+		                echo '<li><a class="textoMedio" href="'.$url.'">&lt;&lt; Primera</a></li>';
+		              }
+		           
+		              //Para ir a la anterior
+		              if(!empty($filter)){
+			              if (($currentPage-1) < $start) {
+			              	echo '<li class="disable"><span>&lt; Atras</span></li>' ;	
+			              }else
+			              {
+			              	echo '<li><a href="'.$cat->getUrl($currentPage-1).'&filter='.$filter->id.'">&lt; Atras</a></li>' ;
+			              }
+		              }else
+		              {
+		              	if (($currentPage-1) < $start) {
+			              	echo '<li class="disable"><span>&lt; Atras</span></li>' ;	
+			              }else
+			              {
+			              	echo '<li><a href="'.$cat->getUrl($currentPage-1).'">&lt; Atras</a></li>' ;
+			              }
+		              }
+		           
+		              //Rango de enlaces desde el principio al final, 3 delante y 3 detrás
+		              for($i = $start; $i<=$end;$i++)
+		              {
+		              	if ($currentPage == $i) {
+		              		echo '<li class="disabled"><span>'.$i.'</span></li>';
+		              	}else
+		              	{
+		              		if(!empty($filter))
+		              		{
+		              			echo '<li><a href="'.$cat->getUrl($i).'&filter='.$filter->id.'">'.$i.'</a></li>';
+
+		              		}else
+		              		{
+		              			echo '<li><a href="'.$cat->getUrl($i).'">'.$i.'</a></li>';
+		              		}
+		              	}
+		              }
+		           
+		              //Para ir a la siguiente
+		              if (!empty($filter)) {
+			              if (($currentPage+1) > $end) {
+			              	echo '<li class="disable"><span>Adelante &gt;</span></li>' ;
+			              }else
+			              {
+			              	echo '<li><a href="'.$cat->getUrl($currentPage+1).'&filter='.$filter->id.'">Adelante &gt;</a></li>' ;
+			              }
+		              }else
+		              {
+		              	if (($currentPage+1) > $end) {
+			              	echo '<li class="disable"><span>Adelante &gt;</span></li>' ;
+			              }else
+			              {
+			              	echo '<li><a href="'.$cat->getUrl($currentPage+1).'">Adelante &gt;</a></li>' ;
+			              }
+		              }
+		           
+		              ////Si es la última página mostramos desactivado
+		              if ($currentPage >= $lastPage)
+		              {
+		                echo '<li class="disabled"><span class="textoMedio">Última</span></li>';
+		              }
+		              //en otro caso obtenemos la url y mostramos en forma de link
+		              else
+		              {
+		                $url = $cat->getUrl($lastPage);
+		                echo '<li><a class="textoMedio" href="'.$url.'">Última &gt;&gt;</a></li>';
+		              }
+		              ?>
+		            @endif
+		          </ul>
+		        </nav> <!-- cd-pagination-wrapper -->
 		</div>
 	</div>
 </div>

@@ -1003,7 +1003,7 @@ jQuery(document).ready(function($) {
 			data: {'email': email},
 			beforeSend:function()
 			{
-				$('.envForgot').after('<img src="http://localhost/pasillo24/public/images/loading.gif" class="loading">');
+				$('.envForgot').after('<img src="http://preview.pasillo24.com/images/loading.gif" class="loading">');
 				$('.loading').css({
 					'display': 'block',
 					'margin': '2em auto'
