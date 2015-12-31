@@ -35,7 +35,6 @@ class HomeController extends BaseController {
 				->where(function($query){
 					/*y que sigan activas*/
 					$query->where('fechFin','>=',date('Y-m-d',time()))
-					->orWhere('fechFinNormal','>=',date('Y-m-d',time()))
 					->where('status','=','Aprobado');
 
 				})
@@ -80,7 +79,6 @@ class HomeController extends BaseController {
 				->where(function($query){
 					/*y que sigan activas*/
 					$query->where('fechFin','>=',date('Y-m-d',time()))
-					->orWhere('fechFinNormal','>=',date('Y-m-d',time()))
 					->where('status','=','Aprobado');
 
 				});
