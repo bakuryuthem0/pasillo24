@@ -218,8 +218,8 @@ class HomeController extends BaseController {
 			->where('publicaciones.deleted','=',0)
 			->where(function($query)
 			{
-				$query->where('publicaciones.fechFin','>=',date('Y-m-d'))
-				->orWhere('publicaciones.fechFinNormal','>=',date('Y-m-d'));
+				$query->where('publicaciones.fechFin','>',date('Y-m-d'))
+				->orWhere('publicaciones.fechFinNormal','>',date('Y-m-d'));
 			})
 			->where('publicaciones.departamento','=',Input::get('filter'))
 			->paginate(5,array('publicaciones.id',
@@ -241,8 +241,8 @@ class HomeController extends BaseController {
 			->where('publicaciones.deleted','=',0)
 			->where(function($query)
 			{
-				$query->where('publicaciones.fechFin','>=',date('Y-m-d'))
-				->orWhere('publicaciones.fechFinNormal','>=',date('Y-m-d'));
+				$query->where('publicaciones.fechFin','>',date('Y-m-d'))
+				->orWhere('publicaciones.fechFinNormal','>',date('Y-m-d'));
 			})
 			->paginate(5,array('publicaciones.id',
 				'publicaciones.img_1',

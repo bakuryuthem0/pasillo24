@@ -161,7 +161,7 @@
 							</td>
 							<td class="textoMedio noMovil">
 								@if($publication->fechIni == "0000-00-00" && $publication->fechIniNormal == "0000-00-00")
-								Sin aprobar
+									Sin aprobar
 								@else
 									@if($publication->ubicacion == "Ambos")
 										Principal: {{ date('d/m/Y',strtotime($publication->fechIni)) }}
@@ -199,7 +199,7 @@
 											<br>
 										@endif
 
-										@if($publication->fechIniNormal < date('Y-m-d'))
+										@if($publication->fechFinNormal < date('Y-m-d'))
 											Categoria: Publicación expirada 
 										@else
 											Categoria: {{ date('d/m/Y',strtotime($publication->fechFinNormal)) }}
