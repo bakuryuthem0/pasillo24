@@ -61,7 +61,6 @@ class PublicationController extends BaseController {
 	}
 	public function getHabitualForm($type)
 	{
-		return 'hola';
 		$url = 'usuario/publicacion/habitual/'.$type.'/enviar';
 		$title = "Publicacion Habitual / ".ucwords($type)." | pasillo24.com";
 		$departamentos = Department::get();
@@ -448,8 +447,32 @@ class PublicationController extends BaseController {
 		$title = "Publicación CASUAL | pasillo24.com";
 		$url = 'usuario/publicacion/casual/enviar';
 		$departamentos = Department::get();
-		$categorias = Categorias::where('tipo','=',1)->get();
-		$servicios = Categorias::where('tipo','=',2)->get();
+		$categorias = Categorias::where('tipo','=',1)->where('deleted','=',0)->orderBy('nombre')->get();
+		$otros = new StdClass;
+		foreach ($categorias as $c) {
+			if (strtolower($c->nombre) == 'otros') {
+				$otros->id 		= $c->id;
+				$otros->nombre	= $c->nombre;			
+			}
+		}
+		if(!isset($otros->id))
+		{
+			$otros->id = '1000';
+			$otros->nombre = 'Otros';
+		}
+		$servicios  = Categorias::where('tipo','=',2)->where('deleted','=',0)->orderBy('nombre')->get();
+		$otros2 = new StdClass;
+		foreach ($servicios as $c) {
+			if (strtolower($c->nombre) == 'otros') {
+				$otros2->id 		= $c->id;
+				$otros2->nombre	= $c->nombre;			
+			}
+		}
+		if(!isset($otros2->id))
+		{
+			$otros2->id = '1000';
+			$otros2->nombre = 'Otros';
+		}
 		$textos = Textos::where('id','=',3)->first();
 		return View::make('publications.publicacion')
 		->with('tipo','casual')
@@ -458,7 +481,9 @@ class PublicationController extends BaseController {
 		->with('departamento',$departamentos)
 		->with('categorias',$categorias)
 		->with('texto',$textos)
-		->with('servicios',$servicios);
+		->with('servicios',$servicios)
+		->with('otros',$otros)
+		->with('otros2',$otros2);
 	}
 	public function getPublicationCategory($id)
 	{

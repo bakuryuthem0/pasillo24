@@ -1082,47 +1082,55 @@ $(document).ready(function() {
         }
     });
 });
-
-$('.btn-elim').click(function(event) {
-	var id = $(this).val();
-	var boton = $(this);
-	$('.modal-backdrop').click(function(event) {
-		$('.responseDanger').css({
-			'display': 'none',
-			'opacity': 0
-		});
-		$('.alert-warning').css({'display':'block'});
-		$('#eliminarUsuarioModal').prop('disabled',false);
+jQuery(document).ready(function($) {
+	$('.btn-elim').click(function(event) {
+		var id = $(this).val();
+		var boton = $(this);
+		boton.addClass('to-elim');
+		$('#eliminarUsuarioModal').val(id);
+	});
+	$('.modal-backdrop').on('hide.bs.modal', function(event) {
+		if ($('.to-elim').length > 0) {
+			$('.to-elim').removeClass('to-elim');
+		};
+		$('#eliminarUsuarioModal').removeClass('disabled');
 	});
 	$('.close').click(function(event) {
-		$('.responseDanger').css({
-			'display': 'none',
-			'opacity': 0
-		});
-		$('.alert-warning').css({'display':'block'});
-		$('#eliminarUsuarioModal').prop('disabled',false);
+		if ($('.to-elim').length > 0) {
+			$('.to-elim').removeClass('to-elim');
+		};
+		$('#eliminarUsuarioModal').removeClass('disabled');
 	});
-	$('#eliminarUsuarioModal').click(function(event) {
-		$(this).prop('disabled', true)
+	$('#eliminarUsuarioModal').on('click',function(event) {
+		$(this).addClass('disabled');
+		var id = $(this).val();
 		$.ajax({
 			url: 'http://preview.pasillo24.com/administrador/eliminar-usuario/enviar',
 			type: 'POST',
 			dataType: 'json',
 			data: {'id': id},
+			beforeSend: function()
+			{
+				$('.miniLoader').addClass('active');
+			},
 			success:function(response){
-				$('.alert-warning').css({'display':'none'});
-				console.log(response)
-				$('.responseDanger').removeClass('alert-danger');
-					$('.responseDanger').removeClass('alert-success');
-					$('.responseDanger').stop().css({'display':'block'}).addClass('alert-'+response.type).html('<p class="textoPromedio">'+response.msg+'</p>').animate({
-					'opacity': 1},
-					500);
-				boton.parent().parent().remove();
+				$('.miniLoader').removeClass('activa');
+				$('.responseDanger').addClass('alert-'+response.type).addClass('active');
+				if (response.type == 'success') {
+					$('.to-elim').parent().parent().remove();
+				}else if(response.type == 'danger'){
+					$('.responseDanger .alert-warning p').addClass('alert-danger').html('Error al eliminar el usuario');
+				}
+			},error:function()
+			{
+				$('.miniLoader').removeClass('activa');
+				$('.responseDanger .alert-warning p').addClass('alert-danger').html('Error al eliminar el usuario');
 			}
 		})
 		
 		
 	});
+	
 });
 
 $('.btn-elim-pub').click(function(event) {

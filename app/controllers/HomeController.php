@@ -112,9 +112,9 @@ class HomeController extends BaseController {
 			$otros->id = '1000';
 			$otros->nombre = 'Otros';
 		}
-		$servicios  = Categorias::where('deleted','=',0)->where('tipo','=',2)->get();
+		$servicios  = Categorias::where('deleted','=',0)->where('tipo','=',2)->orderBy('nombre')->get();
 		$otros2 = new StdClass;
-		foreach ($categories as $c) {
+		foreach ($servicios as $c) {
 			if (strtolower($c->nombre) == 'otros') {
 				$otros2->id 		= $c->id;
 				$otros2->nombre	= $c->nombre;			
@@ -269,9 +269,9 @@ class HomeController extends BaseController {
 	public function getVerifyComment()
 	{
 		if (Request::ajax()) {
-			$comment = Comentarios::join('publicaciones','publicaciones.id','=','comentario.pub_id')
-			->where('publicaciones.user_id','=',Auth::id())
-			->where('comentario.respondido','=',0)
+			$comment = Comentarios::where('user_id','=',Auth::user()->id)
+			->where('respondido','=',0)
+			->where('deleted','=',0)
 			->count();
 			return $comment;
 		}

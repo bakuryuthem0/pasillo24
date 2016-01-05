@@ -118,8 +118,32 @@ class UserController extends BaseController {
 	{
 		$title ="Publicación Lider | pasillo24.com";
 		$department = Department::all();
-		$categoria  = Categorias::where('tipo','=',1)->get();
-		$servicios  = Categorias::where('tipo','=',2)->get();
+		$categoria  = Categorias::where('tipo','=',1)->where('deleted','=',0)->orderBy('nombre')->get();
+		$otros = new StdClass;
+		foreach ($categoria as $c) {
+			if (strtolower($c->nombre) == 'otros') {
+				$otros->id 		= $c->id;
+				$otros->nombre	= $c->nombre;			
+			}
+		}
+		if(!isset($otros->id))
+		{
+			$otros->id = '1000';
+			$otros->nombre = 'Otros';
+		}
+		$servicios  = Categorias::where('tipo','=',2)->where('deleted','=',0)->orderBy('nombre')->get();
+		$otros2 = new StdClass;
+		foreach ($servicios as $c) {
+			if (strtolower($c->nombre) == 'otros') {
+				$otros2->id 		= $c->id;
+				$otros2->nombre	= $c->nombre;			
+			}
+		}
+		if(!isset($otros2->id))
+		{
+			$otros2->id = '1000';
+			$otros2->nombre = 'Otros';
+		}
 		$url = 'usuario/publicacion/lider/enviar';
 		$textos = Textos::where('id','=',1)->first();
 		$precio = Precios::where('pub_type_id','=',1)->get();
@@ -130,7 +154,9 @@ class UserController extends BaseController {
 		->with('url',$url)->with('categorias',$categoria)
 		->with('texto',$textos)
 		->with('precio',$precio)
-		->with('servicios',$servicios);
+		->with('servicios',$servicios)
+		->with('otros',$otros)
+		->with('otros2',$otros2);
 	}
 	public function postPublicationLider()
 	{
@@ -392,8 +418,32 @@ class UserController extends BaseController {
 		$marcas = Marcas::all();
 		$url = 'usuario/publication/estandar/enviar';
 		$departamento = Department::all();
-		$categorias = Categorias::where('tipo','=',1)->get();
-		$servicios  = Categorias::where('tipo','=',2)->get();
+		$categorias = Categorias::where('deleted','=',0)->where('tipo','=',1)->orderBy('nombre')->get();
+		$otros = new StdClass;
+		foreach ($categorias as $c) {
+			if (strtolower($c->nombre) == 'otros') {
+				$otros->id 		= $c->id;
+				$otros->nombre	= $c->nombre;			
+			}
+		}
+		if(!isset($otros->id))
+		{
+			$otros->id = '1000';
+			$otros->nombre = 'Otros';
+		}
+		$servicios  = Categorias::where('deleted','=',0)->where('tipo','=',2)->orderBy('nombre')->get();
+		$otros2 = new StdClass;
+		foreach ($servicios as $c) {
+			if (strtolower($c->nombre) == 'otros') {
+				$otros2->id 		= $c->id;
+				$otros2->nombre	= $c->nombre;			
+			}
+		}
+		if(!isset($otros2->id))
+		{
+			$otros2->id = '1000';
+			$otros2->nombre = 'Otros';
+		}
 		$textos = Textos::where('id','=',2)->first();
 
 		return View::make('publications.publicacion')
@@ -404,7 +454,9 @@ class UserController extends BaseController {
 		->with('categorias',$categorias)
 		->with('texto',$textos)
 		->with('departamento',$departamento)
-		->with('servicios',$servicios);
+		->with('servicios',$servicios)
+		->with('otros',$otros)
+		->with('otros2',$otros2);
 	}
 	public function getModelo()
 	{

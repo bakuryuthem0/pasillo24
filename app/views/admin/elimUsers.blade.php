@@ -100,6 +100,7 @@
       	</div>
       </div>
       <div class="modal-footer">
+      	<img src="{{ asset('images/loading.gif') }}" class="miniLoader">
         <button type="button" class="btn btn-danger" id="eliminarUsuarioModal">Eliminar</button>
       </div>
     </div>

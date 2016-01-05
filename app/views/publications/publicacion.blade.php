@@ -103,6 +103,7 @@
 						<option value="">Seleccione la categoría</option>
 						<optgroup label="Categoría">
 						@foreach($categorias as $categoria)
+						@if($categoria->id != $otros->id)
 							@if(Input::old('ubication') && Input::old('ubication') == 'Categoria')
 								@if(Input::old('cat') == $categoria->id)
 									<option value="{{ $categoria->id }}" selected>{{ $categoria->nombre }}</option>
@@ -112,10 +113,13 @@
 							@else
 								<option value="{{ $categoria->id }}">{{ $categoria->nombre }}</option>
 							@endif
+						@endif
 						@endforeach
+						<option value="{{ $otros->id }}">{{ $otros->nombre }}</option>
 						</optgroup>
 						<optgroup label="Servicios">
 						@foreach($servicios as $servicio)
+						@if($servicio->id != $otros2->id)
 							@if($errors->has('cat'))
 								@if(Input::old('cat') == $servicio->id)
 									<option value="{{ $servicio->id }}" selected>{{ $servicio->nombre }}</option>
@@ -125,7 +129,9 @@
 							@else
 									<option value="{{ $servicio->id }}">{{ $servicio->nombre }}</option>
 							@endif
+						@endif
 						@endforeach
+						<option value="{{ $otros2->id }}">{{ $otros2->nombre }}</option>
 						</optgroup>
 					</select>
 					@if ($errors->has('cat'))
@@ -300,8 +306,12 @@
 			<div class="col-xs-12 normalType contCategoriasPub">
 				<ul class="textoPromedio" style="text-align:left;">
 				@foreach($categorias as $categoria)
+					@if($categoria->id != $otros->id)
 					<li><a href="{{ URL::to('publicacion/habitual/crear/'.$categoria->id) }}">{{ $categoria->nombre }}</a></li>
+					@endif
 				@endforeach
+					<li><a href="{{ URL::to('publicacion/habitual/crear/'.$otros->id) }}">{{ $otros->nombre }}</a></li>
+
 				</ul>
 				
 			</div>
@@ -311,8 +321,11 @@
 			<div class="col-xs-12 normalType contCategoriasPub">
 				<ul class="textoPromedio" style="text-align:left;">
 				@foreach($servicios as $servicio)
+					@if($servicio->id != $otros2->id)
 					<li><a href="{{ URL::to('publicacion/habitual/crear/'.$servicio->id) }}">{{ $servicio->nombre }}</a></li>
+					@endif
 				@endforeach
+					<li><a href="{{ URL::to('publicacion/habitual/crear/'.$otros2->id) }}">{{ $otros2->nombre }}</a></li>
 				</ul>
 				
 			</div>
@@ -343,13 +356,19 @@
 						<option value="">Seleccione la categoría</option>
 						<optgroup label="Categoría">
 						@foreach($categorias as $categoria)
+						@if($categoria->id != $otros->id)
 							<option value="{{ $categoria->id }}">{{ $categoria->nombre }}</option>
+						@endif
 						@endforeach
+							<option value="{{ $otros->id }}">{{ $otros->nombre }}</option>
 						</optgroup>
 						<optgroup label="Servicios">
 						@foreach($servicios as $servicio)
+						@if($servicio->id != $otros2->id)
 							<option value="{{ $servicio->id }}">{{ $servicio->nombre }}</option>
+						@endif
 						@endforeach
+							<option value="{{ $otros2->id }}">{{ $otros2->nombre }}</option>
 						</optgroup>
 					</select>
 				</div>

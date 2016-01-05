@@ -435,9 +435,10 @@ class AdministratorController extends BaseController {
                     $r->save();
                 }
             }
+            $username = $user->username;
+            $email    = $user->email;
             $user->username = NULL;
             $user->user_deleted = 1;
-            $username = $user->username;
 
             $subject = "Correo de administrador";
             $admin = Auth::user()['username'];
@@ -451,6 +452,15 @@ class AdministratorController extends BaseController {
             $to_Email = 'gestor@pasillo24.com';
 
             Mail::send('emails.elimUser', $data, function($message) use ($admin,$to_Email,$subject,$username)
+            {
+                $message->to($to_Email)->from('noreply@pasillo24.com')->subject($subject);
+            });
+            $to_Email = $email;
+
+            $data = array(
+                'subject' => 'Usuario eliminado en pasillo24.com',
+            );
+            Mail::send('emails.elimUserForUser', $data, function($message) use ($to_Email,$subject)
             {
                 $message->to($to_Email)->from('noreply@pasillo24.com')->subject($subject);
             });
@@ -764,7 +774,10 @@ public function getEditPub()
     public function getCategories()
     {
         $title = "Categorias | pasillo24";
-        $cat = Categorias::where('deleted','=',0)->get();
+        $cat = Categorias::where('deleted','=',0)
+        ->orderBy('tipo')
+        ->orderBy('nombre')
+        ->get();
         return View::make('admin.categories')
         ->with('title',$title)
         ->with('cat',$cat);
@@ -836,6 +849,7 @@ public function getEditPub()
         $cat = SubCat::leftJoin('categoria','categoria.id','=','subcategoria.categoria_id')
         ->where('subcategoria.deleted','=',0)
         ->orderBy('categoria.id')
+        ->orderBy('subcategoria.desc')
         ->paginate(50,array(
             'subcategoria.id',
             'subcategoria.desc',

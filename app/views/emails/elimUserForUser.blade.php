@@ -83,12 +83,10 @@ fieldset[disabled] .btn-success.active {
       <div>
       	<legend>Estimado Usuario</legend>
          <ul>
-            <li>Este mensaje le fue enviado debido a que se ha eliminado un usuario en <strong>pasillo24.com</strong>.</li>
+            <li>Este mensaje le fue enviado debido a que se ha eliminado su usuario en <strong>pasillo24.com</strong>.</li>
          </ul>
-	       <p class="bg-primary" style="padding:1em;">Usuario eliminado: {{ $usuario }} </p>
-         <p class="bg-primary" style="padding:1em;">Eliminado por: {{ $creadoPor }}</p>
          <ul>
-            <li>Si usted no aprueba esta accion <strong>pasillo24.com</strong>, por favor tome las medidas necesarias</li>
+            <li>Si usted no aprueba esta acción por favor póngase en contacto con nosotros, será un placer ayudarle.</li>
             
          </ul>
 	      <p  style="text-align:center;">Atentamente <span class="bg-primary" style="color:white;">pasillo24.com</span></p>

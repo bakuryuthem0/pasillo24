@@ -8,14 +8,18 @@
 				<h3 style="text-align:left;">Categorías</h3>
 				<ul class="categorias">
 				@foreach($categories as $category)
+					@if($category->id != $otros->id)
 					<li><a href="{{ URL::to('publicaciones/categorias/'.$category->id) }}">{{$category->nombre }}</a></li>
+					@endif
 				@endforeach
                     <li><a href="{{ URL::to('publicaciones/categorias/'.$otros->id) }}">{{ $otros->nombre }}</a></li>
 				</ul>
 				<h3 style="text-align:left;">Servicios</h3>
 				<ul class="categorias">
 				@foreach($servicios as $servicio)
+					@if($servicio->id != $otros2->id)
 					<li><a href="{{ URL::to('publicaciones/categorias/'.$servicio->id) }}">{{$servicio->nombre }}</a></li>
+					@endif
 				@endforeach
                     <li><a href="{{ URL::to('publicaciones/categorias/'.$otros2->id) }}">{{ $otros2->nombre }}</a></li>
 				</ul>
