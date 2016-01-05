@@ -147,6 +147,9 @@ Route::group(array('before' =>'auth'),function()
 		Route::post('administrador/editar-publicidad/eliminar','AdministratorController@postElimSlides');
 
 		Route::get('administrador/editar-cuenta','AdministratorController@getCuentas');
+		Route::get('administrador/editar-cuenta/{id}','AdministratorController@modifyAccount');
+		Route::post('administrador/editar-cuenta/{id}/enviar','AdministratorController@postModifyAccount');
+		Route::post('administrador/editar-cuenta/eliminar','AdministratorController@postElimAccount');
 		Route::group(array('before' => 'admin_check'),function(){
 			Route::post('administrador/pagos/confirmar', 'AdministratorController@postPagos');
 

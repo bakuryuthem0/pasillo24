@@ -60,7 +60,7 @@
 									 	</div>
 									 @endforeach
 								@endif
-				                <p class="bg-info" style="padding:0.5em;margin-top:2em;">Para ver la informacion de cada banco, precione el botón "CUENTAS Y ENTIDADES BANCARIAS"</p>
+				                <p class="bg-info" style="padding:0.5em;margin-top:2em;">Para ver la informacion de cada banco, presione el botón "CUENTAS Y ENTIDADES BANCARIAS"</p>
 			              	</div>
 							<div class="col-xs-12 formulario textoPromedio">
 				                <label>Banco Emisor (si el pago del servicio fue mediante depósito bancario, omita esta casilla)</label>

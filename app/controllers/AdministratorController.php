@@ -668,17 +668,17 @@ class AdministratorController extends BaseController {
         $subject = "Correo de administrador";
         $admin = Auth::user()['username'];
         $num = $input['numCuenta'];
-        $data = array(
-            'subject' => $subject,
-            'num'     => $num,
-            'creadoPor'=> $admin
-        );
-        $to_Email = 'gestor@pasillo24.com';
-        Mail::send('emails.newAcc', $data, function($message) use ($admin,$to_Email,$subject,$num)
-        {
-            $message->to($to_Email)->from('noreply@pasillo24.com')->subject($subject);
-        });
         if ($numCuenta->save()) {
+            $data = array(
+                'subject' => $subject,
+                'num'     => $num,
+                'creadoPor'=> $admin
+            );
+            $to_Email = 'gestor@pasillo24.com';
+            Mail::send('emails.newAcc', $data, function($message) use ($admin,$to_Email,$subject,$num)
+            {
+                $message->to($to_Email)->from('noreply@pasillo24.com')->subject($subject);
+            });
             Session::flash('success', 'Número de cuenta creado satisfactoriamente.');
             return Redirect::to('administrador/agregar-cuenta');
         }else
@@ -983,6 +983,93 @@ public function getEditPub()
         {
             Session::flash('danger','Error al guardar la nueva sub-categoria.');
             return Redirect::back();
+        }
+    }
+    public function getCuentas()
+    {
+        $title = 'Cuentas bancarias | pasillo24';
+
+        $cuentas = NumCuentas::leftJoin('bancos','bancos.id','=','numcuentas.banco_id')
+        ->orderBy('bancos.id')
+        ->get(
+            array(
+                'numcuentas.id',
+                'numcuentas.tipoCuenta',
+                'numcuentas.num_cuenta',
+                'bancos.nombre'
+            )
+        );
+
+        return View::make('admin.accounts')
+        ->with('title',$title)
+        ->with('cuentas',$cuentas);
+    }
+    public function modifyAccount($id)
+    {
+        $title = "Modificar cuenta | pasillo24";
+
+        $bancos = Bancos::get();
+
+        $acc    = NumCuentas::find($id);
+
+        return View::make('admin.modifyAccount')
+        ->with('title',$title)
+        ->with('acc',$acc)
+        ->with('bancos',$bancos)
+        ->with('id',$id);
+    }
+    public function postModifyAccount($id)
+    {
+        $d = Input::all();
+        $rules = array(
+            'num'        => 'required',
+            'tipo'       => 'required',
+            'banco'      => 'required',
+        );
+        $msg = array(
+            'num.required'  => 'El numero de cuenta es obligatorio',
+            'tipo.required' => 'El tipo de cuenta es obligatorio',
+            'banco.required' => 'El banco es obligatorio',
+
+        );
+        $validator = Validator::make($d, $rules, $msg);
+        if ($validator->fails()) {
+            return Redirect::back()->withErrors($validator);
+        }
+
+        $acc = NumCuentas::find($id);
+        $acc->num_cuenta = $d['num'];
+        $acc->tipoCuenta = $d['tipo'];
+        $acc->banco_id   = $d['banco'];
+        if ($acc->save()) {
+            $data = array(
+                'subject' => 'Cuenta bancaria modificada en pasillo24.com',
+                'num'     => $d['num'],
+                'creadoPor'=> Auth::user()->username
+            );
+            $to_Email = 'gestor@pasillo24.com';
+            Mail::send('emails.modifyAcc', $data, function($message)
+            {
+                $message->to('gestor@pasillo24.com')->from('noreply@pasillo24.com')->subject('Cuenta bancaria modificada en pasillo24.com');
+            });
+            Session::flash('success','Se modificado la cuenta satisfactoriamente.');
+            return Redirect::to('administrador/editar-cuenta');
+        }else
+        {
+            Session::flash('danger','Error al modificar la cuenta.');
+            return Redirect::back();
+        }
+    }
+    public function postElimAccount()
+    {
+        $id = Input::get('id');
+        if (is_null($id)) {
+            return Response::json(array('type' => 'danger','msg' =>'Error al eliminar la cuenta'));
+        }
+
+        $acc = NumCuentas::find($id);
+        if($acc->delete()){
+            return Response::json(array('type' => 'success','msg' => 'Se ha eliminado la cuenta satisfactoriamente.'));
         }
     }
 }

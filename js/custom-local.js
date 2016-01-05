@@ -1510,4 +1510,47 @@ jQuery(document).ready(function($) {
  		$('.responseDanger .responseDanger-text').html('');
  		$('.eliminar-categoria').removeClass('disabled');
  	});
+ 	$('.btn-elim-account').on('click', function(event) {
+ 		var boton = $(this);
+ 		boton.addClass('to-elim');
+ 		$('.eliminar-cuenta').val(boton.val());
+ 	});
+ 	$('#elimAccountModal').on('hide.bs.modal', function(event) {
+		$('.responseDanger').removeClass('alert-danger');
+		$('.responseDanger').removeClass('alert-success');
+		$('.responseDanger').removeClass('active')
+		if ($('.to-elim').length > 0) {
+			$('.to-elim').removeClass('to-elim')
+		};
+		$('.eliminar-cuenta').removeClass('disabled')
+	});
+ 	$('.eliminar-cuenta').on('click',function(event) {
+		var boton = $(this);
+		$.ajax({
+ 			url: 'http://localhost/pasillo24/administrador/editar-cuenta/eliminar',
+ 			type: 'POST',
+ 			dataType: 'json',
+ 			data: {'id': boton.val()},
+ 			beforeSend:function()
+ 			{
+ 				$('.miniLoader').addClass('active');
+ 				boton.addClass('disabled')
+ 			},
+ 			success:function(response)
+ 			{
+ 				$('.miniLoader').removeClass('active');
+ 				if (response.type == 'success') {
+ 					$('.to-elim').parent().parent().remove();
+ 				}else
+ 				{
+ 					boton.removeClass('disabled')
+
+ 				}
+ 				$('.responseDanger').addClass('alert-'+response.type).addClass('active');
+ 				$('.responseDanger-text').html(response.msg)
+ 			}
+ 		})
+		 		
+		 		 		
+ 	});
 });

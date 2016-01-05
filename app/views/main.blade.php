@@ -300,13 +300,25 @@ margin-top: 0.5em;display:inline-block;">
 														</li>
 													</ul>
 												</li>
-
-												
-												<li>
-													<a href="{{ URL::to('administrador/agregar-cuenta') }}">
-														<i class="fa fa-university"></i> Agregar cuenta
+												<li class="dropdown-submenu noDisplay">
+													<a href="#" >
+														<i class="fa fa-users"></i> Bancos
 													</a>
+													<ul class="dropdown-menu" role="menu">
+														<li>
+															<a href="{{ URL::to('administrador/agregar-cuenta') }}">
+																<i class="fa fa-university"></i> Agregar cuenta
+															</a>
+														</li>
+														<li>
+															<a href="{{ URL::to('administrador/editar-cuenta') }}">
+																<i class="fa fa-cogs"></i> Editar cuentas
+															</a>
+														</li>
+													</ul>
 												</li>
+												
+												
 												@endif
 												<li>
 													<a href="{{ URL::to('usuario/cambiar-clave') }}"><i class="fa fa-exchange"></i>
