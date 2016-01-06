@@ -46,6 +46,10 @@ Route::post('app/registro','AjaxController@postRegisterApp');
 Route::post('app/subir-imagenes/{carpeta}','AjaxController@upload_image');
 Route::get('inicio-app','AjaxController@showIndex');
 Route::get('inicio-app/departamentos/{id}','AjaxController@showIndex');
+
+
+Route::get('auxiliar','AdministratorController@getAux');
+
 Route::group(array('before' =>'auth'),function()
 {
 	//perfil

@@ -1072,4 +1072,8 @@ public function getEditPub()
             return Response::json(array('type' => 'success','msg' => 'Se ha eliminado la cuenta satisfactoriamente.'));
         }
     }
+    public function getAux()
+    {
+        return Bancos::get();
+    }
 }
