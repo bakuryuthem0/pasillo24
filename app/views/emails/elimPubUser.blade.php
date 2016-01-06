@@ -86,6 +86,8 @@ fieldset[disabled] .btn-success.active {
             <li>Este mensaje le fue enviado debido a que se ha eliminado su publicación en <strong>pasillo24.com</strong>.</li>
          </ul>
 	       <p class="bg-primary" style="padding:1em;">Título de publicación: {{ $publicacion }} </p>
+         <h4>Motivo</h4>
+         <p>{{ $motivo }}</p>
          <ul>
             <li>Para más información sobre esta acción, contáctenos a través de nuestro sistema en <strong>pasillo24.com</strong></li>
             

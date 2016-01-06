@@ -94,7 +94,7 @@
 								<input type="hidden" class="carnet-{{ $publication->id }}" value="{{ $publication->id_carnet }}">
 								<input type="hidden" class="nit-{{ $publication->id }}" value="{{ $publication->nit }}">
 							<td class="textoMedio">
-								<button style="width: 100%;" class="btn btn-danger btn-xs btn-elim-pub" value="{{ $publication->id }}" data-toggle="modal" data-target="#myModal"><span class="fa fa-close"></span> Eliminar</button>
+								<button style="width: 100%;" class="btn btn-danger btn-xs btn-elim-pub" value="{{ $publication->id }}" data-toggle="modal" data-target="#modalElimPub"><span class="fa fa-close"></span> Eliminar</button>
 							</td>
 						</tr>
 						@endforeach
@@ -219,7 +219,7 @@
 								<input type="hidden" class="carnet-{{ $publication->id }}" value="{{ $publication->id_carnet }}">
 								<input type="hidden" class="nit-{{ $publication->id }}" value="{{ $publication->nit }}">
 							<td class="textoMedio">
-								<button style="width: 100%;" class="btn btn-danger btn-xs btn-elim-pub" value="{{ $publication->id }}" data-toggle="modal" data-target="#myModal"><span class="fa fa-close"></span> Eliminar</button>
+								<button style="width: 100%;" class="btn btn-danger btn-xs btn-elim-pub" value="{{ $publication->id }}" data-toggle="modal" data-target="#modalElimPub"><span class="fa fa-close"></span> Eliminar</button>
 							</td>
 						</tr>
 						@endforeach
@@ -302,7 +302,7 @@
 								<input type="hidden" class="carnet-{{ $publication->id }}" value="{{ $publication->id_carnet }}">
 								<input type="hidden" class="nit-{{ $publication->id }}" value="{{ $publication->nit }}">
 							<td class="textoMedio">
-								<button style="width: 100%;" class="btn btn-danger btn-xs btn-elim-pub" value="{{ $publication->id }}" data-toggle="modal" data-target="#myModal"><span class="fa fa-close"></span> Eliminar</button>
+								<button style="width: 100%;" class="btn btn-danger btn-xs btn-elim-pub" value="{{ $publication->id }}" data-toggle="modal" data-target="#modalElimPub"><span class="fa fa-close"></span> Eliminar</button>
 							</td>
 						</tr>
 						@endforeach
@@ -336,27 +336,30 @@
 	</div>
 </div>
 
-<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-			  <div class="modal-dialog">
-			    <div class="modal-content">
-			      <div class="modal-header">
-			        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-			        <h4 class="modal-title" id="myModalLabel">Eliminar publicación</h4>
-			      </div>
-			      <div class="modal-body">
-			      	<div class="alert responseDanger">
-								<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-							</div>
-			      	<div class="alert alert-warning">
-						<p class="textoPromedio">Advertencia. ¿Está seguro que desea continuar?, estos cambios son irreversibles</p>      	    
-			      	</div>
-			      </div>
-			      <div class="modal-footer">
-			        <button type="button" class="btn btn-danger" id="eliminarPublicacionModal">Eliminar</button>
-			      </div>
-			    </div>
-			  </div>
-			</div>
+<div class="modal fade" id="modalElimPub" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+        <h4 class="modal-title" id="myModalLabel">Eliminar publicación</h4>
+      </div>
+      <div class="modal-body">
+      	<div class="alert responseDanger">
+			<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+			<p class="responseDanger-text textoPromedio"></p>
+		</div>
+      	<div class="alert alert-warning">
+			<p class="textoPromedio">Advertencia. ¿Está seguro que desea continuar?, estos cambios son irreversibles</p>
+      	</div>
+		<textarea class="form-control motivo" placeholder="Motivo"></textarea>      	    
+      </div>
+      <div class="modal-footer">
+      	<img src="{{ asset('images/loading.gif') }}" class="miniLoader">
+        <button type="button" class="btn btn-danger" id="eliminarPublicacionModal">Eliminar</button>
+      </div>
+    </div>
+  </div>
+</div>
 <div class="modal fade" id="showUserData" tabindex="-1" role="dialog" aria-labelledby="modalForggo" aria-hidden="true">
 	<div class="forgotPass modal-dialog imgLiderUp">
 		<div class="modal-content">

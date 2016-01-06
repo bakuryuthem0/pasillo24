@@ -599,7 +599,7 @@ class PublicationController extends BaseController {
 		);
 		Mail::send('emails.respuesta', $data, function($message) use ($to_Email,$subject)
 		{
-			$message->to($to_Email)->from('sistema@pasillo24.com')->subject($subject);
+			$message->to($to_Email)->from('pasillo24.com@pasillo24.com')->subject($subject);
 		});
 		if ($resp->save()) {
 			
@@ -1638,7 +1638,7 @@ public function postElimPub()
 			$to_Email = $user->email;
 			Mail::send('emails.elimPubUser', $data, function($message) use ($titulo,$to_Email,$subject)
 			{
-				$message->to($to_Email)->from('sistema@pasillo24.com')->subject($subject);
+				$message->to($to_Email)->from('pasillo24.com@pasillo24.com')->subject($subject);
 			});
 
 

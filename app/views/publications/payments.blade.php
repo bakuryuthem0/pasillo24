@@ -157,7 +157,7 @@
 							<p class="textoPromedio">Número(s) de cuenta(s)</p>
 							<ul class="textoPromedio">
 							@foreach($numCuentas as $num)
-								@if($num->banco_id == 2)
+								@if($num->banco_id == 1)
 									<li><label>Número de cuenta:</label>{{$num->num_cuenta}} - <label>Tipo de cuenta:</label> {{ $num->tipoCuenta }}</li>
 								@endif
 							@endforeach
@@ -196,7 +196,7 @@
 							<p class="textoPromedio">Numero(s) de cuenta(s)</p>
 							<ul class="textoPromedio">
 							@foreach($numCuentas as $num)
-								@if($num->banco_id == 1)
+								@if($num->banco_id == 4)
 									<li><label>Número de cuenta:</label>{{$num->num_cuenta}} - <label>Tipo de cuenta:</label> {{ $num->tipoCuenta }}</li>
 								@endif
 							@endforeach

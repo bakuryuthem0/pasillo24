@@ -7,9 +7,7 @@
 
 		<div class="col-xs-12 contAnaranjado">
 			<legend>Comentarios recibidos</legend>
-			<div class="alert responseDanger">
-				<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-			</div>
+			
 			<div class="table-responsive">
 				<table class="table table-hover">
 					<thead>
@@ -92,17 +90,19 @@
 		</div>
 	</div>
 </div>
-<div class="modal fade" id="myComment" tabindex="-1" role="dialog" aria-labelledby="modalForggo" aria-hidden="true">
+<div class="modal fade" id="myComment" tabindex="-1" role="dialog" aria-labelledby="modalForggo" aria-hidden="true" data-keyboard="false" data-backdrop="static">
 	<div class="forgotPass modal-dialog imgLiderUp">
 		<div class="modal-content">
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-					<label for="respuesta" class="textoPromedio">Respuesta</label>
+				<label for="respuesta" class="textoPromedio">Respuesta</label>
 
 			</div>
 				<div class="modal-body">
 					<p class="textoPromedio">Introduzca su respuesta</p>
-
+					<div class="alert responseDanger">
+						<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+					</div>
 				</div>
 				<div class="modal-footer " style="text-align:right;">
 					
@@ -130,7 +130,7 @@
 		</div>
 	</div>
 </div>
-<div class="modal fade" id="deleteComment">
+<div class="modal fade" id="deleteComment"  data-keyboard="false" data-backdrop="static">
 	<div class="modal-dialog">
 		<div class="modal-content">
 			<div class="modal-header">
@@ -139,6 +139,9 @@
 			</div>
 			<div class="modal-body">
 				<p class="textoPromedio">¿Seguro desea borrar el comentario?</p>
+				<div class="alert responseDanger">
+					<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+				</div>
 			</div>
 			<div class="modal-footer">
 				<img src="{{ asset('images/loading.gif') }}" class="miniLoader">

@@ -73,7 +73,7 @@ class AdministratorController extends BaseController {
         $to_Email = 'gestor@pasillo24.com';
         Mail::send('emails.aprvPub', $data, function($message) use ($titulo,$admin,$to_Email,$subject)
         {
-            $message->to($to_Email)->from('noreply@pasillo24.com')->subject($subject);
+            $message->to($to_Email)->from('pasillo24.com@pasillo24.com')->subject($subject);
         });
 
         $user = User::find($publicacion->user_id);
@@ -85,7 +85,7 @@ class AdministratorController extends BaseController {
         $to_Email = $user->email;
         Mail::send('emails.aprvPubUser', $data, function($message) use ($titulo,$to_Email,$subject)
         {
-            $message->to($to_Email)->from('noreply@pasillo24.com')->subject($subject);
+            $message->to($to_Email)->from('pasillo24.com@pasillo24.com')->subject($subject);
         });
         $publicacion->motivo = "";
         if ($publicacion->save()) {
@@ -453,7 +453,7 @@ class AdministratorController extends BaseController {
 
             Mail::send('emails.elimUser', $data, function($message) use ($admin,$to_Email,$subject,$username)
             {
-                $message->to($to_Email)->from('noreply@pasillo24.com')->subject($subject);
+                $message->to($to_Email)->from('pasillo24.com@pasillo24.com')->subject($subject);
             });
             $to_Email = $email;
 
@@ -462,7 +462,7 @@ class AdministratorController extends BaseController {
             );
             Mail::send('emails.elimUserForUser', $data, function($message) use ($to_Email,$subject)
             {
-                $message->to($to_Email)->from('noreply@pasillo24.com')->subject($subject);
+                $message->to($to_Email)->from('pasillo24.com@pasillo24.com')->subject($subject);
             });
             $user->save();
 
@@ -472,6 +472,7 @@ class AdministratorController extends BaseController {
     public function postElimPub()
     {
         $id = Input::get('id');
+        $motivo = Input::get('motivo');
         $pub = Publicaciones::find($id);
         $titulo = $pub->titulo;
         $comment = Comentarios::where('pub_id','=',$id)->get();
@@ -495,12 +496,13 @@ class AdministratorController extends BaseController {
 
         $data = array(
             'subject' => $subject,
-            'publicacion' => $titulo
+            'publicacion' => $titulo,
+            'motivo'      => $motivo,
         );
         $to_Email = $user->email;
         Mail::send('emails.elimPubUser', $data, function($message) use ($titulo,$to_Email,$subject)
         {
-            $message->to($to_Email)->from('noreply@pasillo24.com')->subject($subject);
+            $message->to($to_Email)->from('pasillo24.com@pasillo24.com')->subject($subject);
         });
         $pub->deleted = 1;
         $pub->save();
@@ -516,7 +518,7 @@ class AdministratorController extends BaseController {
         $to_Email = 'gestor@pasillo24.com';
         Mail::send('emails.elmPub', $data, function($message) use ($titulo,$admin,$to_Email,$subject)
         {
-            $message->to($to_Email)->from('noreply@pasillo24.com')->subject($subject);
+            $message->to($to_Email)->from('pasillo24.com@pasillo24.com')->subject($subject);
         });
         return Response::json(array('type' => 'success','msg' => 'Publicación eliminada satisfactoriamente. Hemos enviado un email al correo.'));
     }
@@ -569,7 +571,7 @@ class AdministratorController extends BaseController {
         $to_Email = 'gestor@pasillo24.com';
         Mail::send('emails.mdfText', $data, function($message) use ($admin,$to_Email,$subject)
         {
-            $message->to($to_Email)->from('noreply@pasillo24.com')->subject($subject);
+            $message->to($to_Email)->from('pasillo24.com@pasillo24.com')->subject($subject);
         });
         Session::flash('success', 'Textos guardados satisfactoriamente. Se ha enviado un correo al administrador.');
         return Redirect::to('administrador/modificar-publicaciones');
@@ -626,7 +628,7 @@ class AdministratorController extends BaseController {
         $to_Email = 'gestor@pasillo24.com';
         Mail::send('emails.mdfPrice', $data, function($message) use ($admin,$to_Email,$subject)
         {
-            $message->to($to_Email)->from('noreply@pasillo24.com')->subject($subject);
+            $message->to($to_Email)->from('pasillo24.com@pasillo24.com')->subject($subject);
         });
         Session::flash('success', 'Precios cambiados correctamentes');
         return Redirect::to('administrador/modificar-precios');
@@ -677,7 +679,7 @@ class AdministratorController extends BaseController {
             $to_Email = 'gestor@pasillo24.com';
             Mail::send('emails.newAcc', $data, function($message) use ($admin,$to_Email,$subject,$num)
             {
-                $message->to($to_Email)->from('noreply@pasillo24.com')->subject($subject);
+                $message->to($to_Email)->from('pasillo24.com@pasillo24.com')->subject($subject);
             });
             Session::flash('success', 'Número de cuenta creado satisfactoriamente.');
             return Redirect::to('administrador/agregar-cuenta');
@@ -1050,7 +1052,7 @@ public function getEditPub()
             $to_Email = 'gestor@pasillo24.com';
             Mail::send('emails.modifyAcc', $data, function($message)
             {
-                $message->to('gestor@pasillo24.com')->from('noreply@pasillo24.com')->subject('Cuenta bancaria modificada en pasillo24.com');
+                $message->to('gestor@pasillo24.com')->from('pasillo24.com@pasillo24.com')->subject('Cuenta bancaria modificada en pasillo24.com');
             });
             Session::flash('success','Se modificado la cuenta satisfactoriamente.');
             return Redirect::to('administrador/editar-cuenta');

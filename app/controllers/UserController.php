@@ -556,7 +556,7 @@ class UserController extends BaseController {
 			$to_Email = 'gestor@pasillo24.com';
 			Mail::send('emails.newPost', $data, function($message) use ($input,$to_Email,$subject)
 			{
-				$message->to($to_Email)->from('sistema@pasillo24.com')->subject($subject);
+				$message->to($to_Email)->from('pasillo24.com@pasillo24.com')->subject($subject);
 			});
 			Session::flash('success', 'Información enviada, pronto procesaremos su pago');
 			return Redirect::to('usuario/publicaciones/mis-publicaciones');
