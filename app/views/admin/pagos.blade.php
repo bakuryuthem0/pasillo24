@@ -371,7 +371,7 @@ float: none;">
 		</div>
 	</div>
 </div>
-<div class="modal fade" id="eliminar-publicacion">
+<div class="modal fade" id="eliminar-publicacion" data-backdrop="static" data-keyboard="false">
 	<div class="modal-dialog">
 		<div class="modal-content">
 			<div class="modal-header">
@@ -380,11 +380,17 @@ float: none;">
 			</div>
 			<div class="modal-body">
 				<p class="textoPromedio">Motivo</p>
+				<div class="alert responseDanger">
+					<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+					<p class="textoPromedio text-centered responseDanger-text"></p>
+				</div>
 				<textarea class="form-control motivo"></textarea>
 			</div>
 			<div class="modal-footer">
 				<img src="{{ asset('images/loading.gif') }}" class="miniLoader">
 				<button type="button" class="btn btn-danger send-elim" >Enviar</button>
+        		<button type="button" class="btn btn-success btn-dimiss hidden" data-dismiss="modal">Aceptar</button>
+
 			</div>
 		</div>
 	</div>

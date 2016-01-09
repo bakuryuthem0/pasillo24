@@ -269,10 +269,13 @@ class HomeController extends BaseController {
 	public function getVerifyComment()
 	{
 		if (Request::ajax()) {
-			$comment = Comentarios::where('user_id','=',Auth::user()->id)
-			->where('respondido','=',0)
-			->where('deleted','=',0)
+			$comment = Comentarios::leftJoin('publicaciones','publicaciones.id','=','comentario.pub_id')
+			->where('publicaciones.user_id','=',Auth::user()->id)
+			//->where('comentario.is_read','=',0)
+			->where('publicaciones.deleted','=',0)
+			->where('comentario.deleted','=',0)
 			->count();
+
 			return $comment;
 		}
 	}

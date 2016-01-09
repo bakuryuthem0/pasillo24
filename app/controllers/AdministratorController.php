@@ -17,18 +17,22 @@ class AdministratorController extends BaseController {
     public function getPagos()
     {
         $title = "Pagos | Administrador";
-        $publicaciones =Publicaciones::join('usuario','usuario.id','=','publicaciones.user_id')
-        ->join('categoria','categoria.id','=','publicaciones.categoria')
-        ->join('pagos','publicaciones.id','=','pagos.pub_id')
+        $publicaciones =Publicaciones::leftJoin('usuario','usuario.id','=','publicaciones.user_id')
+        ->leftJoin('categoria','categoria.id','=','publicaciones.categoria')
+        ->leftJoin('pagos','publicaciones.id','=','pagos.pub_id')
         ->where('status','=','Procesando')
-        ->get(array('usuario.username',
-            'pagos.num_trans',
-            'publicaciones.titulo',
-            'categoria.desc as categoria',
-            'publicaciones.ubicacion',
-            'publicaciones.id',
-            'publicaciones.fechIni',
-            'publicaciones.fechFin'));
+        ->groupBy('publicaciones.id')
+        ->get(
+            array(
+                'usuario.username',
+                'pagos.num_trans',
+                'publicaciones.titulo',
+                'categoria.desc as categoria',
+                'publicaciones.ubicacion',
+                'publicaciones.id',
+                'publicaciones.fechIni',
+                'publicaciones.fechFin'
+        ));
         return View::make('admin.pagos')
         ->with('title',$title)
         ->with('publicaciones',$publicaciones);
@@ -115,6 +119,7 @@ class AdministratorController extends BaseController {
             );
             Mail::send('emails.rejectPub', $data, function ($message) use ($input){
                 $message->subject('Correo de rechazo de publicación | pasillo24.com');
+                $message->from('pasillo24.com@pasillo24.com');
                 $message->to('gestor@pasillo24.com');
             });
             $user = User::find($publicacion->user_id);
@@ -124,6 +129,7 @@ class AdministratorController extends BaseController {
             );
             Mail::send('emails.rejectPubUser', $data, function ($message) use ($input,$user){
                 $message->subject('Correo de rechazo de publicación | pasillo24.com');
+                $message->from('pasillo24.com@pasillo24.com');
                 $message->to($user->email);
             });
             if ($publicacion->save()) {
@@ -146,8 +152,8 @@ class AdministratorController extends BaseController {
             ->leftJoin('bancos','bancos.id','=','pagos.banco_id')
             ->where('publicaciones.deleted','=',0)
             ->where('publicaciones.status','=','Procesando')
+            ->groupBy('publicaciones.id')
             ->orderBy('publicaciones.created_at','desc')
-            ->distinct()
             ->get(array(
                 'usuario.username',
                 'usuario.name',
@@ -179,8 +185,8 @@ class AdministratorController extends BaseController {
             ->where('publicaciones.status','=','Procesando')
             ->where('publicaciones.tipo','=','Habitual')
             ->where('publicaciones.deleted','=',0)
+            ->groupBy('publicaciones.id')
             ->orderBy('publicaciones.created_at','desc')
-            ->distinct()
             ->get(array(
                 'usuario.username',
                 'usuario.name',
@@ -210,8 +216,8 @@ class AdministratorController extends BaseController {
             ->where('publicaciones.status','=','Procesando')
             ->where('publicaciones.tipo','=','Casual')
             ->where('publicaciones.deleted','=',0)
+            ->groupBy('publicaciones.id')
             ->orderBy('publicaciones.created_at','desc')
-            ->distinct()
             ->get(array(
                 'usuario.username',
                 'usuario.name',
@@ -389,9 +395,17 @@ class AdministratorController extends BaseController {
     public function getUserElim()
     {
         $title ="Eliminar usuarios | pasillo24.com";
+        if (Auth::user()->role == 'Administrador') {
+            $sql = '(`usuario`.`role` = "Usuario" or `usuario`.`role` = "Gestor")';
+        }else
+        {
+            $sql = '`usuario`.`role` = "Usuario"';
+        }
         $user = User::leftJoin('departamento','usuario.state','=','departamento.id')
         ->where('usuario.user_deleted','=',0)
-        ->where('usuario.role','=','Usuario')
+        ->whereRaw(DB::raw($sql))
+        ->orderBy('usuario.role')
+        ->orderBy('usuario.username')
         ->get(array(
             'usuario.username',
             'usuario.name',
@@ -403,7 +417,6 @@ class AdministratorController extends BaseController {
             'usuario.role',
             'departamento.nombre'
         ));
-        
         return View::make('admin.elimUsers')->with('title',$title)->with('users',$user);
     }
     public function  postUserElim()
@@ -437,7 +450,6 @@ class AdministratorController extends BaseController {
             }
             $username = $user->username;
             $email    = $user->email;
-            $user->username = NULL;
             $user->user_deleted = 1;
 
             $subject = "Correo de administrador";

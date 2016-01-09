@@ -400,7 +400,25 @@ class PublicationController extends BaseController {
 	}
 	public function getMyComment()
 	{
-		$title = "Comentarios | pasillo24.om";
+		$title = "Comentarios | pasillo24.com";
+
+		$readed = Comentarios::leftJoin('publicaciones','publicaciones.id','=','comentario.pub_id')
+		->where(function($query)
+		{
+			$query->where('publicaciones.user_id','=',Auth::user()->id)
+			->orWhere('comentario.user_id','=',Auth::user()->id);
+		})
+		->where('comentario.is_read','=',0)
+		->where('comentario.deleted','=',0)
+		->groupBy('comentario.id')
+		->get(array(
+			'comentario.id',
+			'comentario.is_read',
+		));
+		foreach($readed as $r){
+			$r->is_read = 1;
+			$r->save();
+		}
 		$recividos = Comentarios::leftJoin('publicaciones','publicaciones.id','=','comentario.pub_id')
 		->where('publicaciones.user_id','=',Auth::user()['id'])
 		->where('comentario.respondido','=',0)
@@ -787,7 +805,15 @@ class PublicationController extends BaseController {
 		$title = "Publicacion habitual | pasillo24.com";
 		$subCat = SubCat::where('categoria_id','=',$id)
 		->where('deleted','=',0)
+		->orderBy('desc')
 		->get();
+		$otrosub = new StdClass;
+		foreach ($subCat as $c) {
+			if (strtolower($c->desc) == 'otros') {
+				$otrosub->id 		= $c->id;
+				$otrosub->desc	= $c->desc;			
+			}
+		}
 		$url = "publicacion/habitual/enviar";
 		$departamento = Department::all();
 		$marcas = Marcas::all();
@@ -797,7 +823,8 @@ class PublicationController extends BaseController {
 		->with('cat_id',$id)
 		->with('subCat',$subCat)
 		->with('marcas',$marcas)
-		->with('departamento',$departamento);
+		->with('departamento',$departamento)
+		->with('otrosub',$otrosub);
 	}
 	public function postPublicationHabitual()
 	{
@@ -1633,7 +1660,8 @@ public function postElimPub()
 			$pub->save();
 			$data = array(
 				'subject' => $subject,
-				'publicacion' => $titulo
+				'publicacion' => $titulo,
+				'motivo'	  => 'Eliminado por el usuario'
 			);
 			$to_Email = $user->email;
 			Mail::send('emails.elimPubUser', $data, function($message) use ($titulo,$to_Email,$subject)

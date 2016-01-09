@@ -62,7 +62,7 @@
 
 
 <!-- Modal -->
-<div class="modal modal-elim-cat fade" id="elimAccountModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div class="modal modal-elim-cat fade" id="elimAccountModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
@@ -81,6 +81,8 @@
       <div class="modal-footer">
       	<img src="{{ asset('images/loading.gif') }}" class="miniLoader">
         <button type="button" class="btn btn-danger eliminar-cuenta" >Eliminar</button>
+        <button type="button" class="btn btn-success btn-dimiss hidden" data-dismiss="modal">Aceptar</button>
+
       </div>
     </div>
   </div>

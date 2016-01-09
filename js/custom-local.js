@@ -263,45 +263,36 @@ jQuery(document).ready(function($) {
 	$('#modalElimUserPub').on('hide.bs.modal', function(event) {
 			$('.responseDanger').removeClass('alert-danger');
 			$('.responseDanger').removeClass('alert-success');
-			$('.responseDanger').css({
-				'display': 'none',
-				'opacity': 0
-			});
+			$('.responseDanger').removeClass('active');
 			if ($('.to-elim').length > 0) {
 				$('.to-elim').removeClass('to-elim')
 			};
+			$('.btn-dimiss').addClass('hidden');
+			$('.btnElimPublicacion').removeClass('hidden');
 		});
 	$('.btnElimPublicacion').on('click',function(event) {
+		var boton = $(this);
 			$.ajax({
 				url: 'http://localhost/pasillo24/usuario/publicaciones/mis-publicaciones/eliminar/publicacion',
 				type: 'POST',
 				dataType: 'json',
 				data: {'id': $(this).val()},
 				beforeSend:function(){
-					$('.btnElimPublicacion').before('<img src="http://localhost/pasillo24/images/loading.gif" class="loading">');
+					$('.miniLoader').addClass('active');
 					$('.btnElimPublicacion').addClass('disabled')
-					$('.loading').css({
-						'display': 'block',
-						'margin': '2em auto'
-					}).animate({
-						'opacity': 1},
-						500);
+					$('.close').addClass('hidden');
 				},
 				success:function (response) {
-					$('.loading').animate({
-						'opacity': 0},
-						500,function(){
-							$(this).remove();
-						});
+					$('.close').removeClass('hidden');
+					$('.miniLoader').removeClass('active');
 					$('.btnElimPublicacion').removeClass('disabled');
-					$('.responseDanger').stop().css({'display':'block'}).addClass('alert-'+response.type).html('<p class="textoPromedio">'+response.msg+'</p>').animate({
-					'opacity': 1},
-					500);
+					$('.responseDanger').addClass('alert-'+response.type).addClass('active');
+					$('.responseDanger-text').html(response.msg);
 					if (response.type == 'success') {
 						$('.to-elim').parent().parent().remove();
+						$('.btn-dimiss').removeClass('hidden');
+						boton.addClass('hidden');
 					};
-					$('#modalElimUserPub').modal('hide')
-
 				}
 			})
 			
@@ -777,6 +768,7 @@ $(document).ready(function() {
 	});
 
 	$('#enviarComentario').on('click',function(event) {
+		removeResponsetype();
 		var btn = $(this);
 		btn.addClass('disabled')
 		 var data = {
@@ -840,12 +832,16 @@ $(document).ready(function() {
 	$('#eliminar-publicacion').on('hide.bs.modal', function(event) {
 		$('.to-elim').removeClass('to-elim');
 		$('.miniLoader').removeClass('active');
-		$('.send-elim').removeClass('disabled');
+		$('.send-elim').removeClass('disabled').removeClass('hidden');
+		$('.btn-dimiss').addClass('hidden')
 		$('.motivo').val('');
+
 	});
 	$('.send-elim').on('click', function(event) {
 		event.preventDefault();
+		removeResponsetype();
 		var proceed = 1;
+		var boton = $(this);
 		if ($('.motivo').val().length < 5) {
 			proceed = 0;
 		};
@@ -862,17 +858,24 @@ $(document).ready(function() {
 				beforeSend: function(){
 					$('.miniLoader').addClass('active');
 					$('.send-elim').addClass('disabled');
+					$('.close').addClass('hidden')
 				},
 				success:function(response)
 				{
-					$('.motivo').val('');
+					$('.close').removeClass('hidden');
 					$('.miniLoader').removeClass('active');
 					
-					$('.responseDanger').addClass('alert-'+response.type).html('<p class="textoPromedio text-centered">'+response.msg+'</p>').addClass('active')
+					$('.responseDanger-text').html(response.msg)
+					$('.responseDanger').addClass('alert-'+response.type).addClass('active');
 					if (response.type == 'success') {
+						$('.motivo').val('');
 						$('.to-elim').parent().parent().remove();
-						
-					};
+						boton.addClass('hidden')
+						$('.btn-dimiss').removeClass('hidden');
+					}else
+					{
+						boton.removeClass('disabled')
+					}
 				}
 			})
 		};
@@ -911,7 +914,7 @@ $(document).ready(function() {
 		$('.enviarRespuesta').removeClass('disabled');
 	});
 	$('.enviarRespuesta').on('click',function(event) {
-
+		removeResponsetype();
 		var texto = $('.textoRespuesta').val();
 		var id    = $(this).val(),
 			pubid = $(this).data('pub-id')
@@ -1092,21 +1095,19 @@ jQuery(document).ready(function($) {
 		boton.addClass('to-elim');
 		$('#eliminarUsuarioModal').val(id);
 	});
-	$('.modal-backdrop').on('hide.bs.modal', function(event) {
+	$('#modalElimUser').on('hide.bs.modal', function(event) {
+		removeResponsetype();
 		if ($('.to-elim').length > 0) {
 			$('.to-elim').removeClass('to-elim');
 		};
-		$('#eliminarUsuarioModal').removeClass('disabled');
-	});
-	$('.close').click(function(event) {
-		if ($('.to-elim').length > 0) {
-			$('.to-elim').removeClass('to-elim');
-		};
-		$('#eliminarUsuarioModal').removeClass('disabled');
+		$('#eliminarUsuarioModal').removeClass('disabled').removeClass('hidden');
+		$('.btn-dimiss').addClass('hidden');
 	});
 	$('#eliminarUsuarioModal').on('click',function(event) {
-		$(this).addClass('disabled');
-		var id = $(this).val();
+		removeResponsetype();
+		var boton = $(this);
+		boton.addClass('disabled');
+		var id = boton.val();
 		$.ajax({
 			url: 'http://localhost/pasillo24/administrador/eliminar-usuario/enviar',
 			type: 'POST',
@@ -1115,20 +1116,25 @@ jQuery(document).ready(function($) {
 			beforeSend: function()
 			{
 				$('.miniLoader').addClass('active');
+				$('.close').addClass('hidden');
 			},
 			success:function(response){
-				$('.miniLoader').removeClass('activa');
+				$('.close').removeClass('hidden');
+				$('.miniLoader').removeClass('active');
 				$('.responseDanger').addClass('alert-'+response.type).addClass('active');
-				$('.responseDanger .alert-warning p').html(response.msg)
+				$('.responseDanger-text').html(response.msg)
 				if (response.type == 'success') {
+					boton.addClass('hidden');
+					$('.btn-dimiss').removeClass('hidden');
 					$('.to-elim').parent().parent().remove();
 				}else if(response.type == 'danger'){
-					$('.responseDanger .alert-warning p').addClass('alert-danger').html('Error al eliminar el usuario');
+					$('.responseDanger-text').addClass('alert-danger').html('Error al eliminar el usuario');
+					boton.removeClass('disabled');
 				}
 			},error:function()
 			{
 				$('.miniLoader').removeClass('activa');
-				$('.responseDanger .alert-warning p').addClass('alert-danger').html('Error al eliminar el usuario');
+				$('.responseDanger-text').addClass('alert-danger').html('Error al eliminar el usuario');
 			}
 		})
 		
@@ -1136,6 +1142,11 @@ jQuery(document).ready(function($) {
 	});
 	
 });
+function removeResponsetype () {
+	$('.responseDanger').removeClass('alert-danger');
+	$('.responseDanger').removeClass('alert-success');
+	$('.responseDanger').removeClass('active');
+}
 jQuery(document).ready(function($) {
 	
 	$('.btn-elim-pub').click(function(event) {
@@ -1149,8 +1160,11 @@ jQuery(document).ready(function($) {
 		$('.responseDanger').removeClass('alert-success');
 		$('.responseDanger').removeClass('active');
 		$('#eliminarPublicacionModal').removeClass('disabled');
+		$('#eliminarPublicacionModal').removeClass('hidden');
+		$('.btn-dimiss').addClass('hidden');
 	});
-	$('#eliminarPublicacionModal').click(function(event) {
+	$('#eliminarPublicacionModal').on('click',function(event) {
+		removeResponsetype();
 		var boton = $(this);
 		if ($('.motivo').val() != "") {
 			$.ajax({
@@ -1162,25 +1176,32 @@ jQuery(document).ready(function($) {
 				{
 					$('.miniLoader').addClass('active');
 					boton.addClass('disabled');
+					$('.close').addClass('hidden');
 				},
 				success:function(response){
 					$('.miniLoader').removeClass('active');
+					$('.close').removeClass('hidden');
 					$('.responseDanger').addClass('alert-'+response.type);
 					$('.responseDanger').addClass('active');
 					$('.responseDanger-text').html(response.msg);
 					if (response.type == 'success') {
 						$('.to-elim').parent().parent().remove();
 						$('.motivo').val('');
-					}else
+						boton.addClass('hidden');
+						$('.btn-dimiss').removeClass('hidden');
+					}else if(response.type != 'danger')
 					{
+						$('.responseDanger').addClass('alert-danger').addClass('active');
+						$('.responseDanger-text').html('Ha ocurrido un error.');
 						boton.removeClass('disabled');
 					}
 				},
 				error:function()
 				{
-					$('.responseDanger').addClass('alert-danger')
+					$('.responseDanger').addClass('alert-danger').addClass('active')
 					$('.responseDanger-text').html('Ha ocurrido un error.');
 					$('.miniLoader').removeClass('active');
+					$('.close').removeClass('hidden');
 					boton.removeClass('disabled');
 				}
 			})
@@ -1468,7 +1489,9 @@ jQuery(document).ready(function($) {
  				{
  					$('.miniLoader').addClass('active');
  					btn.addClass('disabled');
+ 					$('.close').addClass('hidden');
  				},success:function(response){
+ 					$('.close').removeClass('hidden');
  					$('.responseDanger').addClass('alert-'+response.type).addClass('active');
  					$('.responseDanger .responseDanger-text').html(response.msg);
  					$('.miniLoader').removeClass('active')
@@ -1477,6 +1500,8 @@ jQuery(document).ready(function($) {
 						$('.miniLoader').removeClass('active');
 					}else
 					{
+						btn.addClass('hidden');
+						$('.btn-dimiss').removeClass('hidden');
 						$('.to-elim').parent().parent().remove();
 					}
  				}
@@ -1486,7 +1511,8 @@ jQuery(document).ready(function($) {
  		$('.to-elim').removeClass('to-elim');
  		$('.responseDanger').removeClass('alert-danger').removeClass('alert-success').removeClass('active');
  		$('.responseDanger .responseDanger-text').html('');
- 		$('.eliminar-categoria').removeClass('disabled');
+ 		$('.eliminar-categoria').removeClass('disabled').removeClass('hidden');
+ 		$('.btn-dimiss').addClass('hidden');
  	});
  	$('.btn-elim-subcat').on('click', function(event) {
 		var btn = $(this);
@@ -1506,7 +1532,9 @@ jQuery(document).ready(function($) {
  				{
  					$('.miniLoader').addClass('active');
  					btn.addClass('disabled');
+ 					$('.close').addClass('hidden');
  				},success:function(response){
+ 					$('.close').removeClass('hidden');
  					$('.responseDanger').addClass('alert-'+response.type).addClass('active');
  					$('.responseDanger .responseDanger-text').html(response.msg);
  					$('.miniLoader').removeClass('active')
@@ -1516,6 +1544,8 @@ jQuery(document).ready(function($) {
 					}else
 					{
 						$('.to-elim').parent().parent().remove();
+						$('.btn-dimiss').removeClass('hidden');
+						btn.addClass('hidden');
 					}
  				}
  			})
@@ -1524,7 +1554,8 @@ jQuery(document).ready(function($) {
  		$('.to-elim').removeClass('to-elim');
  		$('.responseDanger').removeClass('alert-danger').removeClass('alert-success').removeClass('active');
  		$('.responseDanger .responseDanger-text').html('');
- 		$('.eliminar-categoria').removeClass('disabled');
+ 		$('.eliminar-subcategoria').removeClass('disabled').removeClass('hidden');
+ 		$('.btn-dimiss').addClass('hidden');
  	});
  	$('.btn-elim-account').on('click', function(event) {
  		var boton = $(this);
@@ -1538,7 +1569,8 @@ jQuery(document).ready(function($) {
 		if ($('.to-elim').length > 0) {
 			$('.to-elim').removeClass('to-elim')
 		};
-		$('.eliminar-cuenta').removeClass('disabled')
+		$('.eliminar-cuenta').removeClass('disabled').removeClass('hidden');
+ 		$('.btn-dimiss').addClass('hidden');
 	});
  	$('.eliminar-cuenta').on('click',function(event) {
 		var boton = $(this);
@@ -1550,13 +1582,17 @@ jQuery(document).ready(function($) {
  			beforeSend:function()
  			{
  				$('.miniLoader').addClass('active');
- 				boton.addClass('disabled')
+ 				boton.addClass('disabled');
+ 				$('.close').addClass('hidden');
  			},
  			success:function(response)
  			{
+ 				$('.close').removeClass('hidden');
  				$('.miniLoader').removeClass('active');
  				if (response.type == 'success') {
  					$('.to-elim').parent().parent().remove();
+ 					boton.addClass('hidden');
+ 					$('.btn-dimiss').removeClass('hidden');
  				}else
  				{
  					boton.removeClass('disabled')

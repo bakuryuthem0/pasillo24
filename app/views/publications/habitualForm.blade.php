@@ -34,9 +34,12 @@
 							 ?>
 					@if(!empty($subCat) && !is_null($subCat) && count($subCat)>0)
 						@foreach ($subCat as $sub)
+							@if($sub->id != $otrosub->id)
 							<?php $arr = $arr+array($sub->id => $sub->desc);  ?>
+							@endif
 						@endforeach
 					@endif
+					<?php $arr = $arr+array($otrosub->id => $otrosub->desc);  ?>
 					{{ Form::select('subCat',$arr,Input::old('subCat'),array('class' => 'form-control','required' => 'required')
 						)}}
 					

@@ -841,12 +841,15 @@ $(document).ready(function() {
 	$('#eliminar-publicacion').on('hide.bs.modal', function(event) {
 		$('.to-elim').removeClass('to-elim');
 		$('.miniLoader').removeClass('active');
-		$('.send-elim').removeClass('disabled');
+		$('.send-elim').removeClass('disabled').removeClass('hidden');
+		$('.btn-dimiss').addClass('hidden')
 		$('.motivo').val('');
+
 	});
 	$('.send-elim').on('click', function(event) {
 		event.preventDefault();
 		var proceed = 1;
+		var boton = $(this);
 		if ($('.motivo').val().length < 5) {
 			proceed = 0;
 		};
@@ -863,17 +866,24 @@ $(document).ready(function() {
 				beforeSend: function(){
 					$('.miniLoader').addClass('active');
 					$('.send-elim').addClass('disabled');
+					$('.close').addClass('hidden')
 				},
 				success:function(response)
 				{
-					$('.motivo').val('');
+					$('.close').removeClass('hidden');
 					$('.miniLoader').removeClass('active');
 					
-					$('.responseDanger').addClass('alert-'+response.type).html('<p class="textoPromedio text-centered">'+response.msg+'</p>').addClass('active')
+					$('.responseDanger-text').html(response.msg)
+					$('.responseDanger').addClass('alert-'+response.type).addClass('active');
 					if (response.type == 'success') {
+						$('.motivo').val('');
 						$('.to-elim').parent().parent().remove();
-						
-					};
+						boton.addClass('hidden')
+						$('.btn-dimiss').removeClass('hidden');
+					}else
+					{
+						boton.removeClass('disabled')
+					}
 				}
 			})
 		};
@@ -1094,21 +1104,19 @@ jQuery(document).ready(function($) {
 		boton.addClass('to-elim');
 		$('#eliminarUsuarioModal').val(id);
 	});
-	$('.modal-backdrop').on('hide.bs.modal', function(event) {
+	$('#modalElimUser').on('hide.bs.modal', function(event) {
+		removeResponsetype();
 		if ($('.to-elim').length > 0) {
 			$('.to-elim').removeClass('to-elim');
 		};
-		$('#eliminarUsuarioModal').removeClass('disabled');
-	});
-	$('.close').click(function(event) {
-		if ($('.to-elim').length > 0) {
-			$('.to-elim').removeClass('to-elim');
-		};
-		$('#eliminarUsuarioModal').removeClass('disabled');
+		$('#eliminarUsuarioModal').removeClass('disabled').removeClass('hidden');
+		$('.btn-dimiss').addClass('hidden');
 	});
 	$('#eliminarUsuarioModal').on('click',function(event) {
-		$(this).addClass('disabled');
-		var id = $(this).val();
+		removeResponsetype();
+		var boton = $(this);
+		boton.addClass('disabled');
+		var id = boton.val();
 		$.ajax({
 			url: 'http://preview.pasillo24.com/administrador/eliminar-usuario/enviar',
 			type: 'POST',
@@ -1117,19 +1125,25 @@ jQuery(document).ready(function($) {
 			beforeSend: function()
 			{
 				$('.miniLoader').addClass('active');
+				$('.close').addClass('hidden');
 			},
 			success:function(response){
-				$('.miniLoader').removeClass('activa');
+				$('.close').removeClass('hidden');
+				$('.miniLoader').removeClass('active');
 				$('.responseDanger').addClass('alert-'+response.type).addClass('active');
+				$('.responseDanger-text').html(response.msg)
 				if (response.type == 'success') {
+					boton.addClass('hidden');
+					$('.btn-dimiss').removeClass('hidden');
 					$('.to-elim').parent().parent().remove();
 				}else if(response.type == 'danger'){
-					$('.responseDanger .alert-warning p').addClass('alert-danger').html('Error al eliminar el usuario');
+					$('.responseDanger-text').addClass('alert-danger').html('Error al eliminar el usuario');
+					boton.removeClass('disabled');
 				}
 			},error:function()
 			{
 				$('.miniLoader').removeClass('activa');
-				$('.responseDanger .alert-warning p').addClass('alert-danger').html('Error al eliminar el usuario');
+				$('.responseDanger-text').addClass('alert-danger').html('Error al eliminar el usuario');
 			}
 		})
 		
@@ -1558,13 +1572,20 @@ jQuery(document).ready(function($) {
  				{
  					$('.miniLoader').addClass('active');
  					btn.addClass('disabled');
+ 					$('.close').addClass('hidden');
  				},success:function(response){
+ 					$('.close').removeClass('hidden');
  					$('.responseDanger').addClass('alert-'+response.type).addClass('active');
  					$('.responseDanger .responseDanger-text').html(response.msg);
  					$('.miniLoader').removeClass('active')
 					if (response.type == 'danger') {
 						btn.removeClass('disabled');
 						$('.miniLoader').removeClass('active');
+					}else
+					{
+						btn.addClass('hidden');
+						$('.btn-dimiss').removeClass('hidden');
+						$('.to-elim').parent().parent().remove();
 					}
  				}
  			})
@@ -1573,7 +1594,8 @@ jQuery(document).ready(function($) {
  		$('.to-elim').removeClass('to-elim');
  		$('.responseDanger').removeClass('alert-danger').removeClass('alert-success').removeClass('active');
  		$('.responseDanger .responseDanger-text').html('');
- 		$('.eliminar-categoria').removeClass('disabled');
+ 		$('.eliminar-categoria').removeClass('disabled').removeClass('hidden');
+ 		$('.btn-dimiss').addClass('hidden');
  	});
  	$('.btn-elim-subcat').on('click', function(event) {
 		var btn = $(this);
@@ -1593,13 +1615,20 @@ jQuery(document).ready(function($) {
  				{
  					$('.miniLoader').addClass('active');
  					btn.addClass('disabled');
+ 					$('.close').addClass('hidden');
  				},success:function(response){
+ 					$('.close').removeClass('hidden');
  					$('.responseDanger').addClass('alert-'+response.type).addClass('active');
  					$('.responseDanger .responseDanger-text').html(response.msg);
  					$('.miniLoader').removeClass('active')
 					if (response.type == 'danger') {
 						btn.removeClass('disabled');
 						$('.miniLoader').removeClass('active');
+					}else
+					{
+						$('.to-elim').parent().parent().remove();
+						$('.btn-dimiss').removeClass('hidden');
+						btn.addClass('hidden');
 					}
  				}
  			})
@@ -1608,7 +1637,8 @@ jQuery(document).ready(function($) {
  		$('.to-elim').removeClass('to-elim');
  		$('.responseDanger').removeClass('alert-danger').removeClass('alert-success').removeClass('active');
  		$('.responseDanger .responseDanger-text').html('');
- 		$('.eliminar-categoria').removeClass('disabled');
+ 		$('.eliminar-subcategoria').removeClass('disabled').removeClass('hidden');
+ 		$('.btn-dimiss').addClass('hidden');
  	});
  	$('.btn-elim-account').on('click', function(event) {
  		var boton = $(this);

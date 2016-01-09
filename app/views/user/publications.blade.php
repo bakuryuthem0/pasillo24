@@ -27,9 +27,6 @@
 				</div>
 			</div>
 			<div class="clearfix"></div>
-			<div class="alert responseDanger">
-         		<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-      		</div>	
 				@if($type == 'lider')
 
 			<div class="table-responsive" style="width:100%;">
@@ -417,7 +414,7 @@
 		</div>
 	</div>
 </div>
-<div class="modal fade" id="modalElimUserPub">
+<div class="modal fade" id="modalElimUserPub" data-backdrop="static" data-keyboard="false">
 	<div class="modal-dialog">
 		<div class="modal-content">
 			<div class="modal-header">
@@ -425,10 +422,16 @@
 				<h4 class="modal-title">Eliminar publicación</h4>
 			</div>
 			<div class="modal-body">
-				<p class="textoPromedio">¿Seguro desea eliminar esta publicación?</p>
+				<div class="alert responseDanger">
+					<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+					<p class="textoPromedio responseDanger-text"></p>
+				</div>
+				<p class="textoPromedio">¿Seguro desea eliminar esta publicación, esta acción es irreversible?</p>
 			</div>
 			<div class="modal-footer">
+				<img src="{{ asset('images/loading.gif') }}" class="miniLoader">
 				<button type="button" class="btn btn-danger btnElimPublicacion">Eliminar</button>
+				<button type="button" class="btn btn-success btn-dimiss hidden" data-dismiss="modal">Aceptar</button>
 			</div>
 		</div><!-- /.modal-content -->
 	</div><!-- /.modal-dialog -->

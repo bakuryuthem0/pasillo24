@@ -71,7 +71,7 @@
 									{{ $user->role }}
 								</td>
 								<td style="width:42px;">
-									<button style="width: 100%;" class="btn btn-danger btn-xs btn-elim" value="{{ $user->id }}" data-toggle="modal" data-target="#myModal"><span class="fa fa-close"></span> Eliminar</button>
+									<button style="width: 100%;" class="btn btn-danger btn-xs btn-elim" value="{{ $user->id }}" data-toggle="modal" data-target="#modalElimUser"><span class="fa fa-close"></span> Eliminar</button>
 								</td>
 							@endif
 						</tr>
@@ -84,7 +84,7 @@
 
 
 <!-- Modal -->
-<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div class="modal fade" id="modalElimUser" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
@@ -93,8 +93,9 @@
       </div>
       <div class="modal-body">
       	<div class="alert responseDanger">
-					<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-				</div>
+			<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+			<p class="textoPromedio responseDanger-text"></p>
+		</div>
       	<div class="alert alert-warning">
 			<p class="textoPromedio">Advertencia. ¿Esta seguro que desea continuar?, estos cambios son irreversibles</p>      	    
       	</div>
@@ -102,6 +103,7 @@
       <div class="modal-footer">
       	<img src="{{ asset('images/loading.gif') }}" class="miniLoader">
         <button type="button" class="btn btn-danger" id="eliminarUsuarioModal">Eliminar</button>
+        <button type="button" class="btn btn-success btn-dimiss hidden" data-dismiss="modal">Aceptar</button>
       </div>
     </div>
   </div>
