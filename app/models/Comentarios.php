@@ -23,4 +23,5 @@ class Comentarios extends Eloquent implements UserInterface, RemindableInterface
 	 */
 	protected $hidden = array('password', 'remember_token');
 
+	public $timestamps = false;
 }

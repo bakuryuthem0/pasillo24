@@ -260,54 +260,44 @@ jQuery(document).ready(function($) {
 		boton.addClass('to-elim')
 		
 	});
-	$('.modal').on('hide.bs.modal', function(event) {
+	$('#modalElimUserPub').on('hide.bs.modal', function(event) {
 			$('.responseDanger').removeClass('alert-danger');
 			$('.responseDanger').removeClass('alert-success');
-			$('.responseDanger').css({
-				'display': 'none',
-				'opacity': 0
-			});
+			$('.responseDanger').removeClass('active');
 			if ($('.to-elim').length > 0) {
 				$('.to-elim').removeClass('to-elim')
 			};
+			$('.btn-dimiss').addClass('hidden');
+			$('.btnElimPublicacion').removeClass('hidden');
 		});
 	$('.btnElimPublicacion').on('click',function(event) {
+		var boton = $(this);
 			$.ajax({
 				url: 'http://preview.pasillo24.com/usuario/publicaciones/mis-publicaciones/eliminar/publicacion',
 				type: 'POST',
 				dataType: 'json',
 				data: {'id': $(this).val()},
 				beforeSend:function(){
-					$('.btnElimPublicacion').before('<img src="http://preview.pasillo24.com/images/loading.gif" class="loading">');
+					$('.miniLoader').addClass('active');
 					$('.btnElimPublicacion').addClass('disabled')
-					$('.loading').css({
-						'display': 'block',
-						'margin': '2em auto'
-					}).animate({
-						'opacity': 1},
-						500);
+					$('.close').addClass('hidden');
 				},
 				success:function (response) {
-					$('.loading').animate({
-						'opacity': 0},
-						500,function(){
-							$(this).remove();
-						});
+					$('.close').removeClass('hidden');
+					$('.miniLoader').removeClass('active');
 					$('.btnElimPublicacion').removeClass('disabled');
-					$('.responseDanger').stop().css({'display':'block'}).addClass('alert-'+response.type).html('<p class="textoPromedio">'+response.msg+'</p>').animate({
-					'opacity': 1},
-					500);
+					$('.responseDanger').addClass('alert-'+response.type).addClass('active');
+					$('.responseDanger-text').html(response.msg);
 					if (response.type == 'success') {
 						$('.to-elim').parent().parent().remove();
+						$('.btn-dimiss').removeClass('hidden');
+						boton.addClass('hidden');
 					};
-					$('#modalElimUserPub').modal('hide')
-
 				}
 			})
 			
 		});
 });
-
 
 $(document).ready(function(){
 	$('.agg').click(function(event) {
@@ -778,6 +768,7 @@ $(document).ready(function() {
 	});
 
 	$('#enviarComentario').on('click',function(event) {
+		removeResponsetype();
 		var btn = $(this);
 		btn.addClass('disabled')
 		 var data = {
@@ -848,6 +839,7 @@ $(document).ready(function() {
 	});
 	$('.send-elim').on('click', function(event) {
 		event.preventDefault();
+		removeResponsetype();
 		var proceed = 1;
 		var boton = $(this);
 		if ($('.motivo').val().length < 5) {
@@ -912,21 +904,23 @@ $(document).ready(function() {
 			$('.responseDanger').css({'display':'none'})
 		});
 	});
-	$('.modal').on('hide.bs.modal', function(event) {
+	$('#myComment').on('hide.bs.modal', function(event) {
 		$('.responseDanger').removeClass('alert-danger');
 		$('.responseDanger').removeClass('alert-success');
 		$('.responseDanger').css({
 			'display': 'none',
 			'opacity': 0
 		});
-		$('.enviarRespuesta').removeClass('disabled');
+		$('.enviarRespuesta').removeClass('disabled').removeClass('hidden');
+		$('.btn-dimiss').addClass('hidden');
 	});
 	$('.enviarRespuesta').on('click',function(event) {
-		$('.responseDanger').removeClass('alert-danger');
+		removeResponsetype();
 		var texto = $('.textoRespuesta').val();
 		var id    = $(this).val(),
 			pubid = $(this).data('pub-id')
 		datos = {'id':id,'respuesta':texto,'pub_id':pubid};
+		var boton = $(this);
 		$.ajax({
 			url: 'http://preview.pasillo24.com/usuario/publicaciones/comentarios/respuesta',
 			type: 'POST',
@@ -950,12 +944,13 @@ $(document).ready(function() {
 				500);
 				if (response.type == 'success') {
 					$('.to-elim').parent().parent().remove();
+					boton.addClass('hidden');
+					$('.btn-dimiss').removeClass('hidden');
 					
 				};
 			},
 			error:function()
 			{
-				$('.responseDanger').addClass('alert-danger').html('Error al responder el comentario.');
 				$('.close').removeClass('hidden');
 				$('.miniLoader').removeClass('active');
 				$('.enviarRespuesta').removeClass('disabled')				
@@ -1151,6 +1146,11 @@ jQuery(document).ready(function($) {
 	});
 	
 });
+function removeResponsetype () {
+	$('.responseDanger').removeClass('alert-danger');
+	$('.responseDanger').removeClass('alert-success');
+	$('.responseDanger').removeClass('active');
+}
 jQuery(document).ready(function($) {
 	
 	$('.btn-elim-pub').click(function(event) {
@@ -1164,8 +1164,11 @@ jQuery(document).ready(function($) {
 		$('.responseDanger').removeClass('alert-success');
 		$('.responseDanger').removeClass('active');
 		$('#eliminarPublicacionModal').removeClass('disabled');
+		$('#eliminarPublicacionModal').removeClass('hidden');
+		$('.btn-dimiss').addClass('hidden');
 	});
-	$('#eliminarPublicacionModal').click(function(event) {
+	$('#eliminarPublicacionModal').on('click',function(event) {
+		removeResponsetype();
 		var boton = $(this);
 		if ($('.motivo').val() != "") {
 			$.ajax({
@@ -1177,25 +1180,32 @@ jQuery(document).ready(function($) {
 				{
 					$('.miniLoader').addClass('active');
 					boton.addClass('disabled');
+					$('.close').addClass('hidden');
 				},
 				success:function(response){
 					$('.miniLoader').removeClass('active');
+					$('.close').removeClass('hidden');
 					$('.responseDanger').addClass('alert-'+response.type);
 					$('.responseDanger').addClass('active');
 					$('.responseDanger-text').html(response.msg);
 					if (response.type == 'success') {
 						$('.to-elim').parent().parent().remove();
 						$('.motivo').val('');
-					}else
+						boton.addClass('hidden');
+						$('.btn-dimiss').removeClass('hidden');
+					}else if(response.type != 'danger')
 					{
+						$('.responseDanger').addClass('alert-danger').addClass('active');
+						$('.responseDanger-text').html('Ha ocurrido un error.');
 						boton.removeClass('disabled');
 					}
 				},
 				error:function()
 				{
-					$('.responseDanger').addClass('alert-danger')
+					$('.responseDanger').addClass('alert-danger').addClass('active')
 					$('.responseDanger-text').html('Ha ocurrido un error.');
 					$('.miniLoader').removeClass('active');
+					$('.close').removeClass('hidden');
 					boton.removeClass('disabled');
 				}
 			})
@@ -1205,7 +1215,6 @@ jQuery(document).ready(function($) {
 		}
 	});
 });
-
 function sendValueReputation(event) {
 	var tipo = $(this).val();
 	var dataPost = {'tipo':tipo,'id':$(this).data('id')};
@@ -1248,94 +1257,6 @@ jQuery(document).ready(function($) {
 	$('.sendValueType').click(sendValueReputation);
 });
 
-jQuery(document).ready(function($) {
-	$('#enviarNumTrans').click(function(event) {
-		$('.numTransDanger').remove();
-		if ($('#numTransVal').val().length<4) {
-			event.preventDefault();
-			$('#numTransVal').after('<p class="textoPromedio numTransDanger bg-danger" style="padding:1em;">El numero de transacción debe ser mas largo.</p>')
-		};
-	});
-	$('#numTransVal').click(function(event) {
-		$('.numTransDanger').remove();
-	});
-});
-
-jQuery(document).ready(function($) {
-	$('.sendPubValue').on('click',function(event) {
-		var id = $(this).val();
-		var boton = $(this);
-		var neg = $('#neg'),pos = $('#pos');
-		$('.sendValueBuyer').click(function(event) {
-			event.stopImmediatePropagation();
-			var tipo = $(this).val();
-			var dataPost = {'tipo':tipo,'id':id};
-			
-			$.ajax({
-				url: 'http://preview.pasillo24.com/usuario/valorar-comprador',
-				type: 'POST',
-				dataType: 'json',
-				data: dataPost,
-				beforeSend:function()
-				{
-					$('#pos').animate({
-						'opacity': 0},
-						500, function() {
-							$(this).css({'display':'none'});
-					});
-					$('#neg').animate({
-						
-						'opacity': 0},
-						50, function() {
-							$(this).after('<img src="http://preview.pasillo24.com/images/loading.gif" style="width:25px;height:25px;" class="loading">')
-							$(this).css({'display':'none'});;
-					});
-				},
-				success:function(response)
-				{
-					$('.loading').remove();
-					$('.responseDanger').stop().css({'display':'block'}).addClass('alert-'+response.type).html('<p class="textoPromedio">'+response.msg+'</p>').animate({
-					'opacity': 1},
-					500,function()
-					{
-						if (response.type == 'danger') {
-							$('.responseDanger').after(pos)
-							pos.css({'opacity':1}).after(neg);
-							neg.css({
-								opacity: 1
-							});
-						}else
-						{
-							boton.parent().parent().remove();
-							
-						}
-						$('#modalComprar').modal('hide');
-						window.location.reload();
-					});
-				}
-			})
-			$('.modal-backdrop').click(function(event) {
-				$('#pos').css({'display':'inline-block','opacity':1});
-				$('#neg').css({'display':'inline-block','opacity':1});
-				$('.responseDanger').removeClass('alert-success');
-				$('.responseDanger').removeClass('alert-danger').css({
-					'display': 'none',
-					'opacity': 0
-				});
-			});
-			$('.close').click(function(event) {
-				$('#pos').css({'display':'inline-block','opacity':1});
-				$('#neg').css({'display':'inline-block','opacity':1});
-				$('.responseDanger').removeClass('alert-success');
-				$('.responseDanger').removeClass('alert-danger').css({
-					'display': 'none',
-					'opacity': 0
-				});
-			});
-			
-		});
-	});
-});
 jQuery(document).ready(function($) {
 	$('#enviarNumTrans').click(function(event) {
 		$('.numTransDanger').remove();
@@ -1527,11 +1448,14 @@ jQuery(document).ready(function($) {
 		if ($('.to-elim').length > 0) {
 			$('.to-elim').removeClass('to-elim')
 		};
+		$('.btnElimCommentSend').removeClass('disabled').removeClass('hidden');
+		$('.btn-dimiss').addClass('hidden');
 	});
  	$('.btnElimCommentSend').on('click', function(event) {
  		var dataPost = {
  			'id' : $(this).val()
  		}
+ 		var boton = $(this);
  		$.ajax({
  			url: $('.to-elim').data('url'),
  			type: 'post',
@@ -1549,6 +1473,8 @@ jQuery(document).ready(function($) {
  				if (response.type == 'success') {
  					verificarComentario();
  					$('.to-elim').parent().parent().remove();
+ 					boton.addClass('hidden');
+ 					$('.btn-dimiss').removeClass('hidden');
  				};
  			}
  		})
@@ -1652,7 +1578,8 @@ jQuery(document).ready(function($) {
 		if ($('.to-elim').length > 0) {
 			$('.to-elim').removeClass('to-elim')
 		};
-		$('.eliminar-cuenta').removeClass('disabled')
+		$('.eliminar-cuenta').removeClass('disabled').removeClass('hidden');
+ 		$('.btn-dimiss').addClass('hidden');
 	});
  	$('.eliminar-cuenta').on('click',function(event) {
 		var boton = $(this);
@@ -1664,13 +1591,17 @@ jQuery(document).ready(function($) {
  			beforeSend:function()
  			{
  				$('.miniLoader').addClass('active');
- 				boton.addClass('disabled')
+ 				boton.addClass('disabled');
+ 				$('.close').addClass('hidden');
  			},
  			success:function(response)
  			{
+ 				$('.close').removeClass('hidden');
  				$('.miniLoader').removeClass('active');
  				if (response.type == 'success') {
  					$('.to-elim').parent().parent().remove();
+ 					boton.addClass('hidden');
+ 					$('.btn-dimiss').removeClass('hidden');
  				}else
  				{
  					boton.removeClass('disabled')

@@ -911,7 +911,8 @@ $(document).ready(function() {
 			'display': 'none',
 			'opacity': 0
 		});
-		$('.enviarRespuesta').removeClass('disabled');
+		$('.enviarRespuesta').removeClass('disabled').removeClass('hidden');
+		$('.btn-dimiss').addClass('hidden');
 	});
 	$('.enviarRespuesta').on('click',function(event) {
 		removeResponsetype();
@@ -919,6 +920,7 @@ $(document).ready(function() {
 		var id    = $(this).val(),
 			pubid = $(this).data('pub-id')
 		datos = {'id':id,'respuesta':texto,'pub_id':pubid};
+		var boton = $(this);
 		$.ajax({
 			url: 'http://localhost/pasillo24/usuario/publicaciones/comentarios/respuesta',
 			type: 'POST',
@@ -942,6 +944,8 @@ $(document).ready(function() {
 				500);
 				if (response.type == 'success') {
 					$('.to-elim').parent().parent().remove();
+					boton.addClass('hidden');
+					$('.btn-dimiss').removeClass('hidden');
 					
 				};
 			},
@@ -1444,11 +1448,14 @@ jQuery(document).ready(function($) {
 		if ($('.to-elim').length > 0) {
 			$('.to-elim').removeClass('to-elim')
 		};
+		$('.btnElimCommentSend').removeClass('disabled').removeClass('hidden');
+		$('.btn-dimiss').addClass('hidden');
 	});
  	$('.btnElimCommentSend').on('click', function(event) {
  		var dataPost = {
  			'id' : $(this).val()
  		}
+ 		var boton = $(this);
  		$.ajax({
  			url: $('.to-elim').data('url'),
  			type: 'post',
@@ -1466,6 +1473,8 @@ jQuery(document).ready(function($) {
  				if (response.type == 'success') {
  					verificarComentario();
  					$('.to-elim').parent().parent().remove();
+ 					boton.addClass('hidden');
+ 					$('.btn-dimiss').removeClass('hidden');
  				};
  			}
  		})

@@ -271,12 +271,15 @@ class HomeController extends BaseController {
 		if (Request::ajax()) {
 			$comment = Comentarios::leftJoin('publicaciones','publicaciones.id','=','comentario.pub_id')
 			->where('publicaciones.user_id','=',Auth::user()->id)
-			//->where('comentario.is_read','=',0)
+			->where('comentario.is_read','=',0)
 			->where('publicaciones.deleted','=',0)
 			->where('comentario.deleted','=',0)
 			->count();
-
-			return $comment;
+			$responses = Respuestas::where('user_id','=',Auth::user()->id)
+			->where('is_read','=',0)
+			->where('deleted','=',0)
+			->count();
+			return $comment+$responses;
 		}
 	}
 }

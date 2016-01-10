@@ -263,45 +263,36 @@ jQuery(document).ready(function($) {
 	$('#modalElimUserPub').on('hide.bs.modal', function(event) {
 			$('.responseDanger').removeClass('alert-danger');
 			$('.responseDanger').removeClass('alert-success');
-			$('.responseDanger').css({
-				'display': 'none',
-				'opacity': 0
-			});
+			$('.responseDanger').removeClass('active');
 			if ($('.to-elim').length > 0) {
 				$('.to-elim').removeClass('to-elim')
 			};
+			$('.btn-dimiss').addClass('hidden');
+			$('.btnElimPublicacion').removeClass('hidden');
 		});
 	$('.btnElimPublicacion').on('click',function(event) {
+		var boton = $(this);
 			$.ajax({
 				url: 'http://pasillo24.com/usuario/publicaciones/mis-publicaciones/eliminar/publicacion',
 				type: 'POST',
 				dataType: 'json',
 				data: {'id': $(this).val()},
 				beforeSend:function(){
-					$('.btnElimPublicacion').before('<img src="http://pasillo24.com/images/loading.gif" class="loading">');
+					$('.miniLoader').addClass('active');
 					$('.btnElimPublicacion').addClass('disabled')
-					$('.loading').css({
-						'display': 'block',
-						'margin': '2em auto'
-					}).animate({
-						'opacity': 1},
-						500);
+					$('.close').addClass('hidden');
 				},
 				success:function (response) {
-					$('.loading').animate({
-						'opacity': 0},
-						500,function(){
-							$(this).remove();
-						});
+					$('.close').removeClass('hidden');
+					$('.miniLoader').removeClass('active');
 					$('.btnElimPublicacion').removeClass('disabled');
-					$('.responseDanger').stop().css({'display':'block'}).addClass('alert-'+response.type).html('<p class="textoPromedio">'+response.msg+'</p>').animate({
-					'opacity': 1},
-					500);
+					$('.responseDanger').addClass('alert-'+response.type).addClass('active');
+					$('.responseDanger-text').html(response.msg);
 					if (response.type == 'success') {
 						$('.to-elim').parent().parent().remove();
+						$('.btn-dimiss').removeClass('hidden');
+						boton.addClass('hidden');
 					};
-					$('#modalElimUserPub').modal('hide')
-
 				}
 			})
 			
@@ -777,6 +768,7 @@ $(document).ready(function() {
 	});
 
 	$('#enviarComentario').on('click',function(event) {
+		removeResponsetype();
 		var btn = $(this);
 		btn.addClass('disabled')
 		 var data = {
@@ -840,12 +832,16 @@ $(document).ready(function() {
 	$('#eliminar-publicacion').on('hide.bs.modal', function(event) {
 		$('.to-elim').removeClass('to-elim');
 		$('.miniLoader').removeClass('active');
-		$('.send-elim').removeClass('disabled');
+		$('.send-elim').removeClass('disabled').removeClass('hidden');
+		$('.btn-dimiss').addClass('hidden')
 		$('.motivo').val('');
+
 	});
 	$('.send-elim').on('click', function(event) {
 		event.preventDefault();
+		removeResponsetype();
 		var proceed = 1;
+		var boton = $(this);
 		if ($('.motivo').val().length < 5) {
 			proceed = 0;
 		};
@@ -862,17 +858,24 @@ $(document).ready(function() {
 				beforeSend: function(){
 					$('.miniLoader').addClass('active');
 					$('.send-elim').addClass('disabled');
+					$('.close').addClass('hidden')
 				},
 				success:function(response)
 				{
-					$('.motivo').val('');
+					$('.close').removeClass('hidden');
 					$('.miniLoader').removeClass('active');
 					
-					$('.responseDanger').addClass('alert-'+response.type).html('<p class="textoPromedio text-centered">'+response.msg+'</p>').addClass('active')
+					$('.responseDanger-text').html(response.msg)
+					$('.responseDanger').addClass('alert-'+response.type).addClass('active');
 					if (response.type == 'success') {
+						$('.motivo').val('');
 						$('.to-elim').parent().parent().remove();
-						
-					};
+						boton.addClass('hidden')
+						$('.btn-dimiss').removeClass('hidden');
+					}else
+					{
+						boton.removeClass('disabled')
+					}
 				}
 			})
 		};
@@ -900,22 +903,24 @@ $(document).ready(function() {
 		$('.textoRespuesta').on('click',function(event) {
 			$('.responseDanger').css({'display':'none'})
 		});
-		$('#myComment').on('hide.bs.modal', function(event) {
-			$('.responseDanger').removeClass('alert-danger');
-			$('.responseDanger').removeClass('alert-success');
-			$('.responseDanger').css({
-				'display': 'none',
-				'opacity': 0
-			});
-			$('.enviarRespuesta').removeClass('disabled');
+	});
+	$('#myComment').on('hide.bs.modal', function(event) {
+		$('.responseDanger').removeClass('alert-danger');
+		$('.responseDanger').removeClass('alert-success');
+		$('.responseDanger').css({
+			'display': 'none',
+			'opacity': 0
 		});
+		$('.enviarRespuesta').removeClass('disabled').removeClass('hidden');
+		$('.btn-dimiss').addClass('hidden');
 	});
 	$('.enviarRespuesta').on('click',function(event) {
-
+		removeResponsetype();
 		var texto = $('.textoRespuesta').val();
 		var id    = $(this).val(),
 			pubid = $(this).data('pub-id')
 		datos = {'id':id,'respuesta':texto,'pub_id':pubid};
+		var boton = $(this);
 		$.ajax({
 			url: 'http://pasillo24.com/usuario/publicaciones/comentarios/respuesta',
 			type: 'POST',
@@ -925,9 +930,11 @@ $(document).ready(function() {
 			{
 				$('.miniLoader').addClass('active');
 				$('.enviarRespuesta').addClass('disabled');
+				$('.close').addClass('hidden');
 			},
 			success:function(response)
 			{
+				$('.close').removeClass('hidden');
 				$('.textoRespuesta').val('');
 				$('.miniLoader').removeClass('active');
 				$('.responseDanger').removeClass('alert-danger');
@@ -937,12 +944,16 @@ $(document).ready(function() {
 				500);
 				if (response.type == 'success') {
 					$('.to-elim').parent().parent().remove();
+					boton.addClass('hidden');
+					$('.btn-dimiss').removeClass('hidden');
 					
 				};
 			},
 			error:function()
 			{
-				console.log('error');
+				$('.close').removeClass('hidden');
+				$('.miniLoader').removeClass('active');
+				$('.enviarRespuesta').removeClass('disabled')				
 			}
 		})
 		
@@ -1081,91 +1092,127 @@ $(document).ready(function() {
         }
     });
 });
-
-$('.btn-elim').click(function(event) {
-	var id = $(this).val();
-	var boton = $(this);
-	$('.modal-backdrop').click(function(event) {
-		$('.responseDanger').css({
-			'display': 'none',
-			'opacity': 0
-		});
-		$('.alert-warning').css({'display':'block'});
-		$('#eliminarUsuarioModal').prop('disabled',false);
+jQuery(document).ready(function($) {
+	$('.btn-elim').click(function(event) {
+		var id = $(this).val();
+		var boton = $(this);
+		boton.addClass('to-elim');
+		$('#eliminarUsuarioModal').val(id);
 	});
-	$('.close').click(function(event) {
-		$('.responseDanger').css({
-			'display': 'none',
-			'opacity': 0
-		});
-		$('.alert-warning').css({'display':'block'});
-		$('#eliminarUsuarioModal').prop('disabled',false);
+	$('#modalElimUser').on('hide.bs.modal', function(event) {
+		removeResponsetype();
+		if ($('.to-elim').length > 0) {
+			$('.to-elim').removeClass('to-elim');
+		};
+		$('#eliminarUsuarioModal').removeClass('disabled').removeClass('hidden');
+		$('.btn-dimiss').addClass('hidden');
 	});
-	$('#eliminarUsuarioModal').click(function(event) {
-		$(this).prop('disabled', true)
+	$('#eliminarUsuarioModal').on('click',function(event) {
+		removeResponsetype();
+		var boton = $(this);
+		boton.addClass('disabled');
+		var id = boton.val();
 		$.ajax({
 			url: 'http://pasillo24.com/administrador/eliminar-usuario/enviar',
 			type: 'POST',
 			dataType: 'json',
 			data: {'id': id},
+			beforeSend: function()
+			{
+				$('.miniLoader').addClass('active');
+				$('.close').addClass('hidden');
+			},
 			success:function(response){
-				$('.alert-warning').css({'display':'none'});
-				console.log(response)
-				$('.responseDanger').removeClass('alert-danger');
-					$('.responseDanger').removeClass('alert-success');
-					$('.responseDanger').stop().css({'display':'block'}).addClass('alert-'+response.type).html('<p class="textoPromedio">'+response.msg+'</p>').animate({
-					'opacity': 1},
-					500);
-				boton.parent().parent().remove();
+				$('.close').removeClass('hidden');
+				$('.miniLoader').removeClass('active');
+				$('.responseDanger').addClass('alert-'+response.type).addClass('active');
+				$('.responseDanger-text').html(response.msg)
+				if (response.type == 'success') {
+					boton.addClass('hidden');
+					$('.btn-dimiss').removeClass('hidden');
+					$('.to-elim').parent().parent().remove();
+				}else if(response.type == 'danger'){
+					$('.responseDanger-text').addClass('alert-danger').html('Error al eliminar el usuario');
+					boton.removeClass('disabled');
+				}
+			},error:function()
+			{
+				$('.miniLoader').removeClass('activa');
+				$('.responseDanger-text').addClass('alert-danger').html('Error al eliminar el usuario');
 			}
 		})
 		
 		
 	});
+	
 });
-
-$('.btn-elim-pub').click(function(event) {
-	var id = $(this).val();
-	var boton = $(this);
-	$('.modal-backdrop').click(function(event) {
-		$('.responseDanger').css({
-			'display': 'none',
-			'opacity': 0
-		});
-		$('#eliminarPublicacionModal').prop('disabled',false);
+function removeResponsetype () {
+	$('.responseDanger').removeClass('alert-danger');
+	$('.responseDanger').removeClass('alert-success');
+	$('.responseDanger').removeClass('active');
+}
+jQuery(document).ready(function($) {
+	
+	$('.btn-elim-pub').click(function(event) {
+		var id = $(this).val();
+		var boton = $(this);
+		boton.addClass('to-elim');
+		$('#eliminarPublicacionModal').val(boton.val())
 	});
-	$('.close').click(function(event) {
-		$('.responseDanger').css({
-			'display': 'none',
-			'opacity': 0
-		});
-		$('#eliminarPublicacionModal').prop('disabled',false);
+	$('#modalElimPub').on('hide.bs.modal',function(event) {
+		$('.responseDanger').removeClass('alert-danger');
+		$('.responseDanger').removeClass('alert-success');
+		$('.responseDanger').removeClass('active');
+		$('#eliminarPublicacionModal').removeClass('disabled');
+		$('#eliminarPublicacionModal').removeClass('hidden');
+		$('.btn-dimiss').addClass('hidden');
 	});
-	$('#eliminarPublicacionModal').click(function(event) {
-		$(this).prop('disabled', true)
-		$.ajax({
-			url: 'http://pasillo24.com/administrador/publicacion/eliminar-publicacion/enviar',
-			type: 'POST',
-			dataType: 'json',
-			data: {'id': id},
-			success:function(response){
-				$('.alert-warning').remove();
-				console.log(response)
-				$('.responseDanger').removeClass('alert-danger');
-					$('.responseDanger').removeClass('alert-success');
-					$('.responseDanger').stop().css({'display':'block'}).addClass('alert-'+response.type).html('<p class="textoPromedio">'+response.msg+'</p>').animate({
-					'opacity': 1},
-					500);
-				boton.parent().parent().remove();
-			}
-		})
-		$('.modal-backdrop').click(function(event) {
-			$('#eliminarPublicacionModal').prop('disabled',false)
-		});
-		$('.close').click(function(event) {
-			$('#eliminarPublicacionModal').prop('disabled',false)
-		});
-		
+	$('#eliminarPublicacionModal').on('click',function(event) {
+		removeResponsetype();
+		var boton = $(this);
+		if ($('.motivo').val() != "") {
+			$.ajax({
+				url: 'http://pasillo24.com/administrador/publicacion/eliminar-publicacion/enviar',
+				type: 'POST',
+				dataType: 'json',
+				data: {'id': boton.val(),'motivo':$('.motivo').val()},
+				beforeSend:function()
+				{
+					$('.miniLoader').addClass('active');
+					boton.addClass('disabled');
+					$('.close').addClass('hidden');
+				},
+				success:function(response){
+					$('.miniLoader').removeClass('active');
+					$('.close').removeClass('hidden');
+					$('.responseDanger').addClass('alert-'+response.type);
+					$('.responseDanger').addClass('active');
+					$('.responseDanger-text').html(response.msg);
+					if (response.type == 'success') {
+						$('.to-elim').parent().parent().remove();
+						$('.motivo').val('');
+						boton.addClass('hidden');
+						$('.btn-dimiss').removeClass('hidden');
+					}else if(response.type != 'danger')
+					{
+						$('.responseDanger').addClass('alert-danger').addClass('active');
+						$('.responseDanger-text').html('Ha ocurrido un error.');
+						boton.removeClass('disabled');
+					}
+				},
+				error:function()
+				{
+					$('.responseDanger').addClass('alert-danger').addClass('active')
+					$('.responseDanger-text').html('Ha ocurrido un error.');
+					$('.miniLoader').removeClass('active');
+					$('.close').removeClass('hidden');
+					boton.removeClass('disabled');
+				}
+			})
+		}else
+		{
+			alert('Debe redactar un motivo');
+		}
 	});
 });
 function sendValueReputation(event) {
@@ -1295,24 +1342,24 @@ jQuery(document).ready(function($) {
 		$('.fechModal').html(fech);
 	});
 });
-jQuery(document).ready(function($) {
-	function verificarComentario()
-	{
+function verificarComentario()
+{
 
-		$.ajax({
-			url: ' http://pasillo24.com/verificar-comentarios',
-			type: 'GET',
-			success:function(response)
+	$.ajax({
+		url: ' http://pasillo24.com/verificar-comentarios',
+		type: 'GET',
+		success:function(response)
+		{
+			if(response != 0)
 			{
-				if(response != 0)
-				{
-					$('.subComentario').html(response)
-				}
+				$('.subComentario').html(response)
 			}
-		})
-		
-		
-	}
+		}
+	})
+	
+	
+}
+jQuery(document).ready(function($) {
 	setTimeout(function(){ verificarComentario(); }, 1);
 	setInterval(verificarComentario,120000)
 });
@@ -1401,11 +1448,14 @@ jQuery(document).ready(function($) {
 		if ($('.to-elim').length > 0) {
 			$('.to-elim').removeClass('to-elim')
 		};
+		$('.btnElimCommentSend').removeClass('disabled').removeClass('hidden');
+		$('.btn-dimiss').addClass('hidden');
 	});
  	$('.btnElimCommentSend').on('click', function(event) {
  		var dataPost = {
  			'id' : $(this).val()
  		}
+ 		var boton = $(this);
  		$.ajax({
  			url: $('.to-elim').data('url'),
  			type: 'post',
@@ -1414,18 +1464,22 @@ jQuery(document).ready(function($) {
  			beforeSend:function(){
  				$('.btnElimCommentSend').addClass('disabled');
  				$('.miniLoader').addClass('active');
+ 				$('.close').addClass('hidden');
  			},
  			success:function(response){
+ 				$('.close').removeClass('hidden');
  				$('.miniLoader').removeClass('active');
  				$('.responseDanger').addClass('active').addClass('alert-'+response.type).html('<p class="textoPromedio">'+response.msg+'</p>');
  				if (response.type == 'success') {
+ 					verificarComentario();
  					$('.to-elim').parent().parent().remove();
+ 					boton.addClass('hidden');
+ 					$('.btn-dimiss').removeClass('hidden');
  				};
  			}
  		})
  		
  	});
-
  	$('.btn-elim-cat').on('click', function(event) {
 		var btn = $(this);
 		var id = btn.val();
@@ -1444,13 +1498,20 @@ jQuery(document).ready(function($) {
  				{
  					$('.miniLoader').addClass('active');
  					btn.addClass('disabled');
+ 					$('.close').addClass('hidden');
  				},success:function(response){
+ 					$('.close').removeClass('hidden');
  					$('.responseDanger').addClass('alert-'+response.type).addClass('active');
  					$('.responseDanger .responseDanger-text').html(response.msg);
  					$('.miniLoader').removeClass('active')
 					if (response.type == 'danger') {
 						btn.removeClass('disabled');
 						$('.miniLoader').removeClass('active');
+					}else
+					{
+						btn.addClass('hidden');
+						$('.btn-dimiss').removeClass('hidden');
+						$('.to-elim').parent().parent().remove();
 					}
  				}
  			})
@@ -1459,7 +1520,8 @@ jQuery(document).ready(function($) {
  		$('.to-elim').removeClass('to-elim');
  		$('.responseDanger').removeClass('alert-danger').removeClass('alert-success').removeClass('active');
  		$('.responseDanger .responseDanger-text').html('');
- 		$('.eliminar-categoria').removeClass('disabled');
+ 		$('.eliminar-categoria').removeClass('disabled').removeClass('hidden');
+ 		$('.btn-dimiss').addClass('hidden');
  	});
  	$('.btn-elim-subcat').on('click', function(event) {
 		var btn = $(this);
@@ -1479,13 +1541,20 @@ jQuery(document).ready(function($) {
  				{
  					$('.miniLoader').addClass('active');
  					btn.addClass('disabled');
+ 					$('.close').addClass('hidden');
  				},success:function(response){
+ 					$('.close').removeClass('hidden');
  					$('.responseDanger').addClass('alert-'+response.type).addClass('active');
  					$('.responseDanger .responseDanger-text').html(response.msg);
  					$('.miniLoader').removeClass('active')
 					if (response.type == 'danger') {
 						btn.removeClass('disabled');
 						$('.miniLoader').removeClass('active');
+					}else
+					{
+						$('.to-elim').parent().parent().remove();
+						$('.btn-dimiss').removeClass('hidden');
+						btn.addClass('hidden');
 					}
  				}
  			})
@@ -1494,6 +1563,55 @@ jQuery(document).ready(function($) {
  		$('.to-elim').removeClass('to-elim');
  		$('.responseDanger').removeClass('alert-danger').removeClass('alert-success').removeClass('active');
  		$('.responseDanger .responseDanger-text').html('');
- 		$('.eliminar-categoria').removeClass('disabled');
+ 		$('.eliminar-subcategoria').removeClass('disabled').removeClass('hidden');
+ 		$('.btn-dimiss').addClass('hidden');
+ 	});
+ 	$('.btn-elim-account').on('click', function(event) {
+ 		var boton = $(this);
+ 		boton.addClass('to-elim');
+ 		$('.eliminar-cuenta').val(boton.val());
+ 	});
+ 	$('#elimAccountModal').on('hide.bs.modal', function(event) {
+		$('.responseDanger').removeClass('alert-danger');
+		$('.responseDanger').removeClass('alert-success');
+		$('.responseDanger').removeClass('active')
+		if ($('.to-elim').length > 0) {
+			$('.to-elim').removeClass('to-elim')
+		};
+		$('.eliminar-cuenta').removeClass('disabled').removeClass('hidden');
+ 		$('.btn-dimiss').addClass('hidden');
+	});
+ 	$('.eliminar-cuenta').on('click',function(event) {
+		var boton = $(this);
+		$.ajax({
+ 			url: 'http://pasillo24.com/administrador/editar-cuenta/eliminar',
+ 			type: 'POST',
+ 			dataType: 'json',
+ 			data: {'id': boton.val()},
+ 			beforeSend:function()
+ 			{
+ 				$('.miniLoader').addClass('active');
+ 				boton.addClass('disabled');
+ 				$('.close').addClass('hidden');
+ 			},
+ 			success:function(response)
+ 			{
+ 				$('.close').removeClass('hidden');
+ 				$('.miniLoader').removeClass('active');
+ 				if (response.type == 'success') {
+ 					$('.to-elim').parent().parent().remove();
+ 					boton.addClass('hidden');
+ 					$('.btn-dimiss').removeClass('hidden');
+ 				}else
+ 				{
+ 					boton.removeClass('disabled')
+
+ 				}
+ 				$('.responseDanger').addClass('alert-'+response.type).addClass('active');
+ 				$('.responseDanger-text').html(response.msg)
+ 			}
+ 		})
+		 		
+		 		 		
  	});
 });

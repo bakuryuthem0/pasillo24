@@ -103,12 +103,13 @@
 					<div class="alert responseDanger">
 						<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
 					</div>
+					<textarea name="respuesta" class="form-control textoRespuesta" placeholder="Enviar respuesta"></textarea>
 				</div>
 				<div class="modal-footer " style="text-align:right;">
 					
-					<textarea name="respuesta" class="form-control textoRespuesta" placeholder="Enviar respuesta"></textarea>
 					<img src="{{ asset('images/loading.gif') }}" class="miniLoader">
-					<button class="btn btn-success enviarRespuesta" style="margin-top:1em;margin-left:1em;" data-pub-id="" value="">Enviar</button>
+					<button class="btn btn-success enviarRespuesta" data-pub-id="" value="">Enviar</button>
+					<button class="btn btn-success btn-dimiss hidden" data-dismiss="modal">Aceptar</button>
 				</div>
 		</div>
 	</div>
@@ -145,7 +146,8 @@
 			</div>
 			<div class="modal-footer">
 				<img src="{{ asset('images/loading.gif') }}" class="miniLoader">
-				<button type="button" class="btn btn-danger btnElimCommentSend">borrar</button>
+				<button type="button" class="btn btn-danger btnElimCommentSend">Borrar</button>
+				<button class="btn btn-success btn-dimiss hidden" data-dismiss="modal">Aceptar</button>
 			</div>
 		</div>
 	</div>

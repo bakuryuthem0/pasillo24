@@ -59,6 +59,7 @@ class PublicationController extends BaseController {
 	            return Auth::user()['username'].'/'.$file->getClientOriginalName();
 		}
 	}
+	
 	public function getHabitualForm($type)
 	{
 		$url = 'usuario/publicacion/habitual/'.$type.'/enviar';
@@ -402,23 +403,18 @@ class PublicationController extends BaseController {
 	{
 		$title = "Comentarios | pasillo24.com";
 
-		$readed = Comentarios::leftJoin('publicaciones','publicaciones.id','=','comentario.pub_id')
-		->where(function($query)
-		{
-			$query->where('publicaciones.user_id','=',Auth::user()->id)
-			->orWhere('comentario.user_id','=',Auth::user()->id);
-		})
+		$comment = Comentarios::leftJoin('publicaciones','publicaciones.id','=','comentario.pub_id')
+		->where('publicaciones.user_id','=',Auth::user()->id)
 		->where('comentario.is_read','=',0)
+		->where('publicaciones.deleted','=',0)
 		->where('comentario.deleted','=',0)
-		->groupBy('comentario.id')
-		->get(array(
-			'comentario.id',
-			'comentario.is_read',
-		));
-		foreach($readed as $r){
-			$r->is_read = 1;
-			$r->save();
-		}
+		->update(array('comentario.is_read' => 1));
+
+
+		$responses = Respuestas::where('user_id','=',Auth::user()->id)
+		->where('is_read','=',0)
+		->where('deleted','=',0)
+		->update(array('is_read' => 1));
 		$recividos = Comentarios::leftJoin('publicaciones','publicaciones.id','=','comentario.pub_id')
 		->where('publicaciones.user_id','=',Auth::user()['id'])
 		->where('comentario.respondido','=',0)
@@ -1411,15 +1407,20 @@ if (!empty($input['nomb'])) {
 					
 				}
 
-			}elseif ($input['pagina'] != $pub->pag_web && !empty($input['pagina'])) {
+			}
+			if ($input['pagina'] != $pub->pag_web && !empty($input['pagina'])) {
 				$pub->pag_web = $input['pagina'];
-			}elseif ($input['nomb'] != $pub->name && !empty($input['nomb'])) {
+			}
+			if ($input['nomb'] != $pub->name && !empty($input['nomb'])) {
 				$pub->name = $input['nomb'];
-			}elseif ($input['phone'] != $pub->phone && !empty($input['phone'])) {
+			}
+			if ($input['phone'] != $pub->phone && !empty($input['phone'])) {
 				$pub->phone = $input['phone'];
-			}elseif ($input['email'] != $pub->email && !empty($input['email'])) {
+			}
+			if ($input['email'] != $pub->email && !empty($input['email'])) {
 				$pub->email = $input['email'];
-			}elseif ($input['pag_web'] != $pub->pag_web_hab && !empty($input['pag_web'])) {
+			}
+			if ($input['pag_web'] != $pub->pag_web_hab && !empty($input['pag_web'])) {
 				$pub->pag_web_hab = $input['pag_web'];
 			}
 			if (!empty($input['namePub'])) {
@@ -1437,6 +1438,7 @@ if (!empty($input['nomb'])) {
 				$validator = Validator::make(array('img1' => $img1), $rules);
 				if ($validator->fails()) {
 					Session::flash('danger','Error, el archivo '.$img1->getClientOriginalName().' debe ser una imagen en formato: jpg, png o gif');
+					return Redirect::back();
 				}else
 				{
 					$pub->img_1 = $this->upload_images($img1);
@@ -1450,6 +1452,7 @@ if (!empty($input['nomb'])) {
 				$validator = Validator::make(array('img2' => $img2), $rules);
 				if ($validator->fails()) {
 					Session::flash('danger','Error, el archivo '.$img2->getClientOriginalName().' debe ser una imagen en formato: jpg, png o gif');
+					return Redirect::back();
 				}else
 				{
 					$pub->img_2 = $this->upload_images($img2);
@@ -1463,6 +1466,7 @@ if (!empty($input['nomb'])) {
 				$validator = Validator::make(array('img3' => $img3), $rules);
 				if ($validator->fails()) {
 					Session::flash('danger','Error, el archivo '.$img3->getClientOriginalName().' debe ser una imagen en formato: jpg, png o gif');
+					return Redirect::back();
 				}else
 				{
 					$pub->img_3 = $this->upload_images($img3);
@@ -1476,6 +1480,7 @@ if (!empty($input['nomb'])) {
 				$validator = Validator::make(array('img4' => $img4), $rules);
 				if ($validator->fails()) {
 					Session::flash('danger','Error, el archivo '.$img4->getClientOriginalName().' debe ser una imagen en formato: jpg, png o gif');
+					return Redirect::back();
 				}else
 				{
 					$pub->img_4 = $this->upload_images($img4);
@@ -1489,6 +1494,7 @@ if (!empty($input['nomb'])) {
 				$validator = Validator::make(array('img5' => $img5), $rules);
 				if ($validator->fails()) {
 					Session::flash('danger','Error, el archivo '.$img5->getClientOriginalName().' debe ser una imagen en formato: jpg, png o gif');
+					return Redirect::back();
 				}else
 				{
 					$pub->img_5 = $this->upload_images($img5);
@@ -1502,6 +1508,7 @@ if (!empty($input['nomb'])) {
 				$validator = Validator::make(array('img6' => $img6), $rules);
 				if ($validator->fails()) {
 					Session::flash('danger','Error, el archivo '.$img6->getClientOriginalName().' debe ser una imagen en formato: jpg, png o gif');
+					return Redirect::back();
 				}else
 				{
 					$pub->img_6 = $this->upload_images($img6);
@@ -1515,6 +1522,7 @@ if (!empty($input['nomb'])) {
 				$validator = Validator::make(array('img7' => $img7), $rules);
 				if ($validator->fails()) {
 					Session::flash('danger','Error, el archivo '.$img7->getClientOriginalName().' debe ser una imagen en formato: jpg, png o gif');
+					return Redirect::back();
 				}else
 				{
 					$pub->img_7 = $this->upload_images($img7);
@@ -1528,6 +1536,7 @@ if (!empty($input['nomb'])) {
 				$validator = Validator::make(array('img8' => $img8), $rules);
 				if ($validator->fails()) {
 					Session::flash('danger','Error, el archivo '.$img8->getClientOriginalName().' debe ser una imagen en formato: jpg, png o gif');
+					return Redirect::back();
 				}else
 				{
 					$pub->img_8 = $this->upload_images($img8);
