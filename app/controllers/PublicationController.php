@@ -810,6 +810,10 @@ class PublicationController extends BaseController {
 				$otrosub->desc	= $c->desc;			
 			}
 		}
+		if (is_null($otrosub->id)) {
+			Session::flash('error','Lo sentimos, esta categoria esta disponible en estos momentos.');
+			return Redirect::back();
+		}
 		$url = "publicacion/habitual/enviar";
 		$departamento = Department::all();
 		$marcas = Marcas::all();
