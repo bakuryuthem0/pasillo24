@@ -804,13 +804,15 @@ class PublicationController extends BaseController {
 		->orderBy('desc')
 		->get();
 		$otrosub = new StdClass;
+		$otrosub->id = null;
 		foreach ($subCat as $c) {
 			if (strtolower($c->desc) == 'otros') {
 				$otrosub->id 		= $c->id;
 				$otrosub->desc	= $c->desc;			
 			}
 		}
-		if (isset($otrosub->id)) {
+
+		if (is_null($otrosub->id)) {
 			Session::flash('error','Lo sentimos, esta categoria esta disponible en estos momentos.');
 			return Redirect::back();
 		}
