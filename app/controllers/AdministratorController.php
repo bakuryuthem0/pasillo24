@@ -859,10 +859,10 @@ public function getEditPub()
     public function getSubCat()
     {
         $title = "Categorias | pasillo24";
-        $cats = Categorias::where('deleted','=',0)->get();
+        $cats = Categorias::where('deleted','=',0)->orderBy('nombre')->get();
         $cat = SubCat::leftJoin('categoria','categoria.id','=','subcategoria.categoria_id')
         ->where('subcategoria.deleted','=',0)
-        ->orderBy('categoria.id')
+        ->orderBy('categoria.nombre')
         ->orderBy('subcategoria.desc')
         ->paginate(50,array(
             'subcategoria.id',

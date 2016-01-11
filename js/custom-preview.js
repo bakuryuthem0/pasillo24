@@ -1218,6 +1218,7 @@ jQuery(document).ready(function($) {
 function sendValueReputation(event) {
 	var tipo = $(this).val();
 	var dataPost = {'tipo':tipo,'id':$(this).data('id')};
+	var boton = $(this);
 	$.ajax({
 		url: $(this).data('url'),
 		type: 'POST',
@@ -1227,14 +1228,21 @@ function sendValueReputation(event) {
 		{
 			$('.sendValueType').addClass('disabled');
 			$('.miniLoader').addClass('active');
+			$('.close').addClass('hidden');
 		},
 		success:function(response)
 		{
+			$('.close').removeClass('hidden');
 			$('.responseDanger').addClass('alert-'+response.type).addClass('active').html('<p class="textoPromedio">'+response.msg+'</p>');
+			$('.miniLoader').removeClass('active');
 			if (response.type == 'success') {
 				$('.to-elim').parent().parent().remove();
-				$('#modalComprar').modal('hide');
-			};
+				$('.sendValueType').addClass('hidden');
+				$('.btn-dimiss').removeClass('hidden');
+			}else
+			{
+				$('.sendValueType').removeClass('disabled');
+			}
 		}
 	})
 	
@@ -1244,6 +1252,7 @@ jQuery(document).ready(function($) {
 	$('.sendPubValue').on('click',function(event) {
 		$('.responseDanger').removeClass('alert-danger');
 		$('.responseDanger').removeClass('alert-success');
+		$('.responseDanger').removeClass('active');
 		var id = $(this).val();
 		var boton = $(this);
 		boton.addClass('to-elim')
@@ -1253,8 +1262,10 @@ jQuery(document).ready(function($) {
 		if ($('.to-elim').length > 0) {
 			$('.to-elim').removeClass('to-elim');
 		};
+		$('.btn-dimiss').addClass('hidden');
+		$('.sendValueType').removeClass('hidden').removeClass('disabled');
 	});
-	$('.sendValueType').click(sendValueReputation);
+	$('.sendValueType').on('click',sendValueReputation);
 });
 
 jQuery(document).ready(function($) {

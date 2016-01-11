@@ -7,9 +7,7 @@
 		<div class="col-xs-12">
 			<div class="col-xs-12 col-md-6">
 				<legend>Sistema de reputación de pasillo24.com</legend>
-				<div class="alert responseDanger" style="text-align:center;">
-					<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-				</div>
+				
 				<p class=textoPromedio>Una vez que hayas realizado la compra, podrás valorar al comprador según tus experiencias, pasadas las 48 horas.</p>
 				<table class="table table-striped table-hover textoPromedio">
 					<thead>
@@ -41,7 +39,7 @@
 		</div>
 	</div>
 </div>
-<div class="modal fade" id="modalComprar" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div class="modal fade" id="modalComprar" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
 	<div class="modal-dialog">
 		<div class="modal-content">
 			<div class="modal-header">
@@ -50,13 +48,16 @@
 			</div>
 				<div class="modal-body">
 					<p class="textoPromedio">Elija su opcion.</p>
-					
+					<div class="alert responseDanger" style="text-align:center;">
+					<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+				</div>
 				</div>
 				<div class="modal-footer">
 					
 						<img src="{{ asset('images/loading.gif') }}" class="miniLoader">
 						<button class="btn btn-success sendValueType" name="pos" data-url="{{ URL::to('usuario/valorar-comprador') }}" value="pos" id="pos">Positivo</button>
 						<button class="btn btn-danger sendValueType" name="neg" data-url="{{ URL::to('usuario/valorar-comprador') }}" value="neg" id="neg">Negativo</button>
+						<button class="btn btn-success btn-dimiss hidden" data-dismiss="modal">Aceptar</button>
 				</div>
 		</div>
 	</div>
