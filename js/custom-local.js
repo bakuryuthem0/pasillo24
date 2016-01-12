@@ -1215,39 +1215,7 @@ jQuery(document).ready(function($) {
 		}
 	});
 });
-function sendValueReputation(event) {
-	var tipo = $(this).val();
-	var boton = $(this);
-	var dataPost = {'tipo':tipo,'id':$(this).data('id')};
-	$.ajax({
-		url: $(this).data('url'),
-		type: 'POST',
-		dataType: 'json',
-		data: dataPost,
-		beforeSend:function()
-		{
-			$('.sendValueType').addClass('disabled');
-			$('.miniLoader').addClass('active');
-			$('.close').addClass('hidden');
-		},
-		success:function(response)
-		{
-			$('.close').removeClass('hidden');
-			$('.responseDanger').addClass('alert-'+response.type).addClass('active').html('<p class="textoPromedio">'+response.msg+'</p>');
-			$('.miniLoader').removeClass('active');
-			if (response.type == 'success') {
-				$('.to-elim').parent().parent().remove();
-				$('.sendValueType').addClass('hidden');
-				$('.btn-dimiss').removeClass('hidden');
-			}else
-			{
-				$('.sendValueType').removeClass('disabled');
-			}
-		}
-	})
-	
-	
-}
+
 jQuery(document).ready(function($) {
 	$('.sendPubValue').on('click',function(event) {
 		$('.responseDanger').removeClass('alert-danger');
@@ -1265,7 +1233,39 @@ jQuery(document).ready(function($) {
 		$('.btn-dimiss').addClass('hidden');
 		$('.sendValueType').removeClass('hidden').removeClass('disabled');
 	});
-	$('.sendValueType').on('click',sendValueReputation);
+	$('.sendValueType').on('click',function(event) {
+		var tipo = $(this).val();
+		var boton = $(this);
+		var dataPost = {'tipo':tipo,'id':boton.attr('data-id')};
+		$.ajax({
+			url: boton.data('url'),
+			type: 'POST',
+			dataType: 'json',
+			data: dataPost,
+			beforeSend:function()
+			{
+				$('.sendValueType').addClass('disabled');
+				$('.miniLoader').addClass('active');
+				$('.close').addClass('hidden');
+			},
+			success:function(response)
+			{
+				$('.close').removeClass('hidden');
+				$('.responseDanger').addClass('alert-'+response.type).addClass('active').html('<p class="textoPromedio">'+response.msg+'</p>');
+				$('.miniLoader').removeClass('active');
+				if (response.type == 'success') {
+					$('.to-elim').parent().parent().remove();
+					$('.sendValueType').addClass('hidden');
+					$('.btn-dimiss').removeClass('hidden');
+				}else
+				{
+					$('.sendValueType').removeClass('disabled');
+				}
+			}
+		})
+		
+		
+	});
 });
 
 jQuery(document).ready(function($) {

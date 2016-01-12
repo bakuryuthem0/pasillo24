@@ -55,8 +55,8 @@
 				<div class="modal-footer">
 					
 						<img src="{{ asset('images/loading.gif') }}" class="miniLoader">
-						<button class="btn btn-success sendValueType" name="pos" data-url="{{ URL::to('usuario/valorar-comprador') }}" value="pos" id="pos">Positivo</button>
-						<button class="btn btn-danger sendValueType" name="neg" data-url="{{ URL::to('usuario/valorar-comprador') }}" value="neg" id="neg">Negativo</button>
+						<button class="btn btn-success sendValueType" data-url="{{ URL::to('usuario/valorar-comprador') }}" value="pos" >Positivo</button>
+						<button class="btn btn-danger sendValueType" data-url="{{ URL::to('usuario/valorar-comprador') }}" value="neg">Negativo</button>
 						<button class="btn btn-success btn-dimiss hidden" data-dismiss="modal">Aceptar</button>
 				</div>
 		</div>
