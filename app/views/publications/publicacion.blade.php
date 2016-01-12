@@ -466,7 +466,6 @@
 							<div class="col-xs-6" style="padding-left:0px;">
 								<input type="text" name="resultado" class="form-control" required>
 							</div>
-							<div class="col-xs-12"><p class="textoPromedio">El resultado es <span class="resultado"> </span></p></div>
 					</div>
 				</div>
 				<div class="col-xs-12">
