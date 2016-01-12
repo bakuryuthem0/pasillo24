@@ -859,8 +859,31 @@ public function getEditPub()
     public function getSubCat()
     {
         $title = "Categorias | pasillo24";
-        $cats = Categorias::where('deleted','=',0)->orderBy('nombre')->get();
-        $cat = SubCat::leftJoin('categoria','categoria.id','=','subcategoria.categoria_id')
+        $cat = Categorias::where('deleted','=',0)
+        ->where('tipo','=',1)
+        ->orderBy('nombre')
+        ->get();
+        $otros = new StdClass;
+        $otros->id = null;
+        foreach ($cat as $c) {
+            if (strtolower($c->nombre) == 'otros') {
+                $otros->id      = $c->id;
+                $otros->nombre  = $c->nombre;           
+            }
+        }
+        $ser = Categorias::where('deleted','=',0)
+        ->where('tipo','=',2)
+        ->orderBy('nombre')
+        ->get();
+        $otros2 = new StdClass;
+        $otros2->id = null;
+        foreach ($ser as $c) {
+            if (strtolower($c->nombre) == 'otros') {
+                $otros2->id      = $c->id;
+                $otros2->nombre  = $c->nombre;           
+            }
+        }
+        $cats = SubCat::leftJoin('categoria','categoria.id','=','subcategoria.categoria_id')
         ->where('subcategoria.deleted','=',0)
         ->orderBy('categoria.nombre')
         ->orderBy('subcategoria.desc')
@@ -872,6 +895,9 @@ public function getEditPub()
         return View::make('admin.subcategories')
         ->with('title',$title)
         ->with('cat',$cat)
+        ->with('ser',$ser)
+        ->with('otros',$otros)
+        ->with('otros2',$otros2)
         ->with('cats',$cats);
     }
     public function getModifySubCategories($id)

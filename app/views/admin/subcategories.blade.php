@@ -34,9 +34,34 @@
 					<label class="textoPromedio">Categoria</label>
 					<select name="cat" class="form-control">
 						<option value="">Seleccione una categoria</option>
-						@foreach($cats as $c)
-							<option value="{{ $c->id }}">{{ $c->nombre }}</option>
-						@endforeach
+						<optgroup label="categorias">
+							@foreach($cat as $c)
+								@if(!is_null($otros->id))
+									@if($c->id != $otros->id)
+										<option value="{{ $c->id }}">{{ $c->nombre }}</option>
+									@endif
+								@else
+									<option value="{{ $c->id }}">{{ $c->nombre }}</option>
+								@endif
+							@endforeach
+							@if(!is_null($otros->id))
+								<option value="{{ $otros->id }}">{{ $otros->nombre }}</option>
+							@endif
+						</optgroup>
+						<optgroup label="servicios">
+							@foreach($ser as $s)
+								@if(!is_null($otros2->id))
+									@if($s->id != $otros2->id)
+										<option value="{{ $s->id }}">{{ $s->nombre }}</option>
+									@endif
+								@else
+									<option value="{{ $s->id }}">{{ $s->nombre }}</option>
+								@endif
+							@endforeach
+							@if(!is_null($otros2->id))
+								<option value="{{ $otros2->id }}">{{ $otros2->nombre }}</option>
+							@endif
+						</optgroup>
 					</select>
 					@if ($errors->has('cat'))
 						 @foreach($errors->get('cat') as $err)
@@ -57,12 +82,6 @@
 		<hr>
 		<div class="col-xs-12">
 			<h3>Editar sub-categorias</h3>
-			@if(Session::has('success'))
-			<div class="alert alert-success">
-				<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-				<p class="textoPromedio">{{ Session::get('success') }}</p>
-			</div>
-			@endif
 			<form action="#" method="get">
 				<div class="input-group">
 					<!-- USE TWITTER TYPEAHEAD JSON WITH API TO SEARCH -->
@@ -93,7 +112,7 @@
 					</tr>
 				</thead>
 				<tbody>
-					@foreach($cat as $c)
+					@foreach($cats as $c)
 						<tr>
 							<td>
 								{{ $c->id }}
@@ -119,17 +138,17 @@
 				</tbody>
 			</table>
 				<nav role="navigation">
-		          <?php  $presenter = new Illuminate\Pagination\BootstrapPresenter($cat); ?>
-		          @if ($cat->getLastPage() > 1)
+		          <?php  $presenter = new Illuminate\Pagination\BootstrapPresenter($cats); ?>
+		          @if ($cats->getLastPage() > 1)
 		          <ul class="cd-pagination no-space">
 		            <?php
 		              $beforeAndAfter = 3;
 		           
 		              //Página actual
-		              $currentPage = $cat->getCurrentPage();
+		              $currentPage = $cats->getCurrentPage();
 		           	
 		              //Última página
-		              $lastPage = $cat->getLastPage();
+		              $lastPage = $cats->getLastPage();
 		           
 		              //Comprobamos si las páginas anteriores y siguientes de la actual existen
 		              $start = $currentPage - $beforeAndAfter;
@@ -158,7 +177,7 @@
 		              //en otro caso obtenemos la url y mostramos en forma de link
 		              else
 		              {
-		                $url = $cat->getUrl(1);
+		                $url = $cats->getUrl(1);
 		           
 		                echo '<li><a class="textoMedio" href="'.$url.'">&lt;&lt; Primera</a></li>';
 		              }
@@ -169,7 +188,7 @@
 			              	echo '<li class="disable"><span>&lt; Atras</span></li>' ;	
 			              }else
 			              {
-			              	echo '<li><a href="'.$cat->getUrl($currentPage-1).'&filter='.$filter->id.'">&lt; Atras</a></li>' ;
+			              	echo '<li><a href="'.$cats->getUrl($currentPage-1).'&filter='.$filter->id.'">&lt; Atras</a></li>' ;
 			              }
 		              }else
 		              {
@@ -177,7 +196,7 @@
 			              	echo '<li class="disable"><span>&lt; Atras</span></li>' ;	
 			              }else
 			              {
-			              	echo '<li><a href="'.$cat->getUrl($currentPage-1).'">&lt; Atras</a></li>' ;
+			              	echo '<li><a href="'.$cats->getUrl($currentPage-1).'">&lt; Atras</a></li>' ;
 			              }
 		              }
 		           
@@ -190,11 +209,11 @@
 		              	{
 		              		if(!empty($filter))
 		              		{
-		              			echo '<li><a href="'.$cat->getUrl($i).'&filter='.$filter->id.'">'.$i.'</a></li>';
+		              			echo '<li><a href="'.$cats->getUrl($i).'&filter='.$filter->id.'">'.$i.'</a></li>';
 
 		              		}else
 		              		{
-		              			echo '<li><a href="'.$cat->getUrl($i).'">'.$i.'</a></li>';
+		              			echo '<li><a href="'.$cats->getUrl($i).'">'.$i.'</a></li>';
 		              		}
 		              	}
 		              }
@@ -205,7 +224,7 @@
 			              	echo '<li class="disable"><span>Adelante &gt;</span></li>' ;
 			              }else
 			              {
-			              	echo '<li><a href="'.$cat->getUrl($currentPage+1).'&filter='.$filter->id.'">Adelante &gt;</a></li>' ;
+			              	echo '<li><a href="'.$cats->getUrl($currentPage+1).'&filter='.$filter->id.'">Adelante &gt;</a></li>' ;
 			              }
 		              }else
 		              {
@@ -213,7 +232,7 @@
 			              	echo '<li class="disable"><span>Adelante &gt;</span></li>' ;
 			              }else
 			              {
-			              	echo '<li><a href="'.$cat->getUrl($currentPage+1).'">Adelante &gt;</a></li>' ;
+			              	echo '<li><a href="'.$cats->getUrl($currentPage+1).'">Adelante &gt;</a></li>' ;
 			              }
 		              }
 		           
@@ -225,7 +244,7 @@
 		              //en otro caso obtenemos la url y mostramos en forma de link
 		              else
 		              {
-		                $url = $cat->getUrl($lastPage);
+		                $url = $cats->getUrl($lastPage);
 		                echo '<li><a class="textoMedio" href="'.$url.'">Última &gt;&gt;</a></li>';
 		              }
 		              ?>
