@@ -89,9 +89,9 @@
 				</div>
 				
 			</div>
-			<div class="col-xs-6 pagMini" style="padding-right:0px;">
+			<div class="col-xs-6 pagMini pika_stage_lider_container" style="padding-right:0px;">
 				
-					<ul class="col-xs-12 minis pika">
+					<ul class="col-xs-12 minis pika pika_stage_lider">
 							@if(!empty($publication->img_1))
 							<li>
 								<img src="{{ asset('images/pubImages/'.$publication->img_1) }}" class="imgMini" data-fancybox-group="gallery" data-value="img_1">

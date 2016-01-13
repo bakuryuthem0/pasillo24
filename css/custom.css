@@ -1969,3 +1969,22 @@ animated buttons - animate the text inside prev and next buttons
 		padding: 0 !important;
 	}
 }
+
+.pika_stage_lider_container .pika-stage
+{
+	float: right !important;
+}
+.pika_stage_lider_container
+{
+	padding-right: 0;
+}
+@media(max-width: 768px){
+	.pika_stage_lider
+	{
+		float: none;
+	}
+	.pika_stage_lider_container
+	{
+		padding-right: 15px !important;
+	}
+}
