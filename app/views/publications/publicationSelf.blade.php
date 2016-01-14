@@ -89,7 +89,7 @@
 				</div>
 				
 			</div>
-			<div class="col-xs-6 pagMini pika_stage_lider_container" style="padding-right:0px;">
+			<div class="col-xs-6 pagMini pika_stage_lider_container" >
 				
 					<ul class="col-xs-12 minis pika pika_stage_lider">
 							@if(!empty($publication->img_1))
