@@ -17,10 +17,10 @@
 				<p class="bg-info textoPromedio" style="padding:0.5em;">Si desea incrementar la publicidad de su anuncio, especifique ubicación tiempo y periodo.</p>
 				<h5>Menú principal</h5>
 				<div class="col-xs-12" style="padding:0px;margin-bottom:2em;">
-					<div class="col-xs-2" style="margin-top:0px;">
+					<div class="col-xs-4 col-md-2" style="margin-top:0px;">
 						{{ Form::text('durationPrin',Input::old('durationPrin'), array('class' => 'form-control','id' => 'principalDuration','placeholder' => '#')) }}
 					</div>
-					<div class="col-xs-10">
+					<div class="col-xs-8 col-md-10">
 						<select name="periodoPrin" id="principalPeriodo" class="form-control">
 							<option value="">Seleccione un periodo</option>
 							@foreach($precLid as $lid)
@@ -33,10 +33,10 @@
 				
 				<h5>Menú por categorías</h5>
 				<div class="col-xs-12" style="padding:0px;">
-					<div class="col-xs-2" style="margin-top:0px;">
+					<div class="col-xs-4 col-md-2" style="margin-top:0px;">
 						{{ Form::text('durationCat',Input::old('durationPrin'), array('class' => 'form-control','id' => 'categoriaDuration','placeholder' => '#','style' => 'padding-top:0px;')) }}
 					</div>
-					<div class="col-xs-10">
+					<div class="col-xs-8 col-md-10">
 						<select name="periodoCat" id="categoriaPeriodo" class="form-control">
 							<option value="">Seleccione un periodo</option>
 							@foreach($precCat as $cat)

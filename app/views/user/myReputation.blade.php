@@ -6,9 +6,9 @@
 	<div class="row">
 		<div class="col-xs-12 contAnaranjado" style="margin-top:5em;">
 			<legend style="text-align:center;">Sistema de reputación</legend>
-			<div class="col-xs-6 cotMyRep">
+			<div class="col-xs-6 cotMyRep table-responsive">
 				<legend><h3>Reputación como comprador</h3></legend>
-				<table class="table table-striped table-hover textoPromedio">
+				<table class="table table-striped table-hover textoPromedio ">
 					<thead>
 						<tr>
 							<th>Título</th>
@@ -117,7 +117,7 @@
 		          </ul>
 		        </nav> <!-- cd-pagination-wrapper -->
 		      </div>
-			<div class="col-xs-6 cotMyRep">
+			<div class="col-xs-6 cotMyRep table-responsive">
 				<legend><h3>Reputación como Vendedor</h3></legend>
 				<table class="table table-striped table-hover textoPromedio">
 					<thead>
@@ -233,11 +233,11 @@
 			<div class="col-xs-12" style="margin-top:2em;">
 				<button class="btn btn-primary" data-toggle="modal" data-target="#repModal" style="margin:0 auto;display:block;">¿Qué es el sistema de reputación?</button>
 				
-				<div class="col-xs-6">
+				<div class="col-xs-12 col-md-6">
 					<h4>Total de compras con valoración positiva: {{ $comp_pos }}</h4>
 					<h4>Total de compras con valoración negativa: {{ $comp_neg }}</h4>
 				</div>
-				<div class="col-xs-6">
+				<div class="col-xs-12 col-md-6">
 					<h4>Total de ventas con valoración positiva: {{ $vend_pos }}</h4>
 					<h4>Total de ventas con valoración negativa: {{ $vend_neg }}</h4>
 				</div>

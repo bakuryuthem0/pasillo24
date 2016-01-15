@@ -372,7 +372,7 @@ class AdministratorController extends BaseController {
             $user->username = $input['adminUser'];
             $user->password = Hash::make($input['pass']);
             $user->email    = $input['adminUser'].'@pasillo24.com';
-            $user->role     = 'Gestor';
+            $user->role     = $input['role'];
 
             if ($user->save()) {
                 $data = array(

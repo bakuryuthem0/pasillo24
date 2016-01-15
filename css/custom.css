@@ -568,7 +568,7 @@ margin-left:1em;
 		width: 50px !important;
 		height: 30px !important;
 	}
-	.contCategoriasPub
+	.contCategoriasPub 
 	{
 		-webkit-column-count:2;
 		-moz-column-count:2;
@@ -603,10 +603,10 @@ margin-left:1em;
 	}
 }
 
-@media (min-width: 436px) and (max-width: 650px) {
+@media (max-width: 650px) {
 	.descriptionPub
 	{
-		margin-left: 15.33% !important;
+		margin-left: 0 !important;
 	}
 }
 @media(max-width: 540px){
@@ -615,9 +615,7 @@ margin-left:1em;
  		width: 100% !important;
  	}
 	.descriptionPub
-	{
-		margin-left: 0px;
-		
+	{	
 	    
 	    max-height: 1000px !important;
 	    width: 100%;
@@ -702,6 +700,7 @@ margin-left:1em;
 		-moz-column-count:1;
 		-o-column-count:1;
 		column-count:1;
+		min-width: 300px;
 	}
 	
 	
@@ -1230,12 +1229,16 @@ html,body
     margin-bottom: 2em;
 
 }
-.contCategoriasPub
-{
-    -webkit-column-count:3;
-    -moz-column-count:3;
-    -o-column-count:3;
-    column-count:3;
+@/* Desktops and laptops ----------- */
+@media only screen 
+and (min-width : 651px) {
+	.contCategoriasPub
+	{
+	    -webkit-column-count:3;
+	    -moz-column-count:3;
+	    -o-column-count:3;
+	    column-count:3;
+	}
 }
 .trofeos
 {
@@ -1986,5 +1989,20 @@ animated buttons - animate the text inside prev and next buttons
 	.pika_stage_lider_container
 	{
 		padding-right: 15px !important;
+	}
+}
+.no-padding
+{
+	padding: 0 !important;	
+}
+
+@media(max-width: 450px){
+	.btn-to-large{
+	    width: 100%;
+    	font-size: x-small;
+	}
+	.payment-text,.payment-amount
+	{
+		text-align: center;
 	}
 }

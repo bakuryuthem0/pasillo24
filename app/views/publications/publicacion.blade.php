@@ -323,6 +323,7 @@
 				</ul>
 				
 			</div>
+			<div class="clearfix"></div>
 			<div class="col-xs-12">
 				<legend style="text-aling:left;">Servicios</legend>
 			</div>
@@ -358,7 +359,7 @@
 					</div>
 				</div>
 				@endif
-				<div class="col-xs-6">
+				<div class="col-xs-12 col-md-6">
 					<label for="casCat" class="textoPromedio">(*) Categoría</label>
 					<select name="casCat" id="category" class="form-control" required>
 						<option value="">Seleccione la categoría</option>
@@ -380,7 +381,7 @@
 						</optgroup>
 					</select>
 				</div>
-				<div class="col-xs-6">
+				<div class="col-xs-12 col-md-6">
 					<label for="casCity" class="textoPromedio">(*) Departamento</label>
 					<?php $arr = array(
 							'' => 'Seleccione su departamento');
@@ -404,7 +405,7 @@
 					<label for="casTit" class="textoPromedio">(*) Titulo</label>
 					{{ Form::text('casTit', Input::old('casTit'), array('class' => 'form-control','placeholder' => 'Titulo','required' => 'required')) }}
 				</div>
-				<div class="col-xs-6">
+				<div class="col-xs-12 col-md-6">
 					<label for="precio" class="textoPromedio">(*) Precio</label>
 					{{ Form::text('precio',Input::old('precio'),array('placeholder' => 'Precio','class' => 'form-control','required' => 'required')) }}
 					@if ($errors->has('precio'))
@@ -416,7 +417,7 @@
 						 @endforeach
 					@endif
 				</div>
-				<div class="col-xs-6">
+				<div class="col-xs-12 col-md-6">
 					<label class="textoPromedio">(*) Moneda</label>
 					<div class="col-xs-12" class="textoPromedio">
 						<span for="moneda" class="textoPromedio">USD</span>
@@ -437,11 +438,11 @@
 					<p class="bg-info textoPromedio" style="padding:1em;text-align:center;">Se recomienda que la imagen tenga un mínimo de 400px</p>
 					<hr>
 				</div>
-				<div class="col-xs-6">
+				<div class="col-xs-12 col-md-6">
 					<label for="casTit" class="textoPromedio">(*) Imagen principal</label>
 					<input type="file" name="img1" class="textoPromedio" required>
 				</div>
-				<div class="col-xs-6">
+				<div class="col-xs-12 col-md-6">
 					<label for="casTit" class="textoPromedio">Segunda imagen</label>
 					<input type="file" name="img2" class="textoPromedio">
 				</div>

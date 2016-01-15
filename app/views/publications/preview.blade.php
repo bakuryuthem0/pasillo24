@@ -3,7 +3,7 @@
 @section('content')
 <div class="container contenedorUnico">
 	<div class="row">
-		<div class="col-xs-12">
+		<div class="col-xs-12 no-padding">
 				<div class="col-xs-6 imagesCont">
 					
 					<div class="col-xs-12 imgProd">

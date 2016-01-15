@@ -376,6 +376,8 @@ class PublicationController extends BaseController {
 			$comentarios->user_id 	 = Auth::id();
 			$comentarios->pub_id  	 = $id;
 			$comentarios->comentario = $comentario;
+			$comentarios->updated_at = date('Y-m-d',time());
+			$comentarios->created_at = date('Y-m-d',time());
 			$comentarios->save();
 			$msg = "Han comentado tu publicacion: ".$publication->titulo;
 			$user = User::find($publication->user_id);
@@ -605,6 +607,8 @@ class PublicationController extends BaseController {
 		$resp->respuesta 	 = $input['respuesta'];
 		$resp->pub_id 		 = $input['pub_id'];
 		$resp->user_id		 = $com->user_id;
+		$resp->created_at 	 = date('Y-m-d',time());
+		$resp->updated_at 	 = date('Y-m-d',time());
 		$user = User::find($resp->user_id);
 		$to_Email = $user->email;
 		$subject  = "han respondido tu comentario";

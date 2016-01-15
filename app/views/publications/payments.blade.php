@@ -43,7 +43,11 @@
 				</div>
 				<form method="post" action="{{ URL::to('usuario/publicaciones/pago/enviar') }}">
 					<div class="col-xs-12">
-						<div class="col-xs-6" style="padding-left:0px;">
+						<div class="col-xs-12 col-md-6 visible-xs-block">
+							<h2 class="payment-text">Total a pagar:</h2>
+							<h3 class="payment-amount">{{ $pub->monto }} Bs.</h3>
+						</div>
+						<div class="col-xs-12 col-md-6 pull-right-on-xs" style="padding-left:0px;">
 							<div class="col-xs-12 formulario textoPromedio" required>
 				                <label>Banco de destino</label>
 				                  <select name="banco" class="form-control" required>
@@ -99,10 +103,10 @@
 								@endif
 			              	</div>
 						<button class="btn btn-success" id="enviarNumTrans" value="{{ $pub_id }}" name="enviarPago" style="margin-top:2em;">Enviar</button>
-						<a class="btn btn-primary"  data-toggle="modal" data-target="#myModalBancos" style="margin-top:2em;">CUENTAS Y ENTIDADES BANCARIAS.</a>
+						<a class="btn btn-primary btn-to-large"  data-toggle="modal" data-target="#myModalBancos" style="margin-top:2em;">CUENTAS Y ENTIDADES BANCARIAS.</a>
 							
 						</div>
-						<div class="col-xs-6">
+						<div class="col-xs-12 col-md-6 hidden-xs">
 							<h2 class="payment-text">Total a pagar:</h2>
 							<h3 class="payment-amount">{{ $pub->monto }} Bs.</h3>
 						</div>

@@ -65,7 +65,7 @@
 						 @endforeach
 					@endif
 				</div>
-				<div class="col-xs-6">
+				<div class="col-xs-12 col-md-6">
 					<label for="precio" class="textoPromedio">(*) Precio</label>
 					{{ Form::text('precio',Input::old('precio'),array('placeholder' => 'Precio','class' => 'form-control','required' => 'required')) }}
 					@if ($errors->has('precio'))
@@ -77,7 +77,7 @@
 						 @endforeach
 					@endif
 				</div>
-				<div class="col-xs-6">
+				<div class="col-xs-12 col-md-6">
 					<label class="textoPromedio">(*) Moneda</label>
 					<div class="col-xs-12" class="textoPromedio">
 						<span for="moneda" class="textoPromedio">USD</span>
@@ -95,7 +95,7 @@
 					@endif
 				</div>
 				<div class="clearfix"></div>
-				<div class="col-xs-6">
+				<div class="col-xs-12 col-md-6">
 					<label for="" class="textoPromedio">(*) Departamento</label>
 					<?php $arr = array(
 							'' => 'Seleccione su departamento');
@@ -116,7 +116,7 @@
 						 @endforeach
 					@endif
 				</div>
-				<div class="col-xs-6">
+				<div class="col-xs-12 col-md-6">
 					<label for="" class="textoPromedio">(*) Ciudad</label>
 					{{ Form::text('ciudad',Input::old('ciudad'),array('class' => 'form-control','placeholder' => 'Ciudad','required' => 'required')) }}
 					@if ($errors->has('ciudad'))
@@ -130,7 +130,7 @@
 				</div>
 				
 				@if($cat_id == 34)
-					<div class="col-xs-6">
+					<div class="col-xs-12 col-md-6">
 						<label class="textoPromedio">(*) Marca</label>
 						<select name="marca" class="form-control" id="veiMarca" required>
 							<option value="">Seleccione una marca</option>
@@ -147,7 +147,7 @@
 						 @endforeach
 						@endif
 					</div>
-					<div class="col-xs-6">
+					<div class="col-xs-12 col-md-6">
 						<label class="textoPromedio">(*) Modelo</label>
 						<select name="modelo" class="form-control" id="veiModel" required>
 							<option value="">Seleccione un modelo</option>
@@ -161,7 +161,7 @@
 						 @endforeach
 						@endif
 					</div>
-					<div class="col-xs-6">
+					<div class="col-xs-12 col-md-6">
 						<label class="textoPromedio">(*) Año</label>
 						{{ Form::text('anio',Input::old('anio'),array('class' => 'form-control','placeholder' => 'Año','required' => 'required')) }}
 						@if ($errors->has('anio'))
@@ -173,7 +173,7 @@
 						 @endforeach
 						@endif
 					</div>
-					<div class="col-xs-6">
+					<div class="col-xs-12 col-md-6">
 						<label class="textoPromedio">(*) Documentación</label>
 						{{ Form::text('doc',Input::old('doc'),array('class' => 'form-control','placeholder' => 'Documentacion','required' => 'required')) }}
 						@if ($errors->has('doc'))
@@ -198,7 +198,7 @@
 						@endif
 					</div>
 					
-					<div class="col-xs-6">
+					<div class="col-xs-12 col-md-6">
 						<label class="textoPromedio">Cilindrada</label>
 						{{ Form::text('cilin',Input::old('cilin'),array('class' => 'form-control','placeholder' => 'Cilindrada')) }}
 						@if ($errors->has('cilin'))
@@ -210,7 +210,7 @@
 						 @endforeach
 						@endif
 					</div>
-					<div class="col-xs-6">
+					<div class="col-xs-12 col-md-6">
 						<label class="textoPromedio">Transmisión</label>
 						{{ Form::text('trans',Input::old('trans'),array('class' => 'form-control','placeholder' => 'Transmisión')) }}
 						@if ($errors->has('trans'))
@@ -222,7 +222,7 @@
 						 @endforeach
 						@endif
 					</div>
-					<div class="col-xs-6">
+					<div class="col-xs-12 col-md-6">
 						<label class="textoPromedio">Combustible</label>
 						{{ Form::text('comb',Input::old('comb'),array('class' => 'form-control','placeholder' => 'Combustible')) }}
 						@if ($errors->has('comb'))
@@ -234,7 +234,7 @@
 						 @endforeach
 						@endif
 					</div>
-					<div class="col-xs-6">
+					<div class="col-xs-12 col-md-6">
 						<label class="textoPromedio">Tracción</label>
 						{{ Form::text('trac',Input::old('trac'),array('class' => 'form-control','placeholder' => 'Tracción')) }}
 						@if ($errors->has('trac'))
@@ -313,19 +313,19 @@
 				<div class="col-xs-12" style="margin-top:5em;">
 					<legend>Información de contacto</legend>
 				</div>
-				<div class="col-xs-6">
+				<div class="col-xs-12 col-md-6">
 					<label for="" class="textoPromedio">Nombre de contacto</label>
 					{{ Form::text('nomb',Input::old('nomb'),array('class' => 'form-control','placeholder' => 'Nombre de contacto')) }}
 				</div>
-				<div class="col-xs-6">
+				<div class="col-xs-12 col-md-6">
 					<label for="" class="textoPromedio">Teléfono de contacto</label>
 					{{ Form::text('phone',Input::old('phone'),array('class' => 'form-control','placeholder' => 'Telefono de contacto')) }}
 				</div>
-				<div class="col-xs-6">
+				<div class="col-xs-12 col-md-6">
 					<label for="" class="textoPromedio">Correo electrónico</label>
 					{{ Form::text('email',Input::old('email'),array('class' => 'form-control', 'placeholder' => 'Correo electronico')) }}
 				</div>
-				<div class="col-xs-6">
+				<div class="col-xs-12 col-md-6">
 					<label for="" class="textoPromedio">Sitio web</label>
 					{{ Form::text('pag_web',Input::old('pag_web'),array('class' => 'form-control', 'placeholder' => 'Sitio web')) }}
 				</div>
