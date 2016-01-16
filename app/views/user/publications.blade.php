@@ -29,42 +29,42 @@
 			<div class="clearfix"></div>
 				@if($type == 'lider')
 
+			<form action="#" method="get">
+				<div class="input-group">
+					<!-- USE TWITTER TYPEAHEAD JSON WITH API TO SEARCH -->
+					<input class="form-control" id="buscar-usuario" name="q" placeholder="Busqueda general" required>
+					<span class="input-group-addon">
+						<i class="glyphicon glyphicon-search"></i>
+					</span>
+				</div>
+			</form>
 			<div class="table-responsive" style="width:100%;">
-				<form action="#" method="get">
-					<div class="input-group">
-						<!-- USE TWITTER TYPEAHEAD JSON WITH API TO SEARCH -->
-						<input class="form-control" id="buscar-usuario" name="q" placeholder="Busqueda general" required>
-						<span class="input-group-addon">
-							<i class="glyphicon glyphicon-search"></i>
-						</span>
-					</div>
-				</form>
 				<table id="tablesorter" class="table table-striped table-hover table-list-search">
 					<thead>
 						<tr>
 							<th class="textoMedio">
 								Título
 							</th>
-							<th class="textoMedio noMovilMin">
+							<th class="textoMedio">
 								Ubicación
 							</th>
-							<th class="textoMedio noMovil">
+							<th class="textoMedio">
 								Categoría
 							</th>
-							<th class="textoMedio noMovil">
+							<th class="textoMedio">
 								Página web
 							</th>
-							<th class="textoMedio noMovil">
+							<th class="textoMedio">
 								Fecha de Inicio
 							</th>
-							<th class="textoMedio noMovilMin">
+							<th class="textoMedio">
 								Fecha de Fin
 							</th>
 							<th class="textoMedio">
 								Monto
 							</th>
 
-							<th class="textoMedio noMovilMinMin">
+							<th class="textoMedio">
 								Observaciones
 							</th>
 							<th class="textoMedio">Modificar</th>
@@ -82,30 +82,30 @@
 							<td class="textoMedio">
 								{{ $publication->titulo }}
 							</td>
-							<td class="textoMedio noMovilMin">
+							<td class="textoMedio">
 								{{ $publication->ubicacion }}
 							</td>
-							<td class="textoMedio noMovil">
+							<td class="textoMedio">
 								@if(empty($publication->nombre)) Sin categoria @else {{ $publication->nombre }} @endif
 							</td>
-							<td class="textoMedio noMovil">
+							<td class="textoMedio">
 								@if($publication->pag_web == "" || is_null($publication->pag_web))
 									Sin Página web
 								@else
 									{{ $publication->pag_web }}
 								@endif
 							</td>
-							<td class="textoMedio noMovil">
+							<td class="textoMedio">
 								 {{ date('d/m/Y',strtotime($publication->fechIni)) }}
 							</td>
-							<td class="textoMedio noMovilMin">
+							<td class="textoMedio">
 								@if($publication->fechFin < date('Y-m-d')) Publicación expirada @else {{ date('d/m/Y',strtotime($publication->fechFin)) }} @endif
 							</td>
 							<td class="textoMedio">
 								{{ $publication->monto.' Bs.' }}
 							</td>
 							
-							<td class="textoMedio noMovilMinMin">
+							<td class="textoMedio">
 								@if($publication->motivo != "" && $publication->status == 'Rechazado') {{ $publication->motivo }} @else Sin observaciones @endif
 							</td>
 							<td>
@@ -135,35 +135,35 @@
 				</table>
 			</div>
 			@elseif($type == 'habitual')
+			<form action="#" method="get">
+				<div class="input-group">
+					<!-- USE TWITTER TYPEAHEAD JSON WITH API TO SEARCH -->
+					<input class="form-control" id="buscar-usuario" name="q" placeholder="Busqueda general" required>
+					<span class="input-group-addon">
+						<i class="glyphicon glyphicon-search"></i>
+					</span>
+				</div>
+			</form>
 			<div class="table-responsive" style="width:100%;">
-				<form action="#" method="get">
-					<div class="input-group">
-						<!-- USE TWITTER TYPEAHEAD JSON WITH API TO SEARCH -->
-						<input class="form-control" id="buscar-usuario" name="q" placeholder="Busqueda general" required>
-						<span class="input-group-addon">
-							<i class="glyphicon glyphicon-search"></i>
-						</span>
-					</div>
-				</form>
 				<table class="table table-striped table-hover table-list-search">
 					<thead>
 						<tr>
 							<th class="textoMedio">
 								Título
 							</th>
-							<th class="textoMedio noMovil">
+							<th class="textoMedio">
 								Ubicación
 							</th>
-							<th class="textoMedio noMovil">
+							<th class="textoMedio">
 								Categoría
 							</th>
-							<th class="textoMedio noMovil">
+							<th class="textoMedio">
 								Precio
 							</th>
-							<th class="textoMedio noMovil">
+							<th class="textoMedio">
 								Fecha de Inicio
 							</th>
-							<th class="textoMedio noMovil">
+							<th class="textoMedio">
 								Fecha de Fin
 							</th>
 							<th class="textoMedio">
@@ -185,7 +185,7 @@
 							<td class="textoMedio">
 								{{ $publication->titulo }}
 							</td>
-							<td class="textoMedio noMovil">
+							<td class="textoMedio">
 								@if($publication->ubicacion == "" || is_null($publication->ubicacion))
 									Sin decidir
 								@else
@@ -196,13 +196,13 @@
 									@endif
 								@endif
 							</td>
-							<td class="textoMedio noMovil">
+							<td class="textoMedio">
 								{{ $publication->nombre }}
 							</td>
-							<td class="textoMedio noMovil">
+							<td class="textoMedio">
 								{{ $publication->precio.' '.$publication->moneda }}
 							</td>
-							<td class="textoMedio noMovil">
+							<td class="textoMedio">
 								@if($publication->fechIni == "0000-00-00" && $publication->fechIniNormal == "0000-00-00")
 									@if(!empty($publication->motivo) && $publication->status == 'Rechazado') 
 										<strong>Observaciones</strong>
@@ -221,7 +221,7 @@
 								 	@endif
 								@endif
 							</td>
-							<td class="textoMedio noMovil">
+							<td class="textoMedio">
 								@if($publication->fechIni == "0000-00-00" && $publication->fechIniNormal == "0000-00-00")
 									@if(!empty($publication->motivo) && $publication->status == 'Rechazado') 
 										{{ $publication->motivo }} 
@@ -293,16 +293,16 @@
 			@if(!is_null($rePub))
 				<p class="bg-info textoPromedio" style="padding:0.5em;">Fecha para la siguiente publicacion casual:   {{ date('d-m-Y',strtotime($rePub->fechRepub)) }} </p>
 				@endif
+			<form action="#" method="get">
+				<div class="input-group">
+					<!-- USE TWITTER TYPEAHEAD JSON WITH API TO SEARCH -->
+					<input class="form-control" id="buscar-usuario" name="q" placeholder="Busqueda general" required>
+					<span class="input-group-addon">
+						<i class="glyphicon glyphicon-search"></i>
+					</span>
+				</div>
+			</form>
 			<div class="table-responsive" style="width:100%;">
-				<form action="#" method="get">
-					<div class="input-group">
-						<!-- USE TWITTER TYPEAHEAD JSON WITH API TO SEARCH -->
-						<input class="form-control" id="buscar-usuario" name="q" placeholder="Busqueda general" required>
-						<span class="input-group-addon">
-							<i class="glyphicon glyphicon-search"></i>
-						</span>
-					</div>
-				</form>
 				<table class="table table-striped table-hover table-list-search">
 					<thead>
 						<tr>
@@ -310,16 +310,16 @@
 								Título
 							</th>
 							
-							<th class="textoMedio noMovil">
+							<th class="textoMedio">
 								Categoría
 							</th>
-							<th class="textoMedio noMovil">
+							<th class="textoMedio">
 								Precio
 							</th>
-							<th class="textoMedio noMovil">
+							<th class="textoMedio">
 								Fecha de Inicio
 							</th>
-							<th class="textoMedio noMovil">
+							<th class="textoMedio">
 								Fecha de Fin
 							</th>
 							
@@ -339,13 +339,13 @@
 								{{ $publication->titulo }}
 							</td>
 							
-							<td class="textoMedio noMovil">
+							<td class="textoMedio">
 								{{ $publication->nombre }}
 							</td>
-							<td class="textoMedio noMovil">
+							<td class="textoMedio">
 								{{ $publication->precio.' '.$publication->moneda }}
 							</td>
-							<td class="textoMedio noMovil">
+							<td class="textoMedio">
 								@if(!empty($publication->motivo) && $publication->status == 'Rechazado') 
 										{{ $publication->motivo }} 
 								@else 
@@ -356,7 +356,7 @@
 									@endif
 								@endif
 							</td>
-							<td class="textoMedio noMovil">
+							<td class="textoMedio">
 								@if(!empty($publication->motivo) && $publication->status == 'Rechazado') 
 									{{ $publication->motivo }} 
 								@else 

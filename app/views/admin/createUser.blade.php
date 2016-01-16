@@ -54,6 +54,21 @@
 					@endif
 				</div>
 				<div class="col-xs-12">
+					<label for="" class="textoPromedio">Seleccione un role</label>
+					<select name="role" class="form-control">
+						<option value="Gestor">Gestor</option>
+						<option value="Moderador">Moderador</option>
+					</select>
+					@if ($errors->has('role'))
+						 @foreach($errors->get('role') as $err)
+						 	<div class="alert alert-danger">
+						 		<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+						 		<p class="textoPromedio">{{ $err }}</p>
+						 	</div>
+						 @endforeach
+					@endif
+				</div>
+				<div class="col-xs-12">
 					<input type="submit" name="enviarNewUser" class="btn btn-success enviarNewAdmin">
 				</div>
 			</form>

@@ -19,7 +19,7 @@
 			</div>
 			@if(isset($type))
 				@if($type == 'lider')
-			<div class="col-xs-12">
+			<div class="col-xs-12 table-responsive">
 				<table class="table table-striped table-hover">
 					<thead>
 						<tr>
@@ -29,16 +29,16 @@
 							<th class="textoMedio">
 								Ubicación
 							</th>
-							<th class="textoMedio noMovil">
+							<th class="textoMedio">
 								Categoría
 							</th>
-							<th class="textoMedio noMovilMin">
+							<th class="textoMedio">
 								Página web
 							</th>
-							<th class="textoMedio noMovil">
+							<th class="textoMedio">
 								Fecha de Inicio
 							</th>
-							<th class="textoMedio noMovil">
+							<th class="textoMedio">
 								Fecha de Fin
 							</th>
 							
@@ -66,26 +66,26 @@
 									{{ $publication->ubicacion }}
 								@endif
 							</td>
-							<td class="textoMedio noMovil">
+							<td class="textoMedio">
 								{{ $publication->nombre }}
 							</td>
-							<td class="textoMedio noMovilMin">
+							<td class="textoMedio">
 								@if($publication->pag_web == "" || is_null($publication->pag_web))
 									Sin Página web
 								@else
 									{{ $publication->pag_web }}
 								@endif
 							</td>
-							<td class="textoMedio noMovil">
+							<td class="textoMedio">
 								 {{ date('d/m/Y',strtotime($publication->fechIni)) }}
 							</td>
-							<td class="textoMedio noMovil">
+							<td class="textoMedio">
 								@if($publication->fechFin < date('Y-m-d')) Publicación expirada @else {{ date('d/m/Y',strtotime($publication->fechFin)) }} @endif
 							</td>
 							<td class="textoMedio">
 								<a target="_blank" href="{{URL::to('publicacion/lider/'.base64_encode($publication->id)) }}" class="btn btn-xs btn-primary" style="width: 100%;">Ver</a>
 							</td>
-							<td class="textoMedio noMovil"><button class="btn btn-success btn-xs ver" data-toggle="modal" data-target="#showUserData" value="{{ $publication->id }}" style="width:100%;">Ver</button></td>
+							<td class="textoMedio"><button class="btn btn-success btn-xs ver" data-toggle="modal" data-target="#showUserData" value="{{ $publication->id }}" style="width:100%;">Ver</button></td>
 								<input type="hidden" class="username-{{ $publication->id }}" value="{{ $publication->username }}">
 								<input type="hidden" class="name-{{ $publication->id }}" value="{{ $publication->name.' '.$publication->lastname }}">
 								<input type="hidden" class="email-{{ $publication->id }}" value="{{ $publication->email }}">
@@ -103,7 +103,7 @@
 			</div>
 			
 			@elseif($type == 'habitual')
-						<div class="col-xs-12">
+			<div class="col-xs-12 table-responsive">
 				<table class="table table-striped table-hover">
 					<thead>
 						<tr>
@@ -113,16 +113,16 @@
 							<th class="textoMedio">
 								Ubicación
 							</th>
-							<th class="textoMedio noMovil">
+							<th class="textoMedio">
 								Categoría
 							</th>
-							<th class="textoMedio noMovil">
+							<th class="textoMedio">
 								Precio
 							</th>
-							<th class="textoMedio noMovil">
+							<th class="textoMedio">
 								Fecha de Inicio
 							</th>
-							<th class="textoMedio noMovil">
+							<th class="textoMedio">
 								Fecha de Fin
 							</th>
 							<th class="textoMedio">
@@ -153,13 +153,13 @@
 									@endif
 								@endif
 							</td>
-							<td class="textoMedio noMovil">
+							<td class="textoMedio">
 								{{ $publication->categoria }}
 							</td>
-							<td class="textoMedio noMovil">
+							<td class="textoMedio">
 								{{ $publication->precio.' '.ucfirst(strtolower($publication->moneda)) }}
 							</td>
-							<td class="textoMedio noMovil">
+							<td class="textoMedio">
 								@if($publication->fechIni == "0000-00-00" && $publication->fechIniNormal == "0000-00-00")
 									Sin aprobar
 								@else
@@ -174,7 +174,7 @@
 								 	@endif
 								@endif
 							</td>
-							<td class="textoMedio noMovil">
+							<td class="textoMedio">
 								@if($publication->fechIni == "0000-00-00" && $publication->fechIniNormal == "0000-00-00")
 									Sin aprobar
 								@else
@@ -210,7 +210,7 @@
 							<td class="textoMedio">
 								<a target="_blank" href="{{URL::to('publicacion/lider/'.base64_encode($publication->id))}}" class="btn btn-primary btn-xs">Ver</a>
 							</td>
-							<td class="textoMedio noMovil"><button class="btn btn-success btn-xs ver" data-toggle="modal" data-target="#showUserData" value="{{ $publication->id }}" style="width:100%;">Ver</button></td>
+							<td class="textoMedio"><button class="btn btn-success btn-xs ver" data-toggle="modal" data-target="#showUserData" value="{{ $publication->id }}" style="width:100%;">Ver</button></td>
 								<input type="hidden" class="username-{{ $publication->id }}" value="{{ $publication->username }}">
 								<input type="hidden" class="name-{{ $publication->id }}" value="{{ $publication->name.' '.$publication->lastname }}">
 								<input type="hidden" class="email-{{ $publication->id }}" value="{{ $publication->email }}">
@@ -228,7 +228,7 @@
 			</div>
 
 			@elseif($type == 'casual')
-						<div class="col-xs-12">
+			<div class="col-xs-12 table-responsive">
 				<table class="table table-striped table-hover">
 					<thead>
 						<tr>
@@ -238,14 +238,14 @@
 							<th class="textoMedio">
 								Ubicación
 							</th>
-							<th class="textoMedio noMovil">
+							<th class="textoMedio">
 								Categoría
 							</th>
 							
-							<th class="textoMedio noMovil">
+							<th class="textoMedio">
 								Fecha de Inicio
 							</th>
-							<th class="textoMedio noMovil">
+							<th class="textoMedio">
 								Fecha de Fin
 							</th>
 							<th class="textoMedio">
@@ -272,18 +272,18 @@
 								{{ $publication->ubicacion }}
 								@endif
 							</td>
-							<td class="textoMedio noMovil">
+							<td class="textoMedio">
 								{{ $publication->nombre }}
 							</td>
 							
-							<td class="textoMedio noMovil">
+							<td class="textoMedio">
 								@if($publication->fechIni == "0000-00-00")
 								Sin aprobar
 								@else
 								 {{ date('d/m/Y',strtotime($publication->fechIni)) }}
 								@endif
 							</td>
-							<td class="textoMedio noMovil">
+							<td class="textoMedio">
 								@if($publication->fechIni == "0000-00-00")
 								Sin aprobar
 								@else
@@ -293,7 +293,7 @@
 							<td class="textoMedio">
 								<a target="_blank" href="{{URL::to('publicacion/lider/'.base64_encode($publication->id))}}" class="btn btn-primary btn-xs">Ver</a>
 							</td>
-							<td class="textoMedio noMovil"><button class="btn btn-success btn-xs ver" data-toggle="modal" data-target="#showUserData" value="{{ $publication->id }}" style="width:100%;">Ver</button></td>
+							<td class="textoMedio"><button class="btn btn-success btn-xs ver" data-toggle="modal" data-target="#showUserData" value="{{ $publication->id }}" style="width:100%;">Ver</button></td>
 								<input type="hidden" class="username-{{ $publication->id }}" value="{{ $publication->username }}">
 								<input type="hidden" class="name-{{ $publication->id }}" value="{{ $publication->name.' '.$publication->lastname }}">
 								<input type="hidden" class="email-{{ $publication->id }}" value="{{ $publication->email }}">

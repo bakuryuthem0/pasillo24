@@ -7,7 +7,7 @@
 <div class="container contenedorUnico">
 	<div class="row">
 		<h1>{{ $username }}</h1>
-		<div class="col-xs-12" style="padding-right: 0px;">
+		<div class="col-xs-12 father" style="padding-right: 0px;">
 			<div class="contTypePub">
 				@if($publication->reputation>=15 && $publication->reputation<60)
 					<div id="bronce" class="trofeos">

@@ -14,7 +14,7 @@
 		{{ HTML::style('css/bootstrap.min.css') }}
 		{{ HTML::style('//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css') }}
 		{{ HTML::style('css/bootstrap-theme.min.css')}}
-		{{ HTML::style('css/custom.css?v=0.4') }}
+		{{ HTML::style('css/custom.css?v=1.0') }}
 		{{ HTML::style('css/jquery.cleditor.css') }}
 		{{ HTML::style('css/owl.carousel.css') }}
 		{{ HTML::style('css/owl.theme.default.css') }}
@@ -166,7 +166,7 @@ margin-top: 0.5em;display:inline-block;">
 												<i class="fa fa-user menu-icon" role="button" data-toggle="popover" data-trigger="hover" data-placement="bottom" data-content="{{ Auth::user()['username'] }}"></i>
 												<span class="caret"></span></a>
 											<ul class="dropdown-menu multi-level" role="menu">
-												@if(Auth::getUser()['role'] != 'Administrador' && Auth::getUser()['role'] != 'Gestor')
+												@if(Auth::user()->role != 'Administrador' && Auth::user()->role != 'Gestor' && Auth::user()->role != 'Moderador')
 												<li>
 													<a href="{{ URL::to('usuario/perfil') }}">
 														<span class="fa fa-cog"></span> Perfil
@@ -206,6 +206,7 @@ margin-top: 0.5em;display:inline-block;">
 													<span class="fa fa-comments-o"></span><sup class="subComentario"></sup> Comentarios</a>
 												</li>
 												@else
+
 												<li>
 													<a href="{{ URL::to('administrador/pagos') }}">
 														<i class="fa fa-credit-card"></i> Ver Pagos
@@ -237,6 +238,7 @@ margin-top: 0.5em;display:inline-block;">
 														<i class="fa fa-list-alt"></i> Ver Sub-categorias
 													</a>
 												</li>
+												@if(Auth::user()->role != 'Moderador')
 												<li class="dropdown-submenu noDisplay">
 													<a href="#" >
 														<i class="fa fa-cogs"></i> Modificaciones
@@ -275,7 +277,7 @@ margin-top: 0.5em;display:inline-block;">
 												</li>
 												<li class="showMovil">
 													<a href="{{ URL::to('administrador/crear-nuevo') }}">
-														<i class="fa fa-user-plus"></i> Crear gestor
+														<i class="fa fa-user-plus"></i> Crear usuario
 													</a>
 												</li>
 												<li class="showMovil">
@@ -290,7 +292,7 @@ margin-top: 0.5em;display:inline-block;">
 													<ul class="dropdown-menu" role="menu">
 														<li>
 															<a href="{{ URL::to('administrador/crear-nuevo') }}">
-																<i class="fa fa-user-plus"></i> Crear gestor
+																<i class="fa fa-user-plus"></i> Crear usuario
 															</a>
 														</li>
 														<li>
@@ -317,7 +319,7 @@ margin-top: 0.5em;display:inline-block;">
 														</li>
 													</ul>
 												</li>
-												
+												@endif
 												
 												@endif
 												<li>
@@ -361,14 +363,13 @@ margin-top: 0.5em;display:inline-block;">
 	
 	{{ HTML::script('js/jquery.min.js') }}
 	{{ HTML::script('js/bootstrap.min.js') }}
-	{{ HTML::script('js/custom-preview.js?v=1.0')}}
+	{{ HTML::script('js/custom-preview.js?v=1.1')}}
 	
 	{{ HTML::script('js/ckeditor.js') }}
 	{{ HTML::script('js/jquery.ckeditor.js') }}
 	{{ HTML::script('js/owl.carousel.min.js') }}
 	{{ HTML::script('//code.jquery.com/ui/1.11.2/jquery-ui.js') }}
 
-	
        <script type="text/javascript">
        $(function () {
 		  $('[data-toggle="popover"]').popover()

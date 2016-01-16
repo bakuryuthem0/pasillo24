@@ -389,12 +389,15 @@ margin-left:1em;
 		background-color: rgb(19, 63, 30) !important;
 	}
 }
+@media (min-width: 650px) and (max-width: 991px){
+	.pika-textnav a.next
+	{
+		float:none !important;
+	}
+
+}
 @media(max-width: 991px){
 
-.pika-textnav a.next
-{
- float:none !important;
-}
 .pika-stage
 {
   width:100% !important;
@@ -2004,5 +2007,9 @@ animated buttons - animate the text inside prev and next buttons
 	.payment-text,.payment-amount
 	{
 		text-align: center;
+	}
+	.father
+	{
+		padding-right: 15px !important;
 	}
 }

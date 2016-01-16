@@ -90,12 +90,22 @@ display: block;">
 			  <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
 			  	<li><strong>Categorías</strong></li>
 			  	@foreach($categories as $category)
-			  		<li role="presentation"><a role="menuitem" tabindex="-1" href="{{ URL::to('publicaciones/categorias/'.$category->id) }}">{{$category->nombre }}</a></li>
+					@if($category->id != $otros->id)
+			  			<li role="presentation">
+			  				<a role="menuitem" tabindex="-1" href="{{ URL::to('publicaciones/categorias/'.$category->id) }}">
+			  					{{$category->nombre }}
+			  				</a>
+			  			</li>
+			  		@endif
 				@endforeach
+                <li><a href="{{ URL::to('publicaciones/categorias/'.$otros->id) }}">{{ $otros->nombre }}</a></li>
 				<li><strong>Servicios</strong></li>
 			   	@foreach($servicios as $servicio)
-					<li><a href="{{ URL::to('publicaciones/categorias/'.$servicio->id) }}">{{$servicio->nombre }}</a></li>
+					@if($servicio->id != $otros2->id)
+						<li><a href="{{ URL::to('publicaciones/categorias/'.$servicio->id) }}">{{$servicio->nombre }}</a></li>
+					@endif
 				@endforeach
+                <li><a href="{{ URL::to('publicaciones/categorias/'.$otros2->id) }}">{{ $otros2->nombre }}</a></li>
 			  </ul>
 			</div>
 		</div>
