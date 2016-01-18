@@ -24,7 +24,7 @@
 						<tr class="textoPromedio">
 							<td>{{ $comentario->titulo }}</td>
 							<td>{{ $comentario->comentario }}</td>
-							<td>{{ date('d-m-Y H:i:s',strtotime($comentario->created_at)) }}</td>
+							<td>{{ date('d-m-Y',strtotime($comentario->created_at)) }}</td>
 							@if($comentario->deleted == 1)
 							<td><div class="alert alert-danger">
 								<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
@@ -63,7 +63,7 @@
 						<tr class="textoPromedio">
 							<td>{{ $h->titulo }}</td>
 							<td>{{ $h->comentario }}</td>
-							<td>{{ date('d-m-Y H:i:s',strtotime($h->created_at)) }}</td>
+							<td>{{ date('d-m-Y',strtotime($h->created_at)) }}</td>
 							@if($h->deleted == 1)
 							<td></td>
 							@else
