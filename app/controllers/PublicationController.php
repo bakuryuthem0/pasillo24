@@ -397,7 +397,7 @@ class PublicationController extends BaseController {
 			}
 			$doGcm = new Gcm;
 			$response = $doGcm->send_notification($regId,$data);
-			return Response::json(array('type' => 'success', 'msg' => 'Comentario Guardado Sactisfactoriamente','date' => date('d-m-Y H:i:s',strtotime($comentarios->created_at))));
+			return Response::json(array('type' => 'success', 'msg' => 'Comentario Guardado Sactisfactoriamente','date' => date('d-m-Y',strtotime($comentarios->created_at))));
 		}
 		
 	}
