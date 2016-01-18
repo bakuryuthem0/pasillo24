@@ -364,12 +364,12 @@
 				@foreach($comentarios as $comentario)
 				<div class="col-xs-12 comentario">
 					<p class="textoPromedio"><i class="fa fa-comment"></i> {{ $comentario->comentario }}</p>
-					<p class="textoMedio" style="float:right;">{{ date('d-m-Y H:i:s',strtotime($comentario->created_at)) }}</p>
+					<p class="textoMedio" style="float:right;">{{ date('d-m-Y',strtotime($comentario->created_at)) }}</p>
 					@foreach($respuestas as $respuesta)
 						@if($respuesta->comentario_id == $comentario->id)
 						<div class="col-xs-12 comentario">
 							<p class="textoPromedio"><i class="fa fa-comments"></i> {{ $respuesta->respuesta }}</p>
-							<p class="textoMedio" style="float:right;">{{ date('d-m-Y H:i:s',strtotime($respuesta->created_at)) }}</p>
+							<p class="textoMedio" style="float:right;">{{ date('d-m-Y',strtotime($respuesta->created_at)) }}</p>
 						</div>
 						@endif
 					@endforeach
