@@ -60,7 +60,7 @@
 								<tbody>
 									<tr>
 										<th>Nombre y apellido</th>
-										@if(isset($publication->name_pub))
+										@if(!empty($publication->name_pub))
 											<td>{{ $publication->name_pub.' '.$publication->lastname_pub }}</td>
 										@else
 											<td>{{ $publication->name.' '.$publication->lastname }}</td>
@@ -68,7 +68,7 @@
 									</tr>
 									<tr>
 										<th>Email</th>
-										@if(isset($publication->email_pub))
+										@if(!empty($publication->email_pub))
 											<td>{{ $publication->email_pub }}</td>
 										@else
 											<td>{{ $publication->email }}</td>
@@ -78,7 +78,7 @@
 										<th>
 											Telefono
 										</th>
-										@if(isset($publication->phone_pub))
+										@if(!empty($publication->phone_pub))
 											<td>{{ $publication->phone_pub }}</td>
 										@else
 											<td>{{ $publication->phone }}</td>
@@ -88,7 +88,7 @@
 										<th>
 											Pagina web
 										</th>
-										@if(isset($publication->pag_web_hab))
+										@if(!empty($publication->pag_web_hab))
 											<td>{{ $publication->pag_web_hab }}</td>
 										@else
 											<td>{{ $publication->pag_web }}</td>
