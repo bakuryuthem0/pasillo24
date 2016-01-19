@@ -102,7 +102,11 @@
 						@endif
 						<a href="{{ URL::to('inicio') }}" class="btn btn-warning" style="margin:2em 0.5em;">Volver</a>
 						@if(!empty($publication->pag_web))
-						<a target="_blank" href="{{ $publication->pag_web }}" class="btn btn-primary" style="margin:2em 0.5em;">Ir a la página</a>
+							@if(!empty($publication->pag_web_hab))
+								<a target="_blank" href="{{ $publication->pag_web_web }}" class="btn btn-primary" style="margin:2em 0.5em;">Ir a la página</a>
+							@else
+							<a target="_blank" href="{{ $publication->pag_web }}" class="btn btn-primary" style="margin:2em 0.5em;">Ir a la página</a>
+							@endif
 						@endif
 					</div>
 					</a>
