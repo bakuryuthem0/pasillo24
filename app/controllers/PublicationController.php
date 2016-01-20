@@ -995,7 +995,7 @@ class PublicationController extends BaseController {
 		$pub->transaccion	= $input['tipoTransac'];
 		$pub->img_1 		= Auth::user()['username'].'/'.$img1->getClientOriginalName();
 
-if (!empty($input['nomb'])) {
+		if (!empty($input['nomb'])) {
 			$pub->name 			= $input['nomb'];
 		}
 		if (!empty($input['phone'])) {

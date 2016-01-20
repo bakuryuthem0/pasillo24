@@ -350,7 +350,19 @@ class UserController extends BaseController {
 			$publication->fechIni   = date('Y-m-d',strtotime($input['fechIni']));
 			$publication->fechFin   = $fechFin;
 			$publication->status    = 'Pendiente';
-			
+			if(!empty($input['nomb'])){
+				$publication->name = $input['nomb'];
+			}
+			if(!empty($input['phone'])){
+				$publication->phone = $input['phone'];
+			}
+			if(!empty($input['email'])){
+				$publication->email = $input['email'];
+			}
+			if(!empty($input['pag_web'])){
+				$publication->pag_web_hab = $input['pag_web'];
+			}
+
 			if (Input::hasFile('portada')) {
 				$publication->img_1		= Auth::user()['username'].'/'.$img1->getClientOriginalName();
 				chequear($publication,$img1,1);

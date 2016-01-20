@@ -51,7 +51,12 @@
 					<a href="#" class="list-group-item active">
 						<h4 class="list-group-item-heading ">{{ $publication->titulo }}</h4>
 
-						<p class="textoPromedio">Creado por: <label>{{ $publication->name.' '.$publication->lastname }}</label></p>
+						<p class="textoPromedio">Creado por: <label>
+										@if(!empty($publication->name_pub))
+											<td>{{ $publication->name_pub }}</td>
+										@else
+											<td>{{ $publication->name.' '.$publication->lastname }}</td>
+										@endif</label></p>
 					</a>
 					<div class="col-xs-12">
 						@if(Auth::check())

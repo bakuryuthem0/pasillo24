@@ -76,10 +76,26 @@
 									
 								</td>
 								<input type="hidden" class="username-{{ $publicacion->id }}" value="{{ $publicacion->username }}">
-								<input type="hidden" class="name-{{ $publicacion->id }}" value="{{ $publicacion->name.' '.$publicacion->lastname }}">
-								<input type="hidden" class="email-{{ $publicacion->id }}" value="{{ $publicacion->email }}">
-								<input type="hidden" class="phone-{{ $publicacion->id }}" value="{{ $publicacion->phone }}">
-								<input type="hidden" class="pagWeb-{{ $publicacion->id }}" value="{{ $publicacion->pag_web }}">
+								@if(!empty($publicacion->name_pub))
+									<input type="hidden" class="name-{{ $publicacion->id }}" value="{{ $publicacion->name_pub}}">
+								@else
+									<input type="hidden" class="name-{{ $publicacion->id }}" value="{{ $publicacion->name.' '.$publicacion->lastname }}">
+								@endif
+								@if(!empty($publicacion->email_pub))
+									<input type="hidden" class="email-{{ $publicacion->id }}" value="{{ $publicacion->email_pub }}">
+								@else
+									<input type="hidden" class="email-{{ $publicacion->id }}" value="{{ $publicacion->email }}">
+								@endif
+								@if(!empty($publicacion->phone_pub))
+									<input type="hidden" class="phone-{{ $publicacion->id }}" value="{{ $publicacion->phone_pub }}">
+								@else
+									<input type="hidden" class="phone-{{ $publicacion->id }}" value="{{ $publicacion->phone }}">
+								@endif
+								@if(!empty($publicacion->pag_pub))
+									<input type="hidden" class="pagWeb-{{ $publicacion->id }}" value="{{ $publicacion->pag_pub }}">
+								@else
+									<input type="hidden" class="pagWeb-{{ $publicacion->id }}" value="{{ $publicacion->pag_web }}">
+								@endif
 								<input type="hidden" class="carnet-{{ $publicacion->id }}" value="{{ $publicacion->id_carnet }}">
 								<input type="hidden" class="nit-{{ $publicacion->id }}" value="{{ $publicacion->nit }}">
 								<form method="post" action="{{ URL::to('administrador/pagos/confirmar') }}">
@@ -149,11 +165,27 @@
 									<input type="hidden" class="fech-{{ $publicacion->id }}" value="{{ $publicacion->fech_trans }}">
 								</td>
 								<td class="textoMedio"><button class="btn btn-primary btn-xs ver" data-toggle="modal" data-target="#showUserData" value="{{ $publicacion->id }}">Ver</button></td>
-									<input type="hidden" class="username-{{ $publicacion->id }}" value="{{ $publicacion->username }}">
+								<input type="hidden" class="username-{{ $publicacion->id }}" value="{{ $publicacion->username }}">
+								@if(!empty($publicacion->name_pub))
+									<input type="hidden" class="name-{{ $publicacion->id }}" value="{{ $publicacion->name_pub}}">
+								@else
 									<input type="hidden" class="name-{{ $publicacion->id }}" value="{{ $publicacion->name.' '.$publicacion->lastname }}">
+								@endif
+								@if(!empty($publicacion->email_pub))
+									<input type="hidden" class="email-{{ $publicacion->id }}" value="{{ $publicacion->email_pub }}">
+								@else
 									<input type="hidden" class="email-{{ $publicacion->id }}" value="{{ $publicacion->email }}">
+								@endif
+								@if(!empty($publicacion->phone_pub))
+									<input type="hidden" class="phone-{{ $publicacion->id }}" value="{{ $publicacion->phone_pub }}">
+								@else
 									<input type="hidden" class="phone-{{ $publicacion->id }}" value="{{ $publicacion->phone }}">
-									<input type="hidden" class="pagWeb-{{ $publicacion->id }}" value="@if(!empty($publicacion->pag_web_hab)){{ $publicacion->pag_web_hab }} @else {{ $publicacion->pag_web }} @endif">
+								@endif
+								@if(!empty($publicacion->pag_pub))
+									<input type="hidden" class="pagWeb-{{ $publicacion->id }}" value="{{ $publicacion->pag_pub }}">
+								@else
+									<input type="hidden" class="pagWeb-{{ $publicacion->id }}" value="{{ $publicacion->pag_web }}">
+								@endif
 									<input type="hidden" class="carnet-{{ $publicacion->id }}" value="{{ $publicacion->id_carnet }}">
 									<input type="hidden" class="nit-{{ $publicacion->id }}" value="{{ $publicacion->nit }}">
 								<form method="post" action="{{ URL::to('administrador/pagos/confirmar') }}">

@@ -173,7 +173,12 @@ class AdministratorController extends BaseController {
                 'pagos.banco_ext',
                 'bancos.nombre as banco',
                 'publicaciones.id',
-                'publicaciones.monto'
+                'publicaciones.monto',
+                'publicaciones.name as name_pub',
+                'publicaciones.phone as phone_pub',
+                'publicaciones.email as email_pub',
+                'publicaciones.pag_web_hab as pag_pub',
+
 
             ));
         }elseif($type == "habitual")
@@ -207,7 +212,10 @@ class AdministratorController extends BaseController {
                 'publicaciones.fechIni',
                 'publicaciones.fechFin',
                 'publicaciones.monto',
-                'publicaciones.pag_web_hab',
+                'publicaciones.name as name_pub',
+                'publicaciones.phone as phone_pub',
+                'publicaciones.email as email_pub',
+                'publicaciones.pag_web_hab as pag_pub',
                 ));
         }elseif($type == "casual")
         {
@@ -271,7 +279,11 @@ class AdministratorController extends BaseController {
                 'publicaciones.pag_web',
                 'categoria.nombre',
                 'publicaciones.fechIni',
-                'publicaciones.fechFin'
+                'publicaciones.fechFin',
+                'publicaciones.name as name_pub',
+                'publicaciones.phone as phone_pub',
+                'publicaciones.email as email_pub',
+                'publicaciones.pag_web_hab as pag_pub',
             ));
             $publicaciones = $pub;
         }elseif($type == 'habitual')
@@ -303,7 +315,11 @@ class AdministratorController extends BaseController {
                 'publicaciones.fechIni',
                 'publicaciones.fechFin',
                 'publicaciones.fechIniNormal',
-                'publicaciones.fechFinNormal'
+                'publicaciones.fechFinNormal',
+                'publicaciones.name as name_pub',
+                'publicaciones.phone as phone_pub',
+                'publicaciones.email as email_pub',
+                'publicaciones.pag_web_hab as pag_pub',
             ));
             $publicaciones = $pub;
         }elseif($type == 'casual')
