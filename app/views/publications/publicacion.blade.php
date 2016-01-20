@@ -255,7 +255,7 @@
 				<div class="col-xs-12">
 					<hr>
 
-					<p class="bg-info textoPromedio" style="padding:1em;text-align:center;">El url de la página web debe comenzar con http:// o https://</p>
+					<p class="bg-info textoPromedio" style="padding:1em;text-align:center;">El url de la página web debe comenzar con http:// o https://. Recuerde que la dirección que coloque será el enlace que tendrá el usuario hacia su página web.</p>
 					<label for="pagina" class="textoPromedio">Url de su página web</label>
 					{{ Form::text('pagina','http://',array('class' => 'form-control','placeholder' => 'http://example.com')) }}
 
