@@ -2027,3 +2027,11 @@ animated buttons - animate the text inside prev and next buttons
 		position: relative !important;
 	}
 }
+
+.descProd .comentarioBox img
+{
+	display: inline;
+}
+.descProd .comentarioBox a{
+	color: blue;
+}
