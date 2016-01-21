@@ -624,6 +624,7 @@ class UserController extends BaseController {
 				$email = Auth::user()['email'];
 				Mail::send('emails.passNew', $data, function ($message) use ($newPass,$email){
 					    $message->subject('Correo de cambio de contraseña pasillo24.com');
+					    $message->from('pasillo24@pasillo24.com');
 					    $message->to($email);
 					});
 				Session::flash('success', 'Contraseña modificada correctamente');
