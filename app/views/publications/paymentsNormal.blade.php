@@ -20,8 +20,8 @@
 					<div class="col-xs-4 col-md-2" style="margin-top:0px;">
 						{{ Form::text('durationPrin',Input::old('durationPrin'), array('class' => 'form-control','id' => 'principalDuration','placeholder' => '#')) }}
 					</div>
-					<div class="col-xs-8 col-md-10">
-						<select name="periodoPrin" id="principalPeriodo" class="form-control">
+					<div class="col-xs-8 col-md-10" style="margin-top:0px;">
+						<select name="periodoPrin" id="principalPeriodo" class="form-control" >
 							<option value="">Seleccione un periodo</option>
 							@foreach($precLid as $lid)
 							<option value="{{ $lid->precio }}">{{ ucwords($lid->desc) }}</option>
@@ -36,8 +36,8 @@
 					<div class="col-xs-4 col-md-2" style="margin-top:0px;">
 						{{ Form::text('durationCat',Input::old('durationPrin'), array('class' => 'form-control','id' => 'categoriaDuration','placeholder' => '#','style' => 'padding-top:0px;')) }}
 					</div>
-					<div class="col-xs-8 col-md-10">
-						<select name="periodoCat" id="categoriaPeriodo" class="form-control">
+					<div class="col-xs-8 col-md-10" style="margin-top:0px;">
+						<select name="periodoCat" id="categoriaPeriodo" class="form-control" >
 							<option value="">Seleccione un periodo</option>
 							@foreach($precCat as $cat)
 							<option value="{{ $cat->precio }}">{{ ucwords($cat->desc) }}</option>

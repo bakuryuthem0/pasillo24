@@ -268,10 +268,8 @@
 							<td class="textoMedio">
 								@if($publication->fechFin < date('Y-m-d') && $publication->fechFin != "0000-00-00")
 									<a href="{{ URL::to('usuario/publicacion/habitual/pago/'.$publication->id) }}" class="btn btn-primary">Reactivar</a>	
-								@elseif($publication->status == 'Pendiente' && empty($publication->monto))
+								@elseif($publication->status == 'Pendiente')
 									<a href="{{ URL::to('usuario/publicacion/habitual/pago/'.$publication->id) }}" class="btn btn-primary btn-xs">Pagar</a>
-								@elseif($publication->status == 'Pendiente' && !empty($publication->monto))
-									<a href="{{ URL::to('usuario/publicaciones/pago/'.$publication->id) }}" class="btn btn-primary btn-xs">Pagar</a>
 								@elseif($publication->status == "Rechazado")
 									<a href="{{ URL::to('usuario/publicaciones/pago/'.$publication->id) }}" class="btn btn-primary btn-xs">Re-enviar</a>
 								@elseif($publication->status == 'Procesando')
