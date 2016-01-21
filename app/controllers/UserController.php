@@ -99,6 +99,7 @@ class UserController extends BaseController {
 			);
 			Mail::send('emails.modify', $data, function ($message) use ($input,$email){
 			    $message->subject('Correo de cambio de perfil pasillo24.com');
+			    $message->from('pasillo24@pasillo24.com');
 			    $message->to($email);
 			});
 			Session::flash('success', 'Datos Cambiados correctamente. Le hemos enviado un correo electrónico como seguridad.');
