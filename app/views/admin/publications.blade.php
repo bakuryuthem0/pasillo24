@@ -87,26 +87,10 @@
 							</td>
 							<td class="textoMedio"><button class="btn btn-success btn-xs ver" data-toggle="modal" data-target="#showUserData" value="{{ $publication->id }}" style="width:100%;">Ver</button></td>
 								<input type="hidden" class="username-{{ $publication->id }}" value="{{ $publication->username }}">
-								@if(!empty($publication->name_pub))
-									<input type="hidden" class="name-{{ $publication->id }}" value="{{ $publication->name_pub}}">
-								@else
 									<input type="hidden" class="name-{{ $publication->id }}" value="{{ $publication->name.' '.$publication->lastname }}">
-								@endif
-								@if(!empty($publication->email_pub))
-									<input type="hidden" class="email-{{ $publication->id }}" value="{{ $publication->email_pub }}">
-								@else
 									<input type="hidden" class="email-{{ $publication->id }}" value="{{ $publication->email }}">
-								@endif
-								@if(!empty($publication->phone_pub))
-									<input type="hidden" class="phone-{{ $publication->id }}" value="{{ $publication->phone_pub }}">
-								@else
 									<input type="hidden" class="phone-{{ $publication->id }}" value="{{ $publication->phone }}">
-								@endif
-								@if(!empty($publication->pag_pub))
-									<input type="hidden" class="pagWeb-{{ $publication->id }}" value="{{ $publication->pag_pub }}">
-								@else
 									<input type="hidden" class="pagWeb-{{ $publication->id }}" value="{{ $publication->pag_web }}">
-								@endif
 								<input type="hidden" class="carnet-{{ $publication->id }}" value="{{ $publication->id_carnet }}">
 								<input type="hidden" class="nit-{{ $publication->id }}" value="{{ $publication->nit }}">
 							<td class="textoMedio">
@@ -228,26 +212,10 @@
 							</td>
 							<td class="textoMedio"><button class="btn btn-success btn-xs ver" data-toggle="modal" data-target="#showUserData" value="{{ $publication->id }}" style="width:100%;">Ver</button></td>
 								<input type="hidden" class="username-{{ $publication->id }}" value="{{ $publication->username }}">
-								@if(!empty($publication->name_pub))
-									<input type="hidden" class="name-{{ $publication->id }}" value="{{ $publication->name_pub}}">
-								@else
 									<input type="hidden" class="name-{{ $publication->id }}" value="{{ $publication->name.' '.$publication->lastname }}">
-								@endif
-								@if(!empty($publication->email_pub))
-									<input type="hidden" class="email-{{ $publication->id }}" value="{{ $publication->email_pub }}">
-								@else
 									<input type="hidden" class="email-{{ $publication->id }}" value="{{ $publication->email }}">
-								@endif
-								@if(!empty($publication->phone_pub))
-									<input type="hidden" class="phone-{{ $publication->id }}" value="{{ $publication->phone_pub }}">
-								@else
 									<input type="hidden" class="phone-{{ $publication->id }}" value="{{ $publication->phone }}">
-								@endif
-								@if(!empty($publication->pag_pub))
-									<input type="hidden" class="pagWeb-{{ $publication->id }}" value="{{ $publication->pag_pub }}">
-								@else
 									<input type="hidden" class="pagWeb-{{ $publication->id }}" value="{{ $publication->pag_web }}">
-								@endif
 								<input type="hidden" class="carnet-{{ $publication->id }}" value="{{ $publication->id_carnet }}">
 								<input type="hidden" class="nit-{{ $publication->id }}" value="{{ $publication->nit }}">
 							<td class="textoMedio">
