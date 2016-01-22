@@ -1071,31 +1071,24 @@ class PublicationController extends BaseController {
 		$file = Input::file('file');
 		$campo = "";
 		if (empty($pub->img_2)) {
-			$pub->img_2 = Auth::user()['username'].'/'.$file->getClientOriginalName();
 			$campo = 'img_2';
 		}elseif(empty($pub->img_3))
 		{
-			$pub->img_3 = Auth::user()['username'].'/'.$file->getClientOriginalName();
 			$campo = 'img_3';
 		}elseif(empty($pub->img_4))
 		{
-			$pub->img_4 = Auth::user()['username'].'/'.$file->getClientOriginalName();
 			$campo = 'img_4';
 		}elseif(empty($pub->img_5))
 		{
-			$pub->img_5 = Auth::user()['username'].'/'.$file->getClientOriginalName();
 			$campo = 'img_5';
 		}elseif(empty($pub->img_6))
 		{
-			$pub->img_6 = Auth::user()['username'].'/'.$file->getClientOriginalName();
 			$campo = 'img_6';
 		}elseif(empty($pub->img_7))
 		{
-			$pub->img_7 = Auth::user()['username'].'/'.$file->getClientOriginalName();
 			$campo = 'img_7';
 		}elseif(empty($pub->img_8))
 		{
-			$pub->img_8 = Auth::user()['username'].'/'.$file->getClientOriginalName();
 			$campo = 'img_8';
 		}
 
