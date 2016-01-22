@@ -25,9 +25,9 @@
 							<td>{{ $compra->titulo }}</td>
 							<td>
 								@if(!empty($compra->pName))
-									{{ $compra->pName.' '.$compra->lastname }}
+									{{ $compra->pName }}
 								@else
-									{{ $compra->name }}
+									{{ $compra->name.' '.$compra->lastname }}
 								@endif
 							</td>
 							<td>
