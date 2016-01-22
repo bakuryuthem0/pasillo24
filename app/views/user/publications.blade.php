@@ -250,10 +250,10 @@
 											<br>
 										@endif
 
-										@if($publication->fechIniNormal < date('Y-m-d'))
+										@if($publication->fechFinNormal < date('Y-m-d'))
 											Categoria: Publicación expirada 
 										@else
-											Categoria: {{ date('d/m/Y',strtotime($publication->fechIniNormal)) }}
+											Categoria: {{ date('d/m/Y',strtotime($publication->fechFinNormal)) }}
 										@endif									 		
 									@endif
 								@endif
