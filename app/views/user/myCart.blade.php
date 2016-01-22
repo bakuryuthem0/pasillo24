@@ -24,37 +24,37 @@
 						<tr>
 							<td>{{ $compra->titulo }}</td>
 							<td>
-								@if(!empty($compra->name))
-									{{ $compra->name }}
-								@else
+								@if(!empty($compra->pName))
 									{{ $compra->pName }}
-								@endif
-								@if(!empty($compra->lastname))
-									{{ $compra->lastname }}
 								@else
+									{{ $compra->name }}
+								@endif
+								@if(!empty($compra->pLastname))
 									{{ $compra->pLastname }}
+								@else
+									{{ $compra->lastname }}
 								@endif
 							</td>
 							<td>
-								@if(!empty($compra->phone))
-									{{ $compra->phone }}
-								@else
+								@if(!empty($compra->pPhone))
 									{{ $compra->pPhone }}
+								@else
+									{{ $compra->phone }}
 								@endif
 							</td>
 							<td>
-								@if(!empty($compra->email))
-									{{ $compra->email }}
-								@else
+								@if(!empty($compra->pEmail))
 									{{ $compra->pEmail }}
+								@else
+									{{ $compra->email }}
 								@endif
 							</td>
 							
 							<td class="noMovilMinMin">
-								@if(!empty($compra->pag_web_hab))
-									{{ $compra->pag_web_hab }}
-								@else
+								@if(!empty($compra->pPag_web))
 									{{ $compra->pPag_web }}
+								@else
+									{{ $compra->pag_web }}
 								@endif
 							</td>
 							<td>
