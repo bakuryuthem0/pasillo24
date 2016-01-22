@@ -517,7 +517,7 @@ class PublicationController extends BaseController {
 		})
 		->where('fechFin','>=',date('Y-m-d'))
 		->where('categoria','=',$id)
-		->get(array('id','img_1','titulo','precio'));
+		->get(array('id','img_1','titulo','precio','moneda'));
 		$publicaciones = Publicaciones::where('publicaciones.status','=','Aprobado')
 		->where('categoria','=',$id)
 		->leftJoin('departamento','publicaciones.departamento','=','departamento.id')
