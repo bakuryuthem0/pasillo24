@@ -246,7 +246,7 @@
 											Principal: Publicación expirada 
 											<br>
 										@else
-											Principal: {{ date('d/m/Y',strtotime($publication->fechIni)) }}
+											Principal: {{ date('d/m/Y',strtotime($publication->fechFin)) }}
 											<br>
 										@endif
 
