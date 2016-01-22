@@ -651,7 +651,6 @@ class UserController extends BaseController {
 			'publicaciones.titulo',
 			'publicaciones.id as pub_id',
 			'publicaciones.name as pName',
-			'publicaciones.lastname as pLastname',
 			'publicaciones.phone as pPhone',
 			'publicaciones.email as pEmail',
 			'publicaciones.pag_web_hab as pPag_web',
