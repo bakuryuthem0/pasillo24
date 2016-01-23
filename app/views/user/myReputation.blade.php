@@ -21,8 +21,11 @@
 					@foreach($compras as $compra)
 						<tr>
 							<td>{{ $compra->titulo }}</td>
-						
-							<td>{{ $compra->name.' '.$compra->lastname }}</td>
+							@if(!empty($compra->name_pub))
+								<td>{{ $compra->name_pub }}</td>
+							@else
+								<td>{{ $compra->name.' '.$compra->lastname }}</td>
+							@endif
 							<td class="" style="text-align:center;">
 								@if($compra->valor_vend == 0)
 									Sin valorar
