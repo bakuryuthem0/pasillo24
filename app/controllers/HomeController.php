@@ -275,7 +275,7 @@ class HomeController extends BaseController {
 				->where('categoria','=',$input['cat'])
 				->get(array('id','img_1','titulo','precio','moneda'));
 
-				$publicaciones = Publicaciones::where('publicaciones.status','=','Aprobado')
+				$res = Publicaciones::where('publicaciones.status','=','Aprobado')
 				->where('categoria','=',$input['cat'])
 				->leftJoin('departamento','publicaciones.departamento','=','departamento.id')
 				->where('publicaciones.tipo','=','Habitual')
@@ -309,7 +309,7 @@ class HomeController extends BaseController {
 				->where('categoria','=',$input['cat'])
 				->get(array('id','img_1','titulo','precio','moneda'));
 
-				$publicaciones = Publicaciones::where('publicaciones.status','=','Aprobado')
+				$res = Publicaciones::where('publicaciones.status','=','Aprobado')
 				->where('categoria','=',$input['cat'])
 				->leftJoin('departamento','publicaciones.departamento','=','departamento.id')
 				->where('publicaciones.tipo','=','Habitual')
