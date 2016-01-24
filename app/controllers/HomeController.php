@@ -202,10 +202,9 @@ class HomeController extends BaseController {
 						OR LOWER( `publicaciones`.`descripcion` ) LIKE  '%".strtolower($input['busq'])."%'
 						OR LOWER( `categoria`.`desc` ) LIKE  '%".strtolower($input['busq'])."%'
 					) 
-					AND `publicaciones`.`departamento` = ".$inp."
+					AND `publicaciones`.`departamento` = ".$inp->id."
 					AND  `publicaciones`.`deleted` = 0
-					AND  (`publicaciones`.`tipo` =  'Lider'
-		            OR   `publicaciones`.`ubicacion` = 'Ambos')");
+					AND  `publicaciones`.`tipo` =  'Lider'");
 
 				$res = Publicaciones::leftJoin('categoria','publicaciones.categoria','=','categoria.id')
 				->leftJoin('departamento','publicaciones.departamento','=','departamento.id')
@@ -215,7 +214,7 @@ class HomeController extends BaseController {
 					->orWhereRaw("LOWER(`categoria`.`desc`) LIKE  '%".strtolower($input['busq'])."%'");
 				})->where('publicaciones.tipo','!=','Lider')
 				->where('publicaciones.status','=','Aprobado')
-				->where('publicaciones.departamento','=',$inp)
+				->where('publicaciones.departamento','=',$inp->id)
 				->where('publicaciones.deleted','=',0)
 				->where(function($query)
 				{
@@ -242,8 +241,7 @@ class HomeController extends BaseController {
 						OR LOWER( `categoria`.`desc` ) LIKE  '%".strtolower($input['busq'])."%'
 					) 
 					AND  `publicaciones`.`deleted` = 0
-					AND  (`publicaciones`.`tipo` =  'Lider'
-		            OR   `publicaciones`.`ubicacion` = 'Ambos')");
+					AND  `publicaciones`.`tipo` =  'Lider'");
 				$res = Publicaciones::leftJoin('categoria','publicaciones.categoria','=','categoria.id')
 				->leftJoin('departamento','publicaciones.departamento','=','departamento.id')
 				->where(function($query) use ($input){
@@ -293,7 +291,8 @@ class HomeController extends BaseController {
 			if (!empty($inp)) {
 				$lider = Publicaciones::where('status','=','Aprobado')
 				->where('deleted','=',0)
-				->where('departamento','=',$inp)
+				->where('departamento','=',$inp->id)
+				->where('tipo','=','Lider')
 				->where(function($query){
 					$query->where('ubicacion','=','Categoria')
 					->orWhere('ubicacion','=','Ambos');
@@ -304,9 +303,9 @@ class HomeController extends BaseController {
 
 				$res = Publicaciones::where('publicaciones.status','=','Aprobado')
 				->where('categoria','=',$input['cat'])
-				->where('publicaciones.departamento','=',$inp)
+				->where('publicaciones.departamento','=',$inp->id)
 				->leftJoin('departamento','publicaciones.departamento','=','departamento.id')
-				->where('publicaciones.tipo','=','Habitual')
+				->where('publicaciones.tipo','!=','Lider')
 				->where('publicaciones.deleted','=',0)
 				->where(function($query){
 					$query->where('publicaciones.ubicacion','=','Categoria')
