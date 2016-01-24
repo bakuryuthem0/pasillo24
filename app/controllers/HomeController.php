@@ -249,6 +249,13 @@ class HomeController extends BaseController {
 					'publicaciones.moneda',
 					'departamento.nombre as dep'));
 			}
+			$categorias = Categorias::where('id','=',$input['busq'])->pluck('desc');
+			if (!is_null($categorias)) {
+				$busq = $categorias;
+			}else
+			{
+				$busq = $input['busq'];
+			}
 		}elseif(Input::has('cat'))
 		{
 			if (Input::has('filter')) {
@@ -325,15 +332,16 @@ class HomeController extends BaseController {
 					'departamento.id as dep_id',
 					'departamento.nombre as dep'));
 			}
+			$categorias = Categorias::where('id','=',$input['cat'])->pluck('desc');
+			if (!is_null($categorias)) {
+				$busq = $categorias;
+			}else
+			{
+				$busq = $input['cat'];
+			}
 		}
 		$departamentos = Department::get();
-                $categorias = Categorias::where('id','=',$input['busq'])->pluck('desc');
-		if (!is_null($categorias)) {
-			$busq = $categorias;
-		}else
-		{
-			$busq = $input['busq'];
-		}
+        
 
 		return View::make('publications.busq')
 		->with('publicaciones',$res)
