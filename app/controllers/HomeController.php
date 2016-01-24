@@ -184,19 +184,6 @@ class HomeController extends BaseController {
 		$title = "Búsqueda | pasillo24.com";
 		
 		if (Input::has('busq')) {
-			$lider = DB::select("SELECT `publicaciones`.`id`,`publicaciones`.`img_1`,`publicaciones`.`titulo` ,`publicaciones`.`precio`, `publicaciones`.`moneda` 
-				FROM  `publicaciones` 
-				LEFT JOIN  `categoria` ON  `categoria`.`id` =  `publicaciones`.`categoria` 
-				WHERE `publicaciones`.`fechFin` >= '".date('Y-m-d',time())."' 
-				AND `publicaciones`.`status` =  'Aprobado' AND (
-					LOWER(  `publicaciones`.`titulo` ) LIKE  '%".strtolower($input['busq'])."%'
-					OR LOWER( `publicaciones`.`pag_web` ) LIKE  '%".strtolower($input['busq'])."%'
-					OR LOWER( `publicaciones`.`descripcion` ) LIKE  '%".strtolower($input['busq'])."%'
-					OR LOWER( `categoria`.`desc` ) LIKE  '%".strtolower($input['busq'])."%'
-				) 
-				AND  `publicaciones`.`deleted` = 0
-				AND  (`publicaciones`.`tipo` =  'Lider'
-	            OR   `publicaciones`.`ubicacion` = 'Ambos')");
 
 			if (Input::has('filter')) {
 				$inp = Department::find(Input::get('filter'));
@@ -205,6 +192,21 @@ class HomeController extends BaseController {
 				$inp = '';
 			}
 			if (!empty($inp)) {
+				$lider = DB::select("SELECT `publicaciones`.`id`,`publicaciones`.`img_1`,`publicaciones`.`titulo` ,`publicaciones`.`precio`, `publicaciones`.`moneda` 
+					FROM  `publicaciones` 
+					LEFT JOIN  `categoria` ON  `categoria`.`id` =  `publicaciones`.`categoria` 
+					WHERE `publicaciones`.`fechFin` >= '".date('Y-m-d',time())."' 
+					AND `publicaciones`.`status` =  'Aprobado' AND (
+						LOWER(  `publicaciones`.`titulo` ) LIKE  '%".strtolower($input['busq'])."%'
+						OR LOWER( `publicaciones`.`pag_web` ) LIKE  '%".strtolower($input['busq'])."%'
+						OR LOWER( `publicaciones`.`descripcion` ) LIKE  '%".strtolower($input['busq'])."%'
+						OR LOWER( `categoria`.`desc` ) LIKE  '%".strtolower($input['busq'])."%'
+					) 
+					AND `publicaciones`.`departamento` = ".$inp."
+					AND  `publicaciones`.`deleted` = 0
+					AND  (`publicaciones`.`tipo` =  'Lider'
+		            OR   `publicaciones`.`ubicacion` = 'Ambos')");
+				
 				$res = Publicaciones::leftJoin('categoria','publicaciones.categoria','=','categoria.id')
 				->leftJoin('departamento','publicaciones.departamento','=','departamento.id')
 				->where(function($query) use ($input){
@@ -213,6 +215,7 @@ class HomeController extends BaseController {
 					->orWhereRaw("LOWER(`categoria`.`desc`) LIKE  '%".strtolower($input['busq'])."%'");
 				})->where('publicaciones.tipo','!=','Lider')
 				->where('publicaciones.status','=','Aprobado')
+				->where('publicaciones.departamento','=',$inp)
 				->where('publicaciones.deleted','=',0)
 				->where(function($query)
 				{
@@ -228,6 +231,19 @@ class HomeController extends BaseController {
 					'departamento.nombre as dep'));
 			}else
 			{
+				$lider = DB::select("SELECT `publicaciones`.`id`,`publicaciones`.`img_1`,`publicaciones`.`titulo` ,`publicaciones`.`precio`, `publicaciones`.`moneda` 
+					FROM  `publicaciones` 
+					LEFT JOIN  `categoria` ON  `categoria`.`id` =  `publicaciones`.`categoria` 
+					WHERE `publicaciones`.`fechFin` >= '".date('Y-m-d',time())."' 
+					AND `publicaciones`.`status` =  'Aprobado' AND (
+						LOWER(  `publicaciones`.`titulo` ) LIKE  '%".strtolower($input['busq'])."%'
+						OR LOWER( `publicaciones`.`pag_web` ) LIKE  '%".strtolower($input['busq'])."%'
+						OR LOWER( `publicaciones`.`descripcion` ) LIKE  '%".strtolower($input['busq'])."%'
+						OR LOWER( `categoria`.`desc` ) LIKE  '%".strtolower($input['busq'])."%'
+					) 
+					AND  `publicaciones`.`deleted` = 0
+					AND  (`publicaciones`.`tipo` =  'Lider'
+		            OR   `publicaciones`.`ubicacion` = 'Ambos')");
 				$res = Publicaciones::leftJoin('categoria','publicaciones.categoria','=','categoria.id')
 				->leftJoin('departamento','publicaciones.departamento','=','departamento.id')
 				->where(function($query) use ($input){
@@ -267,6 +283,7 @@ class HomeController extends BaseController {
 			if (!empty($inp)) {
 				$lider = Publicaciones::where('status','=','Aprobado')
 				->where('deleted','=',0)
+				->where('departamento','=',$inp)
 				->where(function($query){
 					$query->where('ubicacion','=','Categoria')
 					->orWhere('ubicacion','=','Ambos');
@@ -277,6 +294,7 @@ class HomeController extends BaseController {
 
 				$res = Publicaciones::where('publicaciones.status','=','Aprobado')
 				->where('categoria','=',$input['cat'])
+				->where('publicaciones.departamento','=',$inp)
 				->leftJoin('departamento','publicaciones.departamento','=','departamento.id')
 				->where('publicaciones.tipo','=','Habitual')
 				->where('publicaciones.deleted','=',0)
@@ -300,7 +318,6 @@ class HomeController extends BaseController {
 			{
 				$lider = Publicaciones::where('status','=','Aprobado')
 				->where('deleted','=',0)
-				->where('departamento','=',$inp)
 				->where(function($query){
 					$query->where('ubicacion','=','Categoria')
 					->orWhere('ubicacion','=','Ambos');
@@ -313,7 +330,6 @@ class HomeController extends BaseController {
 				->where('categoria','=',$input['cat'])
 				->leftJoin('departamento','publicaciones.departamento','=','departamento.id')
 				->where('publicaciones.tipo','=','Habitual')
-				->where('publicaciones.departamento','=',$inp)
 				->where('publicaciones.deleted','=',0)
 				->where(function($query){
 					$query->where('publicaciones.ubicacion','=','Categoria')
