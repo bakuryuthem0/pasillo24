@@ -206,7 +206,7 @@ class HomeController extends BaseController {
 					AND  `publicaciones`.`deleted` = 0
 					AND  (`publicaciones`.`tipo` =  'Lider'
 		            OR   `publicaciones`.`ubicacion` = 'Ambos')");
-				
+
 				$res = Publicaciones::leftJoin('categoria','publicaciones.categoria','=','categoria.id')
 				->leftJoin('departamento','publicaciones.departamento','=','departamento.id')
 				->where(function($query) use ($input){
@@ -272,6 +272,16 @@ class HomeController extends BaseController {
 			{
 				$busq = $input['busq'];
 			}
+			$departamentos = Department::get();
+        
+
+			return View::make('publications.busq')
+			->with('publicaciones',$res)
+			->with('title',$title)
+			->with('busq',$busq)
+			->with('lider',$lider)
+			->with('departamento',$departamentos)
+			->with('filter',$inp);
 		}elseif(Input::has('cat'))
 		{
 			if (Input::has('filter')) {
@@ -355,17 +365,18 @@ class HomeController extends BaseController {
 			{
 				$busq = $input['cat'];
 			}
-		}
-		$departamentos = Department::get();
+			$departamentos = Department::get();
         
 
-		return View::make('publications.busq')
-		->with('publicaciones',$res)
-		->with('title',$title)
-		->with('busq',$busq)
-		->with('lider',$lider)
-		->with('departamento',$departamentos)
-		->with('filter',$inp);
+			return View::make('publications.categories')
+			->with('publicaciones',$res)
+			->with('title',$title)
+			->with('busq',$busq)
+			->with('lider',$lider)
+			->with('departamento',$departamentos)
+			->with('filter',$inp);
+		}
+		
 	}
 	public function getVerifyComment()
 	{
