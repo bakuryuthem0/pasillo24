@@ -265,11 +265,11 @@ class HomeController extends BaseController {
 					->orWhere('ubicacion','=','Ambos');
 				})
 				->where('fechFin','>=',date('Y-m-d'))
-				->where('categoria','=',$id)
+				->where('categoria','=',$input['cat'])
 				->get(array('id','img_1','titulo','precio','moneda'));
 
 				$publicaciones = Publicaciones::where('publicaciones.status','=','Aprobado')
-				->where('categoria','=',$id)
+				->where('categoria','=',$input['cat'])
 				->leftJoin('departamento','publicaciones.departamento','=','departamento.id')
 				->where('publicaciones.tipo','=','Habitual')
 				->where('publicaciones.deleted','=',0)
@@ -299,10 +299,11 @@ class HomeController extends BaseController {
 					->orWhere('ubicacion','=','Ambos');
 				})
 				->where('fechFin','>=',date('Y-m-d'))
-				->where('categoria','=',$id)
+				->where('categoria','=',$input['cat'])
 				->get(array('id','img_1','titulo','precio','moneda'));
+
 				$publicaciones = Publicaciones::where('publicaciones.status','=','Aprobado')
-				->where('categoria','=',$id)
+				->where('categoria','=',$input['cat'])
 				->leftJoin('departamento','publicaciones.departamento','=','departamento.id')
 				->where('publicaciones.tipo','=','Habitual')
 				->where('publicaciones.departamento','=',$inp)
