@@ -771,6 +771,7 @@ class UserController extends BaseController {
 			'compras.valor_comp',
 			'publicaciones.titulo',
 			'publicaciones.id as pub_id',
+			'publicaciones.name as name_pub',
 			'usuario.name',
 			'usuario.lastname'
 		));
