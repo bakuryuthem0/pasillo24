@@ -7,15 +7,8 @@
 		<div class="col-xs-12">
 
 			<legend style="margin-bottom:1em;margin-top:2em;text-align:center;">Publicaciones LÍDER de esta categoría</legend>
-                        @if(isset($publi))
-                            @if($publi->activo == 0)
-								<img src="{{ asset('images/pubgrande.png') }}" style="width:100%;margin-bottom:2em;">
-							@else
-								<img src="{{ asset('images/publicidad/'.$publi->image) }}" style="width:100%;margin-bottom:2em;">
-							@endif
-                        @else
-                              <img src="{{ asset('images/pubgrande.png') }}" style="width:100%;margin-bottom:2em;">
-                        @endif
+                        
+                              <img src="{{ asset('images/publicidad/cate.gif') }}" style="width:100%;margin-bottom:2em;">
 			<div class="owl-carousel1">
 				@foreach($lider as $pubLider)
 				<div class="item contCatCat">
