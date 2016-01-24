@@ -183,87 +183,147 @@ class HomeController extends BaseController {
 		$input = Input::all();
 		$title = "Búsqueda | pasillo24.com";
 		
-		if (Input::has('filter')) {
-			$inp = Department::find(Input::get('filter'));
-		}else
-		{
-			$inp = '';
-		}
-		if (!empty($inp)) {
+		if (Input::has('busq')) {
 			$lider = DB::select("SELECT `publicaciones`.`id`,`publicaciones`.`img_1`,`publicaciones`.`titulo` ,`publicaciones`.`precio`, `publicaciones`.`moneda` 
-			FROM  `publicaciones` 
-			LEFT JOIN  `categoria` ON  `categoria`.`id` =  `publicaciones`.`categoria` 
-			WHERE `publicaciones`.`fechFin` >= '".date('Y-m-d',time())."' 
-			AND `publicaciones`.`status` =  'Aprobado' AND (
-				LOWER(  `publicaciones`.`titulo` ) LIKE  '%".strtolower($input['busq'])."%'
-				OR LOWER( `publicaciones`.`pag_web` ) LIKE  '%".strtolower($input['busq'])."%'
-				OR LOWER( `publicaciones`.`descripcion` ) LIKE  '%".strtolower($input['busq'])."%'
-				OR LOWER( `categoria`.`desc` ) LIKE  '%".strtolower($input['busq'])."%'
-			) 
-			AND  `publicaciones`.`deleted` = 0
-			AND  (`publicaciones`.`tipo` =  'Lider'
-            OR   `publicaciones`.`ubicacion` = 'Ambos')");
-			$res = Publicaciones::leftJoin('categoria','publicaciones.categoria','=','categoria.id')
-			->leftJoin('departamento','publicaciones.departamento','=','departamento.id')
-			->where(function($query) use ($input){
-				$query->whereRaw("LOWER(`publicaciones`.`titulo`) LIKE  '%".strtolower($input['busq'])."%'")
-				->orWhereRaw("LOWER(`departamento`.`nombre`) LIKE  '%".strtolower($input['busq'])."%'")
-				->orWhereRaw("LOWER(`categoria`.`desc`) LIKE  '%".strtolower($input['busq'])."%'");
-			})->where('publicaciones.tipo','!=','Lider')
-			->where('publicaciones.status','=','Aprobado')
-			->where('publicaciones.deleted','=',0)
-			->where(function($query)
-			{
-				$query->where('publicaciones.fechFin','>=',date('Y-m-d'))
-				->orWhere('publicaciones.fechFinNormal','>=',date('Y-m-d'));
-			})
-			->where('publicaciones.departamento','=',Input::get('filter'))
-			->paginate(5,array('publicaciones.id',
-				'publicaciones.img_1',
-				'publicaciones.titulo',
-				'publicaciones.precio',
-				'publicaciones.moneda',
-				'departamento.nombre as dep'));
-		}else
-		{
-			$lider = DB::select("SELECT `publicaciones`.`id`,`publicaciones`.`img_1`,`publicaciones`.`titulo` ,`publicaciones`.`precio`, `publicaciones`.`moneda` 
-			FROM  `publicaciones` 
-			LEFT JOIN  `categoria` ON  `categoria`.`id` =  `publicaciones`.`categoria` 
-			WHERE `publicaciones`.`fechFin` >= '".date('Y-m-d',time())."' 
-			AND `publicaciones`.`status` =  'Aprobado' AND (
-				LOWER(  `publicaciones`.`titulo` ) LIKE  '%".strtolower($input['busq'])."%'
-				OR LOWER( `publicaciones`.`pag_web` ) LIKE  '%".strtolower($input['busq'])."%'
-				OR LOWER( `publicaciones`.`descripcion` ) LIKE  '%".strtolower($input['busq'])."%'
-				OR LOWER( `categoria`.`desc` ) LIKE  '%".strtolower($input['busq'])."%'
-				OR `publicaciones`.`categoria` =  ".strtolower($input['busq'])."
-				OR `publicaciones`.`departamento` = ".$inp."
-			) 
-			
-			AND  `publicaciones`.`deleted` = 0
-			AND  (`publicaciones`.`tipo` =  'Lider'
-            OR   `publicaciones`.`ubicacion` = 'Ambos')");
+				FROM  `publicaciones` 
+				LEFT JOIN  `categoria` ON  `categoria`.`id` =  `publicaciones`.`categoria` 
+				WHERE `publicaciones`.`fechFin` >= '".date('Y-m-d',time())."' 
+				AND `publicaciones`.`status` =  'Aprobado' AND (
+					LOWER(  `publicaciones`.`titulo` ) LIKE  '%".strtolower($input['busq'])."%'
+					OR LOWER( `publicaciones`.`pag_web` ) LIKE  '%".strtolower($input['busq'])."%'
+					OR LOWER( `publicaciones`.`descripcion` ) LIKE  '%".strtolower($input['busq'])."%'
+					OR LOWER( `categoria`.`desc` ) LIKE  '%".strtolower($input['busq'])."%'
+				) 
+				AND  `publicaciones`.`deleted` = 0
+				AND  (`publicaciones`.`tipo` =  'Lider'
+	            OR   `publicaciones`.`ubicacion` = 'Ambos')");
 
-			$res = Publicaciones::leftJoin('categoria','publicaciones.categoria','=','categoria.id')
-			->leftJoin('departamento','publicaciones.departamento','=','departamento.id')
-			->where(function($query) use ($input,$inp){
-				$query->whereRaw("LOWER(`publicaciones`.`titulo`) LIKE  '%".strtolower($input['busq'])."%'")
-				->orWhereRaw("LOWER(`departamento`.`nombre`) LIKE  '%".strtolower($input['busq'])."%'")
-				->orWhereRaw("LOWER(`categoria`.`desc`) LIKE  '%".strtolower($input['busq'])."%'")
-				->orWhere('publicaciones.categoria','=',$inp);
-			})->where('publicaciones.tipo','!=','Lider')
-			->where('publicaciones.status','=','Aprobado')
-			->where('publicaciones.deleted','=',0)
-			->where(function($query)
+			if (Input::has('filter')) {
+				$inp = Department::find(Input::get('filter'));
+			}else
 			{
-				$query->where('publicaciones.fechFin','>=',date('Y-m-d'))
-				->orWhere('publicaciones.fechFinNormal','>=',date('Y-m-d'));
-			})
-			->paginate(5,array('publicaciones.id',
-				'publicaciones.img_1',
-				'publicaciones.titulo',
-				'publicaciones.precio',
-				'publicaciones.moneda',
-				'departamento.nombre as dep'));
+				$inp = '';
+			}
+			if (!empty($inp)) {
+				$res = Publicaciones::leftJoin('categoria','publicaciones.categoria','=','categoria.id')
+				->leftJoin('departamento','publicaciones.departamento','=','departamento.id')
+				->where(function($query) use ($input){
+					$query->whereRaw("LOWER(`publicaciones`.`titulo`) LIKE  '%".strtolower($input['busq'])."%'")
+					->orWhereRaw("LOWER(`departamento`.`nombre`) LIKE  '%".strtolower($input['busq'])."%'")
+					->orWhereRaw("LOWER(`categoria`.`desc`) LIKE  '%".strtolower($input['busq'])."%'");
+				})->where('publicaciones.tipo','!=','Lider')
+				->where('publicaciones.status','=','Aprobado')
+				->where('publicaciones.deleted','=',0)
+				->where(function($query)
+				{
+					$query->where('publicaciones.fechFin','>=',date('Y-m-d'))
+					->orWhere('publicaciones.fechFinNormal','>=',date('Y-m-d'));
+				})
+				->where('publicaciones.departamento','=',Input::get('filter'))
+				->paginate(5,array('publicaciones.id',
+					'publicaciones.img_1',
+					'publicaciones.titulo',
+					'publicaciones.precio',
+					'publicaciones.moneda',
+					'departamento.nombre as dep'));
+			}else
+			{
+				$res = Publicaciones::leftJoin('categoria','publicaciones.categoria','=','categoria.id')
+				->leftJoin('departamento','publicaciones.departamento','=','departamento.id')
+				->where(function($query) use ($input){
+					$query->whereRaw("LOWER(`publicaciones`.`titulo`) LIKE  '%".strtolower($input['busq'])."%'")
+					->orWhereRaw("LOWER(`departamento`.`nombre`) LIKE  '%".strtolower($input['busq'])."%'")
+					->orWhereRaw("LOWER(`categoria`.`desc`) LIKE  '%".strtolower($input['busq'])."%'");
+				})->where('publicaciones.tipo','!=','Lider')
+				->where('publicaciones.status','=','Aprobado')
+				->where('publicaciones.deleted','=',0)
+				->where(function($query)
+				{
+					$query->where('publicaciones.fechFin','>=',date('Y-m-d'))
+					->orWhere('publicaciones.fechFinNormal','>=',date('Y-m-d'));
+				})
+				->paginate(5,array('publicaciones.id',
+					'publicaciones.img_1',
+					'publicaciones.titulo',
+					'publicaciones.precio',
+					'publicaciones.moneda',
+					'departamento.nombre as dep'));
+			}
+		}elseif(Input::has('cat'))
+		{
+			if (Input::has('filter')) {
+				$inp = Department::find(Input::get('filter'));
+			}else
+			{
+				$inp = '';
+			}
+			if (!empty($inp)) {
+				$lider = Publicaciones::where('status','=','Aprobado')
+				->where('deleted','=',0)
+				->where(function($query){
+					$query->where('ubicacion','=','Categoria')
+					->orWhere('ubicacion','=','Ambos');
+				})
+				->where('fechFin','>=',date('Y-m-d'))
+				->where('categoria','=',$id)
+				->get(array('id','img_1','titulo','precio','moneda'));
+
+				$publicaciones = Publicaciones::where('publicaciones.status','=','Aprobado')
+				->where('categoria','=',$id)
+				->leftJoin('departamento','publicaciones.departamento','=','departamento.id')
+				->where('publicaciones.tipo','=','Habitual')
+				->where('publicaciones.deleted','=',0)
+				->where(function($query){
+					$query->where('publicaciones.ubicacion','=','Categoria')
+					->orWhere('publicaciones.ubicacion','=','Ambos');
+				})
+				->where(function($query){
+					$query->where('publicaciones.fechFin','>=',date('Y-m-d',time()))
+					->orWhere('publicaciones.fechFinNormal','>=',date('Y-m-d',time()));
+				})		
+				->paginate(5,array(
+					'publicaciones.id',
+					'publicaciones.img_1',
+					'publicaciones.titulo',
+					'publicaciones.precio',
+					'publicaciones.moneda',
+					'departamento.id as dep_id',
+					'departamento.nombre as dep'));
+			}else
+			{
+				$lider = Publicaciones::where('status','=','Aprobado')
+				->where('deleted','=',0)
+				->where('departamento','=',$inp)
+				->where(function($query){
+					$query->where('ubicacion','=','Categoria')
+					->orWhere('ubicacion','=','Ambos');
+				})
+				->where('fechFin','>=',date('Y-m-d'))
+				->where('categoria','=',$id)
+				->get(array('id','img_1','titulo','precio','moneda'));
+				$publicaciones = Publicaciones::where('publicaciones.status','=','Aprobado')
+				->where('categoria','=',$id)
+				->leftJoin('departamento','publicaciones.departamento','=','departamento.id')
+				->where('publicaciones.tipo','=','Habitual')
+				->where('publicaciones.departamento','=',$inp)
+				->where('publicaciones.deleted','=',0)
+				->where(function($query){
+					$query->where('publicaciones.ubicacion','=','Categoria')
+					->orWhere('publicaciones.ubicacion','=','Ambos');
+				})
+				->where(function($query){
+					$query->where('publicaciones.fechFin','>=',date('Y-m-d',time()))
+					->orWhere('publicaciones.fechFinNormal','>=',date('Y-m-d',time()));
+				})		
+				->paginate(5,array(
+					'publicaciones.id',
+					'publicaciones.img_1',
+					'publicaciones.titulo',
+					'publicaciones.precio',
+					'publicaciones.moneda',
+					'departamento.id as dep_id',
+					'departamento.nombre as dep'));
+			}
 		}
 		$departamentos = Department::get();
                 $categorias = Categorias::where('id','=',$input['busq'])->pluck('desc');

@@ -95,7 +95,7 @@
 							@endif
 						@endforeach
 					</select>
-					<input type="hidden" name="busq" value="{{ $busq }}">
+					<input type="hidden" name="cat" value="{{ $busq }}">
 				</form>
 			</div>
 			<div class="contAnaranjado contAnaranjadoBusq" style="margin-bottom:8em;">
