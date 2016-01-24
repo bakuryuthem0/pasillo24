@@ -358,7 +358,7 @@ class HomeController extends BaseController {
 					'departamento.id as dep_id',
 					'departamento.nombre as dep'));
 			}
-			$categorias = Categorias::where('id','=',$input['cat'])->pluck('desc');
+			$categorias = Categorias::where('id','=',$input['cat'])->pluck('id');
 			if (!is_null($categorias)) {
 				$busq = $categorias;
 			}else
