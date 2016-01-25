@@ -1,6 +1,6 @@
 <?php 
 	date_default_timezone_set('America/La_Paz');
-	$time = strtotime('05 December 2015 14:00:00');
+	$time = strtotime('30 January 2016 10:00:00 am');
 	$now  = time();
 	$dif  = $time-$now;
 	$date = date('d-m-Y G:i:s',$dif);
@@ -121,7 +121,60 @@
 	</div><!-- /#preloader -->
 	<!-- Preloader End-->
 
+<div class="container">
+				<div id="time_countdown" class="time-count-container">
 
+					<div class="col-xs-6 col-sm-3">
+						<div class="time-box">
+							<div class="time-box-inner dash days_dash animated" data-animation="rollIn" data-animation-delay="300">
+								<span class="time-number">
+									<span class="digit">0</span>
+									<span class="digit">0</span>
+									<span class="digit">0</span>
+								</span>
+								<span class="time-name">Dias</span>
+							</div>
+						</div>
+					</div>
+
+					<div class="col-xs-6 col-sm-3">
+						<div class="time-box">
+							<div class="time-box-inner dash hours_dash animated" data-animation="rollIn" data-animation-delay="600">
+								<span class="time-number">
+									<span class="digit">0</span>
+									<span class="digit">0</span>	
+								</span>
+								<span class="time-name">Horas</span>
+							</div>
+						</div>
+					</div>
+
+					<div class="col-xs-6 col-sm-3">
+						<div class="time-box">
+							<div class="time-box-inner dash minutes_dash animated" data-animation="rollIn" data-animation-delay="900">
+								<span class="time-number">
+									<span class="digit">0</span>
+									<span class="digit">0</span>
+								</span>
+								<span class="time-name">Minutos</span>
+							</div>
+						</div>
+					</div>
+
+					<div class="col-xs-6 col-sm-3">
+						<div class="time-box">
+							<div class="time-box-inner dash seconds_dash animated" data-animation="rollIn" data-animation-delay="1200">
+								<span class="time-number">
+									<span class="digit">0</span>
+									<span class="digit">0</span>
+									<span class="digit">0</span>
+								</span>
+								<span class="time-name">Segundos</span>
+							</div>
+						</div>
+					</div>
+					
+				</div><!-- /.time-count-container -->
 	<!-- Page Top Section -->
 	<section id="page-top" class="section-style" data-background-image="{{ asset('images/background/portada-01.jpg') }}">
 		<div class="height-resize">
