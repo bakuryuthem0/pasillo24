@@ -8,61 +8,64 @@
 				<legend>Sistema de reputación de pasillo24.com</legend>
 				
 				<p class=textoPromedio>Una vez que hayas realizado tu compra, podrás valorar al vendedor según tus experiencias, pasadas las 48 horas.</p>
-				<table class="table table-striped table-hover textoPromedio">
-					<thead>
-						<tr>
-							<th>Título</th>
-							<th>Vendedor</th>
-							<th>Teléfono</th>
-							<th>Correo</th>
-							<th class="noMovilMinMin">Página web</th>
-							<th>Valorar Vendedor</th>
-						</tr>
-					</thead>
-					<tbody>
-					@foreach($compras as $compra)
-						<tr>
-							<td>{{ $compra->titulo }}</td>
-							<td>
-								@if(!empty($compra->pName))
-									{{ $compra->pName }}
-								@else
-									{{ $compra->name.' '.$compra->lastname }}
-								@endif
-							</td>
-							<td>
-								@if(!empty($compra->pPhone))
-									{{ $compra->pPhone }}
-								@else
-									{{ $compra->phone }}
-								@endif
-							</td>
-							<td>
-								@if(!empty($compra->pEmail))
-									{{ $compra->pEmail }}
-								@else
-									{{ $compra->email }}
-								@endif
-							</td>
-							
-							<td class="noMovilMinMin">
-								@if(!empty($compra->pPag_web))
-									{{ $compra->pPag_web }}
-								@else
-									{{ $compra->pag_web }}
-								@endif
-							</td>
-							<td>
-								@if($compra->fechVal <= date('Y-m-d',time()))
-								<button class="btn btn-primary sendPubValue btn-xs" data-toggle="modal" data-target="#modalComprar" value={{ $compra->id }}>Valorar</button>
-								@else
-									<i class="fa fa-clock-o btn-xs" style="font-size:2em;margin-top:0px;color:orange;"></i>
-								@endif
-							</td>
-						</tr>
-					@endforeach
-					</tbody>
-				</table>
+				<div class="table-responsive">
+					<table class="table table-striped table-hover textoPromedio">
+						<thead>
+							<tr>
+								<th>Título</th>
+								<th>Vendedor</th>
+								<th>Teléfono</th>
+								<th>Correo</th>
+								<th class="noMovilMinMin">Página web</th>
+								<th>Valorar Vendedor</th>
+							</tr>
+						</thead>
+						<tbody>
+						@foreach($compras as $compra)
+							<tr>
+								<td>{{ $compra->titulo }}</td>
+								<td>
+									@if(!empty($compra->pName))
+										{{ $compra->pName }}
+									@else
+										{{ $compra->name.' '.$compra->lastname }}
+									@endif
+								</td>
+								<td>
+									@if(!empty($compra->pPhone))
+										{{ $compra->pPhone }}
+									@else
+										{{ $compra->phone }}
+									@endif
+								</td>
+								<td>
+									@if(!empty($compra->pEmail))
+										{{ $compra->pEmail }}
+									@else
+										{{ $compra->email }}
+									@endif
+								</td>
+								
+								<td class="noMovilMinMin">
+									@if(!empty($compra->pPag_web))
+										{{ $compra->pPag_web }}
+									@else
+										{{ $compra->pag_web }}
+									@endif
+								</td>
+								<td>
+									@if($compra->fechVal <= date('Y-m-d',time()))
+									<button class="btn btn-primary sendPubValue btn-xs" data-toggle="modal" data-target="#modalComprar" value={{ $compra->id }}>Valorar</button>
+									@else
+										<i class="fa fa-clock-o btn-xs" style="font-size:2em;margin-top:0px;color:orange;"></i>
+									@endif
+								</td>
+							</tr>
+						@endforeach
+						</tbody>
+					</table>
+				</div>
+				
 		</div>
 	</div>
 </div>
