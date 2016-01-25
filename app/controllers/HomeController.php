@@ -182,7 +182,6 @@ class HomeController extends BaseController {
 
 		$input = Input::all();
 		$title = "Búsqueda | pasillo24.com";
-		$aux = Input::get('busq');
 
 		if (Input::has('busq')) {
 			if (Input::has('filter')) {
@@ -190,9 +189,6 @@ class HomeController extends BaseController {
 			}else
 			{
 				$inp = '';
-			}
-			if (empty($aux)) {
-				$input['busq'] = '';
 			}
 			if (!empty($inp)) {
 				$lider = DB::select("SELECT `publicaciones`.`id`,`publicaciones`.`img_1`,`publicaciones`.`titulo` ,`publicaciones`.`precio`, `publicaciones`.`moneda` 

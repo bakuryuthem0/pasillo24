@@ -14,7 +14,7 @@
 		{{ HTML::style('css/bootstrap.min.css') }}
 		{{ HTML::style('//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css') }}
 		{{ HTML::style('css/bootstrap-theme.min.css')}}
-		{{ HTML::style('css/custom.css?v=1.1') }}
+		{{ HTML::style('css/custom.css?v=1.2') }}
 		{{ HTML::style('css/jquery.cleditor.css') }}
 		{{ HTML::style('css/owl.carousel.css') }}
 		{{ HTML::style('css/owl.theme.default.css') }}
@@ -120,8 +120,8 @@
 								</ul>
 								<ul class="nav navbar-nav" style="float:right;">
 									<li style="text-align:center;">
-										<form mothod="POST" action="{{ URL::to('inicio/buscar') }}">
-											<input type="text" class="form-control" name="busq" style="width:70%;vertical-align: middle;
+										<form mothod="POST" action="{{ URL::to('inicio/buscar') }}" class="form-search">
+											<input type="text" class="form-control input-search" name="busq" style="width:70%;vertical-align: middle;
 margin-top: 0.5em;display:inline-block;">
 											<button class="btn btn-success btn-buscar" style="display:inline-block;margin-top: 0.5em;">Buscar</button>
 										</form>
@@ -363,7 +363,7 @@ margin-top: 0.5em;display:inline-block;">
 	
 	{{ HTML::script('js/jquery.min.js') }}
 	{{ HTML::script('js/bootstrap.min.js') }}
-	{{ HTML::script('js/custom-preview.js?v=1.1')}}
+	{{ HTML::script('js/custom-preview.js?v=1.2')}}
 	
 	{{ HTML::script('js/ckeditor.js') }}
 	{{ HTML::script('js/jquery.ckeditor.js') }}

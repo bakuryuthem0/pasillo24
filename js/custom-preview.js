@@ -1625,4 +1625,12 @@ jQuery(document).ready(function($) {
 		 		
 		 		 		
  	});
+ 	$('.form-search').on('submit', function(event) {
+ 		if ($('.input-search').val() != "") {
+ 			$('.form-search').submit();
+ 		}else
+ 		{
+ 			event.preventDefault();
+ 		}
+ 	});
 });
