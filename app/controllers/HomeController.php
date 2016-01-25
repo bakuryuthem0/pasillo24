@@ -182,9 +182,8 @@ class HomeController extends BaseController {
 
 		$input = Input::all();
 		$title = "Búsqueda | pasillo24.com";
-		
-		if (Input::has('busq')) {
-
+		$aux = Input::get('busq');
+		if (Input::has('busq') || empty($aux)) {
 			if (Input::has('filter')) {
 				$inp = Department::find(Input::get('filter'));
 			}else
@@ -263,6 +262,7 @@ class HomeController extends BaseController {
 					'publicaciones.moneda',
 					'departamento.nombre as dep'));
 			}
+
 			$categorias = Categorias::where('id','=',$input['busq'])->pluck('desc');
 			if (!is_null($categorias)) {
 				$busq = $categorias;
@@ -271,8 +271,6 @@ class HomeController extends BaseController {
 				$busq = $input['busq'];
 			}
 			$departamentos = Department::get();
-        
-
 			return View::make('publications.busq')
 			->with('publicaciones',$res)
 			->with('title',$title)
@@ -364,8 +362,6 @@ class HomeController extends BaseController {
 				$busq = $input['cat'];
 			}
 			$departamentos = Department::get();
-        
-
 			return View::make('publications.categories')
 			->with('publicaciones',$res)
 			->with('title',$title)
@@ -374,7 +370,6 @@ class HomeController extends BaseController {
 			->with('departamento',$departamentos)
 			->with('filter',$inp);
 		}
-		
 	}
 	public function getVerifyComment()
 	{
