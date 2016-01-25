@@ -183,10 +183,19 @@ class AdministratorController extends BaseController {
             ));
         }elseif($type == "habitual")
         {
+            return $publicaciones = Publicaciones::join('usuario','usuario.id','=','publicaciones.user_id')
+            ->join('pagos','publicaciones.id','=','pagos.pub_id')
+            ->leftJoin('bancos','bancos.id','=','pagos.banco_id')
+            ->leftJoin('categoria','categoria.id','=','publicaciones.categoria')
+            ->where('publicaciones.status','=','Procesando')
+            ->where('publicaciones.tipo','=','Habitual')
+            ->where('publicaciones.deleted','=',0)
+            ->groupBy('publicaciones.id')
+            ->orderBy('publicaciones.created_at','desc')->toSql();
             $publicaciones = Publicaciones::join('usuario','usuario.id','=','publicaciones.user_id')
             ->join('pagos','publicaciones.id','=','pagos.pub_id')
             ->leftJoin('bancos','bancos.id','=','pagos.banco_id')
-            ->join('categoria','categoria.id','=','publicaciones.categoria')
+            ->leftJoin('categoria','categoria.id','=','publicaciones.categoria')
             ->where('publicaciones.status','=','Procesando')
             ->where('publicaciones.tipo','=','Habitual')
             ->where('publicaciones.deleted','=',0)
@@ -206,7 +215,7 @@ class AdministratorController extends BaseController {
                 'pagos.banco_ext',
                 'bancos.nombre as banco',
                 'publicaciones.titulo',
-                'categoria.desc as categoria',
+                'categoria.nombre as categoria',
                 'publicaciones.ubicacion',
                 'publicaciones.id',
                 'publicaciones.fechIni',
