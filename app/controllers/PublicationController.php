@@ -511,7 +511,6 @@ class PublicationController extends BaseController {
 		$title = "Búsqueda por categorías | pasillo24.com";
 		$lider = Publicaciones::where('status','=','Aprobado')
 		->where('deleted','=',0)
-		->where('tipo','=','Lider')
 		->where(function($query){
 			$query->where('ubicacion','=','Categoria')
 			->orWhere('ubicacion','=','Ambos');
