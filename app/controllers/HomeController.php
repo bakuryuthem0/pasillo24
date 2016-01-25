@@ -190,6 +190,9 @@ class HomeController extends BaseController {
 			{
 				$inp = '';
 			}
+			if (empty($aux)) {
+				$input['busq'] = '';
+			}
 			if (!empty($inp)) {
 				$lider = DB::select("SELECT `publicaciones`.`id`,`publicaciones`.`img_1`,`publicaciones`.`titulo` ,`publicaciones`.`precio`, `publicaciones`.`moneda` 
 					FROM  `publicaciones` 
