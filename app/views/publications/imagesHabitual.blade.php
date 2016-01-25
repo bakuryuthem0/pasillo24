@@ -5,7 +5,7 @@
     <div class="container contenedorUnico">
         <div class="row">
             <div class="col-xs-12">
-                <div class="col-xs-8 col-sm-offset-2 contAnaranjado">
+                <div class="col-xs-12 col-md-8 col-md-offset-2 contAnaranjado">
                     <legend style="text-align:center;">Subir imágenes restantes</legend>
                     <p class="textoPromedio">Arrastre imágenes en el cuadro o presione en él para así cargar las imágenes restantes.</p>
                     <p class="textoPromedio">Recuerde que posee un límite para 7 imágenes adicionales.</p>

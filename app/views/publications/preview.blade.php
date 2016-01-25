@@ -38,7 +38,7 @@
 						<img src="{{ asset('images/pubImages/'.$publication->img_8) }}" class="imgMini" data-value="img_8">
 						@endif
 					</div>
-					<div class="col-xs-12">
+					<div class="col-xs-12 hidden-xs">
 						<div class="alert responseDanger">
 							<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
 						</div>

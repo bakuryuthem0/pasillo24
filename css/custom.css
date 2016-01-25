@@ -2035,3 +2035,20 @@ animated buttons - animate the text inside prev and next buttons
 .descProd .comentarioBox a{
 	color: blue;
 }
+
+@media(max-width: 800px){
+	#repModal .modal-dialogo
+	{
+		width: 95% !important;
+	}
+	#repModal ul
+	{
+		padding-left: 15px;
+	}
+	#repModal .modal-footer p
+	{
+		margin: 1em auto;
+		float: none !important;
+		display: block;
+	}
+}

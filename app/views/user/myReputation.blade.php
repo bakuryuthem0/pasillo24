@@ -278,41 +278,41 @@
 					</div>
 					
 					<div clas="clearfix"></div>
-					<div class="col-xs-2">
+					<div class="col-xs-4 col-md-2">
 						<div id="bronce" class="trofeos" style="float:none;display:inline-block;">
 
 						</div>
 						<label class="textoPromedio"><i class="fa fa-plus-circle" style="color:green;"></i> 15</label>
 					</div>
-					<div class="col-xs-2">
+					<div class="col-xs-4 col-md-2">
 						<div id="plata" class="trofeos" style="float:none;display:inline-block;">
 
 						</div>
 						<label class="textoPromedio"><i class="fa fa-plus-circle" style="color:green;"></i> 60</label>
 
 					</div>
-					<div class="col-xs-2">
+					<div class="col-xs-4 col-md-2">
 						<div id="oro" class="trofeos" style="float:none;display:inline-block;">
 
 						</div>
 						<label class="textoPromedio"><i class="fa fa-plus-circle" style="color:green;"></i> 150</label>
 
 					</div>
-					<div class="col-xs-2">
+					<div class="col-xs-4 col-md-2">
 						<div id="c_bronce" class="trofeos" style="float:none;display:inline-block;">
 
 						</div>
 						<label class="textoPromedio"><i class="fa fa-plus-circle" style="color:green;"></i> 300</label>
 
 					</div>
-					<div class="col-xs-2">
+					<div class="col-xs-4 col-md-2">
 						<div id="c_plata" class="trofeos" style="float:none;display:inline-block;">
 
 						</div>
 						<label class="textoPromedio"><i class="fa fa-plus-circle" style="color:green;"></i> 700</label>
 
 					</div>
-					<div class="col-xs-2">
+					<div class="col-xs-4 col-md-2">
 						<div id="c_oro" class="trofeos" style="float:none;display:inline-block;">
 
 						</div>

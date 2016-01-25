@@ -918,7 +918,7 @@ class PublicationController extends BaseController {
 			'title' 		=> 'required|min:4',
 			'input'			=> 'required|min:4',
 			'moneda'		=> 'required',
-			'precio'		=> 'required|numeric',
+			'precio'		=> 'required',
 			'moneda'		=> 'required',
 			'img1'			=> 'required|image',
 			'tipoTransac'	=> 'required'
