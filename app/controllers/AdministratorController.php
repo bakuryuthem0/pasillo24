@@ -220,7 +220,7 @@ class AdministratorController extends BaseController {
         }elseif($type == "casual")
         {
             $publicaciones = Publicaciones::join('usuario','usuario.id','=','publicaciones.user_id')
-            ->join('categoria','categoria.id','=','publicaciones.categoria')
+            ->leftJoin('categoria','categoria.id','=','publicaciones.categoria')
             ->where('publicaciones.status','=','Procesando')
             ->where('publicaciones.tipo','=','Casual')
             ->where('publicaciones.deleted','=',0)
@@ -235,7 +235,7 @@ class AdministratorController extends BaseController {
                 'usuario.pag_web',
                 'usuario.id_carnet',
                 'usuario.nit',
-                'categoria.desc as categoria_desc',
+                'categoria.nombre as categoria_desc',
                 'publicaciones.titulo',
                 'publicaciones.categoria',
                 'publicaciones.ubicacion',
