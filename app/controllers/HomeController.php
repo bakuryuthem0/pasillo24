@@ -183,7 +183,8 @@ class HomeController extends BaseController {
 		$input = Input::all();
 		$title = "Búsqueda | pasillo24.com";
 		$aux = Input::get('busq');
-		if (Input::has('busq') || empty($aux)) {
+
+		if (Input::has('busq')) {
 			if (Input::has('filter')) {
 				$inp = Department::find(Input::get('filter'));
 			}else
@@ -283,6 +284,7 @@ class HomeController extends BaseController {
 			->with('filter',$inp);
 		}elseif(Input::has('cat'))
 		{
+
 			if (Input::has('filter')) {
 				$inp = Department::find(Input::get('filter'));
 			}else
