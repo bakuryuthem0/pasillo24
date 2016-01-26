@@ -2052,3 +2052,39 @@ animated buttons - animate the text inside prev and next buttons
 		display: block;
 	}
 }
+@media (min-width: 769px) and (max-width: 1200px){
+	.form-search
+	{
+	    max-width: 210px;
+	}
+	.input-search
+	{
+		width: 65% !important;
+	}
+	.menu-icon
+	{
+		font-size: 17px !important
+	}
+	.logo
+	{
+		max-width: 170px;
+	}
+	.navbar-nav.redes{
+		padding-left: 0 !important;
+	}
+}
+
+@media (min-width: 992px) and (max-width: 1200px){
+	.pika-stage
+	{
+		width: 100%;
+	}
+}
+.g-recaptcha
+{
+	-webkit-transform:scale(0.70);
+		transform:scale(0.70);
+	-webkit-transform-origin:0 0;
+		transform-origin:0 0;
+
+}

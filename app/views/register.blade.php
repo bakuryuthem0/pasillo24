@@ -218,7 +218,7 @@
 							<p class="textoPromedio">(*) Captcha:</p>
 						</div>
 						<div class="col-xs-6 inputRegister">
-							<div class="g-recaptcha" data-sitekey="6Ld4vBATAAAAAATOgZbOLdHfjIwzATHX3hXmXlEQ"></div>
+							<div class="g-recaptcha" data-sitekey="6Ld4vBATAAAAAATOgZbOLdHfjIwzATHX3hXmXlEQ" style=""></div>
 							@if ($errors->has('g-recaptcha-response'))
 								
 								 @foreach($errors->get('g-recaptcha-response') as $err)
