@@ -1,6 +1,6 @@
 <?php 
 	date_default_timezone_set('America/La_Paz');
-	$time = strtotime('30 January 2016 -5 hours');
+	$time = strtotime('30 January 2016 -9 hours');
 	$now  = time();
 	$dif  = $time-$now;
 	$date = date('d-m-Y G:i:s',$dif);
@@ -13,7 +13,7 @@
 	$min  = $datetime[1];
 	$hour = $datetime[0];
 	
-	$days = $newdate[0];
+	$days = 0;
 ?>
 <!DOCTYPE html>
 <html>
