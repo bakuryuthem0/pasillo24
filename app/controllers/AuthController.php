@@ -71,7 +71,7 @@ class AuthController extends BaseController {
 	{
 		$input = Input::all();
 		$rules = array(
-			'username'   			 => 'required|min:4|unique:usuario',
+			'username'   			 => 'required|min:4|max:100|unique:usuario',
 			'pass'      		 	 => 'required|min:6|confirmed',
 			'pass_confirmation'      => 'required',
 			'name'       			 => 'required',
@@ -86,6 +86,7 @@ class AuthController extends BaseController {
 		$messages = array(
 			'required' => ':attribute es obligatoria',
 			'min'      => ':attribute debe ser mas largo',
+			'username.max'      => 'El nombre de usuario es muy largo',
 			'email'    => 'Debe introducir un email válido',
 			'unique'   => ':attribute ya existe',
 			'confirmed'=> 'La contraseña no concuerdan'

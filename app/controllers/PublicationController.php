@@ -102,13 +102,13 @@ class PublicationController extends BaseController {
 			->leftJoin('categoria','categoria.id','=','publicaciones.categoria')
 			->where('publicaciones.tipo','=',ucfirst(strtolower($type)))
 			->where('publicaciones.deleted','=',0)
-			->get(array('publicaciones.*','categoria.nombre'));	
+			->get(array('publicaciones.*','categoria.desc as categoria'));	
 		}elseif (strtolower($type) == "habitual") {
 			$publications = Publicaciones::join('categoria','categoria.id','=','publicaciones.categoria')
 			->where('user_id','=',Auth::id())
 			->where('publicaciones.tipo','=','Habitual')
 			->where('publicaciones.deleted','=',0)
-			->get(array('publicaciones.*','categoria.nombre'));	
+			->get(array('publicaciones.*','categoria.desc as categoria'));	
 		}elseif(strtolower($type) == "casual")
 		{
 			$publications = Publicaciones::join('categoria','categoria.id','=','publicaciones.categoria')
@@ -117,7 +117,7 @@ class PublicationController extends BaseController {
 			->where('publicaciones.deleted','=',0)
 			->get(array(
 				'publicaciones.*',
-				'categoria.desc'
+				'categoria.desc as categoria'
 			));
 			$rePub = Publicaciones::where('publicaciones.user_id','=',Auth::id())
 			->where('publicaciones.tipo','=','Casual')
