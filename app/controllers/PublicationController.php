@@ -1311,8 +1311,8 @@ class PublicationController extends BaseController {
 					'modelo.nombre as modelo',
 					'publicaciones.*',
 					'departamento.nombre as dep',
-					'categoria.desc as cat',
-					'subcategoria.desc as subCat',
+					'categoria.nombre as cat',
+					'subcategoria.nombre as subCat',
 					));
 		}else
 		{
@@ -1322,9 +1322,9 @@ class PublicationController extends BaseController {
 				->join('subcategoria','subcategoria.id','=','publicaciones.typeCat')
 				->where('publicaciones.id','=',$id)
 				->get(array(
-						'subcategoria.desc as subCat',
+						'subcategoria.nombre as subCat',
 						'departamento.nombre as dep',
-						'categoria.desc as cat',
+						'categoria.nombre as cat',
 						'publicaciones.*'
 						));
 			}else
@@ -1334,7 +1334,7 @@ class PublicationController extends BaseController {
 				->where('publicaciones.id','=',$id)
 				->get(array(
 						'departamento.nombre as dep',
-						'categoria.desc as cat',
+						'categoria.nombre as cat',
 						'publicaciones.*'
 						));
 			}
