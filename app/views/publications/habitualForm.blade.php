@@ -267,6 +267,10 @@
 						{{ Form::radio('tipoTransac','venta',Input::old('tipoTransac'),array('required' => 'required')) }}
 						<span for="tipoTransac" class="textoPromedio">Alquiler</span>
 						{{ Form::radio('tipoTransac','alquiler',Input::old('tipoTransac'),array('required' => 'required')) }}
+						@if($cat->tipo == 2)
+						<span for="tipoTransac" class="textoPromedio">A convenir </span>
+						{{ Form::radio('tipoTransac','A convenir',Input::old('tipoTransac'),array('required' => 'required')) }}
+						@endif
 						@if($cat_id == 20)
 							<span for="tipoTransac" class="textoPromedio">Anticrético </span>
 							{{ Form::radio('tipoTransac','Aticretico',Input::old('tipoTransac'),array('required' => 'required')) }}

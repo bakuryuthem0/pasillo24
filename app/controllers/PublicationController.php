@@ -102,13 +102,13 @@ class PublicationController extends BaseController {
 			->leftJoin('categoria','categoria.id','=','publicaciones.categoria')
 			->where('publicaciones.tipo','=',ucfirst(strtolower($type)))
 			->where('publicaciones.deleted','=',0)
-			->get(array('publicaciones.*','categoria.desc as categoria'));	
+			->get(array('publicaciones.*','categoria.nombre as categoria'));	
 		}elseif (strtolower($type) == "habitual") {
 			$publications = Publicaciones::join('categoria','categoria.id','=','publicaciones.categoria')
 			->where('user_id','=',Auth::id())
 			->where('publicaciones.tipo','=','Habitual')
 			->where('publicaciones.deleted','=',0)
-			->get(array('publicaciones.*','categoria.desc as categoria'));	
+			->get(array('publicaciones.*','categoria.nombre as categoria'));	
 		}elseif(strtolower($type) == "casual")
 		{
 			$publications = Publicaciones::join('categoria','categoria.id','=','publicaciones.categoria')
@@ -117,7 +117,7 @@ class PublicationController extends BaseController {
 			->where('publicaciones.deleted','=',0)
 			->get(array(
 				'publicaciones.*',
-				'categoria.desc as categoria'
+				'categoria.nombre as categoria'
 			));
 			$rePub = Publicaciones::where('publicaciones.user_id','=',Auth::id())
 			->where('publicaciones.tipo','=','Casual')
@@ -830,6 +830,7 @@ class PublicationController extends BaseController {
 		$url = "publicacion/habitual/enviar";
 		$departamento = Department::all();
 		$marcas = Marcas::all();
+		$cat = Categorias::find($id);
 		return View::make('publications.habitualForm')
 		->with('url',$url)
 		->with('title',$title)
@@ -837,7 +838,8 @@ class PublicationController extends BaseController {
 		->with('subCat',$subCat)
 		->with('marcas',$marcas)
 		->with('departamento',$departamento)
-		->with('otrosub',$otrosub);
+		->with('otrosub',$otrosub)
+		->with('cat',$cat);
 	}
 	public function postPublicationHabitual()
 	{

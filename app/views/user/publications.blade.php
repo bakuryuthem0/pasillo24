@@ -86,7 +86,7 @@
 								{{ $publication->ubicacion }}
 							</td>
 							<td class="textoMedio">
-								@if(empty($publication->nombre)) Sin categoria @else {{ $publication->nombre }} @endif
+								@if(empty($publication->categoria)) Sin categoria @else {{ $publication->categoria }} @endif
 							</td>
 							<td class="textoMedio">
 								@if($publication->pag_web == "" || is_null($publication->pag_web))
@@ -197,7 +197,7 @@
 								@endif
 							</td>
 							<td class="textoMedio">
-								{{ $publication->nombre }}
+								{{ $publication->categoria }}
 							</td>
 							<td class="textoMedio">
 								{{ $publication->precio.' '.$publication->moneda }}
@@ -338,7 +338,7 @@
 							</td>
 							
 							<td class="textoMedio">
-								{{ $publication->nombre }}
+								{{ $publication->categoria }}
 							</td>
 							<td class="textoMedio">
 								{{ $publication->precio.' '.$publication->moneda }}
