@@ -1312,7 +1312,7 @@ class PublicationController extends BaseController {
 					'publicaciones.*',
 					'departamento.nombre as dep',
 					'categoria.nombre as cat',
-					'subcategoria.nombre as subCat',
+					'subcategoria.desc as subCat',
 					));
 		}else
 		{
@@ -1322,7 +1322,7 @@ class PublicationController extends BaseController {
 				->join('subcategoria','subcategoria.id','=','publicaciones.typeCat')
 				->where('publicaciones.id','=',$id)
 				->get(array(
-						'subcategoria.nombre as subCat',
+						'subcategoria.desc as subCat',
 						'departamento.nombre as dep',
 						'categoria.nombre as cat',
 						'publicaciones.*'
