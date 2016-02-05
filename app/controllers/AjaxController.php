@@ -25,7 +25,7 @@ class AjaxController extends BaseController{
 				$n = array(
 					'type'	   => 'success',
 					'msg'	   => 'Ha iniciado sesión satisfactoriamente.',
-					'userdata' => $username,
+					'userdata' => $user,
 					'auth_token' => $user->auth_token);
 				return Response::json($n);
 			}else
