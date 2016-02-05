@@ -3,48 +3,55 @@
 class AjaxController extends BaseController{
 	public function getLoginApp()
 	{
-	    $nombre= Input::get("usuario"); 
-	    $contra= Input::get("password");
-		$user = User::where('username','=',$nombre)->first();
+		/*Se reciven los datos del usuario*/
+
+	    $username = Input::get("usuario"); 
+	    $password = Input::get("password");
+	    /*Se verifica si existe el usuario*/
+		$user = User::where('username','=',$username)->first();
 		if (count($user) > 0) {
-			if (Hash::check($contra, $user->password)) 
+			/*Se verifica si concuerdan las contraseñas*/
+			if (Hash::check($password, $user->password)) 
 			{
-				$regId = Input::get('regId');
-				$gcm = GcmDevices::where('gcm_regid','=',$regId)->where('usuario','=',$nombre)->first();
-				if (count($gcm) < 1) {
+				/*Se toma el id del movil y se busca en la base de datos*/
+				/*Si no se encuentra (primera vez que inicia en este movil) se crea un nuevo registro*/
+				/*Se devuelven los datos en forma de json*/
+				$username = $user->username;
+				$user_id  = $user->id;
 
-					$g = new GcmDevices;
-					$g->gcm_regid = $regId;
-					$g->usuario   = $nombre;
-					$g->save();
-				}
-				$cla= $user->id;
-				$usu= $user->username;
-
-				$n=array('usu' => $usu
-					,'cla' => $cla);
+				$n = array(
+					'type'	   => 'success',
+					'msg'	   => 'Ha iniciado sesión satisfactoriamente.',
+					'userdata' => $username,
+					'auth_token' => $$user->auth_token);
 				return Response::json($n);
 			}else
 			{
-				return Response::json(array('danger' => 'Usuario o Contraseña invalida'));
+				return Response::json(array('type' =>'danger', 'msg' => 'Usuario o Contraseña invalida'));
 			}
 		}else
 		{
-			return Response::json(array('danger' => 'Usuario o Contraseña invalida'));
+			return Response::json(array('type' =>'danger', 'msg' => 'Usuario o Contraseña invalida'));
 		}
 	}
     public function postRegisterApp()
 	{			
+		/*Se reciven los datos y se validan*/
+		/*required  = Campo obligatorio*/
+		/*min 		= Minimo x caracteres*/
+		/*unique    = Campo unico en la bd*/
+		/*in 		= El valor debe ser uno de los preestablecidos*/
+		/*email 	= Campo debe ser un email*/
 		$input = Input::all();
 		$rules = array(
-			'usuario'   			 => 'required|min:4|unique:usuario,username',
-			 'contra'      		 	 => 'required|min:6',
-			 'nombre'       			 => 'required|min:4',
-			 'apellido'   			 => 'required|min:4',
-			 'email'      			 => 'required|email|unique:usuario,email',
-			'carnet'       			 => 'required|min:5|unique:usuario,id_carnet',
-			 'sexo'       			 => 'required|in:f,m',
-			'department'	 			 => 'required',
+			'username'			=> 'required|min:4|unique:usuario,username',
+			'password'      	=> 'required|min:6',
+			'nombre'       		=> 'required|min:4',
+			'apellido'			=> 'required|min:4',
+			'email'				=> 'required|email|unique:usuario,email',
+			'carnet'			=> 'required|min:5|unique:usuario,id_carnet',
+			'sexo'				=> 'required|in:f,m',
+			'department'	 	=> 'required',
 
 		);
 		$messages = array(
@@ -66,15 +73,26 @@ class AjaxController extends BaseController{
 		);
 		$validator = Validator::make($input, $rules, $messages,$custom);
 		if ($validator->fails()) {
+			/*Si la validacion falla, se devuelve un error y los datos en forma de json*/
+			/*ej de la respuesta:
+				{
+					'danger' : 'Error al validar los datos'
+					'data'	 : {
+						'usuario' : 'El campo nombre de usuario es obligatorio',
+						'email'	  : 'Debe introducir un email válido',
+					}
+				}
+			*/
 			return Response::json(array(
                'danger' => 'Error al validar los datos',
                'data' => $validator->getMessageBag()->toArray()
               	)
 			);
 		}
-
+		/*Si todo es valido se crea un nuevo registro*/
 		$user = new User;
 		$user->username 	 = $input['usuario'];
+		/*La contraseña se encrypta*/
 		$user->password    	 = Hash::make($input['contra']);
 		$user->email    	 = $input['email'];
 		$user->name     	 = $input['nombre'];
@@ -89,14 +107,22 @@ class AjaxController extends BaseController{
 		}
 
 		$user->state  		 = $input['department'];
+		/*Se asigna role usuario*/
 		$user->role          = 'Usuario';
 		
 		if ($user->save()) {
-			$n=array('ok' => 'Registro completo');
+			$user->auth_token = md5($user->id);
+			/*Si se guarda se devuelve la respuesta*/
+			$n = array(
+				'type' => 'success', 
+				'msg'  => 'Registro completo');
 			return Response::json($n);
 		}else
 		{
-			return Response::json(array('danger' => 'Error al registrar al usuario.'));
+			/*Si no se devuelve un error*/
+			return Response::json(array(
+				'type' => 'danger',
+				'msg' => 'Error al registrar al usuario.'));
 		}
 	}
 	public function showIndex($id = null)
@@ -308,7 +334,7 @@ class AjaxController extends BaseController{
 	       	->interlace()
 	        ->save($ruta.$file->getClientOriginalName());
 		}
-		return Response::json(array('success' => 1));
+		return Response::json(array('type' => 'success' , 'msg' => 'Se ha subido la imagen.'));
 	}
 	
 }
