@@ -18,12 +18,15 @@ class AjaxController extends BaseController{
 				/*Se devuelven los datos en forma de json*/
 				$username = $user->username;
 				$user_id  = $user->id;
-
+				if (is_null($user->auth_token)) {
+					$user->auth_token = md5($user->id);
+					$user-save();
+				}
 				$n = array(
 					'type'	   => 'success',
 					'msg'	   => 'Ha iniciado sesión satisfactoriamente.',
 					'userdata' => $username,
-					'auth_token' => $$user->auth_token);
+					'auth_token' => $user->auth_token);
 				return Response::json($n);
 			}else
 			{
