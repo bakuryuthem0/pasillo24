@@ -423,6 +423,23 @@
 </div>
 
 <div class="share">
+	<!-- I got these buttons from simplesharebuttons.com -->
+<div id="share-buttons">
+    
+ 
+    <!-- Facebook -->
+    <a href="http://www.facebook.com/sharer.php?u={{ Request::url() }}" target="_blank">
+        <img src="https://simplesharebuttons.com/images/somacro/facebook.png" alt="Facebook" />
+    </a>
+    
+    
+    <!-- Twitter -->
+    <a href="https://twitter.com/share?url={{ Request::url() }}&amp;text=Simple%20Share%20Buttons&amp;hashtags=simplesharebuttons" target="_blank">
+        <img src="https://simplesharebuttons.com/images/somacro/twitter.png" alt="Twitter" />
+    </a>
+  
+
+</div>
 	<div
 	  class="fb-like"
 	  data-share="true"

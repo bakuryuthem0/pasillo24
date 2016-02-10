@@ -11,9 +11,9 @@
 		<link rel="shortcut icon" href="{{ asset('images/favicon.ico') }}">
 		<meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <meta property="og:url"                content="http://pasillo24.com" />
+        <meta property="og:url"                content="{{ Request::url() }}" />
 		<meta property="og:type"               content="article" />
-		<meta property="og:title"              content="Hecho por bolivianos para bolivianos" />
+		<meta property="og:title"              content="{{ $title }}" />
 		<meta property="og:description"        content="Compra, Vende, Publica " />
 		<meta property="og:image"              content="http://localhost/pasillo24/images/portal.png" />
 		{{ HTML::style('css/bootstrap.min.css') }}
