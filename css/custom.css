@@ -2096,3 +2096,10 @@ animated buttons - animate the text inside prev and next buttons
 		transform-origin:0 0;
 
 }
+
+.share 
+{
+	position: fixed;
+	bottom: 0;
+	z-index: 100;
+}

@@ -43,6 +43,8 @@ Route::get('inicio/terminos-y-condiciones', 'HomeController@getTermsAndCondition
 //app
 Route::post('app/inicio','AjaxController@getLoginApp');
 Route::post('app/registro','AjaxController@postRegisterApp');
+Route::get('app/inicio/buscar','AjaxController@search');
+Route::get('app/publicaciones/categorias/{id}','AjaxController@getCategories');
 Route::post('app/subir-imagenes/{carpeta}','AjaxController@upload_image');
 Route::get('inicio-app','AjaxController@showIndex');
 Route::get('inicio-app/departamentos/{id}','AjaxController@showIndex');

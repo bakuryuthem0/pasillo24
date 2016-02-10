@@ -421,6 +421,20 @@
 		</div>
 	</div>
 </div>
+
+<div class="share">
+	<div
+	  class="fb-like"
+	  data-share="true"
+	  data-width="450"
+	  data-show-faces="true"
+	  >
+	</div>
+	<div class="fb-share-button" 
+		data-href="{{ Request::url() }}" 
+		data-layout="button_count">
+	</div>
+</div>
 <div class="modal fade" id="modalComprar" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 	<div class="modal-dialog">
 		<div class="modal-content">
