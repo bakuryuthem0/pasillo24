@@ -2105,5 +2105,5 @@ animated buttons - animate the text inside prev and next buttons
 }
 .fb_iframe_widget
 {
-	vertical-align: top;
+	vertical-align: top !important;
 }
