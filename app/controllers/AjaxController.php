@@ -116,10 +116,12 @@ class AjaxController extends BaseController{
 		
 		if ($user->save()) {
 			$user->auth_token = md5($user->id);
+			$user->save();
 			/*Si se guarda se devuelve la respuesta*/
 			$n = array(
 				'type' => 'success', 
 				'msg'  => 'Registro completo',
+				'userdata' => $user,
 				'auth_token' => $user->auth_token);
 			return Response::json($n);
 		}else
