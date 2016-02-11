@@ -15,7 +15,7 @@
 		<meta property="og:type"               content="article" />
 		<meta property="og:title"              content="{{ $title }}" />
 		<meta property="og:description"        content="Compra, Vende, Publica " />
-		<meta property="og:image"              content="http://localhost/pasillo24/images/portal.png" />
+		<meta property="og:image"              content="http://pasillo24.com/images/portal.png" />
 		{{ HTML::style('css/bootstrap.min.css') }}
 		{{ HTML::style('//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css') }}
 		{{ HTML::style('css/bootstrap-theme.min.css')}}

@@ -423,7 +423,6 @@
 </div>
 
 <div class="share">
-	<button id="fb-publish">Share to Facebook</button>
 	<div class="fb-share-button" 
 		data-href="{{ Request::url() }}" 
 		data-layout="button_count">
