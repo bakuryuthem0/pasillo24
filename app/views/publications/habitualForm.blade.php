@@ -67,7 +67,7 @@
 				</div>
 				<div class="col-xs-12 col-md-6">
 					<label for="precio" class="textoPromedio">(*) Precio</label>
-					{{ Form::text('precio',Input::old('precio'),array('placeholder' => 'Precio','class' => 'form-control','required' => 'required')) }}
+					{{ Form::text('precio',Input::old('precio'),array('placeholder' => 'Precio','class' => 'form-control')) }}
 					@if ($errors->has('precio'))
 						 @foreach($errors->get('precio') as $err)
 						 	<div class="alert alert-danger">

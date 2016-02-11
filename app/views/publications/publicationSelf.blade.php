@@ -423,30 +423,7 @@
 </div>
 
 <div class="share">
-	<!-- I got these buttons from simplesharebuttons.com -->
-<div id="share-buttons">
-    
- 
-    <!-- Facebook -->
-    <a href="http://www.facebook.com/sharer.php?u={{ Request::url() }}" target="_blank">
-        <img src="https://simplesharebuttons.com/images/somacro/facebook.png" alt="Facebook" />
-    </a>
-    
-    
-    <!-- Twitter -->
-    <a href="https://twitter.com/share?url={{ Request::url() }}&amp;text=Simple%20Share%20Buttons&amp;hashtags=simplesharebuttons" target="_blank">
-        <img src="https://simplesharebuttons.com/images/somacro/twitter.png" alt="Twitter" />
-    </a>
-  
-
-</div>
-	<div
-	  class="fb-like"
-	  data-share="true"
-	  data-width="450"
-	  data-show-faces="true"
-	  >
-	</div>
+	<button id="fb-publish">Share to Facebook</button>
 	<div class="fb-share-button" 
 		data-href="{{ Request::url() }}" 
 		data-layout="button_count">
@@ -471,6 +448,7 @@
 		</div>
 	</div>
 </div>
+<input type="hidden" class="requestUrl" value="{{ Request::url() }}">
 @stop
 
 
@@ -486,7 +464,43 @@
 
 <!-- Add Button helper (this is optional) -->
 {{ HTML::script("js/fancybox/helpers/jquery.fancybox-buttons.js?v=1.0.5") }}
+<script>
+  window.fbAsyncInit = function() {
+    FB.init({
+      appId      : '1665202273729031',
+      xfbml      : true,
+      version    : 'v2.5'
+    });
+  };
 
+  (function(d, s, id){
+     var js, fjs = d.getElementsByTagName(s)[0];
+     if (d.getElementById(id)) {return;}
+     js = d.createElement(s); js.id = id;
+     js.src = "//connect.facebook.net/en_US/sdk.js";
+     fjs.parentNode.insertBefore(js, fjs);
+   }(document, 'script', 'facebook-jssdk'));
+
+(function() {
+    var fbShare = function() {
+        FB.ui({
+            method: "feed",
+            display: "iframe",
+            link: $('.requestUrl').val(),
+            caption: $('title').html(),
+            description: "Here is the text I want to share.",
+            picture: "http://pasillo24.com/images/portal.png"
+        });
+    };
+    $("#fb-publish").click(function() {
+        FB.login(function(response) {
+            if (response.authResponse) {
+                fbShare();
+           }
+        }, {scope: 'publish_stream'});
+    });
+})();
+</script>
 <script type="text/javascript">
 	$(document).ready(function (){
 		

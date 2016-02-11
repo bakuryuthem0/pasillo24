@@ -924,7 +924,7 @@ class PublicationController extends BaseController {
 			'title' 		=> 'required|min:4',
 			'input'			=> 'required|min:4',
 			'moneda'		=> 'required',
-			'precio'		=> 'required',
+			'precio'		=> 'required_if:tipoTransac,venta,alquiler,Aticretico,otro',
 			'moneda'		=> 'required',
 			'img1'			=> 'required|image',
 			'tipoTransac'	=> 'required'
@@ -932,6 +932,7 @@ class PublicationController extends BaseController {
 		);
 		$messages = array(
 			'required' 	=> ':attribute es obligatorio',
+			'required_if' => ':attribute es obligatorio',
 			'min'		=> ':attribute debe ser mas largo',
 			'image'		=> ':attribute debe ser una imagen',
 			'numeric'	=> ':attribute debe ser numerico'
