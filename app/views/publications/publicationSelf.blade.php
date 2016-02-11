@@ -113,6 +113,14 @@
 								<a target="_blank" href="{{ $publication->pag_web_web }}" class="btn btn-primary" style="margin:2em 0.5em;">Ir a la página</a>
 							@endif
 						@endif
+						<div>
+							<a href="https://twitter.com/share" class="twitter-share-button" data-via="pasillo_24" data-hashtags="pasillo_24" data-dnt="true">Tweet</a>
+					<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+							<div class="fb-share-button" 
+								data-href="{{ Request::url() }}" 
+								data-layout="button_count">
+							</div>
+						</div>
 					</div>
 					</a>
 				</div>
@@ -274,6 +282,14 @@
 							@endif
 					
 						</div>
+						<div class="col-xs-12">
+							<a href="https://twitter.com/share" class="twitter-share-button" data-via="pasillo_24" data-hashtags="pasillo_24" data-dnt="true">Tweet</a>
+					<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+							<div class="fb-share-button" 
+								data-href="{{ Request::url() }}" 
+								data-layout="button_count">
+							</div>
+						</div>
 				</div>
 			</div>
 			<div class="col-xs-12 textoPromedio descProd contAnaranjado">
@@ -331,6 +347,14 @@
 					</div>
 					@endif
 				</div>
+				<div>
+							<a href="https://twitter.com/share" class="twitter-share-button" data-via="pasillo_24" data-hashtags="pasillo_24" data-dnt="true">Tweet</a>
+					<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+							<div class="fb-share-button" 
+								data-href="{{ Request::url() }}" 
+								data-layout="button_count">
+							</div>
+						</div>
 			</div>
 
 			<div class="col-xs-12 textoPromedio descProd contAnaranjado">
@@ -423,10 +447,7 @@
 </div>
 
 <div class="share">
-	<div class="fb-share-button" 
-		data-href="{{ Request::url() }}" 
-		data-layout="button_count">
-	</div>
+	
 </div>
 <div class="modal fade" id="modalComprar" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 	<div class="modal-dialog">
