@@ -15,7 +15,11 @@
 		<meta property="og:type"               content="article" />
 		<meta property="og:title"              content="{{ $title }}" />
 		<meta property="og:description"        content="Compra, Vende, Publica " />
-		<meta property="og:image"              content="http://preview.pasillo24.com/images/portal.png" />
+		@if(isset($publication->img_1))
+			<meta property="og:image"          content="{{ asset('images/pubImages/'.$publication->img_1) }}" />
+		@else
+			<meta property="og:image"          content="http://preview.pasillo24.com/images/portal.png" />
+		@endif
 		{{ HTML::style('css/bootstrap.min.css') }}
 		{{ HTML::style('//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css') }}
 		{{ HTML::style('css/bootstrap-theme.min.css')}}
