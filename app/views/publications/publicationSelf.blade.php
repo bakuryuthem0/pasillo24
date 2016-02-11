@@ -58,7 +58,7 @@
 											<td>{{ $publication->name.' '.$publication->lastname }}</td>
 										@endif</label></p>
 					</a>
-					<div class="col-xs-12">
+					<div class="col-xs-12 no-padding">
 						@if(Auth::check())
 						<div class="table-responsive">
 							<table class="table table-striped table-hover textoPromedio">
@@ -347,7 +347,7 @@
 					</div>
 					@endif
 				</div>
-				<div>
+				<div class="col-xs-12">
 							<a href="https://twitter.com/share" class="twitter-share-button" data-via="pasillo_24" data-hashtags="pasillo_24" data-dnt="true">Tweet</a>
 					<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
 							<div class="fb-share-button" 
