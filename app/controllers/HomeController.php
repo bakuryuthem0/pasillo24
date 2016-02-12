@@ -22,7 +22,13 @@ class HomeController extends BaseController {
 			->where('publicaciones.pag_web','!=',"")
 			->where('fechFin','>=',date('Y-m-d',time()))
 			->where('publicaciones.deleted','=',0)
-			->orderBy('fechFin','desc')->get();
+			->orderBy('fechFin','desc')->get(
+				'publicaciones.img_1',
+				'publicaciones.titulo',
+				'publicaciones.precio',
+				'publicaciones.moneda',
+				'publicaciones.id',
+			);
 			$habitual = Publicaciones::where(function($query) use($id){
 				/*Busco las habituales*/
 				$query->where('tipo','=','Habitual')
