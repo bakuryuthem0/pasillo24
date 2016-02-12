@@ -31,6 +31,7 @@
 		{{ HTML::script('js/jquery.min.js') }}
 		{{ HTML::script('js/owl.carousel.min.js') }}
 		<script src='https://www.google.com/recaptcha/api.js'></script>
+		<script type="text/javascript" src="http://maps.google.com/maps/api/js"></script>
 	</head>
 	<body>
 		<script>
@@ -389,7 +390,7 @@ margin-top: 0.5em;display:inline-block;">
 	
 	{{ HTML::script('js/jquery.min.js') }}
 	{{ HTML::script('js/bootstrap.min.js') }}
-	{{ HTML::script('js/custom.js?v=1.5')}}
+	{{ HTML::script('js/custom-preview.js?v=1.5')}}
 	
 	{{ HTML::script('js/ckeditor.js') }}
 	{{ HTML::script('js/jquery.ckeditor.js') }}

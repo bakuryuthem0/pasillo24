@@ -268,6 +268,9 @@
 						 @endforeach
 					@endif
 				</div>
+				<div class="col-xs-12">
+					<article id="mapcontainer"></article>
+				</div>
 				<div class="col-xs-12 imgLiderUp" style="margin-top:5em;">
 					<legend>Información de contacto</legend>
 				</div>
@@ -483,7 +486,6 @@
 @section('postscript')
 
 <script>
-
 	CKEDITOR.disableAutoInline = true;
 	$( document ).ready( function() {
 		$( '#editor1' ).ckeditor(); // Use CKEDITOR.replace() if element is <textarea>.

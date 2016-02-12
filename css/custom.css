@@ -2107,3 +2107,8 @@ animated buttons - animate the text inside prev and next buttons
 {
 	vertical-align: top !important;
 }
+
+#mapcontainer
+{
+	min-height: 400px;
+}
