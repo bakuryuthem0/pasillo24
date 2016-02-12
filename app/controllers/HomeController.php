@@ -14,14 +14,15 @@ class HomeController extends BaseController {
 		}
 		$title ="Inicio | pasillo24.com";
 		if (!is_null($id)) {
-			$lider = Publicaciones::where('status','=','Aprobado')
+			$lider = Publicaciones::leftJoin('usuario','usuario.id','=','publicaciones.user_id')
+			->where('usuario.state','=',$id)
+			->where('status','=','Aprobado')
 			->where('ubicacion','=','Principal')
 			->where('tipo','=','Lider')
-			->where('pag_web','!=',"")
-			->where('departamento','=',$id)
+			->where('publicaciones.pag_web','!=',"")
 			->where('fechFin','>=',date('Y-m-d',time()))
-			->where('deleted','=',0)
-			->orderBy('fechFin','desc')->get();	
+			->where('publicaciones.deleted','=',0)
+			->orderBy('fechFin','desc')->get();
 			$habitual = Publicaciones::where(function($query) use($id){
 				/*Busco las habituales*/
 				$query->where('tipo','=','Habitual')
