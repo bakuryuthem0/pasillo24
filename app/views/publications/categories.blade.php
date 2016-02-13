@@ -102,6 +102,11 @@
 					</a>
 						<div class="col-xs-12 col-md-4 contCatPub">
 							<h3>{{ $pub->titulo }}</h3>
+								@if(strlen($pub->descripcion) <= 20)
+								<p class="textoPromedio">{{ strip_tags($pub->descripcion) }}</p>
+								@else
+								<p class="textoPromedio">{{ substr(strip_tags($pub->descripcion),0,100) }}...</p>
+								@endif
 								<label class="textoPromedio">{{ $pub->dep }}</label>
 						</div>
 						<div class="col-xs-12 col-md-4 contCatPub">

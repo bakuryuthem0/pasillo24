@@ -541,6 +541,7 @@ class PublicationController extends BaseController {
 			'publicaciones.titulo',
 			'publicaciones.precio',
 			'publicaciones.moneda',
+			'publicaciones.descripcion',
 			'departamento.id as dep_id',
 			'departamento.nombre as dep'));
 		$departamentos = Department::get();

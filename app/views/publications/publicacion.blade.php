@@ -268,9 +268,9 @@
 						 @endforeach
 					@endif
 				</div>
-				<div class="col-xs-12">
-					<article id="mapcontainer"></article>
-				</div>
+				<!--<div class="col-xs-12">
+					<article id=""></article>
+				</div>-->
 				<div class="col-xs-12 imgLiderUp" style="margin-top:5em;">
 					<legend>Información de contacto</legend>
 				</div>

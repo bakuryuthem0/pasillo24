@@ -14,9 +14,7 @@ class HomeController extends BaseController {
 		}
 		$title ="Inicio | pasillo24.com";
 		if (!is_null($id)) {
-			$lider = Publicaciones::leftJoin('usuario','usuario.id','=','publicaciones.user_id')
-			->where('usuario.state','=',$id)
-			->where('status','=','Aprobado')
+			$lider = Publicaciones::where('status','=','Aprobado')
 			->where('ubicacion','=','Principal')
 			->where('tipo','=','Lider')
 			->where('publicaciones.pag_web','!=',"")
@@ -234,6 +232,7 @@ class HomeController extends BaseController {
 					'publicaciones.titulo',
 					'publicaciones.precio',
 					'publicaciones.moneda',
+					'publicaciones.descripcion',
 					'departamento.nombre as dep'));
 			}else
 			{
@@ -268,6 +267,7 @@ class HomeController extends BaseController {
 					'publicaciones.titulo',
 					'publicaciones.precio',
 					'publicaciones.moneda',
+					'publicaciones.descripcion',
 					'departamento.nombre as dep'));
 			}
 
@@ -327,6 +327,7 @@ class HomeController extends BaseController {
 					'publicaciones.titulo',
 					'publicaciones.precio',
 					'publicaciones.moneda',
+					'publicaciones.descripcion',
 					'departamento.id as dep_id',
 					'departamento.nombre as dep'));
 			}else
@@ -360,6 +361,7 @@ class HomeController extends BaseController {
 					'publicaciones.titulo',
 					'publicaciones.precio',
 					'publicaciones.moneda',
+					'publicaciones.descripcion',
 					'departamento.id as dep_id',
 					'departamento.nombre as dep'));
 			}

@@ -345,7 +345,6 @@ class AjaxController extends BaseController{
 	}
 	public function search()
 	{
-		if (Request::ajax()) {
 			$input = Input::all();
 			if (Input::has('busq')) {
 				if (Input::has('filter')) {
@@ -535,7 +534,6 @@ class AjaxController extends BaseController{
 				));
 			
 			}
-		}
 	}
 	public function getCategories($id)
 	{

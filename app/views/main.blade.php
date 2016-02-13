@@ -31,7 +31,7 @@
 		{{ HTML::script('js/jquery.min.js') }}
 		{{ HTML::script('js/owl.carousel.min.js') }}
 		<script src='https://www.google.com/recaptcha/api.js'></script>
-		<script type="text/javascript" src="http://maps.google.com/maps/api/js"></script>
+		<script type="text/javascript" src="http://maps.google.com/maps/api/js?v=3"></script>
 	</head>
 	<body>
 		<script>
