@@ -1633,7 +1633,7 @@ jQuery(document).ready(function($) {
  			event.preventDefault();
  		}
  	});
-});
+});/*
 jQuery(document).ready(function($) {
 	function initMap() {
 	  var map = new google.maps.Map(document.getElementById('mapcontainer'), {
@@ -1668,4 +1668,4 @@ jQuery(document).ready(function($) {
 	                        'Error: The Geolocation service failed.' :
 	                        'Error: Your browser doesn\'t support geolocation.');
 	}
-});
+});*/
