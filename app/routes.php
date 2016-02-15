@@ -11,7 +11,7 @@
 |
 */
 
-Route::get('/', 'HomeController@showIndex');
+Route::get('/', 'HomeController@showFront');
 Route::get('inicio','HomeController@showIndex');
 Route::get('inicio/departamentos/{id}','HomeController@showIndex');
 Route::get('inicio/login','AuthController@getLogin');
