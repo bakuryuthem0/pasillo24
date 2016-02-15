@@ -108,7 +108,7 @@
 					<li>
 						OBLIGACIONES DE LOS USUARIOS
 						<p>
-							<span style="font-size:1.1em;">7.1.</span> Obligaciones del Comprador.- Dado que  <strong>pasillo24.com</strong> es un punto de encuentro entre el comprador y el vendedor y no participa de las operaciones que se realizan entre ellos, el vendedor será responsable por todas las obligaciones y cargas impositivas que correspondan por la venta de sus artículos, sin que pudiera imputársele a Tumomo.com algún tipo de responsabilidad por incumplimientos en tal sentido.</p>
+							<span style="font-size:1.1em;">7.1.</span> Obligaciones del Comprador.- Dado que  <strong>pasillo24.com</strong> es un punto de encuentro entre el comprador y el vendedor y no participa de las operaciones que se realizan entre ellos, el vendedor será responsable por todas las obligaciones y cargas impositivas que correspondan por la venta de sus artículos, sin que pudiera imputársele <strong>pasillo24.com</strong> algún tipo de responsabilidad por incumplimientos en tal sentido.</p>
 							<p>
 							<span style="font-size:1.1em;">7.2.</span> Obligaciones del Vendedor.- El vendedor debe tener capacidad legal para vender el bien objeto de la publicación. Asimismo, deberá cumplir con únicamente publicar los artículos permitidos y de poner información real o sus respectivas aclarativas en las publicaciones de sus anuncios por el tiempo acordado con <strong>pasillo24.com</strong></p>
 
