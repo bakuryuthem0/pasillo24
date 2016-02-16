@@ -785,7 +785,7 @@ class AjaxController extends BaseController{
 	{
 
 		$msgBag = null;
-		$input = Input::get('id');
+		$id = Input::get('id');
 		$input = Input::all();
 		/* validar pagina web */
 		if (!empty($input['pagina'])) {

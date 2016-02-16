@@ -32,7 +32,27 @@ App::after(function($request, $response)
 | integrates HTTP Basic authentication for quick, simple checking.
 |
 */
-
+Route::filter('check_app_auth',function(){
+	if (!Input::has('auth_token')) {
+		return Response::json(
+			array(
+				'type' => 'danger',
+				'msg'  => 'No se encuentra el token de seguridad',
+			)
+		);
+	}else
+	{
+		$id    = Input::get('id');
+		$token = Input::get('auth_token');
+		$user = User::find($id);
+		if ($user->auth_token != $token) {
+			return Response::json(array(
+				'type' => 'danger',
+				'msg'  => 'El token no concuerda con su usuario',
+			));
+		}
+	}
+});
 Route::filter('auth', function()
 {
 	if (!Auth::check()){ 

@@ -49,10 +49,13 @@ Route::get('app/inicio/buscar','AjaxController@search');
 Route::get('app/publicaciones/categorias/{id}','AjaxController@getCategories');
 Route::post('app/login','AjaxController@getLoginApp');
 Route::post('app/registro','AjaxController@postRegisterApp');
-Route::post('app/usuario/perfil/enviar','AjaxController@postProfile');
-Route::post('app/cambiar-clave','AjaxController@resetPassword');
 
-Route::post('app/usuario/publicacion/lider/enviar','AjaxController@postLider');
+Route::post('app/cambiar-clave','AjaxController@resetPassword');
+Route::group(array('before' => 'check_app_auth'),function()
+{
+	Route::post('app/usuario/perfil/enviar','AjaxController@postProfile');
+	Route::post('app/usuario/publicacion/lider/enviar','AjaxController@postLider');
+});
 
 Route::post('app/subir-imagenes/{carpeta}','AjaxController@upload_image');
 
