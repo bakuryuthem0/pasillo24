@@ -47,14 +47,15 @@ class AjaxController extends BaseController{
 		/*email 	= Campo debe ser un email*/
 		$input = Input::all();
 		$rules = array(
-			'username'			=> 'required|min:4|unique:usuario,username',
-			'password'      	=> 'required|min:6',
-			'nombre'       		=> 'required|min:4',
-			'apellido'			=> 'required|min:4',
-			'email'				=> 'required|email|unique:usuario,email',
-			'carnet'			=> 'required|min:5|unique:usuario,id_carnet',
-			'sexo'				=> 'required|in:f,m',
-			'department'	 	=> 'required',
+			'username'					=> 'required|min:4|unique:usuario,username',
+			'password'      			=> 'required|min:6|confirmed',
+			'password_confirmation'  	=> 'required|min:6',
+			'nombre'       				=> 'required|min:4',
+			'apellido'					=> 'required|min:4',
+			'email'						=> 'required|email|unique:usuario,email',
+			'carnet'					=> 'required|min:5|unique:usuario,id_carnet',
+			'sexo'						=> 'required|in:f,m',
+			'department'	 			=> 'required',
 
 		);
 		$messages = array(
@@ -66,13 +67,13 @@ class AjaxController extends BaseController{
 			'in'	   => 'Sexo incorrecto.',
 		);
 		$custom = array(
-			'username' 			=> 'EL nombre de usuario',
-			'password'    	 	=> 'La contraseña',
-			'nombre'            => 'El nombre',
-			'lastname'          => 'El apellido',
-			'email' 			=> 'El email',
-			'carnet'			=> 'El carnet de identificacion',
-			'sexo'				=> 'El sexo',
+			'username' 				=> 'EL nombre de usuario',
+			'password'    	 		=> 'La contraseña',
+			'nombre'            	=> 'El nombre',
+			'lastname'          	=> 'El apellido',
+			'email' 				=> 'El email',
+			'carnet'				=> 'El carnet de identificacion',
+			'sexo'					=> 'El sexo',
 			'department'  			=> 'El departamento',
 		);
 		$validator = Validator::make($input, $rules, $messages,$custom);
@@ -137,20 +138,22 @@ class AjaxController extends BaseController{
         if (!is_null($id)) {
 			$dep = Department::find($id);
 		}
+		$title ="Inicio | pasillo24.com";
 		if (!is_null($id)) {
 			$lider = Publicaciones::where('status','=','Aprobado')
 			->where('ubicacion','=','Principal')
 			->where('tipo','=','Lider')
-			->where('pag_web','!=',"")
-			->where('departamento','=',$id)
+			->where('publicaciones.pag_web','!=',"")
 			->where('fechFin','>=',date('Y-m-d',time()))
-			->where('deleted','=',0)
-			->orderBy('fechFin','desc')
-			->get(array(
-				'id',
-				'titulo',
-				'img_1'
-			));	
+			->where('publicaciones.deleted','=',0)
+			->orderBy('fechFin','desc')->get(array(
+				'publicaciones.img_1',
+				'publicaciones.titulo',
+				'publicaciones.precio',
+				'publicaciones.moneda',
+				'publicaciones.id',
+				)
+			);
 			$habitual = Publicaciones::where(function($query) use($id){
 				/*Busco las habituales*/
 				$query->where('tipo','=','Habitual')
@@ -164,7 +167,6 @@ class AjaxController extends BaseController{
 				->where(function($query){
 					/*y que sigan activas*/
 					$query->where('fechFin','>=',date('Y-m-d',time()))
-					->orWhere('fechFinNormal','>=',date('Y-m-d',time()))
 					->where('status','=','Aprobado');
 
 				})
@@ -180,11 +182,11 @@ class AjaxController extends BaseController{
 
 			})
 			->orderBy('fechFin','desc')->get(array(
-				'id',
-				'titulo',
-				'precio',
-				'moneda',
-				'img_1'
+				'publicaciones.img_1',
+				'publicaciones.titulo',
+				'publicaciones.precio',
+				'publicaciones.moneda',
+				'publicaciones.id',
 			));
 			
 			$casual = Publicaciones::where('tipo','=','Casual')
@@ -192,13 +194,12 @@ class AjaxController extends BaseController{
 			->where('status','=','Aprobado')
 			->where('departamento','=',$id)
 			->where('deleted','=',0)
-			->get(
-			array(
-				'id',
-				'titulo',
-				'precio',
-				'moneda',
-				'img_1'
+			->get(array(
+				'publicaciones.img_1',
+				'publicaciones.titulo',
+				'publicaciones.precio',
+				'publicaciones.moneda',
+				'publicaciones.id',
 			));
 		}else
 		{
@@ -209,9 +210,11 @@ class AjaxController extends BaseController{
 			->where('fechFin','>=',date('Y-m-d',time()))
 			->where('deleted','=',0)
 			->orderBy('fechFin','desc')->get(array(
-				'id',
-				'titulo',
-				'img_1'
+				'publicaciones.img_1',
+				'publicaciones.titulo',
+				'publicaciones.precio',
+				'publicaciones.moneda',
+				'publicaciones.id',
 			));
 			$habitual = Publicaciones::where(function($query){
 				/*Busco las habituales*/
@@ -226,7 +229,6 @@ class AjaxController extends BaseController{
 				->where(function($query){
 					/*y que sigan activas*/
 					$query->where('fechFin','>=',date('Y-m-d',time()))
-					->orWhere('fechFinNormal','>=',date('Y-m-d',time()))
 					->where('status','=','Aprobado');
 
 				});
@@ -240,29 +242,53 @@ class AjaxController extends BaseController{
 
 			})
 			->orderBy('fechFin','desc')->get(array(
-				'id',
-				'titulo',
-				'precio',
-				'moneda',
-				'img_1'
+				'publicaciones.img_1',
+				'publicaciones.titulo',
+				'publicaciones.precio',
+				'publicaciones.moneda',
+				'publicaciones.id',
 			));
 			$casual = Publicaciones::where('tipo','=','Casual')
 			->where('fechFin','>=',date('Y-m-d',time()))
 			->where('status','=','Aprobado')
 			->where('deleted','=',0)
 			->get(array(
-				'id',
-				'titulo',
-				'precio',
-				'moneda',
-				'img_1'
+				'publicaciones.img_1',
+				'publicaciones.titulo',
+				'publicaciones.precio',
+				'publicaciones.moneda',
+				'publicaciones.id',
 			));
 		}
 
 		$categories = Categorias::where('deleted','=',0)->where('tipo','=',1)->orderBy('nombre')->get();
-		$servicios  = Categorias::where('deleted','=',0)->where('tipo','=',2)->get();
-		$departamentos = Department::get();
-                $publi = Publicidad::get();
+		$otros = new StdClass;
+		foreach ($categories as $c) {
+			if (strtolower($c->nombre) == 'otros') {
+				$otros->id 		= $c->id;
+				$otros->nombre	= $c->nombre;			
+			}
+		}
+		if(!isset($otros->id))
+		{
+			$otros->id = '1000';
+			$otros->nombre = 'Otros';
+		}
+		$servicios  = Categorias::where('deleted','=',0)->where('tipo','=',2)->orderBy('nombre')->get();
+		$otros2 = new StdClass;
+		foreach ($servicios as $c) {
+			if (strtolower($c->nombre) == 'otros') {
+				$otros2->id 		= $c->id;
+				$otros2->nombre	= $c->nombre;			
+			}
+		}
+		if(!isset($otros2->id))
+		{
+			$otros2->id = '1000';
+			$otros2->nombre = 'Otros';
+		}
+		$departamentos  = Department::get();
+        $publi 			= Publicidad::get();
 		if (!is_null($id)) {
         	return Response::json(array(
         		'pubLider' 		=> $lider,
@@ -579,5 +605,329 @@ class AjaxController extends BaseController{
 			'busq'          => $id,
 		));
 		
+	}
+	public function getPublicationCategory($id)
+	{
+		$lider = Publicaciones::where('status','=','Aprobado')
+		->where('deleted','=',0)
+		->where(function($query){
+			$query->where('ubicacion','=','Categoria')
+			->orWhere('ubicacion','=','Ambos');
+		})
+		->where(function($query){
+			$query->where('fechFin','>=',date('Y-m-d'))
+			->orWhere('fechFinNormal','>=',date('Y-m-d'));
+			
+		})
+		->where('categoria','=',$id)
+		->get(array('id','img_1','titulo','precio','moneda'));
+		$publicaciones = Publicaciones::where('publicaciones.status','=','Aprobado')
+		->where('categoria','=',$id)
+		->leftJoin('departamento','publicaciones.departamento','=','departamento.id')
+		->where('publicaciones.tipo','!=','Lider')
+		->where('publicaciones.deleted','=',0)
+		->where(function($query){
+			$query->where('publicaciones.ubicacion','=','Categoria')
+			->orWhere('publicaciones.ubicacion','=','Ambos');
+		})
+		->where(function($query){
+			$query->where('publicaciones.fechFin','>=',date('Y-m-d',time()))
+			->orWhere('publicaciones.fechFinNormal','>=',date('Y-m-d',time()));
+		})		
+		->get(array(
+			'publicaciones.id',
+			'publicaciones.img_1',
+			'publicaciones.titulo',
+			'publicaciones.precio',
+			'publicaciones.moneda',
+			'publicaciones.descripcion',
+			'departamento.id as dep_id',
+			'departamento.nombre as dep'
+		));
+		$departamentos = Department::get();
+		return Response::json(array(
+			'publicaciones' => $publicaciones,
+			'lider' 		=> $lider,
+			'departamento' 	=> $departamentos,
+			'busq' 			=> $id,
+		));
+	}
+	public function resetPassword()
+	{
+		$email = Input::get('email');
+		$user = User::where('email','=',$email)->first();
+		if (count($user) < 1) {
+			return Response::json(array('type' => 'danger','msg' => 'Error, el email no existe.'));
+		}else
+		{
+
+			$cadena = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890";
+		    //Obtenemos la longitud de la cadena de caracteres
+		    $longitudCadena=strlen($cadena);
+		     
+		    //Se define la variable que va a contener la contraseña
+		    $pass = "";
+		    //Se define la longitud de la contraseña, en mi caso 10, pero puedes poner la longitud que quieras
+		    $longitudPass=8;
+		    
+		    //Creamos la contraseña
+		    for($i=1 ; $i<=$longitudPass ; $i++){
+		        //Definimos numero aleatorio entre 0 y la longitud de la cadena de caracteres-1
+		        $pos=rand(0,$longitudCadena-1);
+		     
+		        //Vamos formando la contraseña en cada iteraccion del bucle, añadiendo a la cadena $pass la letra correspondiente a la posicion $pos en la cadena de caracteres definida.
+		        $pass .= substr($cadena,$pos,1);
+		    }
+		    $user->password = Hash::make($pass);
+		  	$data = array(
+				'pass' => $pass,
+				'texto' => 'Usted ha solicitado recuperar su contraseña',
+				'title' => 'recuperar contraseña'
+			);
+
+		  	if ($user->save()) {
+		  		Mail::send('emails.passNew', $data, function ($message) use ($pass,$email){
+				    $message->subject('Correo de restablecimiento de contraseña pasillo24.com');
+				    $message->to($email);
+				});
+				return Response::json(array('type' => 'success','msg' => 'Se enviara un email con una clave provisional. Esto puede tomar varios segundos.'));
+
+		  	}else
+		  	{
+				return Response::json(array('type' => 'danger','msg' => 'Error, no se ha podido cambiar la contraseña, le agradecemos ponerse en contacto por medio de nuestro modulo de contacto.'));
+		  	}
+		    
+
+		}	
+	}
+	public function postProfile()
+	{
+		$id = Input::get('id');
+		$input = Input::all();
+		$user = User::find($id);
+		$email = $user->email;
+		$rules = array(
+			'name'       			 => 'min:4',
+			'lastname'   			 => 'min:4',
+			'id_carnet'         	 => 'min:5',
+			'department' 			 => 'required'
+
+		);
+		$messages = array(
+			'required' => ':attribute es obligatorio',
+			'min'      => ':attribute debe ser mas largo'
+		);
+		$custom = array(
+			'name'              => 'El nombre',
+			'lastname'          => 'El apellido',
+			'department'  		=> 'El departamento'
+		);
+		$validator = Validator::make($input, $rules, $messages,$custom);
+		if ($validator->fails()) {
+			return Response::json(array(
+               'danger' => 'Error al validar los datos',
+               'data' => $validator->getMessageBag()->toArray()
+              	)
+			);
+		}
+		if (!empty($input['name'])) {
+			$user->name = $input['name'];
+		}
+		if (!empty($input['lastname'])) {
+			$user->lastname = $input['lastname'];
+		}
+		if (!empty($input['id_carnet'])) {
+			$user->id_carnet = $input['id_carnet'];
+		}
+		if (!empty($input['department'])) {
+			$user->state = $input['department'];
+		}
+		if (!empty($input['phone'])) {
+			$user->phone = $input['phone'];
+		}
+		if (!empty($input['pag_web'])) {
+			$user->pag_web = $input['pag_web'];
+		}
+		if (!empty($input['postal_cod'])) {
+			$user->postal_cod = $input['postal_cod'];
+		}
+		if  (!empty($input['direccion'])) {
+			$user->dir = $input['direccion'];
+		}
+		if (!empty($input['nit'])) {
+			$user->nit = $input['nit'];
+		}
+		if (!empty($input['pais'])) {
+			$user->pais = $input['pais'];
+		}
+		if($user->save())
+		{
+			$data = array(
+				'link' => 'pasillo24.com/inicio/contacto'
+			);
+			Mail::send('emails.modify', $data, function ($message) use ($input,$email){
+			    $message->subject('Correo de cambio de perfil pasillo24.com');
+			    $message->from('pasillo24@pasillo24.com');
+			    $message->to($email);
+			});
+			return Response::json(array(
+				'type' => 'success',
+				'msg'  => 'Perfil cambiado satisfactoriamente. Se ha enviado un email a su correo.'
+			));
+		}else{
+			return Response::json(array(
+				'type' => 'danger',
+				'msg'  => 'Error al modificar el perfil.'
+			));
+		}
+	}
+	public function postLider()
+	{
+
+		$msgBag = null;
+		$input = Input::get('id');
+		$input = Input::all();
+		/* validar pagina web */
+		if (!empty($input['pagina'])) {
+			if (mb_stristr($input['pagina'],'http://') == false && mb_stristr($input['pagina'],'https://') == false) {
+				$input['pagina'] = '';
+				$msgBag = array('pagina' => 'La pagina web debe comenzar con http:// ó https://.');
+			}
+		}
+		if (isset($input['fechIni'])) {
+			$fecha = explode('-', $input['fechIni']);
+			if (count($fecha)<3) {
+				$input['fechIni'] = '';
+				$msgBag = array('fechIni' => 'Formato de fecha incorrecto. formato valido: dd-mm-yyyy.');
+			}
+		}
+		/* Validador general */
+		define('CONST_SERVER_TIMEZONE', 'UTC');
+		date_default_timezone_set('America/La_Paz');
+		$rules = array(
+			'ubication' => 'required',
+			'namePub'   => 'required|min:4',
+			'duration'  => 'required|min:0',
+			'time'      => 'required|in:d,s,m,a',
+			'fechIni'   => 'required|after:'.date('d-m-Y'),
+			'id'   => 'required',
+		);
+		$msg = array(
+			'required' => ':attribute es obligatorio',
+			'min'      => ':attribute debe ser mas largo',
+			'in'       => 'Debe seleccionar una opción',
+			'after'    => 'Debe seleccionar una fecha posterior a hoy',
+			'active_url'=> 'Debe utilizar un url válido'
+		);
+		$attribute = array(
+			'ubication' => 'El campo ubicacion',
+			'namePub' 	=> 'El campo titulo',
+			'duration'	=> 'El campo duracion',
+			'time'		=> 'El campo tiempo',
+			'fechIni'   => 'El campo fecha de inicio',
+			'id'	=> 'Id del usuario'
+
+		);
+		if ($input['ubication'] == 'Categoria'){
+			$rules = $rules+array('cat'  => 'required');
+			$attribute = array(
+				'cat'	=> 'El campo categoria',
+			);
+		}
+		$validator = Validator::make($input, $rules, $msg,$attribute);
+		if ($validator->fails()) {
+			if (!is_null($msgBag)) {
+				return Response::json(array(
+					'type' => 'danger',
+					'data' => array_merge($validator->getMessageBag()->toArray(),$msgBag),
+				));
+				
+			}else
+			{
+				return Response::json(array(
+					'type' => 'danger',
+					'data' => $validator->getMessageBag()->toArray(),
+				));
+			}
+		}else
+		{
+			/* Validar duracion y montos */
+			$dur = $input['duration'];
+			if ($input['time'] == 'd') {
+				
+				$time = 86400;
+				$monto = Precios::where('pub_type_id','=',1)->where('desc','=','dia')->pluck('precio');
+			}elseif($input['time'] == 's')
+			{
+				$time = 604800;
+				$monto = Precios::where('pub_type_id','=',1)->where('desc','=','semana')->pluck('precio');
+			}elseif($input['time'] == 'm')
+			{
+				$time = 2629744;
+				$monto = Precios::where('pub_type_id','=',1)->where('desc','=','mes')->pluck('precio');
+			}
+			$monto = $monto*$dur;
+
+			/* Segundo validador de fecha */
+		
+			$timestamp = strtotime($input['fechIni'])+($time*$input['duration']);
+			$fechaFin = date('d-m-Y',$timestamp);
+
+			$timestamp = $input['duration']*$time;
+			$date  = date('d-m-Y');
+			$timestamp = strtotime($input['fechIni'])+$timestamp;
+			$fechFin = date('Y-m-d',$timestamp);
+
+			/* nueva publicacion */
+			$publication = new Publicaciones;
+			$publication->user_id   = $id;
+			$publication->tipo 		= 'Lider';
+			$publication->ubicacion = $input['ubication'];
+			if ($publication->ubicacion == 'Categoria') {
+				$publication->categoria = $input['cat'];
+			}
+			$publication->titulo    = $input['namePub'];
+			if (isset($input['pagina']) && !empty($input['pagina'])) {
+				$publication->pag_web   = $input['pagina'];
+			}else
+			{
+				$publication->pag_web   = 'http://';
+			}
+			$publication->fechIni   = date('Y-m-d',strtotime($input['fechIni']));
+			$publication->fechFin   = $fechFin;
+			$publication->status    = 'Pendiente';
+			if(isset($input['nomb']) && !empty($input['nomb'])){
+				$publication->name = $input['nomb'];
+			}
+			if(isset($input['phone']) && !empty($input['phone'])){
+				$publication->phone = $input['phone'];
+			}
+			if(isset($input['email']) && !empty($input['email'])){
+				$publication->email = $input['email'];
+			}
+			if(isset($input['pag_web']) && !empty($input['pag_web'])){
+				$publication->pag_web_hab = $input['pag_web'];
+			}
+			$publication->monto     = $monto;
+			
+			
+			if ($publication->save()) {
+				
+				return Response::json(array(
+					'type' 		=> 'success',
+					'msg'  		=> 'Publcación creada satisfactoriamente.',
+					'pub_id' 	=> $publication->id,
+					'monto'	    => $publication->monto
+				));
+			}else
+			{
+				
+				return Response::json(array(
+					'type' 		=> 'danger',
+					'msg'  		=> 'Error al crear la publicación.',
+				));
+			}
+			
+		}
 	}
 }

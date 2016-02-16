@@ -41,13 +41,21 @@ Route::post('chequear/email','AuthController@postEmailCheck');
 Route::get('inicio/terminos-y-condiciones', 'HomeController@getTermsAndConditions');
 
 //app
-Route::post('app/inicio','AjaxController@getLoginApp');
-Route::post('app/registro','AjaxController@postRegisterApp');
+Route::get('app/inicio','AjaxController@showIndex');
+Route::get('app/inicio/departamentos/{id}','AjaxController@showIndex');
+Route::get('app/inicio/categorias/{id}','AjaxController@getPublicationCategory');
 Route::get('app/inicio/buscar','AjaxController@search');
+
 Route::get('app/publicaciones/categorias/{id}','AjaxController@getCategories');
+Route::post('app/login','AjaxController@getLoginApp');
+Route::post('app/registro','AjaxController@postRegisterApp');
+Route::post('app/usuario/perfil/enviar','AjaxController@postProfile');
+Route::post('app/cambiar-clave','AjaxController@resetPassword');
+
+Route::post('app/usuario/publicacion/lider/enviar','AjaxController@postLider');
+
 Route::post('app/subir-imagenes/{carpeta}','AjaxController@upload_image');
-Route::get('inicio-app','AjaxController@showIndex');
-Route::get('inicio-app/departamentos/{id}','AjaxController@showIndex');
+
 
 
 
