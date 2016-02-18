@@ -142,35 +142,41 @@ class PublicationController extends BaseController {
 	{
 		$pub = Publicaciones::find(base64_decode($id));
 		$user = User::find($pub->user_id);
-		$otrasPub = Publicaciones::where('user_id','=',$pub->user_id)
-		->where('id','!=',base64_decode($id))
-		->where('status','=','Aprobado')
-		->where(function($query)
-		{
-			$query->where('tipo','=','Lider')
-			->where('fechFin','>=',date('Y-m-d',time()))
-			->orWhere(function($query)
+		if ($pub->user_id != 24) {
+			$otrasPub = Publicaciones::where('user_id','=',$pub->user_id)
+			->where('id','!=',base64_decode($id))
+			->where('status','=','Aprobado')
+			->where(function($query)
 			{
-				$query->where(function($query){
-					/*Busco las habituales*/
-					$query->where('tipo','=','Habitual')
-					->where(function($query){
-						/*y que sigan activas*/
-						$query->where('fechFin','>=',date('Y-m-d',time()))
-						->orWhere('fechFinNormal','>=',date('Y-m-d',time()));
+				$query->where('tipo','=','Lider')
+				->where('fechFin','>=',date('Y-m-d',time()))
+				->orWhere(function($query)
+				{
+					$query->where(function($query){
+						/*Busco las habituales*/
+						$query->where('tipo','=','Habitual')
+						->where(function($query){
+							/*y que sigan activas*/
+							$query->where('fechFin','>=',date('Y-m-d',time()))
+							->orWhere('fechFinNormal','>=',date('Y-m-d',time()));
+
+						});
+					})
+					->orWhere(function($query){
+						$query->where('tipo','=','Casual')
+						->where('fechFin','>=',date('Y-m-d',time()));
 
 					});
-				})
-				->orWhere(function($query){
-					$query->where('tipo','=','Casual')
-					->where('fechFin','>=',date('Y-m-d',time()));
-
 				});
-			});
-		})
-		->where('deleted','=',0)
-		->orderBy('id','desc')
-		->get();
+			})
+			->where('deleted','=',0)
+			->orderBy('id','desc')
+			->take(16)
+			->get();
+		}else
+		{
+			$otrasPub = array();
+		}
 		if ($pub->tipo == "Lider") {
 			$pub = Publicaciones::join('usuario','usuario.id','=','publicaciones.user_id')
 			->where('publicaciones.id','=',base64_decode($id))

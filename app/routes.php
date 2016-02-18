@@ -54,8 +54,22 @@ Route::post('app/cambiar-clave','AjaxController@resetPassword');
 Route::group(array('before' => 'check_app_auth'),function()
 {
 	Route::post('app/usuario/perfil/enviar','AjaxController@postProfile');
+
 	Route::post('app/usuario/publicacion/lider/enviar','AjaxController@postLider');
+	Route::post('app/usuario/publicacion/habitual/enviar','AjaxController@postHabitual');
+	Route::get('app/usuario/publicacion/habitual/{id}/previsualizar','AjaxController@getHabitualPreview');
+	Route::post('app/usuario/publicacion/habitual/incremento','AjaxController@postHabitualAdd');
+	Route::post('app/usuario/publicacion/casual/enviar','AjaxController@postCasual');
+	Route::post('app/usuario/publicaciones/pago/enviar','AjaxController@postPublicationPayment');
+
 });
+//rutas globales
+Route::get('app/categorias','AjaxController@getCategory');
+Route::get('app/departamentos','AjaxController@getDepartments');
+Route::get('app/marcas','AjaxController@getBrand');
+Route::get('app/modelos','AjaxController@getModel');
+
+
 
 Route::post('app/subir-imagenes/{carpeta}','AjaxController@upload_image');
 
@@ -82,7 +96,7 @@ Route::group(array('before' =>'auth'),function()
 	Route::get('usuario/publicacion/lider','UserController@getPublicationLider');
 	Route::get('usuario/publicacion/lider/fecha','UserController@getDate');
 	Route::post('usuario/publicacion/lider/enviar','UserController@postPublicationLider');
-	Route::get('usuario/publicacion/pagar/{id}','UserController@getPayments');
+	Route::get('usuario/publicacion/pagar/{id}','UserController@postPublicationPayment');
 	
 	//normal	
 	//Route::get('usuario/publicar/habitual/{type}','PublicationController@getHabitualForm');

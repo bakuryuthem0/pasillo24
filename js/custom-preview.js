@@ -1635,37 +1635,38 @@ jQuery(document).ready(function($) {
  	});
 });
 jQuery(document).ready(function($) {
-	function initMap() {
-	  var map = new google.maps.Map(document.getElementById('mapcontainer'), {
-	    center: {lat: -34.397, lng: 150.644},
-	    zoom: 6
+	function success(position) {
+	  var mapcanvas = document.createElement('div');
+	  mapcanvas.id = 'mapcontainer';
+	  mapcanvas.style.height = '400px';
+	  mapcanvas.style.width = '100%';
+
+	  document.querySelector('article').appendChild(mapcanvas);
+
+	  var coords = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+	  
+	  var options = {
+	    zoom: 15,
+	    center: coords,
+	    mapTypeControl: false,
+	    navigationControlOptions: {
+	    	style: google.maps.NavigationControlStyle.SMALL
+	    },
+	    mapTypeId: google.maps.MapTypeId.ROADMAP
+	  };
+	  var map = new google.maps.Map(document.getElementById("mapcontainer"), options);
+
+	  var marker = new google.maps.Marker({
+	      position: coords,
+	      map: map,
+	      title:"You are here!"
 	  });
-	  var infoWindow = new google.maps.InfoWindow({map: map});
-
-	  // Try HTML5 geolocation.
-	  if (navigator.geolocation) {
-	    navigator.geolocation.getCurrentPosition(function(position) {
-	      var pos = {
-	        lat: position.coords.latitude,
-	        lng: position.coords.longitude
-	      };
-
-	      infoWindow.setPosition(pos);
-	      infoWindow.setContent('Location found.');
-	      map.setCenter(pos);
-	    }, function() {
-	      handleLocationError(true, infoWindow, map.getCenter());
-	    });
-	  } else {
-	    // Browser doesn't support Geolocation
-	    handleLocationError(false, infoWindow, map.getCenter());
-	  }
 	}
-	initMap();
-	function handleLocationError(browserHasGeolocation, infoWindow, pos) {
-	  infoWindow.setPosition(pos);
-	  infoWindow.setContent(browserHasGeolocation ?
-	                        'Error: The Geolocation service failed.' :
-	                        'Error: Your browser doesn\'t support geolocation.');
+
+	if (navigator.geolocation) {
+	  navigator.geolocation.getCurrentPosition(success);
+	} else {
+	  error('Geo Location is not supported');
 	}
+
 });

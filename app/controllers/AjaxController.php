@@ -1,6 +1,18 @@
 <?php
 
 class AjaxController extends BaseController{
+	/*---------------------------Login-------------------------------------------------*/
+	/*                                                                                 */
+	/*                                                                                 */
+	/*                                                                                 */
+	/*                                                                                 */
+	/*                                                                                 */
+	/*                                                                                 */
+	/*                                                                                 */
+	/*                                                                                 */
+	/*                                                                                 */
+	/*---------------------------Login-------------------------------------------------*/
+
 	public function getLoginApp()
 	{
 		/*Se reciven los datos del usuario*/
@@ -133,6 +145,158 @@ class AjaxController extends BaseController{
 				'msg' => 'Error al registrar al usuario.'));
 		}
 	}
+	/*---------------------------Resetar/perfil----------------------------------------*/
+	/*                                                                                 */
+	/*                                                                                 */
+	/*                                                                                 */
+	/*                                                                                 */
+	/*                                                                                 */
+	/*                                                                                 */
+	/*                                                                                 */
+	/*                                                                                 */
+	/*                                                                                 */
+	/*---------------------------Resetar/perfil----------------------------------------*/
+	public function resetPassword()
+	{
+		$email = Input::get('email');
+		$user = User::where('email','=',$email)->first();
+		if (count($user) < 1) {
+			return Response::json(array('type' => 'danger','msg' => 'Error, el email no existe.'));
+		}else
+		{
+
+			$cadena = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890";
+		    //Obtenemos la longitud de la cadena de caracteres
+		    $longitudCadena=strlen($cadena);
+		     
+		    //Se define la variable que va a contener la contraseña
+		    $pass = "";
+		    //Se define la longitud de la contraseña, en mi caso 10, pero puedes poner la longitud que quieras
+		    $longitudPass=8;
+		    
+		    //Creamos la contraseña
+		    for($i=1 ; $i<=$longitudPass ; $i++){
+		        //Definimos numero aleatorio entre 0 y la longitud de la cadena de caracteres-1
+		        $pos=rand(0,$longitudCadena-1);
+		     
+		        //Vamos formando la contraseña en cada iteraccion del bucle, añadiendo a la cadena $pass la letra correspondiente a la posicion $pos en la cadena de caracteres definida.
+		        $pass .= substr($cadena,$pos,1);
+		    }
+		    $user->password = Hash::make($pass);
+		  	$data = array(
+				'pass' => $pass,
+				'texto' => 'Usted ha solicitado recuperar su contraseña',
+				'title' => 'recuperar contraseña'
+			);
+
+		  	if ($user->save()) {
+		  		Mail::send('emails.passNew', $data, function ($message) use ($pass,$email){
+				    $message->subject('Correo de restablecimiento de contraseña pasillo24.com');
+				    $message->to($email);
+				});
+				return Response::json(array('type' => 'success','msg' => 'Se enviara un email con una clave provisional. Esto puede tomar varios segundos.'));
+
+		  	}else
+		  	{
+				return Response::json(array('type' => 'danger','msg' => 'Error, no se ha podido cambiar la contraseña, le agradecemos ponerse en contacto por medio de nuestro modulo de contacto.'));
+		  	}
+		    
+
+		}	
+	}
+	public function postProfile()
+	{
+		$id = Input::get('id');
+		$input = Input::all();
+		$user = User::find($id);
+		$email = $user->email;
+		$rules = array(
+			'name'       			 => 'min:4',
+			'lastname'   			 => 'min:4',
+			'id_carnet'         	 => 'min:5',
+			'department' 			 => 'required'
+
+		);
+		$messages = array(
+			'required' => ':attribute es obligatorio',
+			'min'      => ':attribute debe ser mas largo'
+		);
+		$custom = array(
+			'name'              => 'El nombre',
+			'lastname'          => 'El apellido',
+			'department'  		=> 'El departamento'
+		);
+		$validator = Validator::make($input, $rules, $messages,$custom);
+		if ($validator->fails()) {
+			return Response::json(array(
+               'danger' => 'Error al validar los datos',
+               'data' => $validator->getMessageBag()->toArray()
+              	)
+			);
+		}
+		if (!empty($input['name'])) {
+			$user->name = $input['name'];
+		}
+		if (!empty($input['lastname'])) {
+			$user->lastname = $input['lastname'];
+		}
+		if (!empty($input['id_carnet'])) {
+			$user->id_carnet = $input['id_carnet'];
+		}
+		if (!empty($input['department'])) {
+			$user->state = $input['department'];
+		}
+		if (!empty($input['phone'])) {
+			$user->phone = $input['phone'];
+		}
+		if (!empty($input['pag_web'])) {
+			$user->pag_web = $input['pag_web'];
+		}
+		if (!empty($input['postal_cod'])) {
+			$user->postal_cod = $input['postal_cod'];
+		}
+		if  (!empty($input['direccion'])) {
+			$user->dir = $input['direccion'];
+		}
+		if (!empty($input['nit'])) {
+			$user->nit = $input['nit'];
+		}
+		if (!empty($input['pais'])) {
+			$user->pais = $input['pais'];
+		}
+		if($user->save())
+		{
+			$data = array(
+				'link' => 'pasillo24.com/inicio/contacto'
+			);
+			Mail::send('emails.modify', $data, function ($message) use ($input,$email){
+			    $message->subject('Correo de cambio de perfil pasillo24.com');
+			    $message->from('pasillo24@pasillo24.com');
+			    $message->to($email);
+			});
+			return Response::json(array(
+				'type' => 'success',
+				'msg'  => 'Perfil cambiado satisfactoriamente. Se ha enviado un email a su correo.'
+			));
+		}else{
+			return Response::json(array(
+				'type' => 'danger',
+				'msg'  => 'Error al modificar el perfil.'
+			));
+		}
+	}
+
+	/*---------------------------Index-------------------------------------------------*/
+	/*                                                                                 */
+	/*                                                                                 */
+	/*                                                                                 */
+	/*                                                                                 */
+	/*                                                                                 */
+	/*                                                                                 */
+	/*                                                                                 */
+	/*                                                                                 */
+	/*                                                                                 */
+	/*---------------------------Index-------------------------------------------------*/
 	public function showIndex($id = null)
 	{
         if (!is_null($id)) {
@@ -313,62 +477,17 @@ class AjaxController extends BaseController{
           	));
         }
 	}
-	public function upload_image($carpeta)
-	{
-		$ruta 	 = "images/pubImages/".$carpeta."/";
-		$file 	 = Input::file('file');
-		if (file_exists($ruta.$file->getClientOriginalName())) {
-			//guardamos la imagen en public/imgs con el nombre original
-	        $i = 0;//indice para el while
-	        //separamos el nombre de la img y la extensión
-	        $info = explode(".",$file->getClientOriginalName());
-	        //asignamos de nuevo el nombre de la imagen completo
-	        $miImg = $file->getClientOriginalName();
-	        //mientras el archivo exista iteramos y aumentamos i
-	        while(file_exists($ruta.$miImg)){
-	            $i++;
-	            $miImg = $info[0]."(".$i.")".".".$info[1];              
-	        }
-	        //guardamos la imagen con otro nombre ej foto(1).jpg || foto(2).jpg etc
-	        $file->move($ruta,$miImg);
-	        $img = Image::make($ruta.$miImg);
-	        $blank = Image::make('images/blank.jpg');
-	         if ($img->width() > $img->height()) {
-	        	$img->widen(1604);
-	        }else
-	        {
-	        	$img->heighten(804);
-	        }
-	        if ($img->height() > 804) {
-	        	$img->heighten(804);
-	        }
-	        $mark = Image::make('images/watermark.png')->widen(400);
-	        $blank->insert($img,'center');
-	        $blank->insert($mark,'center')
-	       	->interlace()
-	        ->save($ruta.$miImg);
-		}else
-		{
-			$file->move($ruta,$file->getClientOriginalName());
-			$img = Image::make($ruta.$file->getClientOriginalName());
-	                    $blank = Image::make('images/blank.jpg');
-	                    if ($img->width() > $img->height()) {
-	        	      $img->widen(1604);
-	                }else
-	                {
-	        	      $img->heighten(804);
-	                }
-	        if ($img->height() > 804) {
-	        	$img->heighten(804);
-	        }
-	        $mark = Image::make('images/watermark.png')->widen(400);
-	        $blank->insert($img,'center');
-	        $blank->insert($mark,'center')
-	       	->interlace()
-	        ->save($ruta.$file->getClientOriginalName());
-		}
-		return Response::json(array('type' => 'success' , 'msg' => 'Se ha subido la imagen.'));
-	}
+	/*---------------------------Busqueda----------------------------------------------*/
+	/*                                                                                 */
+	/*                                                                                 */
+	/*                                                                                 */
+	/*                                                                                 */
+	/*                                                                                 */
+	/*                                                                                 */
+	/*                                                                                 */
+	/*                                                                                 */
+	/*                                                                                 */
+	/*---------------------------Busqueda----------------------------------------------*/
 	public function search()
 	{
 			$input = Input::all();
@@ -561,6 +680,8 @@ class AjaxController extends BaseController{
 			
 			}
 	}
+	/*---------------------------categorias----------------------------------------------*/
+
 	public function getCategories($id)
 	{
 		$lider = Publicaciones::where('status','=','Aprobado')
@@ -652,135 +773,88 @@ class AjaxController extends BaseController{
 			'busq' 			=> $id,
 		));
 	}
-	public function resetPassword()
+	/*---------------------------Subir Imagenes----------------------------------------*/
+	/*                                                                                 */
+	/*                                                                                 */
+	/*                                                                                 */
+	/*                                                                                 */
+	/*                                                                                 */
+	/*                                                                                 */
+	/*                                                                                 */
+	/*                                                                                 */
+	/*                                                                                 */
+	/*---------------------------Subir Imagenes----------------------------------------*/
+	public function upload_image($carpeta)
 	{
-		$email = Input::get('email');
-		$user = User::where('email','=',$email)->first();
-		if (count($user) < 1) {
-			return Response::json(array('type' => 'danger','msg' => 'Error, el email no existe.'));
+		$ruta 	 = "images/pubImages/".$carpeta."/";
+		$file 	 = Input::file('file');
+		if (file_exists($ruta.$file->getClientOriginalName())) {
+			//guardamos la imagen en public/imgs con el nombre original
+	        $i = 0;//indice para el while
+	        //separamos el nombre de la img y la extensión
+	        $info = explode(".",$file->getClientOriginalName());
+	        //asignamos de nuevo el nombre de la imagen completo
+	        $miImg = $file->getClientOriginalName();
+	        //mientras el archivo exista iteramos y aumentamos i
+	        while(file_exists($ruta.$miImg)){
+	            $i++;
+	            $miImg = $info[0]."(".$i.")".".".$info[1];              
+	        }
+	        //guardamos la imagen con otro nombre ej foto(1).jpg || foto(2).jpg etc
+	        $file->move($ruta,$miImg);
+	        $img = Image::make($ruta.$miImg);
+	        $blank = Image::make('images/blank.jpg');
+	         if ($img->width() > $img->height()) {
+	        	$img->widen(1604);
+	        }else
+	        {
+	        	$img->heighten(804);
+	        }
+	        if ($img->height() > 804) {
+	        	$img->heighten(804);
+	        }
+	        $mark = Image::make('images/watermark.png')->widen(400);
+	        $blank->insert($img,'center');
+	        $blank->insert($mark,'center')
+	       	->interlace()
+	        ->save($ruta.$miImg);
+	        return $carpeta.'/'.$miImg;
 		}else
 		{
-
-			$cadena = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890";
-		    //Obtenemos la longitud de la cadena de caracteres
-		    $longitudCadena=strlen($cadena);
-		     
-		    //Se define la variable que va a contener la contraseña
-		    $pass = "";
-		    //Se define la longitud de la contraseña, en mi caso 10, pero puedes poner la longitud que quieras
-		    $longitudPass=8;
-		    
-		    //Creamos la contraseña
-		    for($i=1 ; $i<=$longitudPass ; $i++){
-		        //Definimos numero aleatorio entre 0 y la longitud de la cadena de caracteres-1
-		        $pos=rand(0,$longitudCadena-1);
-		     
-		        //Vamos formando la contraseña en cada iteraccion del bucle, añadiendo a la cadena $pass la letra correspondiente a la posicion $pos en la cadena de caracteres definida.
-		        $pass .= substr($cadena,$pos,1);
-		    }
-		    $user->password = Hash::make($pass);
-		  	$data = array(
-				'pass' => $pass,
-				'texto' => 'Usted ha solicitado recuperar su contraseña',
-				'title' => 'recuperar contraseña'
-			);
-
-		  	if ($user->save()) {
-		  		Mail::send('emails.passNew', $data, function ($message) use ($pass,$email){
-				    $message->subject('Correo de restablecimiento de contraseña pasillo24.com');
-				    $message->to($email);
-				});
-				return Response::json(array('type' => 'success','msg' => 'Se enviara un email con una clave provisional. Esto puede tomar varios segundos.'));
-
-		  	}else
-		  	{
-				return Response::json(array('type' => 'danger','msg' => 'Error, no se ha podido cambiar la contraseña, le agradecemos ponerse en contacto por medio de nuestro modulo de contacto.'));
-		  	}
-		    
-
-		}	
+			$file->move($ruta,$file->getClientOriginalName());
+			$img = Image::make($ruta.$file->getClientOriginalName());
+	                    $blank = Image::make('images/blank.jpg');
+	                    if ($img->width() > $img->height()) {
+	        	      $img->widen(1604);
+	                }else
+	                {
+	        	      $img->heighten(804);
+	                }
+	        if ($img->height() > 804) {
+	        	$img->heighten(804);
+	        }
+	        $mark = Image::make('images/watermark.png')->widen(400);
+	        $blank->insert($img,'center');
+	        $blank->insert($mark,'center')
+	       	->interlace()
+	        ->save($ruta.$file->getClientOriginalName());
+	        return $carpeta.'/'.$file->getClientOriginalName();
+		}
+		return Response::json(array('type' => 'success' , 'msg' => 'Se ha subido la imagen.'));
 	}
-	public function postProfile()
-	{
-		$id = Input::get('id');
-		$input = Input::all();
-		$user = User::find($id);
-		$email = $user->email;
-		$rules = array(
-			'name'       			 => 'min:4',
-			'lastname'   			 => 'min:4',
-			'id_carnet'         	 => 'min:5',
-			'department' 			 => 'required'
-
-		);
-		$messages = array(
-			'required' => ':attribute es obligatorio',
-			'min'      => ':attribute debe ser mas largo'
-		);
-		$custom = array(
-			'name'              => 'El nombre',
-			'lastname'          => 'El apellido',
-			'department'  		=> 'El departamento'
-		);
-		$validator = Validator::make($input, $rules, $messages,$custom);
-		if ($validator->fails()) {
-			return Response::json(array(
-               'danger' => 'Error al validar los datos',
-               'data' => $validator->getMessageBag()->toArray()
-              	)
-			);
-		}
-		if (!empty($input['name'])) {
-			$user->name = $input['name'];
-		}
-		if (!empty($input['lastname'])) {
-			$user->lastname = $input['lastname'];
-		}
-		if (!empty($input['id_carnet'])) {
-			$user->id_carnet = $input['id_carnet'];
-		}
-		if (!empty($input['department'])) {
-			$user->state = $input['department'];
-		}
-		if (!empty($input['phone'])) {
-			$user->phone = $input['phone'];
-		}
-		if (!empty($input['pag_web'])) {
-			$user->pag_web = $input['pag_web'];
-		}
-		if (!empty($input['postal_cod'])) {
-			$user->postal_cod = $input['postal_cod'];
-		}
-		if  (!empty($input['direccion'])) {
-			$user->dir = $input['direccion'];
-		}
-		if (!empty($input['nit'])) {
-			$user->nit = $input['nit'];
-		}
-		if (!empty($input['pais'])) {
-			$user->pais = $input['pais'];
-		}
-		if($user->save())
-		{
-			$data = array(
-				'link' => 'pasillo24.com/inicio/contacto'
-			);
-			Mail::send('emails.modify', $data, function ($message) use ($input,$email){
-			    $message->subject('Correo de cambio de perfil pasillo24.com');
-			    $message->from('pasillo24@pasillo24.com');
-			    $message->to($email);
-			});
-			return Response::json(array(
-				'type' => 'success',
-				'msg'  => 'Perfil cambiado satisfactoriamente. Se ha enviado un email a su correo.'
-			));
-		}else{
-			return Response::json(array(
-				'type' => 'danger',
-				'msg'  => 'Error al modificar el perfil.'
-			));
-		}
-	}
+	/*---------------------------Publicar----------------------------------------------*/
+	/*                                                                                 */
+	/*                                                                                 */
+	/*                                                                                 */
+	/*                                                                                 */
+	/*                                                                                 */
+	/*                                                                                 */
+	/*                                                                                 */
+	/*                                                                                 */
+	/*                                                                                 */
+	/*---------------------------Publicar----------------------------------------------*/
+	/*------------------------------Lider----------------------------------------------*/
+	
 	public function postLider()
 	{
 
@@ -929,5 +1003,585 @@ class AjaxController extends BaseController{
 			}
 			
 		}
+	}
+	/*------------------------------Habitual----------------------------------------------*/
+	public function postHabitual()
+	{
+		$id = Input::get('id');
+		if (!Input::has('cat_id')) {
+			return Response::json(array(
+				'type' => 'danger',
+				'msg'  => 'Error, no se consigue el id de la categoria',
+			));
+		}
+		$input = Input::all();
+		$rules = array(
+
+			'departamento'	=> 'required',
+			'ciudad'		=> 'required',
+			'subCat'	    => 'required',
+			'title' 		=> 'required|min:4',
+			'input'			=> 'required|min:4',
+			'moneda'		=> 'required',
+			'precio'		=> 'required_if:tipoTransac,venta,alquiler,Aticretico,otro',
+			'moneda'		=> 'required',
+			//'img1'			=> 'required|image',
+			'tipoTransac'	=> 'required'
+
+		);
+		$messages = array(
+			'required' 	=> ':attribute es obligatorio',
+			'required_if' => ':attribute es obligatorio',
+			'min'		=> ':attribute debe ser mas largo',
+			//'image'		=> ':attribute debe ser una imagen',
+			'numeric'	=> ':attribute debe ser numerico'
+		);
+		$customAttributes = array(
+			'precio'	 	=> 'El campo precio',
+
+			'departamento'  => 'El campo departamento',
+			'title'		 	=> 'El campo titulo',
+			'input' 	 	=> 'El campo descripcion',
+			//'img1'		 	=> 'El campo imagen de portada',
+			'moneda'		=> 'El campo moneda',
+			'tipoTransac'	=> 'El campo tipo de operación',
+			'subCat'		=> 'El campo sub-categoria',
+
+		);
+		if ($input['cat_id'] == 34) {
+			$rules = $rules+array(
+				'marca' 	=> 'required',
+				'modelo'	=> 'required',
+				'anio'		=> 'required|numeric',
+				'kilo'		=> 'required|numeric',
+				'doc'		=> 'required'
+			);
+			$customAttributes = $customAttributes+array(
+				'marca'		=> 'El campo marca',
+				'modelo'	=> 'El campo modelo',
+				'anio'		=> 'El campo año',
+				'kilo' 		=> 'El campo kilometraje',
+				'doc'		=> 'El campo documentos'
+			);
+
+		}elseif($input['cat_id'] == 20)
+		{
+			$rules = $rules+array(
+				'ext' 	=> 'required'
+			);
+			$customAttributes = $customAttributes+array(
+				'ext'		=> 'El campo extensión'
+			);
+		}
+
+		$validator = Validator::make($input, $rules, $messages, $customAttributes);
+		if ($validator->fails()) {
+			return Response::json(array(
+				'type' => 'danger',
+				'msg'  => 'Error al validar los datos',
+				'data' => $validator->getMessageBag()->toArray(),
+			));
+		}
+		$pub 				= new Publicaciones;
+		$pub->user_id 		= $id;
+		$pub->titulo 		= $input['title'];
+		$pub->categoria 	= $input['cat_id'];
+		if(!empty($input['subCat']))
+		{
+			$pub->typeCat 		= $input['subCat'];
+		}else
+		{
+			$pub->typeCat = 0;
+		}
+
+		$pub->departamento  = $input['departamento'];
+		$pub->ciudad 		= $input['ciudad'];
+		$pub->descripcion	= $input['input'];
+		$pub->precio 		= $input['precio'];
+		$pub->monto 		= 40;
+		$pub->status  		= 'Pendiente';
+		$pub->moneda 		= $input['moneda'];
+		$pub->tipo 			= 'Habitual';
+		$pub->transaccion	= $input['tipoTransac'];
+
+		if (isset($input['nomb']) && !empty($input['nomb'])) {
+			$pub->name 			= $input['nomb'];
+		}
+		if (isset($input['phone']) && !empty($input['phone'])) {
+			$pub->phone 		= $input['phone'];
+		}
+		if (isset($input['email']) && !empty($input['email'])) {
+			$pub->email 		= $input['email'];
+		}
+		if (isset($input['pag_web']) && !empty($input['pag_web'])) {
+			$pub->pag_web_hab = $input['pag_web'];
+		}
+		if ($input['cat_id'] == 34) {
+			$pub->marca_id		= $input['marca'];
+			$pub->modelo_id  	= $input['modelo'];
+			$pub->anio 			= $input['anio'];
+			$pub->precio 		= $input['precio'];
+			$pub->kilometraje	= $input['kilo'];
+			if (isset($input['cilin']) && !empty($input['cilin'])) {
+				$pub->cilindraje = $input['cilin'];
+			}
+			if (isset($input['trans']) && !empty($input['trans'])) {
+				$pub->transmision = $input['trans'];
+			}
+			if (isset($input['comb']) && !empty($input['comb'])) {
+				$pub->combustible = $input['comb'];
+			}
+			if (isset($input['doc']) && !empty($input['doc'])) {
+				$pub->documentos = $input['doc'];
+			}
+			if (isset($input['trac']) && !empty($input['trac'])) {
+				$pub->traccion = $input['trac'];
+			}
+		}elseif($input['cat_id'] == 20)
+		{
+			$pub->extension     = $input['ext'];
+		}
+		if($pub->save())
+		{
+			return Response::json(array(
+				'type' 		=> 'success',
+				'msg'  		=> 'Publcación creada satisfactoriamente.',
+				'pub_id' 	=> $pub->id,
+				'monto'	    => $pub->monto
+			));
+		}
+	}
+	public function getHabitualPreview($id)
+	{
+		$pub = Publicaciones::find($id);
+		if ($pub->categoria == 34) {
+			$pub = Publicaciones::join('marcas','marcas.id','=','publicaciones.marca_id')
+			->leftJoin('departamento','publicaciones.departamento','=','departamento.id')
+			->leftJoin('categoria','categoria.id','=','publicaciones.categoria')
+			->leftJoin('subcategoria','subcategoria.id','=','publicaciones.typeCat')
+			->join('modelo','modelo.id','=','publicaciones.modelo_id')
+			->join('usuario','usuario.id','=','publicaciones.user_id')
+			->where('publicaciones.id','=',$id)
+			->get(array(
+					'marcas.nombre as marca',
+					'modelo.nombre as modelo',
+					'publicaciones.*',
+					'departamento.nombre as dep',
+					'categoria.nombre as cat',
+					'subcategoria.desc as subCat',
+					));
+		}else
+		{
+			if ($pub->typeCat != 0) {
+				$pub = Publicaciones::join('departamento','publicaciones.departamento','=','departamento.id')
+				->join('categoria','categoria.id','=','publicaciones.categoria')
+				->join('subcategoria','subcategoria.id','=','publicaciones.typeCat')
+				->where('publicaciones.id','=',$id)
+				->get(array(
+						'subcategoria.desc as subCat',
+						'departamento.nombre as dep',
+						'categoria.nombre as cat',
+						'publicaciones.*'
+						));
+			}else
+			{
+				$pub = Publicaciones::join('departamento','publicaciones.departamento','=','departamento.id')
+				->join('categoria','categoria.id','=','publicaciones.categoria')
+				->where('publicaciones.id','=',$id)
+				->get(array(
+						'departamento.nombre as dep',
+						'categoria.nombre as cat',
+						'publicaciones.*'
+						));
+			}
+			
+		}
+		
+		if (isset($pub[0])) {
+			$publication = $pub[0];
+		}else
+		{
+			$publication = $pub;
+		}
+		return Response::json(array(
+			'publication'	=> $publication,
+			'id'			=> $id,
+		));
+	}
+	public function changePosition()
+	{
+		$arr = Input::get('arr');
+		$id  = Input::get('pub_id');
+		$pub = Publicaciones::find($id);
+		$i = 0;
+		$arr2 = array();
+		foreach ($arr as $a) {
+			switch ($a) {
+				case 'img_1':
+					$arr2[$i] = $pub->img_1;
+					break;
+				case 'img_2':
+					$arr2[$i] = $pub->img_2;
+					break;
+				case 'img_3':
+					$arr2[$i] = $pub->img_3;
+					break;
+				case 'img_4':
+					$arr2[$i] = $pub->img_4;
+					break;
+				case 'img_5':
+					$arr2[$i] = $pub->img_5;
+					break;
+				case 'img_6':
+					$arr2[$i] = $pub->img_6;
+					break;
+				case 'img_7':
+					$arr2[$i] = $pub->img_7;
+					break;
+				case 'img_8':
+					$arr2[$i] = $pub->img_8;
+					break;
+				default:
+					break;
+			}
+			$i++;
+		}
+
+		$j = 0;
+		foreach ($arr2 as $a) {
+			switch ($j) {
+				case '0':
+					$pub->img_1 = $arr2[$j];
+					break;
+				case '1':
+					$pub->img_2 = $arr2[$j];
+					break;
+				case '2':
+					$pub->img_3 = $arr2[$j];
+					break;
+				case '3':
+					$pub->img_4 = $arr2[$j];
+					break;
+				case '4':
+					$pub->img_5 = $arr2[$j];
+					break;
+				case '5':
+					$pub->img_6 = $arr2[$j];
+					break;
+				case '6':
+					$pub->img_7 = $arr2[$j];
+					break;
+				case '7':
+					$pub->img_8 = $arr2[$j];
+					break;
+				default:
+					break;
+			}
+			$j++;
+		}
+		if ($pub->save()) {
+			return Response::json(array('type' => 'success','msg' => 'Imagenes cambiadas de posición satisfactoriamente.'));
+		}else
+		{
+			return Response::json(array('type' => 'danger','msg' => 'Error al guardar los cambios.'));
+		}
+	}
+	public function postCasual()
+	{
+		$id = Input::get('id');
+		$input = Input::all();
+		if (strlen(strip_tags($input['input']))>400) {
+			return Response::json(array(
+				'type' => 'danger',
+				'msg'  => 'La descripción debe tener maximo 400 caracteres',
+			));
+		}
+		
+		$rules = array(
+			'input' 		=> 'required',
+			'precio'		=> 'required|numeric',
+			'moneda'		=> 'required',
+			'departamento' 	=> 'required',
+			'categoria'		=> 'required',
+			'titulo'		=> 'required',
+		);
+		$messages = array(
+			'required' => ':attribute es requerido',
+			'numeric'  => ':attribute debe ser numerico',
+		);
+		$customAttributes = array(
+			'input' 		=> 'El campo descripcion',
+			'precio'		=> 'El precio',
+			'moneda'		=> 'El campo moneda',
+			'departamento' 	=> 'El campo departamento',
+			'categoria'		=> 'El campo categoria',
+			'titulo'		=> 'El campo titulo',
+		);
+		
+		$validator = Validator::make($input, $rules, $messages, $customAttributes);
+		if ($validator->fails()) {
+			return Response::json(array(
+				'type' => 'danger',
+				'msg'  => 'Error al validar los datos',
+				'data' => $validator->getMessageBag()->toArray()
+			));
+		}else
+		{
+			$pub = new Publicaciones;
+			$pub->user_id 	  = $id;
+			$pub->tipo 		  = 'Casual';
+			$pub->titulo      = $input['titulo'];
+			$pub->departamento= $input['departamento'];
+			$pub->categoria   = $input['categoria'];
+			$pub->ubicacion   = 'Principal';
+			$pub->precio 	  = $input['precio'];
+			$pub->moneda 	  = $input['moneda'];
+			$pub->descripcion = $input['input'];
+			$pub->fechIni 	  = date('Y-m-d',time());
+			$pub->fechFin	  = date('Y-m-d',time()+604800);
+			$pub->fechRepub	  = date('Y-m-d',time()+2543400);
+			$pub->status 	  = 'Procesando';
+			$pub->save();
+			return Response::json(array(
+				'type' => 'success',
+				'msg'  => 'publicación creada satisfactoriamente.',
+				'pub_id' => $pub->id,
+			));
+		}
+	}
+	/*---------------------------Incremento habitual-----------------------------------*/
+	/*                                                                                 */
+	/*                                                                                 */
+	/*                                                                                 */
+	/*                                                                                 */
+	/*                                                                                 */
+	/*                                                                                 */
+	/*                                                                                 */
+	/*                                                                                 */
+	/*                                                                                 */
+	/*---------------------------Incremento habitual-----------------------------------*/
+
+
+	public function postHabitualAdd()
+	{
+		$pub_id 	 = Input::get('pub_id');
+		$input  	 = Input::all();
+		$publication = Publicaciones::find($pub_id);
+		$precio 	 = Precios::all();
+		$solo = $precio[0];
+
+		if (!empty($input['durationPrin']) && !empty($input['periodoPrin']) && !empty($input['durationCat']) && !empty($input['periodoCat'])) {
+
+			if ($input['periodoPrin'] == $precio[0]->precio) {
+				$publication->duracion	= ($input['durationPrin']*86400);
+				$publication->monto = ($input['durationPrin']*$precio[0]->precio)+$publication->monto;
+			}elseif($input['periodoPrin'] == $precio[1]->precio)
+			{
+				$publication->duracion	= ($input['durationPrin']*604800);
+				$publication->monto 	= ($input['durationPrin']*$precio[1]->precio)+$publication->monto;
+			}elseif($input['periodoPrin'] == $precio[2]->precio)
+			{
+				$publication->duracion	= ($input['durationPrin']*2629744);
+				$publication->monto 	= ($input['durationPrin']*$precio[2]->precio)+$publication->monto;
+			}
+
+			if ($input['periodoCat'] == $precio[3]->precio) {
+				$publication->duracionNormal	= ($input['durationCat']*86400)+6048000;
+				$publication->monto 	= ($input['durationCat']*$precio[3]->precio)+$publication->monto;
+			}elseif($input['periodoCat'] == $precio[4]->precio)
+			{
+				$publication->duracionNormal	= ($input['durationCat']*604800)+6048000;
+				$publication->monto 	= ($input['durationCat']*$precio[4]->precio)+$publication->monto;
+			}elseif($input['periodoCat'] == $precio[5]->precio)
+			{
+				$publication->duracionNormal	= ($input['durationCat']*2629744)+6048000;
+				$publication->monto 	= ($input['durationCat']*$precio[5]->precio)+$publication->monto;
+			}
+			$publication->ubicacion = "Ambos";
+
+		}elseif(!empty($input['durationPrin']) && !empty($input['periodoPrin']))
+		{
+			if ($input['periodoPrin'] == $precio[0]->precio) {
+
+				$publication->duracion	= ($input['durationPrin']*86400);
+				$publication->monto = ($input['durationPrin']*$precio[0]->precio)+$publication->monto;
+
+			}elseif($input['periodoPrin'] == $precio[1]->precio)
+			{
+
+				$publication->duracion	= ($input['durationPrin']*604800);
+				$publication->monto 	= ($input['durationPrin']*$precio[1]->precio)+$publication->monto;
+
+			}elseif($input['periodoPrin'] == $precio[2]->precio)
+			{
+
+				$publication->duracion	= ($input['durationPrin']*2629744);
+				$publication->monto 	= ($input['durationPrin']*$precio[2]->precio)+$publication->monto;
+
+			}
+			$publication->ubicacion = 'Principal';
+		}elseif(!empty($input['durationCat']) && !empty($input['periodoCat']))
+		{
+			if ($input['periodoCat'] == $precio[3]->precio) {
+
+				$publication->duracionNormal	= ($input['durationCat']*86400)+6048000;
+				$publication->monto 	= ($input['durationCat']*$precio[3]->precio)+$publication->monto;
+
+			}elseif($input['periodoCat'] == $precio[4]->precio)
+			{
+
+				$publication->duracionNormal	= ($input['durationCat']*604800)+6048000;
+				$publication->monto 	= ($input['durationCat']*$precio[4]->precio)+$publication->monto;
+
+			}elseif($input['periodoCat'] == $precio[5]->precio)
+			{
+
+				$publication->duracionNormal	= ($input['durationCat']*2629744)+6048000;
+				$publication->monto 	= ($input['durationCat']*$precio[5]->precio)+$publication->monto;
+
+			}
+			$publication->ubicacion = 'Categoria';
+
+		}else
+		{
+			$publication->duracionNormal = 6048000;
+			$publication->ubicacion = 'Categoria';
+		}
+				
+		$publication->save();
+		return Response::json(array(
+			'type' => 'success',
+			'msg'  => 'Se ha guardado su publicación.',
+			'pub_id' => $pub_id,
+		));
+	}
+	/*---------------------------Pago total--------------------------------------------*/
+	/*                                                                                 */
+	/*                                                                                 */
+	/*                                                                                 */
+	/*                                                                                 */
+	/*                                                                                 */
+	/*                                                                                 */
+	/*                                                                                 */
+	/*                                                                                 */
+	/*                                                                                 */
+	/*---------------------------Pago total--------------------------------------------*/
+	public function postPublicationPayment(){
+		$id 	= Input::get('id');
+		if (!Input::has('pub_id')) {
+			return Response::json(array(
+				'type' => 'danger',
+				'msg'  => 'No se encontro el id de la publicación.',
+			));
+		}
+		$pub_id = Input::get('pub_id');
+		$input 	= Input::all();
+		$rules 	= array(
+			'transNumber' => 'required',
+			'fecha'		  => 'required',
+			'banco'		  => 'required'
+		);
+		$messages = array(
+			'required' => 'El campo es obligatorio.'
+		);
+		$validator = Validator::make($input, $rules, $messages);
+		if ($validator->fails()) {
+			return Response::json(
+				array(
+					'type' => 'danger',
+					'msg'  => 'Error al validar los campos',
+					'data' => $validator->getMessageBag()->toArray(),
+				)
+			);
+		}
+		$pago = new Pagos;
+		$pago->user_id   = $id;
+		$pago->pub_id    = $pub_id;
+		$pago->num_trans = $input['transNumber'];
+		$pago->banco_id  = $input['banco'];
+		if(isset($input['emisor']) && !empty($input['emisor']))
+		{
+				$pago->banco_ext = $input['emisor'];
+		}
+
+		$pago->fech_trans= $input['fecha'];
+
+		if ($pago->save()) {
+			$publicacion = Publicaciones::find($pub_id);
+			$monto = $publicacion->monto;
+			$moneda = $publicacion->moneda;
+			$publicacion->status = "Procesando";
+			$publicacion->save();
+			$user = User::find($id);
+			$subject = "Correo de administrador";
+			$data = array(
+				'subject' => $subject,
+				'createBy'=> $user->username,
+				'monto'   => $monto,
+				'moneda'  => $moneda,
+				'num_trans' => $input['transNumber']
+			);
+			$to_Email = 'gestor@pasillo24.com';
+			Mail::send('emails.newPost', $data, function($message) use ($input,$to_Email,$subject)
+			{
+				$message->to($to_Email)->from('pasillo24.com@pasillo24.com')->subject($subject);
+			});
+			return Response::json(array(
+				'type' => 'success',
+				'msg'  => 'Información enviada, pronto procesaremos su pago'
+			));
+		}else
+		{
+			return Response::json(array(
+				'type' => 'danger',
+				'msg'  => 'Error al guardar el pago'
+			));
+		}
+	}
+	/*---------------------------Rutas Globales----------------------------------------*/
+	/*                                                                                 */
+	/*                                                                                 */
+	/*                                                                                 */
+	/*                                                                                 */
+	/*                                                                                 */
+	/*                                                                                 */
+	/*                                                                                 */
+	/*                                                                                 */
+	/*                                                                                 */
+	/*---------------------------Rutas Globales----------------------------------------*/
+	public function getCategory()
+	{
+		$cat = Categorias::where('tipo','=',1)->where('deleted','=',0)->get(array('id','desc'));
+		$ser = Categorias::where('tipo','=',2)->where('deleted','=',0)->get(array('id','desc'));
+		return Response::json(array(
+			'type' => 'success',
+			'categorias' => $cat,
+			'servicios'  => $ser, 
+		));
+	}
+	public function getDepartments()
+	{
+		$dep = Department::get();
+		return Response::json(array(
+			'type' => 'success',
+			'departamentos' => $dep,
+		));
+	}
+	public function getBrand()
+	{
+		$brand = Marcas::get();
+		return Response::json(array(
+			'type' => 'success',
+			'marcas' => $brand,
+		));
+	}
+	public function getModel()
+	{
+		$id = Input::get('marca_id');
+		$brand = Modelo::where('marca_id','=',$id)->get();
+		return Response::json(array(
+			'type' => 'success',
+			'marcas' => $brand,
+		));
 	}
 }

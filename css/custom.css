@@ -2108,3 +2108,7 @@ animated buttons - animate the text inside prev and next buttons
 	vertical-align: top !important;
 }
 
+.cd-pagination.no-space li:nth-child(2), .cd-pagination.no-space li:nth-last-child(2)
+{
+	display: block !important;
+}
