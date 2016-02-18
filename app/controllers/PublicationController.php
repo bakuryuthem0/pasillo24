@@ -142,7 +142,7 @@ class PublicationController extends BaseController {
 	{
 		$pub = Publicaciones::find(base64_decode($id));
 		$user = User::find($pub->user_id);
-		if ($pub->user_id != 21) {
+		if ($pub->user_id != 24) {
 			$otrasPub = Publicaciones::where('user_id','=',$pub->user_id)
 			->where('id','!=',base64_decode($id))
 			->where('status','=','Aprobado')
