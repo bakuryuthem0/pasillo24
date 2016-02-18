@@ -96,7 +96,7 @@ Route::group(array('before' =>'auth'),function()
 	Route::get('usuario/publicacion/lider','UserController@getPublicationLider');
 	Route::get('usuario/publicacion/lider/fecha','UserController@getDate');
 	Route::post('usuario/publicacion/lider/enviar','UserController@postPublicationLider');
-	Route::get('usuario/publicacion/pagar/{id}','UserController@postPublicationPayment');
+	Route::get('usuario/publicacion/pagar/{id}','UserController@getPublicationPayment');
 	
 	//normal	
 	//Route::get('usuario/publicar/habitual/{type}','PublicationController@getHabitualForm');
