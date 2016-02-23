@@ -300,7 +300,6 @@ class HomeController extends BaseController {
 
 				$lider = Publicaciones::where('status','=','Aprobado')
 				->where('deleted','=',0)
-				->where('departamento','=',$inp->id)
 				->where(function($query){
 					$query->where('ubicacion','=','Categoria')
 					->orWhere('ubicacion','=','Ambos');
