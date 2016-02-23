@@ -1635,40 +1635,77 @@ jQuery(document).ready(function($) {
  	});
 
 });
+function success(position) {
+	var coords = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+	var lat = position.coords.latitude;
+	var log = position.coords.longitude;
 
+	$('.latitud').val(lat);
+	$('.longitud').val(log);
+
+	var options = {
+		zoom: 15,
+		center: coords,
+		mapTypeControl: false,
+		navigationControlOptions: {
+			style: google.maps.NavigationControlStyle.SMALL
+		},
+		mapTypeId: google.maps.MapTypeId.ROADMAP
+	};
+	var map = new google.maps.Map(document.getElementById("mapcontainer"), options);
+
+	var marker = new google.maps.Marker({
+	  position: coords,
+	  map: map,
+	  title:"You are here!"
+	});
+  	google.maps.event.addListenerOnce(map, 'idle', function(){
+	    $('.contLoaderBig').removeClass('active');
+	});
+}
+
+function showError(error)
+  {
+	$('.contLoaderBig').removeClass('active');
+	$('#mapcontainer').remove();
+  switch(error.code) 
+    {
+    case error.PERMISSION_DENIED:
+    	$('.mapContainer').html('<p class="textoPromedio">Has bloqueado el acceso a tu posición.</p>')
+      break;
+    case error.POSITION_UNAVAILABLE:
+    	$('.mapContainer').html('<p class="textoPromedio">Imposible obtener información de tu posición.</p>')
+
+      break;
+    case error.TIMEOUT:
+    	$('.mapContainer').html('<p class="textoPromedio">Tiempo de solicitud excedido</p>');
+      
+      break;
+    case error.UNKNOWN_ERROR:
+      x.innerHTML="An unknown error occurred."
+      break;
+    }
+  }
 jQuery(document).ready(function($) {
-	function success(position) {
-	  var mapcanvas = document.createElement('div');
-	  mapcanvas.id = 'mapcontainer';
-	  mapcanvas.style.height = '400px';
-	  mapcanvas.style.width = '100%';
+	$('.doMap').on('click', function(event) {
+		if ($('#mapcontainer').length > 0) {
+			$('#mapcontainer').remove();
+		}else
+		{
+			if (navigator.geolocation) {
+				var mapcanvas = document.createElement('div');
+				mapcanvas.id = 'mapcontainer';
+				mapcanvas.style.height = '400px';
+				mapcanvas.style.width = '100%';
 
-	  document.querySelector('article').appendChild(mapcanvas);
-
-	  var coords = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
-	  
-	  var options = {
-	    zoom: 15,
-	    center: coords,
-	    mapTypeControl: false,
-	    navigationControlOptions: {
-	    	style: google.maps.NavigationControlStyle.SMALL
-	    },
-	    mapTypeId: google.maps.MapTypeId.ROADMAP
-	  };
-	  var map = new google.maps.Map(document.getElementById("mapcontainer"), options);
-
-	  var marker = new google.maps.Marker({
-	      position: coords,
-	      map: map,
-	      title:"You are here!"
-	  });
-	}
-
-	if (navigator.geolocation) {
-	  navigator.geolocation.getCurrentPosition(success);
-	} else {
-	  error('Geo Location is not supported');
-	}
+				document.querySelector('article').appendChild(mapcanvas);
+				$('.contLoaderBig').addClass('active');
+		  		navigator.geolocation.getCurrentPosition(success,showError)
+			} else {
+		  		$(this).attr('checked', false);
+			}
+			
+		}
+	});
 
 });

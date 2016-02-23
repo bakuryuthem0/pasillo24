@@ -269,8 +269,18 @@
 					@endif
 				</div>
 				<div class="col-xs-12">
-					<article id=""></article>
+					<h2>¿Deseas mostrar la ubicación de tu publicación?</h2>
+					<input type="checkbox" class="doMap">
 				</div>
+				<!--<div class="col-xs-12">
+					<article class="mapContainer" id="" style="position:relative;">
+						<div class="contLoaderBig">
+							<img src="" class="loaderBig">
+						</div>
+					</article>
+					<input type="hidden" name="latitud" class="latitud">
+					<input type="hidden" name="longitud" class="longitud">
+				</div>-->
 				<div class="col-xs-12 imgLiderUp" style="margin-top:5em;">
 					<legend>Información de contacto</legend>
 				</div>
