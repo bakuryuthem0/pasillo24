@@ -53,7 +53,11 @@ Route::post('app/registro','AjaxController@postRegisterApp');
 Route::post('app/cambiar-clave','AjaxController@resetPassword');
 Route::group(array('before' => 'check_app_auth'),function()
 {
+	Route::post('app/publicacion/comentar','AjaxController@postComment');
+
+	Route::post('app/publicacion/contactar','AjaxController@getCompra');
 	Route::post('app/usuario/perfil/enviar','AjaxController@postProfile');
+	Route::post('app/usuario/cambiar-clave','AjaxController@postChangePass');
 
 	Route::post('app/usuario/publicacion/lider/enviar','AjaxController@postLider');
 	Route::post('app/usuario/publicacion/habitual/enviar','AjaxController@postHabitual');
@@ -61,6 +65,19 @@ Route::group(array('before' => 'check_app_auth'),function()
 	Route::post('app/usuario/publicacion/habitual/incremento','AjaxController@postHabitualAdd');
 	Route::post('app/usuario/publicacion/casual/enviar','AjaxController@postCasual');
 	Route::post('app/usuario/publicaciones/pago/enviar','AjaxController@postPublicationPayment');
+
+	Route::post('app/usuario/publicaciones/mis-publicaciones/{type}','AjaxController@getMyPublicationsType');
+	Route::post('app/usuario/publicaciones/mis-publicaciones/modificar','AjaxController@postModifyPub');
+
+	Route::get('app/usuario/mis-compras','AjaxController@getMyCart');
+	Route::get('app/usuario/mis-ventas','AjaxController@getMySell');
+	Route::post('app/usuario/valorar-vendedor','AjaxController@postValorVend');
+	Route::post('app/usuario/valorar-comprador','AjaxController@postValorComp');
+	Route::get('app/usuario/mi-reputacion','AjaxController@getMyReputation');
+
+	Route::get('app/usuario/mis-comentarios','AjaxController@getMyComment');
+	Route::post('app/usuario/comentarios/marcar','AjaxController@postElimCommentrecividos');
+	Route::post('app/usuario/responder','AjaxController@postResponse');
 
 });
 //rutas globales

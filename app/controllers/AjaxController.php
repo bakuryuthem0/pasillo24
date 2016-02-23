@@ -285,7 +285,70 @@ class AjaxController extends BaseController{
 			));
 		}
 	}
+	public function postChangePass()
+	{
+		$id = Input::get('id');
+		$input = Input::all();
+		$user = User::find($id);
+		if (!Hash::check($input['old'], $user->password)) {
+			return Response::json(array(
+				'type' => 'danger',
+				'msg' => 'la contraseña anterior es incorrecta'
+			));
+		}else
+		{
+			$rules = array(
+				'old' 					=> 'required',
+				'password' 				=> 'required|min:8|confirmed',
+				'password_confirmation' => 'required'
+			);		
+			$messages = array(
+				'required' => ':attribute es obligatorio',
+				'min'	   => ':attribute debe tener al menos 8 caracteres',
+				'confirmed'	=> ':attribute no coincide'
+			);
+			$attributes = array(
+				'old'  					 => 'El campo contraseña vieja',
+				'password'  			 => 'El campo contraseña nueva',
+				'password_confirmation'  => 'El campo repetir contraseña'
+			);
+			$validator = Validator::make($input, $rules, $messages, $attributes);
+			if ($validator->fails()) {
+				Response::json(array(
+					'type' => 'danger',
+					'msg'  => 'Error al validar lo datos',
+					'data' => $validator->getMessageBag()->toArray(),
+				));
+			}
 
+			$user->password = Hash::make($input['password']);
+			if ($user->save()) {
+				$data = array(
+					'pass' => $input['password'],
+					'texto' => 'Usted ha solicitado un cambio de contraseña',
+					'title' => 'Cambio de contraseña'
+				);
+				$newPass = $input['password'];
+				$email = $user->email;
+				Mail::send('emails.passNew', $data, function ($message) use ($newPass,$email){
+					    $message->subject('Correo de cambio de contraseña pasillo24.com');
+					    $message->from('pasillo24@pasillo24.com');
+					    $message->to($email);
+					});
+				return Response::json(array(
+					'type' => 'success',
+					'msg' => 'Contraseña modificada correctamente'
+				));
+			}else
+			{
+				return Response::json(array(
+					'type' => 'error',
+					'msg' => 'la contraseña no se pudo cambiar.'
+				));
+			}
+		}
+			
+	}
 	/*---------------------------Index-------------------------------------------------*/
 	/*                                                                                 */
 	/*                                                                                 */
@@ -1286,69 +1349,6 @@ class AjaxController extends BaseController{
 			return Response::json(array('type' => 'danger','msg' => 'Error al guardar los cambios.'));
 		}
 	}
-	public function postCasual()
-	{
-		$id = Input::get('id');
-		$input = Input::all();
-		if (strlen(strip_tags($input['input']))>400) {
-			return Response::json(array(
-				'type' => 'danger',
-				'msg'  => 'La descripción debe tener maximo 400 caracteres',
-			));
-		}
-		
-		$rules = array(
-			'input' 		=> 'required',
-			'precio'		=> 'required|numeric',
-			'moneda'		=> 'required',
-			'departamento' 	=> 'required',
-			'categoria'		=> 'required',
-			'titulo'		=> 'required',
-		);
-		$messages = array(
-			'required' => ':attribute es requerido',
-			'numeric'  => ':attribute debe ser numerico',
-		);
-		$customAttributes = array(
-			'input' 		=> 'El campo descripcion',
-			'precio'		=> 'El precio',
-			'moneda'		=> 'El campo moneda',
-			'departamento' 	=> 'El campo departamento',
-			'categoria'		=> 'El campo categoria',
-			'titulo'		=> 'El campo titulo',
-		);
-		
-		$validator = Validator::make($input, $rules, $messages, $customAttributes);
-		if ($validator->fails()) {
-			return Response::json(array(
-				'type' => 'danger',
-				'msg'  => 'Error al validar los datos',
-				'data' => $validator->getMessageBag()->toArray()
-			));
-		}else
-		{
-			$pub = new Publicaciones;
-			$pub->user_id 	  = $id;
-			$pub->tipo 		  = 'Casual';
-			$pub->titulo      = $input['titulo'];
-			$pub->departamento= $input['departamento'];
-			$pub->categoria   = $input['categoria'];
-			$pub->ubicacion   = 'Principal';
-			$pub->precio 	  = $input['precio'];
-			$pub->moneda 	  = $input['moneda'];
-			$pub->descripcion = $input['input'];
-			$pub->fechIni 	  = date('Y-m-d',time());
-			$pub->fechFin	  = date('Y-m-d',time()+604800);
-			$pub->fechRepub	  = date('Y-m-d',time()+2543400);
-			$pub->status 	  = 'Procesando';
-			$pub->save();
-			return Response::json(array(
-				'type' => 'success',
-				'msg'  => 'publicación creada satisfactoriamente.',
-				'pub_id' => $pub->id,
-			));
-		}
-	}
 	/*---------------------------Incremento habitual-----------------------------------*/
 	/*                                                                                 */
 	/*                                                                                 */
@@ -1455,6 +1455,81 @@ class AjaxController extends BaseController{
 			'pub_id' => $pub_id,
 		));
 	}
+	/*---------------------------Casual -----------------------------------------------*/
+	/*                                                                                 */
+	/*                                                                                 */
+	/*                                                                                 */
+	/*                                                                                 */
+	/*                                                                                 */
+	/*                                                                                 */
+	/*                                                                                 */
+	/*                                                                                 */
+	/*                                                                                 */
+	/*---------------------------Casual -----------------------------------------------*/
+	public function postCasual()
+	{
+		$id = Input::get('id');
+		$input = Input::all();
+		if (strlen(strip_tags($input['input']))>400) {
+			return Response::json(array(
+				'type' => 'danger',
+				'msg'  => 'La descripción debe tener maximo 400 caracteres',
+			));
+		}
+		
+		$rules = array(
+			'input' 		=> 'required',
+			'precio'		=> 'required|numeric',
+			'moneda'		=> 'required',
+			'departamento' 	=> 'required',
+			'categoria'		=> 'required',
+			'titulo'		=> 'required',
+		);
+		$messages = array(
+			'required' => ':attribute es requerido',
+			'numeric'  => ':attribute debe ser numerico',
+		);
+		$customAttributes = array(
+			'input' 		=> 'El campo descripcion',
+			'precio'		=> 'El precio',
+			'moneda'		=> 'El campo moneda',
+			'departamento' 	=> 'El campo departamento',
+			'categoria'		=> 'El campo categoria',
+			'titulo'		=> 'El campo titulo',
+		);
+		
+		$validator = Validator::make($input, $rules, $messages, $customAttributes);
+		if ($validator->fails()) {
+			return Response::json(array(
+				'type' => 'danger',
+				'msg'  => 'Error al validar los datos',
+				'data' => $validator->getMessageBag()->toArray()
+			));
+		}else
+		{
+			$pub = new Publicaciones;
+			$pub->user_id 	  = $id;
+			$pub->tipo 		  = 'Casual';
+			$pub->titulo      = $input['titulo'];
+			$pub->departamento= $input['departamento'];
+			$pub->categoria   = $input['categoria'];
+			$pub->ubicacion   = 'Principal';
+			$pub->precio 	  = $input['precio'];
+			$pub->moneda 	  = $input['moneda'];
+			$pub->descripcion = $input['input'];
+			$pub->fechIni 	  = date('Y-m-d',time());
+			$pub->fechFin	  = date('Y-m-d',time()+604800);
+			$pub->fechRepub	  = date('Y-m-d',time()+2543400);
+			$pub->status 	  = 'Procesando';
+			$pub->save();
+			return Response::json(array(
+				'type' => 'success',
+				'msg'  => 'publicación creada satisfactoriamente.',
+				'pub_id' => $pub->id,
+			));
+		}
+	}
+	
 	/*---------------------------Pago total--------------------------------------------*/
 	/*                                                                                 */
 	/*                                                                                 */
@@ -1535,6 +1610,644 @@ class AjaxController extends BaseController{
 			return Response::json(array(
 				'type' => 'danger',
 				'msg'  => 'Error al guardar el pago'
+			));
+		}
+	}
+	/*---------------------------Mis publicaciones  -----------------------------------*/
+	/*                                                                                 */
+	/*                                                                                 */
+	/*                                                                                 */
+	/*                                                                                 */
+	/*                                                                                 */
+	/*                                                                                 */
+	/*                                                                                 */
+	/*                                                                                 */
+	/*                                                                                 */
+	/*---------------------------Mis publicaciones  -----------------------------------*/
+	public function getMyPublicationsType($type)
+	{
+		$id = Input::get('id');
+		if (strtolower($type) == "lider") {
+			$publications = Publicaciones::where('user_id','=',$id)
+			->leftJoin('categoria','categoria.id','=','publicaciones.categoria')
+			->where('publicaciones.tipo','=',ucfirst(strtolower($type)))
+			->where('publicaciones.deleted','=',0)
+			->get(array('publicaciones.*','categoria.nombre as categoria'));	
+		}elseif (strtolower($type) == "habitual") {
+			$publications = Publicaciones::join('categoria','categoria.id','=','publicaciones.categoria')
+			->where('user_id','=',$id)
+			->where('publicaciones.tipo','=','Habitual')
+			->where('publicaciones.deleted','=',0)
+			->get(array('publicaciones.*','categoria.nombre as categoria'));	
+		}elseif(strtolower($type) == "casual")
+		{
+			$publications = Publicaciones::join('categoria','categoria.id','=','publicaciones.categoria')
+			->where('publicaciones.user_id','=',$id)
+			->where('publicaciones.tipo','=','Casual')
+			->where('publicaciones.deleted','=',0)
+			->get(array(
+				'publicaciones.*',
+				'categoria.nombre as categoria'
+			));
+			$rePub = Publicaciones::where('publicaciones.user_id','=',$id)
+			->where('publicaciones.tipo','=','Casual')
+			->where('publicaciones.deleted','=',0)
+			->orderBy('fechRepub','desc')
+			->first(array('fechRepub'));
+
+		}
+		if (strtolower($type) == "casual") {
+			return Response::json(array(
+				'publications' 	=> $publications,
+				'type' 			=> strtolower($type),
+				'rePub'	 		=> $rePub,
+			));
+		}
+		return Response::json(array(
+			'publications'  => $publications,
+			'type' 			=> strtolower($type),
+		));
+	}
+
+	/*---------------------------Reputacion--------------------------------------------*/
+	/*                                                                                 */
+	/*                                                                                 */
+	/*                                                                                 */
+	/*                                                                                 */
+	/*                                                                                 */
+	/*                                                                                 */
+	/*                                                                                 */
+	/*                                                                                 */
+	/*                                                                                 */
+	/*---------------------------Reputacion--------------------------------------------*/
+	public function getMyCart()
+	{
+		$id = Input::get('id');
+		$compras = Compras::join('publicaciones','publicaciones.id','=','compras.pub_id')
+		->join('usuario','usuario.id','=','publicaciones.user_id')
+		->where('compras.user_id','=',$id)
+		->where('compras.valor_vend','=',0)
+		->get(array(
+			'compras.id',
+			'compras.fechVal',
+			'publicaciones.titulo',
+			'publicaciones.id as pub_id',
+			'publicaciones.name as pName',
+			'publicaciones.phone as pPhone',
+			'publicaciones.email as pEmail',
+			'publicaciones.pag_web_hab as pPag_web',
+			'usuario.name',
+			'usuario.lastname',
+			'usuario.phone',
+			'usuario.pag_web',
+			'usuario.email'
+		));
+
+		return Response::json(array(
+			'compras' 	=>$compras,
+
+		));
+	}
+	public function getMySell()
+	{
+		$id = Input::get('id');
+		$compras = Compras::join('publicaciones','publicaciones.id','=','compras.pub_id')
+		->join('usuario','usuario.id','=','compras.user_id')
+		->where('publicaciones.user_id','=',$id)
+		->where('compras.valor_comp','=',0)
+		->get(array(
+			'compras.id',
+			'compras.valor_vend',
+			'compras.valor_comp',
+			'compras.fechVal',
+			'publicaciones.titulo',
+			'usuario.id as user_id',
+			'usuario.name',
+			'usuario.lastname',
+		));
+		$hoy = date('Y-m-d');
+		return Response::json(array(
+			'compras' 	=> $compras,
+			'hoy' 		=> $hoy,
+		));
+	}
+	public function postValorVend()
+	{
+		$id = Input::get('id');
+		$compra_id   = Input::get('compra_id');
+		$tipo = Input::get('tipo');
+		$pub = Compras::find($compra_id);
+		if (is_null($pub) || empty($pub)) {
+			return Response::json(array('type' => 'danger','msg' => 'Error al valorar la publicación'));	
+		}
+
+		$valor = 0;
+		if($tipo != "pos" && $tipo != 'neg')
+		{
+			return Response::json(array('type' => 'danger','msg' => 'Error al valorar la publicación'));	
+		}else
+		{
+			if ($tipo == 'pos') {
+				$valor = 1;
+			}elseif ($tipo == 'neg') {
+				$valor = -1;
+			}
+		}
+		$comp = Compras::find($compra_id);
+		$user = User::find($id);
+		$user->reputation = $user->reputation + $valor;
+		if (!$user->save()) {
+			return Response::json(array('type' => 'danger','msg' => 'Error al valorar la publicación'));	
+		}
+		$comp->valor_vend = $valor;
+		if ($comp->save()) {
+			return Response::json(array('type' => 'success','msg' => 'Publicación valorada correctamente.'));
+		}else
+		{
+			return Response::json(array('type' => 'danger','msg' => 'Error al valorar la publicación'));
+		}
+	}
+	public function postValorComp()
+	{
+		$id = Input::get('id');
+		$venta_id   = Input::get('venta_id');
+		$tipo = Input::get('tipo');
+
+		$valor = 0;
+		if($tipo != "pos" && $tipo != 'neg')
+		{
+			return Response::json(array('type' => 'danger','msg' => 'Error al valorar la publicación'));	
+		}else
+		{
+			if ($tipo == 'pos') {
+				$valor = 1;
+			}elseif ($tipo == 'neg') {
+				$valor = -1;
+			}
+		}
+		$comp = Compras::find($venta_id);
+		$user = User::find($id);
+		$user->reputation = $user->reputation + $valor;
+		if (!$user->save()) {
+			return Response::json(array('type' => 'danger','msg' => 'Error al valorar la publicación'));	
+		}
+		$comp->valor_comp = $valor;
+		if ($comp->save()) {
+			return Response::json(array('type' => 'success','msg' => 'Publicación valorada correctamente.'));
+		}else
+		{
+			return Response::json(array('type' => 'danger','msg' => 'Error al valorar la publicación'));
+		}
+	}
+	public function getMyReputation()
+	{
+		$id = Input::get('id');
+		$compras = Compras::join('publicaciones','publicaciones.id','=','compras.pub_id')
+		->join('usuario','usuario.id','=','publicaciones.user_id')
+		->where('compras.user_id','=',$id)
+		->get(array(
+			'compras.id',
+			'compras.valor_vend',
+			'compras.valor_comp',
+			'publicaciones.titulo',
+			'publicaciones.id as pub_id',
+			'publicaciones.name as name_pub',
+			'usuario.name',
+			'usuario.lastname'
+		));
+		$ventas = Compras::join('publicaciones','publicaciones.id','=','compras.pub_id')
+		->join('usuario','usuario.id','=','compras.user_id')
+		->where('publicaciones.user_id','=',$id)
+		->get(array(
+			'compras.id',
+			'compras.valor_vend',
+			'compras.valor_comp',
+			'publicaciones.titulo',
+			'usuario.id as user_id',
+			'usuario.name',
+			'usuario.lastname'
+		));
+		$comprasC = Compras::join('publicaciones','publicaciones.id','=','compras.pub_id')
+		->join('usuario','usuario.id','=','publicaciones.user_id')
+		->where('compras.user_id','=',$id)
+		->get(array(
+			'compras.id',
+			'compras.valor_vend',
+			'compras.valor_comp',
+			'publicaciones.titulo',
+			'publicaciones.id as pub_id',
+			'usuario.name',
+			'usuario.lastname'
+		));
+		$ventasC = Compras::join('publicaciones','publicaciones.id','=','compras.pub_id')
+		->join('usuario','usuario.id','=','compras.user_id')
+		->where('publicaciones.user_id','=',$id)
+		->get(array(
+			'compras.id',
+			'compras.valor_vend',
+			'compras.valor_comp',
+			'publicaciones.titulo',
+			'usuario.id as user_id',
+			'usuario.name',
+			'usuario.lastname'
+		));
+		$comp_pos = 0;
+		$comp_neg = 0;
+		$vent_pos = 0;
+		$vent_neg = 0;
+		foreach ($ventasC as $v) {
+			if ($v->valor_vend>0) {
+				$vent_pos++; 
+			}elseif ($v->valor_vend < 0)
+			{
+				$vent_neg++;
+			}
+			
+		}
+		foreach ($comprasC as $c) {
+			if ($c->valor_comp > 0) {
+				$comp_pos++;
+			}elseif($c->valor_comp < 0)
+			{
+				$comp_neg++;
+			}
+		}
+		return Response::json(array(
+		'compras'	=> $compras,
+		'ventas' 	=> $ventas,
+		'vend_pos' 	=> $vent_pos,
+		'vend_neg' 	=> $vent_neg,
+		'comp_pos' 	=> $comp_pos,
+		'comp_neg' 	=> $comp_neg,
+
+		));
+	}
+
+	/*---------------------------Comentarios-------------------------------------------*/
+	/*                                                                                 */
+	/*                                                                                 */
+	/*                                                                                 */
+	/*                                                                                 */
+	/*                                                                                 */
+	/*                                                                                 */
+	/*                                                                                 */
+	/*                                                                                 */
+	/*                                                                                 */
+	/*---------------------------Comentarios-------------------------------------------*/
+	public function getMyComment()
+	{
+		$id = Input::get('id');
+		$comment = Comentarios::leftJoin('publicaciones','publicaciones.id','=','comentario.pub_id')
+		->where('publicaciones.user_id','=',$id)
+		->where('comentario.is_read','=',0)
+		->where('publicaciones.deleted','=',0)
+		->where('comentario.deleted','=',0)
+		->update(array('comentario.is_read' => 1));
+
+
+		$responses = Respuestas::where('user_id','=',$id)
+		->where('is_read','=',0)
+		->where('deleted','=',0)
+		->update(array('is_read' => 1));
+		$recividos = Comentarios::leftJoin('publicaciones','publicaciones.id','=','comentario.pub_id')
+		->where('publicaciones.user_id','=',$id)
+		->where('comentario.respondido','=',0)
+		->where('comentario.deleted','=',0)
+		->get(array(
+			'publicaciones.titulo',
+			'comentario.id',
+			'comentario.pub_id',
+			'comentario.comentario',
+			'comentario.created_at',
+			'comentario.deleted'
+		));
+		
+		$hechos 	= Comentarios::leftJoin('publicaciones','publicaciones.id','=','comentario.pub_id')
+		->leftJoin('respuestas','respuestas.comentario_id','=','comentario.id')
+		->where('comentario.user_id','=',$id)
+		->where('comentario.deleted','=',0)
+		->get(array(
+			'publicaciones.titulo',
+			'comentario.id',
+			'comentario.comentario',
+			'comentario.created_at',
+			'comentario.deleted',
+			'respuestas.respuesta'
+		));
+		return Response::json(array(
+			'hechos' 	=> $hechos,
+			'recividos' => $recividos,
+		));
+	}
+	/*---------------------------Modificar pub ----------------------------------------*/
+	/*                                                                                 */
+	/*                                                                                 */
+	/*                                                                                 */
+	/*                                                                                 */
+	/*                                                                                 */
+	/*                                                                                 */
+	/*                                                                                 */
+	/*                                                                                 */
+	/*                                                                                 */
+	/*---------------------------Modificar pub ----------------------------------------*/
+	public function postModifyPub()
+	{
+		$id = Input::get('pub_id');
+
+		$input = Input::all();
+		$pub = Publicaciones::find($id);
+		if ($pub->tipo == 'Lider') {
+			if (isset($input['cat']) && $pub->ubicacion != $input['cat'] && !empty($input['cat'])) {
+				$pub->categoria = $input['cat'];
+			}
+			if (isset($input['pagina']) && $input['pagina'] != $pub->pag_web && !empty($input['pagina'])) {
+				$pub->pag_web = $input['pagina'];
+			}
+			if (isset($input['nomb']) && $input['nomb'] != $pub->name && !empty($input['nomb'])) {
+				$pub->name = $input['nomb'];
+			}
+			if (isset($input['phone']) && $input['phone'] != $pub->phone && !empty($input['phone'])) {
+				$pub->phone = $input['phone'];
+			}
+			if (isset($input['email']) && $input['email'] != $pub->email && !empty($input['email'])) {
+				$pub->email = $input['email'];
+			}
+			if (isset($input['pag_web']) && $input['pag_web'] != $pub->pag_web_hab && !empty($input['pag_web'])) {
+				$pub->pag_web_hab = $input['pag_web'];
+			}
+			if (isset($input['namePub']) && !empty($input['namePub'])) {
+				$pub->titulo = $input['namePub'];
+			}
+			
+		}elseif($pub->tipo == 'Habitual')
+		{
+			if (isset($input['cat']) && !empty($input['cat'])) {
+				$pub->categoria = $input['cat'];
+			}
+			if (isset($input['pagina']) && !empty($input['pagina'])) {
+				$pub->pag_web = $input['pagina'];
+			}
+			if (isset($input['nomb']) && !empty($input['nomb'])) {
+				$pub->name = $input['nomb'];
+			}
+			if (isset($input['phone']) && !empty($input['phone'])) {
+				$pub->phone = $input['phone'];
+			}
+			if (isset($input['email']) && !empty($input['email'])) {
+				$pub->email = $input['email'];
+			}
+			if (isset($input['pagina']) && !empty($input['pagina'])) {
+				$pub->pag_web_hab = $input['pagina'];
+			}
+			if (isset($input['subCat']) && !empty($input['subCat'])) {
+				$pub->typeCat = $input['subCat'];
+			}
+			if (isset($input['title']) && !empty($input['title'])) {
+				$pub->titulo = $input['title'];
+			}
+			if (isset($input['precio']) && !empty($input['precio'])) {
+				$pub->precio = $input['precio'];
+			}
+			if (isset($input['moneda']) && !empty($input['moneda'])) {
+				$pub->moneda = $input['moneda'];
+			}
+			if (isset($input['departamento']) && !empty($input['departamento'])) {
+				$pub->departamento = $input['departamento'];
+			}
+			if (isset($input['ciudad']) && !empty($input['ciudad'])) {
+				$pub->ciudad = $input['ciudad'];
+			}
+			if ($pub->categoria == 34) {
+				if (isset($input['marca']) && !empty($input['marca'])) {
+					$pub->marca_id = $input['marca'];
+				}
+				if (isset($input['modelo']) && !empty($input['modelo'])) {
+					$pub->modelo_id = $input['modelo'];
+				}
+				if (isset($input['anio']) && !empty($input['anio'])) {
+					$pub->anio = $input['anio'];
+				}
+				if (isset($input['doc']) && !empty($input['doc'])) {
+					$pub->documentos = $input['doc'];
+				}
+				if (isset($input['kilo']) && !empty($input['kilo'])) {
+					$pub->kilometraje = $input['kilo'];
+				}
+				if (isset($input['cilin']) && !empty($input['cilin'])) {
+					$pub->cilindraje = $input['cilin'];
+				}
+				if (isset($input['trans']) && !empty($input['trans'])) {
+					$pub->transmision = $input['trans'];
+				}
+				if (isset($input['comb']) && !empty($input['comb'])) {
+					$pub->combustible = $input['comb'];
+				}
+				if (isset($input['trac']) && !empty($input['trac'])) {
+					$pub->traccion = $input['trac'];
+				}
+				
+			}elseif($pub->categoria == 20)
+			{
+				if (isset($input['ext']) && !empty($input['ext'])) {
+					$pub->extension = $input['ext'];
+				}
+			}
+			
+			if (isset($input['tipoTransac']) && !empty($input['tipoTransac'])) {
+				$pub->transaccion = $input['tipoTransac'];
+			}
+			if (isset($input['input']) && !empty($input['input'])) {
+				$pub->descripcion = $input['input'];
+			}
+		}
+		
+		if($pub->save())
+		{
+			return Response::json(array('type' => 'success','msg' => 'Publicación modificada satisfactoriamente.'));
+		}else
+		{
+			return Response::json(array('type' => 'danger','msg' => 'Error al modificar el usuario.'));
+		}
+	}
+	/*---------------------------Comentarios-------------------------------------------*/
+	/*                                                                                 */
+	/*                                                                                 */
+	/*                                                                                 */
+	/*                                                                                 */
+	/*                                                                                 */
+	/*                                                                                 */
+	/*                                                                                 */
+	/*                                                                                 */
+	/*                                                                                 */
+	/*---------------------------Comentarios-------------------------------------------*/
+	public function postComment(){
+		$id = Input::get('id');
+		$pub_id = Input::get('pub_id');
+		$comentario = Input::get('comment');
+		if (strlen($comentario)<4) {
+			return 'El comentario es muy corto';
+		}
+		$publication = Publicaciones::find($pub_id);
+		$comentarios = new Comentarios;
+		
+		$comentarios->user_id 	 = $id;
+		$comentarios->pub_id  	 = $pub_id;
+		$comentarios->comentario = $comentario;
+		$comentarios->updated_at = date('Y-m-d',time());
+		$comentarios->created_at = date('Y-m-d',time());
+		$comentarios->save();
+		return Response::json(array(
+			'type' => 'success', 
+			'msg' => 'Comentario Guardado Sactisfactoriamente',
+
+			'date' => date('d-m-Y',strtotime($comentarios->created_at))
+		));
+	}
+	public function postResponse()
+	{
+		$id = Input::get('id');
+		$input = Input::all();
+		$rules = array(
+			'comment_id' => 'required|numeric',
+			'respuesta'  => 'required',
+			'pub_id' 	 => 'required|numeric'
+		);
+		$validator = Validator::make($input, $rules);
+		if ($validator->fails()) {
+			return Response::json(array(
+				'type' => 'danger',
+				'msg'  => 'Error al validar los datos.',
+				'data' => $validator->getMessageBag()->toArray(),
+			));
+		}
+		$com = Comentarios::find($input['comment_id']);
+		if ($com->respondido == 1) {
+			return Response::json(array(
+				'type' => 'danger',
+				'msg' => 'El comantario ya fue respondido.'
+			));	
+		}
+		if ($com->deleted == 1) {
+			$com->deleted = 0;
+		}
+		$resp = new Respuestas;
+		$resp->comentario_id = $input['comment_id'];
+		$resp->respuesta 	 = $input['respuesta'];
+		$resp->pub_id 		 = $input['pub_id'];
+		$resp->user_id		 = $com->user_id;
+		$resp->created_at 	 = date('Y-m-d',time());
+		$resp->updated_at 	 = date('Y-m-d',time());
+		$user = User::find($resp->user_id);
+		$to_Email = $user->email;
+		$subject  = "han respondido tu comentario";
+		$data = array(
+			'email' => $to_Email
+		);
+		Mail::send('emails.respuesta', $data, function($message) use ($to_Email,$subject)
+		{
+			$message->to($to_Email)->from('pasillo24.com@pasillo24.com')->subject($subject);
+		});
+		if ($resp->save()) {
+			$com->respondido = 1;
+			$com->save();
+			return Response::json(array(
+				'type' => 'success',
+				'msg' => 'Respuesta guardada satisfactoriamente'
+			));
+		}else
+		{
+			return Response::json(array(
+				'type' => 'danger',
+				'msg' => 'Error al guardar la respuesta'
+			));
+		}
+		return Response::json($input);
+	}
+	public function postElimComment()
+	{
+		$id = Input::get('id');
+
+		$comment = Comentarios::find($id);
+		$comment->deleted = 1;
+		if ($comment->save()) {
+			return Response::json(array(
+				'type' => 'success',
+				'msg'  => 'Comentario borrado sactisfactoriamente.'
+			));
+		}else
+		{
+			return Response::json(array(
+				'type' => 'danger',
+				'msg'  => 'Error al borrar el comentario.'
+			));
+		}
+	}
+	public function postElimCommentrecividos()
+	{
+		$comment_id = Input::get('comment_id');
+		$comment    = Comentarios::find($comment_id);
+		$comment->respondido = 1;
+		if ($comment->save()) {
+			return Response::json(array(
+				'type' => 'success',
+				'msg'  => 'Comentario marcado como respondido sactisfactoriamente.'
+			));
+		}else
+		{
+			return Response::json(array(
+				'type' => 'danger',
+				'msg'  => 'Error al marcar el comentario.'
+			));
+		}
+	}
+	/*---------------------------Compras-----------------------------------------------*/
+	/*                                                                                 */
+	/*                                                                                 */
+	/*                                                                                 */
+	/*                                                                                 */
+	/*                                                                                 */
+	/*                                                                                 */
+	/*                                                                                 */
+	/*                                                                                 */
+	/*                                                                                 */
+	/*---------------------------Compras-----------------------------------------------*/
+	public function getCompra()
+	{
+		$id = Input::get('id');
+		$pub_id = Input::get('pub_id');
+		$aux = Compras::where('pub_id','=',$pub_id)
+		->where('user_id','=',$pub_id)
+		->where(function($query){
+			$query->where('valor_vend','=',0)
+			->orWhere('fechVal','=',date('Y-m-d',time()+172800));
+		})
+		->first();
+
+		if (!empty($aux)) {
+			return Response::json(array(
+				'type' => 'danger',
+				'msg'  => 'Usted ya ha contactado este usuario y aun no se ha valorado'));
+		}
+		$comp = new Compras;
+		$comp->pub_id  	  = $pub_id;
+		$comp->user_id 	  = $id;
+		$comp->valor_comp = 0;
+		$comp->valor_vend = 0;
+		$comp->fechVal 	  = date('Y-m-d',time()+172800);
+		if ($comp->save()) {
+			$pub = Publicaciones::find($pub_id);
+			$user = User::find($pub->user_id);
+			$msg = "Han respondido tu comentario: ".$pub->titulo;
+			$data = array(
+				'message' 		=> $msg,
+				'title'   		=> $msg,
+				'msgcnt'  		=> null,
+				'timeToLive' 	=> 3000,
+			);
+			return Response::json(array(
+				'type' => 'success',
+				'msg'  => 'Se ha generado una compra',
+				'compra_id' => $comp->id,
 			));
 		}
 	}

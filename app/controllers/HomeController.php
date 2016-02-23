@@ -288,7 +288,7 @@ class HomeController extends BaseController {
 			->with('filter',$inp);
 		}elseif(Input::has('cat'))
 		{
-
+			$cat = Input::get('cat');
 			if (Input::has('filter')) {
 				$inp = Department::find(Input::get('filter'));
 			}else
@@ -296,6 +296,7 @@ class HomeController extends BaseController {
 				$inp = '';
 			}
 			if (!empty($inp)) {
+
 				$lider = Publicaciones::where('status','=','Aprobado')
 				->where('deleted','=',0)
 				->where('departamento','=',$inp->id)
@@ -332,6 +333,10 @@ class HomeController extends BaseController {
 					'departamento.nombre as dep'));
 			}else
 			{
+				$filter = Input::get('filter');
+				if ($filter == -1) {
+					return Redirect::to('publicaciones/categorias/'.$cat);
+				}
 				$lider = Publicaciones::where('status','=','Aprobado')
 				->where('deleted','=',0)
 				->where(function($query){

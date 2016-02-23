@@ -42,6 +42,12 @@ Route::filter('check_app_auth',function(){
 		);
 	}else
 	{
+		if (!Input::has('id')) {
+			return Response::json(array(
+				'type' => 'danger',
+				'msg'  => 'No se consiguio el id del usuario',
+			));
+		}
 		$id    = Input::get('id');
 		$token = Input::get('auth_token');
 		$user = User::find($id);
