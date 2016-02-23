@@ -252,7 +252,7 @@ class PublicationController extends BaseController {
 			->get(array(
 				'usuario.id as user_id',
 				'usuario.reputation',
-				'categoria.desc as desc',
+				'categoria.desc as cat',
 				'publicaciones.titulo',
 				'publicaciones.precio',
 				'publicaciones.moneda',

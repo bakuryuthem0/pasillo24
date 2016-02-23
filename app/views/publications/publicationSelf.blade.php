@@ -322,7 +322,7 @@
 					<legend class="precioPub"><h2>{{ ucfirst($publication->titulo) }}</h2></legend>
 				</div>
 				<div class="col-xs-6">
-					<h4>Categoria </h4><label class="textoPromedio">{{ $publication->desc }}</label>
+					<h4>Categoria </h4><label class="textoPromedio">{{ $publication->cat }}</label>
 
 				</div>
 				<div class="col-xs-6">

@@ -1960,6 +1960,18 @@ animated buttons - animate the text inside prev and next buttons
 }
 
 @media(max-width: 767px){
+	.descProd, .comentarioBox
+	{
+		padding: 1em !important;
+	}
+	.owl-carousel2.owl-theme .owl-dots .owl-dot
+	{
+		display: none;
+	}
+	.owl-carousel2.owl-theme .owl-dots .owl-dot:nth-child(-n+6)
+	{
+		display: inline-block;
+	}
 	.no-padding-movil
 	{
 		padding: 0 !important;
@@ -2026,6 +2038,8 @@ animated buttons - animate the text inside prev and next buttons
 	{
 		position: relative !important;
 	}
+
+
 }
 
 .descProd .comentarioBox img
@@ -2103,7 +2117,7 @@ animated buttons - animate the text inside prev and next buttons
 	bottom: 0;
 	z-index: 100;
 }
-.fb_iframe_widget
+.fb_iframe_widget,.fb_iframe_widget > span
 {
 	vertical-align: top !important;
 }

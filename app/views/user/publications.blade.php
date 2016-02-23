@@ -114,7 +114,7 @@
 								
 							</td>
 							<td class="textoMedio">
-								@if($publication->fechFin < date('Y-m-d'))
+								@if($publication->fechFin < date('Y-m-d') && $publication->status != 'Procesando')
 									<a href="{{ URL::to('usuario/publicaciones/pago/'.$publication->id) }}" class="btn btn-primary btn-xs">Reactivar</a>	
 								@elseif($publication->status == 'Pendiente')
 									<a href="{{ URL::to('usuario/publicaciones/pago/'.$publication->id) }}" class="btn btn-primary btn-xs">Pagar</a>
@@ -266,7 +266,7 @@
 								<a href="{{ URL::to('usuario/publicacion/modificar/'.$publication->id) }}" class="btn btn-success btn-xs" name="modificar" >Modificar</a>
 							</td>
 							<td class="textoMedio">
-								@if($publication->fechFin < date('Y-m-d') && $publication->fechFin != "0000-00-00")
+								@if($publication->fechFin < date('Y-m-d') && $publication->fechFin != "0000-00-00" && $publication->status != 'Procesando')
 									<a href="{{ URL::to('usuario/publicacion/habitual/pago/'.$publication->id) }}" class="btn btn-primary">Reactivar</a>	
 								@elseif($publication->status == 'Pendiente')
 									<a href="{{ URL::to('usuario/publicacion/habitual/pago/'.$publication->id) }}" class="btn btn-primary btn-xs">Pagar</a>
@@ -424,7 +424,7 @@
 					<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
 					<p class="textoPromedio responseDanger-text"></p>
 				</div>
-				<p class="textoPromedio">¿Seguro desea eliminar esta publicación, esta acción es irreversible?</p>
+				<p class="textoPromedio">¿Seguro desea eliminar esta publicación?, esta acción es irreversible</p>
 			</div>
 			<div class="modal-footer">
 				<img src="{{ asset('images/loading.gif') }}" class="miniLoader">
