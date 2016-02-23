@@ -173,13 +173,57 @@
 		              }
 		           
 		              //Para ir a la anterior
-		              echo $presenter->getPrevious('&lt; Atras');
+		              if(!empty($filter)){
+			              if (($currentPage-1) < $start) {
+			              	echo '<li class="disable"><span>&lt; Atras</span></li>' ;	
+			              }else
+			              {
+			              	echo '<li><a href="'.$publicaciones->getUrl($currentPage-1).'&cat='.$busq.'&filter='.$filter->id.'">&lt; Atras</a></li>' ;
+			              }
+		              }else
+		              {
+		              	if (($currentPage-1) < $start) {
+			              	echo '<li class="disable"><span>&lt; Atras</span></li>' ;	
+			              }else
+			              {
+			              	echo '<li><a href="'.$publicaciones->getUrl($currentPage-1).'&busq='.$busq.'">&lt; Atras</a></li>' ;
+			              }
+		              }
 		           
 		              //Rango de enlaces desde el principio al final, 3 delante y 3 detrás
-		              echo $presenter->getPageRange($start, $end);
+		              for($i = $start; $i<=$end;$i++)
+		              {
+		              	if ($currentPage == $i) {
+		              		echo '<li class="disabled"><span>'.$i.'</span></li>';
+		              	}else
+		              	{
+		              		if(!empty($filter)){
+		              			echo '<li><a href="'.$publicaciones->getUrl($i).'&cat='.$busq.'&filter='.$filter->id.'">'.$i.'</a></li>';
+
+		              		}else
+		              		{
+		              			echo '<li><a href="'.$publicaciones->getUrl($i).'&cat='.$busq.'">'.$i.'</a></li>';
+		              		}
+		              	}
+		              }
 		           
 		              //Para ir a la siguiente
-		              echo $presenter->getNext('Adelante &gt;');
+		              if (!empty($filter)) {
+			              if (($currentPage+1) > $end) {
+			              	echo '<li class="disable"><span>Adelante &gt;</span></li>' ;
+			              }else
+			              {
+			              	echo '<li><a href="'.$publicaciones->getUrl($currentPage+1).'&cat='.$busq.'&filter='.$filter->id.'">Adelante &gt;</a></li>' ;
+			              }
+		              }else
+		              {
+		              	if (($currentPage+1) > $end) {
+			              	echo '<li class="disable"><span>Adelante &gt;</span></li>' ;
+			              }else
+			              {
+			              	echo '<li><a href="'.$publicaciones->getUrl($currentPage+1).'&cat='.$busq.'">Adelante &gt;</a></li>' ;
+			              }
+		              }
 		           
 		              ////Si es la última página mostramos desactivado
 		              if ($currentPage >= $lastPage)
@@ -190,8 +234,7 @@
 		              else
 		              {
 		                $url = $publicaciones->getUrl($lastPage);
-		           
-		                echo '<li><a class="textoMedio" href="'.$url.'">Última &gt;&gt;</a></li>';
+		                echo '<li><a class="textoMedio" href="'.$url.'&busq='.$busq.'">Última &gt;&gt;</a></li>';
 		              }
 		              ?>
 		            @endif
