@@ -309,7 +309,7 @@ class HomeController extends BaseController {
 					->orWhere('fechFinNormal','>=',date('Y-m-d'));
 					
 				})
-				->where('categoria','=',$id)
+				->where('categoria','=',$input['cat'])
 				->get(array('id','img_1','titulo','precio','moneda'));
 
 				$res = Publicaciones::where('publicaciones.status','=','Aprobado')
@@ -352,7 +352,7 @@ class HomeController extends BaseController {
 					->orWhere('fechFinNormal','>=',date('Y-m-d'));
 					
 				})
-				->where('categoria','=',$id)
+				->where('categoria','=',$input['cat'])
 				->get(array('id','img_1','titulo','precio','moneda'));
 
 				$res = Publicaciones::where('publicaciones.status','=','Aprobado')
