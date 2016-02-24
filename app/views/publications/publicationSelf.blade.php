@@ -218,29 +218,29 @@
 							<h4>Modelo</h4><label class="textoPromedio">@if(strlen($publication->modelo) == 0) Sin especificar @else {{ $publication->modelo }} @endif</label>
 						</div>
 
-						@if(strlen($publication->combustible) != 0)
+						@if(!empty($publication->combustible))
 							<div class="col-xs-6 caracteristicasPub">
 								<h4>Combustible</h4><label class="textoPromedio">{{ $publication->combustible }}</label>
 							</div>
 						@endif
 
-						@if(strlen($publication->transmision) != 0)
+						@if(!empty($publication->transmision))
 							<div class="col-xs-6 caracteristicasPub">
 								<h4>Transmisión</h4><label class="textoPromedio"> {{ $publication->transmision }}</label>
 							</div>
 						@endif
 
-						@if(strlen($publication->traccion) != 0)
+						@if(!empty($publication->traccion))
 							<div class="col-xs-6 caracteristicasPub">
 								<h4>Tracción</h4><label class="textoPromedio"> {{ $publication->traccion }}</label>
 							</div>
 						@endif
 
 						<div class="col-xs-6 caracteristicasPub">
-							<h4>Documentación</h4><label class="textoPromedio">@if(strlen($publication->documentos) == 0) Sin especificar @else {{ $publication->documentos }} @endif</label>
+							<h4>Documentación</h4><label class="textoPromedio">@if(!empty($publication->documentos)) Sin especificar @else {{ $publication->documentos }} @endif</label>
 						</div>
 
-						@if(strlen($publication->cilindraje) != 0) 
+						@if(!empty($publication->cilindraje)) 
 							<div class="col-xs-6 caracteristicasPub">
 								<h4>Cilindraje</h4><label class="textoPromedio">{{ $publication->cilindraje }}</label>
 							</div>

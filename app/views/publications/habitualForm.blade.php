@@ -301,7 +301,7 @@
 					@endif
 				</div>
 				<div class="col-xs-12">
-					<h4>¿Deseas mostrar la ubicación de tu publicación?</h4>
+					<h4>¿Desea mostrar la ubicación de su publicación?</h4>
 					<input type="checkbox" class="doMap">
 					<label class="textoPromedio">si desea publicar su ubicación, permita en el popup para poder acceder a ella.</label>
 					
