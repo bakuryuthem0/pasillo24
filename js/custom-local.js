@@ -1668,6 +1668,8 @@ function showError(error)
   {
 	$('.contLoaderBig').removeClass('active');
 	$('#mapcontainer').remove();
+	$('.latitud').val();
+	$('.longitud').val();
   switch(error.code) 
     {
     case error.PERMISSION_DENIED:
@@ -1686,10 +1688,40 @@ function showError(error)
       break;
     }
   }
+  function loadMap() {
+  	var lat = $('.latitud').val();
+  	var lon = $('.longitud').val();
+  	if (typeof lat != 'undefined' && typeof lon != 'undefined') {
+	  	coords = new google.maps.LatLng(lat,lon);
+	  	var options = {
+			zoom: 15,
+			center: coords,
+			mapTypeControl: false,
+			navigationControlOptions: {
+				style: google.maps.NavigationControlStyle.SMALL
+			},
+			mapTypeId: google.maps.MapTypeId.ROADMAP
+		};
+		var map = new google.maps.Map(document.getElementById("mapcontainer"), options);
+
+		var marker = new google.maps.Marker({
+		  position: coords,
+		  map: map,
+		  title:"You are here!"
+		});
+	  	google.maps.event.addListenerOnce(map, 'idle', function(){
+		    $('.contLoaderBig').removeClass('active');
+		});
+
+  	};
+  }
 jQuery(document).ready(function($) {
+
 	$('.doMap').on('click', function(event) {
 		if ($('#mapcontainer').length > 0) {
 			$('#mapcontainer').remove();
+			$('.latitud').val('');
+			$('.longitud').val('');
 		}else
 		{
 			if (navigator.geolocation) {
@@ -1703,6 +1735,8 @@ jQuery(document).ready(function($) {
 		  		navigator.geolocation.getCurrentPosition(success,showError)
 			} else {
 		  		$(this).attr('checked', false);
+		  		$('.latitud').val('');
+				$('.longitud').val('');
 			}
 			
 		}

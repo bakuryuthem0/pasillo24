@@ -300,7 +300,19 @@
 						 @endforeach
 					@endif
 				</div>
-
+				<div class="col-xs-12">
+					<h4>¿Deseas mostrar la ubicación de tu publicación?</h4>
+					<input type="checkbox" class="doMap">
+				</div>
+				<div class="col-xs-12">
+					<article class="mapContainer" id="" style="position:relative;">
+						<div class="contLoaderBig">
+							<img src="{{ asset('images/loading.gif') }}" class="loaderBig">
+						</div>
+					</article>
+					<input type="hidden" name="latitud" class="latitud">
+					<input type="hidden" name="longitud" class="longitud">
+				</div>
 				<div class="col-xs-12 textoPromedio">
 					
 					<label>(*) Imagen principal</label>

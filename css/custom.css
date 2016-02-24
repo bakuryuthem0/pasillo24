@@ -1242,9 +1242,10 @@ and (min-width : 651px) {
 }
 .contTypePub
 {
-	width: 300px;
+	width: 20%;
 	height: 50px;
 	float: right;
+	margin-top: 20px;
 }
 .contTypePub img
 {
@@ -1964,11 +1965,11 @@ animated buttons - animate the text inside prev and next buttons
 	{
 		padding: 1em !important;
 	}
-	.owl-carousel2.owl-theme .owl-dots .owl-dot
+	.owl-carousel1.owl-theme .owl-dots .owl-dot,.owl-carousel2.owl-theme .owl-dots .owl-dot,.owl-carousel3.owl-theme .owl-dots .owl-dot
 	{
 		display: none;
 	}
-	.owl-carousel2.owl-theme .owl-dots .owl-dot:nth-child(-n+6)
+	.owl-carousel1.owl-theme .owl-dots .owl-dot:nth-child(-n+6), .owl-carousel2.owl-theme .owl-dots .owl-dot:nth-child(-n+6),.owl-carousel3.owl-theme .owl-dots .owl-dot:nth-child(-n+6)
 	{
 		display: inline-block;
 	}
@@ -1981,6 +1982,7 @@ animated buttons - animate the text inside prev and next buttons
 .pika_stage_lider_container .pika-stage
 {
 	float: right !important;
+	width: 100%;
 }
 .pika_stage_lider_container
 {

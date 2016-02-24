@@ -155,9 +155,32 @@
 				<div class="clearfix"></div>
 				<p class="bg-info" style="padding:0.5em;text-align:center;">Si desea modificar su publicación vaya al menú de usuario > mis publicaciones</p>
 			</div>
-			
+			@if(isset($publication->longitude) && isset($publication->latitude))
+			<div class="col-xs-12 no-padding" >
+				<h4>Mi ubicación</h4>
+				<hr>
+				<article class="mapContainer" id="" style="position:relative;">
+					<div class="contLoaderBig">
+						<img src="{{ asset('images/loading.gif') }}" class="loaderBig">
+					</div>
+					<div id="mapcontainer" style="width:100%;height:400px;">
+					</div>
+				</article>
+				<input type="hidden" name="latitud" class="latitud" value="{{ $publication->latitude }}">
+				<input type="hidden" name="longitud" class="longitud" value="{{ $publication->longitude  }}">
+			</div>
+			@endif
 			<div class="clearfix"></div>
 			<a href="{{ URL::to('usuario/publicacion/habitual/pago/'.$id) }}" class="btn btn-success" style="margin:2em auto;width:100px;display:block;">Continuar</a>
 		</div>
 	</div>
+@stop
+
+@section('postscript')
+	@if(isset($publication->longitude) && isset($publication->latitude))
+
+		<script type="text/javascript">
+			loadMap();
+		</script>
+	@endif
 @stop

@@ -269,18 +269,18 @@
 					@endif
 				</div>
 				<div class="col-xs-12">
-					<h2>¿Deseas mostrar la ubicación de tu publicación?</h2>
+					<h4>¿Deseas mostrar la ubicación de tu publicación?</h4>
 					<input type="checkbox" class="doMap">
 				</div>
-				<!--<div class="col-xs-12">
+				<div class="col-xs-12">
 					<article class="mapContainer" id="" style="position:relative;">
 						<div class="contLoaderBig">
-							<img src="" class="loaderBig">
+							<img src="{{ asset('images/loading.gif') }}" class="loaderBig">
 						</div>
 					</article>
 					<input type="hidden" name="latitud" class="latitud">
 					<input type="hidden" name="longitud" class="longitud">
-				</div>-->
+				</div>
 				<div class="col-xs-12 imgLiderUp" style="margin-top:5em;">
 					<legend>Información de contacto</legend>
 				</div>
@@ -460,6 +460,20 @@
 					<input type="file" name="img2" class="textoPromedio">
 				</div>
 				<div class="col-xs-12">
+					<h4>¿Deseas mostrar la ubicación de tu publicación?</h4>
+					<input type="checkbox" class="doMap">
+				</div>
+				<div class="col-xs-12">
+					<article class="mapContainer" id="" style="position:relative;">
+						<div class="contLoaderBig">
+							<img src="{{ asset('images/loading.gif') }}" class="loaderBig">
+						</div>
+						
+					</article>
+					<input type="hidden" name="latitud" class="latitud">
+					<input type="hidden" name="longitud" class="longitud">
+				</div>
+				<div class="col-xs-12">
 					<p class="bg-info textoPromedio" style="text-align:center;padding:1em;">La descripción deberá tener máximo 400 caracteres.</p>
 					<label for="input" class="textoPromedio">Descripción</label>
 					<!--<textarea id="input" name="input" class="form-control descripcionCasual"></textarea>-->
@@ -482,6 +496,7 @@
 							</div>
 					</div>
 				</div>
+
 				<div class="col-xs-12">
 					<button class="btn btn-success">Enviar</button>
 					<a href="#" class="btn btn-danger">Cancelar</a>
