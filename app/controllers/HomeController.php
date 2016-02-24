@@ -304,8 +304,12 @@ class HomeController extends BaseController {
 					$query->where('ubicacion','=','Categoria')
 					->orWhere('ubicacion','=','Ambos');
 				})
-				->where('fechFin','>=',date('Y-m-d'))
-				->where('categoria','=',$input['cat'])
+				->where(function($query){
+					$query->where('fechFin','>=',date('Y-m-d'))
+					->orWhere('fechFinNormal','>=',date('Y-m-d'));
+					
+				})
+				->where('categoria','=',$id)
 				->get(array('id','img_1','titulo','precio','moneda'));
 
 				$res = Publicaciones::where('publicaciones.status','=','Aprobado')
@@ -343,8 +347,12 @@ class HomeController extends BaseController {
 					$query->where('ubicacion','=','Categoria')
 					->orWhere('ubicacion','=','Ambos');
 				})
-				->where('fechFin','>=',date('Y-m-d'))
-				->where('categoria','=',$input['cat'])
+				->where(function($query){
+					$query->where('fechFin','>=',date('Y-m-d'))
+					->orWhere('fechFinNormal','>=',date('Y-m-d'));
+					
+				})
+				->where('categoria','=',$id)
 				->get(array('id','img_1','titulo','precio','moneda'));
 
 				$res = Publicaciones::where('publicaciones.status','=','Aprobado')
