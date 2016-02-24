@@ -6,8 +6,9 @@
 {{ HTML::style("js/fancybox/helpers/jquery.fancybox-buttons.css?v=1.0.5") }}
 <div class="container contenedorUnico">
 	<div class="row">
-		<h1>{{ $username }}</h1>
+		
 		<div class="col-xs-12 father" style="padding-right: 0px;">
+			<h1 class="pull-left">{{ $username }}</h1>
 			<div class="contTypePub">
 				@if($publication->reputation>=15 && $publication->reputation<60)
 					<div id="bronce" class="trofeos">
@@ -45,7 +46,7 @@
 			</div>
 		</div>
 		@if($publication->tipo == "Lider")
-		<div class="col-xs-12" style="padding-right:0px;display:">
+		<div class="col-xs-12 no-padding" style="">
 			<div class="col-xs-6 pagMini">
 				<div class="list-group">
 					<a href="#" class="list-group-item active">
@@ -364,6 +365,21 @@
 			</div>
 		@endif
 	</div>
+	@if(isset($publication->longitude) && isset($publication->latitude))
+	<div class="col-xs-12 no-padding" >
+		<h4>Mi ubicación</h4>
+		<hr>
+		<article class="mapContainer" id="" style="position:relative;">
+			<div class="contLoaderBig">
+				<img src="{{ asset('images/loading.gif') }}" class="loaderBig">
+			</div>
+			<div id="mapcontainer" style="width:100%;height:400px;">
+			</div>
+		</article>
+		<input type="hidden" name="latitud" class="latitud" value="{{ $publication->latitude }}">
+		<input type="hidden" name="longitud" class="longitud" value="{{ $publication->longitude  }}">
+	</div>
+	@endif
 	<hr>
 	@if(count($otrasPub) > 0)
 	<div class="col-xs-12">
@@ -390,6 +406,7 @@
 		</div>
 	</div>
 	@endif
+
 	<hr>
 	<legend>Comentarios</legend>
 	<div class="row">
@@ -484,9 +501,14 @@
 
 <!-- Add Button helper (this is optional) -->
 {{ HTML::script("js/fancybox/helpers/jquery.fancybox-buttons.js?v=1.0.5") }}
-
+	<script type="text/javascript">
+		jQuery(document).ready(function($) {
+			loadMap();
+		});
+	</script>
 <script type="text/javascript">
 	$(document).ready(function (){
+	loadMap();
 		
 		$(".pika").PikaChoose(
 		{

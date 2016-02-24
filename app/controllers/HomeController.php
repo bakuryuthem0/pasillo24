@@ -300,12 +300,15 @@ class HomeController extends BaseController {
 
 				$lider = Publicaciones::where('status','=','Aprobado')
 				->where('deleted','=',0)
-				->where('departamento','=',$inp->id)
 				->where(function($query){
 					$query->where('ubicacion','=','Categoria')
 					->orWhere('ubicacion','=','Ambos');
 				})
-				->where('fechFin','>=',date('Y-m-d'))
+				->where(function($query){
+					$query->where('fechFin','>=',date('Y-m-d'))
+					->orWhere('fechFinNormal','>=',date('Y-m-d'));
+					
+				})
 				->where('categoria','=',$input['cat'])
 				->get(array('id','img_1','titulo','precio','moneda'));
 
@@ -344,7 +347,11 @@ class HomeController extends BaseController {
 					$query->where('ubicacion','=','Categoria')
 					->orWhere('ubicacion','=','Ambos');
 				})
-				->where('fechFin','>=',date('Y-m-d'))
+				->where(function($query){
+					$query->where('fechFin','>=',date('Y-m-d'))
+					->orWhere('fechFinNormal','>=',date('Y-m-d'));
+					
+				})
 				->where('categoria','=',$input['cat'])
 				->get(array('id','img_1','titulo','precio','moneda'));
 

@@ -169,7 +169,7 @@
 		              {
 		                $url = $publicaciones->getUrl(1);
 		           
-		                echo '<li><a class="textoMedio" href="'.$url.'">&lt;&lt; Primera</a></li>';
+		                echo '<li><a class="textoMedio" href="'.$url.'&cat='.$busq.'">&lt;&lt; Primera</a></li>';
 		              }
 		           
 		              //Para ir a la anterior
@@ -234,7 +234,7 @@
 		              else
 		              {
 		                $url = $publicaciones->getUrl($lastPage);
-		                echo '<li><a class="textoMedio" href="'.$url.'&busq='.$busq.'">Última &gt;&gt;</a></li>';
+		                echo '<li><a class="textoMedio" href="'.$url.'&cat='.$busq.'">Última &gt;&gt;</a></li>';
 		              }
 		              ?>
 		            @endif

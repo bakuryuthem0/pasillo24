@@ -178,9 +178,12 @@ class PublicationController extends BaseController {
 			$otrasPub = array();
 		}
 		if ($pub->tipo == "Lider") {
-			$pub = Publicaciones::join('usuario','usuario.id','=','publicaciones.user_id')
+			$pub = Publicaciones::leftJoin('locations','locations.pub_id','=','publicaciones.id')
+			->join('usuario','usuario.id','=','publicaciones.user_id')
 			->where('publicaciones.id','=',base64_decode($id))
 			->get(array(
+				'locations.longitude',
+				'locations.latitude',
 				'publicaciones.titulo',
 				'publicaciones.tipo',
 				'publicaciones.precio',
@@ -207,12 +210,15 @@ class PublicationController extends BaseController {
 		{
 			if ($pub->categoria == 34) {
 				$pub = DB::table('publicaciones')
+				->leftJoin('locations','locations.pub_id','=','publicaciones.id')
 				->join('marcas','marcas.id','=','publicaciones.marca_id')
 				->join('modelo','modelo.id','=','publicaciones.modelo_id')
 				->join('departamento','departamento.id','=','publicaciones.departamento')
 				->join('usuario','usuario.id','=','publicaciones.user_id')
 				->where('publicaciones.id','=',base64_decode($id))
 				->get(array(
+					'locations.longitude',
+					'locations.latitude',
 				'usuario.id',
 				'usuario.name as table_name',
 				'usuario.lastname as table_lastname',
@@ -227,10 +233,13 @@ class PublicationController extends BaseController {
 				));
 			}else {
 				$pub = DB::table('publicaciones')
+				->leftJoin('locations','locations.pub_id','=','publicaciones.id')
 				->join('usuario','usuario.id','=','publicaciones.user_id')
 				->join('departamento','departamento.id','=','publicaciones.departamento')
 				->where('publicaciones.id','=',base64_decode($id))
 				->get(array(
+					'locations.longitude',
+					'locations.latitude',
 				'usuario.id as user_id',
 				'usuario.reputation',
 				'publicaciones.*',
@@ -244,12 +253,15 @@ class PublicationController extends BaseController {
 
 		}elseif($pub->tipo == 'Casual')
 		{
-			$pub = Publicaciones::join('categoria','categoria.id','=','publicaciones.categoria')
+			$pub = Publicaciones::leftJoin('locations','locations.pub_id','=','publicaciones.id')
+			->join('categoria','categoria.id','=','publicaciones.categoria')
 			->join('usuario','usuario.id','=','publicaciones.user_id')
 			->join('departamento','departamento.id','=','publicaciones.departamento')
 			->where('publicaciones.id','=',base64_decode($id))
 			->where('publicaciones.tipo','=','Casual')
 			->get(array(
+				'locations.longitude',
+				'locations.latitude',
 				'usuario.id as user_id',
 				'usuario.reputation',
 				'categoria.desc as cat',
@@ -813,9 +825,21 @@ class PublicationController extends BaseController {
 			$pub->fechFin	  = date('Y-m-d',time()+604800);
 			$pub->fechRepub	  = date('Y-m-d',time()+2543400);
 			$pub->status 	  = 'Procesando';
-			$pub->save();
-			Session::flash('success','Publicación guardada correctamente');
-			return Redirect::to('usuario/publicaciones/mis-publicaciones');
+			if ($pub->save()) {
+				if (Input::has('longitud') && Input::has('latitud')) {
+					$lon = Input::get('longitud');
+					$lat = Input::get('latitud');
+					if (!empty($lon) && !empty($lat)) {
+						$loc = new Location;
+						$loc->latitude  = Input::get('latitud');
+						$loc->longitude = Input::get('longitud');
+						$loc->pub_id    = $pub->id;
+						$loc->save();
+					}
+				}
+				Session::flash('success','Publicación guardada correctamente');
+				return Redirect::to('usuario/publicaciones/mis-publicaciones');
+			}
 		}
 	}
 	public function getPublicationNormalType($id)
@@ -1052,6 +1076,17 @@ class PublicationController extends BaseController {
 		}
 		if($pub->save())
 		{
+			if (Input::has('longitud') && Input::has('latitud')) {
+				$lon = Input::get('longitud');
+				$lat = Input::get('latitud');
+				if (!empty($lon) && !empty($lat)) {
+					$loc = new Location;
+					$loc->latitude  = Input::get('latitud');
+					$loc->longitude = Input::get('longitud');
+					$loc->pub_id    = $pub->id;
+					$loc->save();
+				}
+			}
 			return Redirect::to('publicacion/habitual/enviar/imagenes/'.$pub->id);
 		}
 
@@ -1307,7 +1342,8 @@ class PublicationController extends BaseController {
 		$title = "Previsualización de publicación HABITUAL | pasillo24.com";
 		$pub = Publicaciones::find($id);
 		if ($pub->categoria == 34) {
-			$pub = Publicaciones::join('marcas','marcas.id','=','publicaciones.marca_id')
+			$pub = Publicaciones::leftJoin('locations','locations.pub_id','=','publicaciones.id')
+			->join('marcas','marcas.id','=','publicaciones.marca_id')
 			->leftJoin('departamento','publicaciones.departamento','=','departamento.id')
 			->leftJoin('categoria','categoria.id','=','publicaciones.categoria')
 			->leftJoin('subcategoria','subcategoria.id','=','publicaciones.typeCat')
@@ -1315,6 +1351,8 @@ class PublicationController extends BaseController {
 			->join('usuario','usuario.id','=','publicaciones.user_id')
 			->where('publicaciones.id','=',$id)
 			->get(array(
+					'locations.latitude',
+					'locations.longitude',
 					'marcas.nombre as marca',
 					'modelo.nombre as modelo',
 					'publicaciones.*',
@@ -1325,11 +1363,14 @@ class PublicationController extends BaseController {
 		}else
 		{
 			if ($pub->typeCat != 0) {
-				$pub = Publicaciones::join('departamento','publicaciones.departamento','=','departamento.id')
+				$pub = Publicaciones::leftJoin('locations','locations.pub_id','=','publicaciones.id')
+				->join('departamento','publicaciones.departamento','=','departamento.id')
 				->join('categoria','categoria.id','=','publicaciones.categoria')
 				->join('subcategoria','subcategoria.id','=','publicaciones.typeCat')
 				->where('publicaciones.id','=',$id)
 				->get(array(
+						'locations.latitude',
+						'locations.longitude',
 						'subcategoria.desc as subCat',
 						'departamento.nombre as dep',
 						'categoria.nombre as cat',
@@ -1337,10 +1378,13 @@ class PublicationController extends BaseController {
 						));
 			}else
 			{
-				$pub = Publicaciones::join('departamento','publicaciones.departamento','=','departamento.id')
+				$pub = Publicaciones::leftJoin('locations','locations.pub_id','=','publicaciones.id')
+				->join('departamento','publicaciones.departamento','=','departamento.id')
 				->join('categoria','categoria.id','=','publicaciones.categoria')
 				->where('publicaciones.id','=',$id)
 				->get(array(
+						'locations.latitude',
+						'locations.longitude',
 						'departamento.nombre as dep',
 						'categoria.nombre as cat',
 						'publicaciones.*'

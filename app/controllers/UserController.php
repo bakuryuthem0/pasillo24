@@ -386,6 +386,17 @@ class UserController extends BaseController {
 			
 			
 			if ($publication->save()) {
+				if (Input::has('longitud') && Input::has('latitud')) {
+					$lon = Input::get('longitud');
+					$lat = Input::get('latitud');
+					if (!empty($lon) && !empty($lat)) {
+						$loc = new Location;
+						$loc->latitude  = Input::get('latitud');
+						$loc->longitude = Input::get('longitud');
+						$loc->pub_id    = $publication->id;
+						$loc->save();
+					}
+				}
 				Session::flash('success', 'Su publicación fue creada sactisfactoriamente.');
 				return Redirect::to('usuario/publicacion/pagar/'.$publication->id);
 			}else
