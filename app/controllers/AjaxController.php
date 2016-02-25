@@ -2297,4 +2297,13 @@ class AjaxController extends BaseController{
 			'marcas' => $brand,
 		));
 	}
+	public function getUserData()
+	{
+		$id = Input::get('id');
+		$user = User::find($id);
+		return Response::json(array(
+			'type' => 'success',
+			'data' => $user,
+		));
+	}
 }

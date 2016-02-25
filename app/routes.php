@@ -79,6 +79,7 @@ Route::group(array('before' => 'check_app_auth'),function()
 	Route::post('app/usuario/comentarios/marcar','AjaxController@postElimCommentrecividos');
 	Route::post('app/usuario/responder','AjaxController@postResponse');
 
+	Route::get('app/usuario-datos','AjaxController@getUserData');
 });
 //rutas globales
 Route::get('app/categorias','AjaxController@getCategory');
