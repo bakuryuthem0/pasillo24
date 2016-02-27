@@ -367,124 +367,310 @@ class AjaxController extends BaseController{
 		}
 		$title ="Inicio | pasillo24.com";
 		if (!is_null($id)) {
-			$lider = Publicaciones::where('status','=','Aprobado')
-			->where('ubicacion','=','Principal')
-			->where('tipo','=','Lider')
+			$lider = Publicaciones::join('usuario','usuario.id','=','publicaciones.user_id')
+			->where('publicaciones.status','=','Aprobado')
+			->where('publicaciones.ubicacion','=','Principal')
+			->where('publicaciones.tipo','=','Lider')
 			->where('publicaciones.pag_web','!=',"")
-			->where('fechFin','>=',date('Y-m-d',time()))
+			->where('publicaciones.fechFin','>=',date('Y-m-d',time()))
 			->where('publicaciones.deleted','=',0)
-			->orderBy('fechFin','desc')->get(array(
+			->orderBy('publicaciones.fechFin','desc')->get(array(
 				'publicaciones.img_1',
+				'publicaciones.img_2',
+				'publicaciones.img_3',
+				'publicaciones.img_4',
+				'publicaciones.img_5',
+				'publicaciones.img_6',
+				'publicaciones.img_7',
+				'publicaciones.img_8',
 				'publicaciones.titulo',
 				'publicaciones.precio',
 				'publicaciones.moneda',
 				'publicaciones.id',
+				'usuario.email',
+				'usuario.auth_token',
+				'usuario.dir',
+				'usuario.id as user_id',
+				'usuario.id_carnet',
+				'usuario.lastname',
+				'usuario.name',
+				'usuario.nit',
+				'usuario.nombEmp',
+				'usuario.pag_web',
+				'usuario.pais',
+				'usuario.password',
+				'usuario.phone',
+				'usuario.postal_cod',
+				'usuario.register_cod',
+				'usuario.register_cod_active',
+				'usuario.reputation',
+				'usuario.role',
+				'usuario.state',
+				'usuario.user_deleted',
+				'usuario.user_suspended',
+				'usuario.username',
+				'usuario.votes',
 				)
 			);
-			$habitual = Publicaciones::where(function($query) use($id){
+			$habitual = Publicaciones::join('usuario','usuario.id','=','publicaciones.user_id')
+			->where(function($query) use($id){
 				/*Busco las habituales*/
-				$query->where('tipo','=','Habitual')
+				$query->where('publicaciones.tipo','=','Habitual')
 				->where(function($query){
 					/*Que vayan en la principal*/
-					$query->where('ubicacion','=','Principal')
-					->orWhere('ubicacion','=','Ambos')
-					->where('status','=','Aprobado');
+					$query->where('publicaciones.ubicacion','=','Principal')
+					->orWhere('publicaciones.ubicacion','=','Ambos')
+					->where('publicaciones.status','=','Aprobado');
 
 				})
 				->where(function($query){
 					/*y que sigan activas*/
-					$query->where('fechFin','>=',date('Y-m-d',time()))
-					->where('status','=','Aprobado');
+					$query->where('publicaciones.fechFin','>=',date('Y-m-d',time()))
+					->where('publicaciones.status','=','Aprobado');
 
 				})
-				->where('departamento','=',$id);
+				->where('publicaciones.departamento','=',$id);
 			})
-			->where('deleted','=',0)
+			->where('publicaciones.deleted','=',0)
 			->orWhere(function($query) use($id){
-				$query->where('tipo','=','Lider')
-				->where('ubicacion','=','Principal')
-				->where('pag_web','=',"")
-				->where('status','=','Aprobado')
-				->where('departamento','=',$id);
+				$query->where('publicaciones.tipo','=','Lider')
+				->where('publicaciones.ubicacion','=','Principal')
+				->where('publicaciones.pag_web','=',"")
+				->where('publicaciones.status','=','Aprobado')
+				->where('publicaciones.departamento','=',$id);
 
 			})
-			->orderBy('fechFin','desc')->get(array(
+			->orderBy('publicaciones.fechFin','desc')->get(array(
 				'publicaciones.img_1',
+				'publicaciones.img_2',
+				'publicaciones.img_3',
+				'publicaciones.img_4',
+				'publicaciones.img_5',
+				'publicaciones.img_6',
+				'publicaciones.img_7',
+				'publicaciones.img_8',
 				'publicaciones.titulo',
 				'publicaciones.precio',
 				'publicaciones.moneda',
 				'publicaciones.id',
+				'usuario.email',
+				'usuario.auth_token',
+				'usuario.dir',
+				'usuario.id as user_id',
+				'usuario.id_carnet',
+				'usuario.lastname',
+				'usuario.name',
+				'usuario.nit',
+				'usuario.nombEmp',
+				'usuario.pag_web',
+				'usuario.pais',
+				'usuario.password',
+				'usuario.phone',
+				'usuario.postal_cod',
+				'usuario.register_cod',
+				'usuario.register_cod_active',
+				'usuario.reputation',
+				'usuario.role',
+				'usuario.state',
+				'usuario.user_deleted',
+				'usuario.user_suspended',
+				'usuario.username',
+				'usuario.votes',
 			));
 			
-			$casual = Publicaciones::where('tipo','=','Casual')
-			->where('fechFin','>=',date('Y-m-d',time()))
-			->where('status','=','Aprobado')
-			->where('departamento','=',$id)
-			->where('deleted','=',0)
+			$casual = Publicaciones::join('usuario','usuario.id','=','publicaciones.user_id')
+			->where('publicaciones.tipo','=','Casual')
+			->where('publicaciones.fechFin','>=',date('Y-m-d',time()))
+			->where('publicaciones.status','=','Aprobado')
+			->where('publicaciones.departamento','=',$id)
+			->where('publicaciones.deleted','=',0)
 			->get(array(
 				'publicaciones.img_1',
+				'publicaciones.img_2',
+				'publicaciones.img_3',
+				'publicaciones.img_4',
+				'publicaciones.img_5',
+				'publicaciones.img_6',
+				'publicaciones.img_7',
+				'publicaciones.img_8',
 				'publicaciones.titulo',
 				'publicaciones.precio',
 				'publicaciones.moneda',
 				'publicaciones.id',
+				'usuario.email',
+				'usuario.auth_token',
+				'usuario.dir',
+				'usuario.id as user_id',
+				'usuario.id_carnet',
+				'usuario.lastname',
+				'usuario.name',
+				'usuario.nit',
+				'usuario.nombEmp',
+				'usuario.pag_web',
+				'usuario.pais',
+				'usuario.password',
+				'usuario.phone',
+				'usuario.postal_cod',
+				'usuario.register_cod',
+				'usuario.register_cod_active',
+				'usuario.reputation',
+				'usuario.role',
+				'usuario.state',
+				'usuario.user_deleted',
+				'usuario.user_suspended',
+				'usuario.username',
+				'usuario.votes',
 			));
 		}else
 		{
-			$lider = Publicaciones::where('status','=','Aprobado')
-			->where('ubicacion','=','Principal')
-			->where('tipo','=','Lider')
-			->where('pag_web','!=',"")
-			->where('fechFin','>=',date('Y-m-d',time()))
-			->where('deleted','=',0)
-			->orderBy('fechFin','desc')->get(array(
+			$lider = Publicaciones::join('usuario','usuario.id','=','publicaciones.user_id')
+			->where('publicaciones.status','=','Aprobado')
+			->where('publicaciones.ubicacion','=','Principal')
+			->where('publicaciones.tipo','=','Lider')
+			->where('publicaciones.pag_web','!=',"")
+			->where('publicaciones.fechFin','>=',date('Y-m-d',time()))
+			->where('publicaciones.deleted','=',0)
+			->orderBy('publicaciones.fechFin','desc')->get(array(
 				'publicaciones.img_1',
+				'publicaciones.img_2',
+				'publicaciones.img_3',
+				'publicaciones.img_4',
+				'publicaciones.img_5',
+				'publicaciones.img_6',
+				'publicaciones.img_7',
+				'publicaciones.img_8',
 				'publicaciones.titulo',
 				'publicaciones.precio',
 				'publicaciones.moneda',
 				'publicaciones.id',
+				'usuario.email',
+				'usuario.auth_token',
+				'usuario.dir',
+				'usuario.id as user_id',
+				'usuario.id_carnet',
+				'usuario.lastname',
+				'usuario.name',
+				'usuario.nit',
+				'usuario.nombEmp',
+				'usuario.pag_web',
+				'usuario.pais',
+				'usuario.password',
+				'usuario.phone',
+				'usuario.postal_cod',
+				'usuario.register_cod',
+				'usuario.register_cod_active',
+				'usuario.reputation',
+				'usuario.role',
+				'usuario.state',
+				'usuario.user_deleted',
+				'usuario.user_suspended',
+				'usuario.username',
+				'usuario.votes',
 			));
-			$habitual = Publicaciones::where(function($query){
+			$habitual = Publicaciones::join('usuario','usuario.id','=','publicaciones.user_id')
+			->where(function($query){
 				/*Busco las habituales*/
-				$query->where('tipo','=','Habitual')
+				$query->where('publicaciones.tipo','=','Habitual')
 				->where(function($query){
 					/*Que vayan en la principal*/
-					$query->where('ubicacion','=','Principal')
-					->orWhere('ubicacion','=','Ambos')
-					->where('status','=','Aprobado');
+					$query->where('publicaciones.ubicacion','=','Principal')
+					->orWhere('publicaciones.ubicacion','=','Ambos')
+					->where('publicaciones.status','=','Aprobado');
 
 				})
 				->where(function($query){
 					/*y que sigan activas*/
-					$query->where('fechFin','>=',date('Y-m-d',time()))
-					->where('status','=','Aprobado');
+					$query->where('publicaciones.fechFin','>=',date('Y-m-d',time()))
+					->where('publicaciones.status','=','Aprobado');
 
 				});
 			})
-			->where('deleted','=',0)
+			->where('publicaciones.deleted','=',0)
 			->orWhere(function($query){
-				$query->where('tipo','=','Lider')
-				->where('ubicacion','=','Principal')
-				->where('pag_web','=',"")
-				->where('status','=','Aprobado');
+				$query->where('publicaciones.tipo','=','Lider')
+				->where('publicaciones.ubicacion','=','Principal')
+				->where('publicaciones.pag_web','=',"")
+				->where('publicaciones.status','=','Aprobado');
 
 			})
-			->orderBy('fechFin','desc')->get(array(
+			->orderBy('publicaciones.fechFin','desc')->get(array(
 				'publicaciones.img_1',
+				'publicaciones.img_2',
+				'publicaciones.img_3',
+				'publicaciones.img_4',
+				'publicaciones.img_5',
+				'publicaciones.img_6',
+				'publicaciones.img_7',
+				'publicaciones.img_8',
 				'publicaciones.titulo',
 				'publicaciones.precio',
 				'publicaciones.moneda',
 				'publicaciones.id',
+				'usuario.email',
+				'usuario.auth_token',
+				'usuario.dir',
+				'usuario.id as user_id',
+				'usuario.id_carnet',
+				'usuario.lastname',
+				'usuario.name',
+				'usuario.nit',
+				'usuario.nombEmp',
+				'usuario.pag_web',
+				'usuario.pais',
+				'usuario.password',
+				'usuario.phone',
+				'usuario.postal_cod',
+				'usuario.register_cod',
+				'usuario.register_cod_active',
+				'usuario.reputation',
+				'usuario.role',
+				'usuario.state',
+				'usuario.user_deleted',
+				'usuario.user_suspended',
+				'usuario.username',
+				'usuario.votes',
 			));
-			$casual = Publicaciones::where('tipo','=','Casual')
-			->where('fechFin','>=',date('Y-m-d',time()))
-			->where('status','=','Aprobado')
-			->where('deleted','=',0)
+			$casual = Publicaciones::join('usuario','usuario.id','=','publicaciones.user_id')
+			->where('publicaciones.tipo','=','Casual')
+			->where('publicaciones.fechFin','>=',date('Y-m-d',time()))
+			->where('publicaciones.status','=','Aprobado')
+			->where('publicaciones.deleted','=',0)
 			->get(array(
 				'publicaciones.img_1',
+				'publicaciones.img_2',
+				'publicaciones.img_3',
+				'publicaciones.img_4',
+				'publicaciones.img_5',
+				'publicaciones.img_6',
+				'publicaciones.img_7',
+				'publicaciones.img_8',
 				'publicaciones.titulo',
 				'publicaciones.precio',
 				'publicaciones.moneda',
 				'publicaciones.id',
+				'usuario.email',
+				'usuario.auth_token',
+				'usuario.dir',
+				'usuario.id as user_id',
+				'usuario.id_carnet',
+				'usuario.lastname',
+				'usuario.name',
+				'usuario.nit',
+				'usuario.nombEmp',
+				'usuario.pag_web',
+				'usuario.pais',
+				'usuario.password',
+				'usuario.phone',
+				'usuario.postal_cod',
+				'usuario.register_cod',
+				'usuario.register_cod_active',
+				'usuario.reputation',
+				'usuario.role',
+				'usuario.state',
+				'usuario.user_deleted',
+				'usuario.user_suspended',
+				'usuario.username',
+				'usuario.votes',
 			));
 		}
 
@@ -562,21 +748,58 @@ class AjaxController extends BaseController{
 					$inp = '';
 				}
 				if (!empty($inp)) {
-					$lider = DB::select("SELECT `publicaciones`.`id`,`publicaciones`.`img_1`,`publicaciones`.`titulo` ,`publicaciones`.`precio`, `publicaciones`.`moneda` 
-						FROM  `publicaciones` 
-						LEFT JOIN  `categoria` ON  `categoria`.`id` =  `publicaciones`.`categoria` 
-						WHERE `publicaciones`.`fechFin` >= '".date('Y-m-d',time())."' 
+					$lider = DB::select("SELECT 
+						`publicaciones`.`id`,
+						`publicaciones`.`img_1`,
+						`publicaciones`.`img_2`,
+						`publicaciones`.`img_3`,
+						`publicaciones`.`img_4`,
+						`publicaciones`.`img_5`,
+						`publicaciones`.`img_6`,
+						`publicaciones`.`img_7`,
+						`publicaciones`.`img_8`,
+						`publicaciones`.`titulo` ,
+						`publicaciones`.`precio`, 
+						`publicaciones`.`moneda`
+						`usuario`.`email`,
+						`usuario`.`auth_token`,
+						`usuario`.`dir`,
+						`usuario`.`id as user_id`,
+						`usuario`.`id_carnet`,
+						`usuario`.`lastname`,
+						`usuario`.`name`,
+						`usuario`.`nit`,
+						`usuario`.`nombEmp`,
+						`usuario`.`pag_web`,
+						`usuario`.`pais`,
+						`usuario`.`password`,
+						`usuario`.`phone`,
+						`usuario`.`postal_cod`,
+						`usuario`.`register_cod`,
+						`usuario`.`register_cod_active`,
+						`usuario`.`reputation`,
+						`usuario`.`role`,
+						`usuario`.`state`,
+						`usuario`.`user_deleted`,
+						`usuario`.`user_suspended`,
+						`usuario`.`username`,
+						`usuario`.`votes`, 
+					FROM  `publicaciones` 
+					LEFT JOIN  `usuario` ON  `usuario`.`id` =  `publicaciones`.`user_id`,
+					LEFT JOIN  `categoria` ON  `categoria`.`id` =  `publicaciones`.`categoria` 
+					WHERE `publicaciones`.`fechFin` >= '".date('Y-m-d',time())."' 
 						AND `publicaciones`.`status` =  'Aprobado' AND (
-							LOWER(  `publicaciones`.`titulo` ) LIKE  '%".strtolower($input['busq'])."%'
-							OR LOWER( `publicaciones`.`pag_web` ) LIKE  '%".strtolower($input['busq'])."%'
-							OR LOWER( `publicaciones`.`descripcion` ) LIKE  '%".strtolower($input['busq'])."%'
-							OR LOWER( `categoria`.`desc` ) LIKE  '%".strtolower($input['busq'])."%'
-						) 
-						AND `publicaciones`.`departamento` = ".$inp->id."
-						AND  `publicaciones`.`deleted` = 0
-						AND  (`publicaciones`.`ubicacion` = 'Categoria' OR `publicaciones`.`ubicacion` = 'Ambos')");
+						LOWER(  `publicaciones`.`titulo` ) LIKE  '%".strtolower($input['busq'])."%'
+						OR LOWER( `publicaciones`.`pag_web` ) LIKE  '%".strtolower($input['busq'])."%'
+						OR LOWER( `publicaciones`.`descripcion` ) LIKE  '%".strtolower($input['busq'])."%'
+						OR LOWER( `categoria`.`desc` ) LIKE  '%".strtolower($input['busq'])."%'
+					) 
+					AND `publicaciones`.`departamento` = ".$inp->id."
+					AND  `publicaciones`.`deleted` = 0
+					AND  (`publicaciones`.`ubicacion` = 'Categoria' OR `publicaciones`.`ubicacion` = 'Ambos')");
 
 					$res = Publicaciones::leftJoin('categoria','publicaciones.categoria','=','categoria.id')
+					->leftJoin('usuario','usuario.id','=','publicaciones.user_id')
 					->leftJoin('departamento','publicaciones.departamento','=','departamento.id')
 					->where(function($query) use ($input){
 						$query->whereRaw("LOWER(`publicaciones`.`titulo`) LIKE  '%".strtolower($input['busq'])."%'")
@@ -592,16 +815,84 @@ class AjaxController extends BaseController{
 						->orWhere('publicaciones.fechFinNormal','>=',date('Y-m-d'));
 					})
 					->where('publicaciones.departamento','=',Input::get('filter'))
-					->paginate(5,array('publicaciones.id',
+					->get(array(
+						'publicaciones.id',
 						'publicaciones.img_1',
+						'publicaciones.img_2',
+						'publicaciones.img_3',
+						'publicaciones.img_4',
+						'publicaciones.img_5',
+						'publicaciones.img_6',
+						'publicaciones.img_7',
+						'publicaciones.img_8',
 						'publicaciones.titulo',
 						'publicaciones.precio',
 						'publicaciones.moneda',
-						'departamento.nombre as dep'));
+						'departamento.nombre as dep',
+						'usuario.email',
+						'usuario.auth_token',
+						'usuario.dir',
+						'usuario.id as user_id',
+						'usuario.id_carnet',
+						'usuario.lastname',
+						'usuario.name',
+						'usuario.nit',
+						'usuario.nombEmp',
+						'usuario.pag_web',
+						'usuario.pais',
+						'usuario.password',
+						'usuario.phone',
+						'usuario.postal_cod',
+						'usuario.register_cod',
+						'usuario.register_cod_active',
+						'usuario.reputation',
+						'usuario.role',
+						'usuario.state',
+						'usuario.user_deleted',
+						'usuario.user_suspended',
+						'usuario.username',
+						'usuario.votes',
+					));
 				}else
 				{
-					$lider = DB::select("SELECT `publicaciones`.`id`,`publicaciones`.`img_1`,`publicaciones`.`titulo` ,`publicaciones`.`precio`, `publicaciones`.`moneda` 
+					$lider = DB::select("SELECT 
+							`publicaciones`.`id`,
+							`publicaciones`.`img_1`,
+							`publicaciones`.`img_2`,
+							`publicaciones`.`img_3`,
+							`publicaciones`.`img_4`,
+							`publicaciones`.`img_5`,
+							`publicaciones`.`img_6`,
+							`publicaciones`.`img_7`,
+							`publicaciones`.`img_8`,
+							`publicaciones`.`titulo` ,
+							`publicaciones`.`precio`,
+							`publicaciones`.`moneda`,
+							`usuario`.`email`,
+							`usuario`.`auth_token`,
+							`usuario`.`dir`,
+							`usuario`.`id as user_id`,
+							`usuario`.`id_carnet`,
+							`usuario`.`lastname`,
+							`usuario`.`name`,
+							`usuario`.`nit`,
+							`usuario`.`nombEmp`,
+							`usuario`.`pag_web`,
+							`usuario`.`pais`,
+							`usuario`.`password`,
+							`usuario`.`phone`,
+							`usuario`.`postal_cod`,
+							`usuario`.`register_cod`,
+							`usuario`.`register_cod_active`,
+							`usuario`.`reputation`,
+							`usuario`.`role`,
+							`usuario`.`state`,
+							`usuario`.`user_deleted`,
+							`usuario`.`user_suspended`,
+							`usuario`.`username`,
+							`usuario`.`votes`, 
 						FROM  `publicaciones` 
+						LEFT JOIN  `usuario` ON  `usuario`.`id` =  `publicaciones`.`user_id`,
 						LEFT JOIN  `categoria` ON  `categoria`.`id` =  `publicaciones`.`categoria` 
 						WHERE `publicaciones`.`fechFin` >= '".date('Y-m-d',time())."' 
 						AND `publicaciones`.`status` =  'Aprobado' AND (
@@ -613,6 +904,7 @@ class AjaxController extends BaseController{
 						AND  `publicaciones`.`deleted` = 0
 						AND  (`publicaciones`.`ubicacion` = 'Categoria' OR `publicaciones`.`ubicacion` = 'Ambos')");
 					$res = Publicaciones::leftJoin('categoria','publicaciones.categoria','=','categoria.id')
+					->leftJoin('usuario','usuario.id','=','publicaciones.user_id')
 					->leftJoin('departamento','publicaciones.departamento','=','departamento.id')
 					->where(function($query) use ($input){
 						$query->whereRaw("LOWER(`publicaciones`.`titulo`) LIKE  '%".strtolower($input['busq'])."%'")
@@ -626,12 +918,43 @@ class AjaxController extends BaseController{
 						$query->where('publicaciones.fechFin','>=',date('Y-m-d'))
 						->orWhere('publicaciones.fechFinNormal','>=',date('Y-m-d'));
 					})
-					->paginate(5,array('publicaciones.id',
+					->get(array('publicaciones.id',
 						'publicaciones.img_1',
+						'publicaciones.img_2',
+						'publicaciones.img_3',
+						'publicaciones.img_4',
+						'publicaciones.img_5',
+						'publicaciones.img_6',
+						'publicaciones.img_7',
+						'publicaciones.img_8',
 						'publicaciones.titulo',
 						'publicaciones.precio',
 						'publicaciones.moneda',
-						'departamento.nombre as dep'));
+						'departamento.nombre as dep',
+						'usuario.email',
+						'usuario.auth_token',
+						'usuario.dir',
+						'usuario.id as user_id',
+						'usuario.id_carnet',
+						'usuario.lastname',
+						'usuario.name',
+						'usuario.nit',
+						'usuario.nombEmp',
+						'usuario.pag_web',
+						'usuario.pais',
+						'usuario.password',
+						'usuario.phone',
+						'usuario.postal_cod',
+						'usuario.register_cod',
+						'usuario.register_cod_active',
+						'usuario.reputation',
+						'usuario.role',
+						'usuario.state',
+						'usuario.user_deleted',
+						'usuario.user_suspended',
+						'usuario.username',
+						'usuario.votes',
+					));
 				}
 
 				$categorias = Categorias::where('id','=',$input['busq'])->pluck('desc');
@@ -658,18 +981,56 @@ class AjaxController extends BaseController{
 					$inp = '';
 				}
 				if (!empty($inp)) {
-					$lider = Publicaciones::where('status','=','Aprobado')
-					->where('deleted','=',0)
-					->where('departamento','=',$inp->id)
+					$lider = Publicaciones::leftJoin('usuario','usuario.id','=','publicaciones.user_id')
+					->where('publicaciones.status','=','Aprobado')
+					->where('publicaciones.deleted','=',0)
+					->where('publicaciones.departamento','=',$inp->id)
 					->where(function($query){
-						$query->where('ubicacion','=','Categoria')
-						->orWhere('ubicacion','=','Ambos');
+						$query->where('publicaciones.ubicacion','=','Categoria')
+						->orWhere('publicaciones.ubicacion','=','Ambos');
 					})
-					->where('fechFin','>=',date('Y-m-d'))
-					->where('categoria','=',$input['cat'])
-					->get(array('id','img_1','titulo','precio','moneda'));
+					->where('publicaciones.fechFin','>=',date('Y-m-d'))
+					->where('publicaciones.categoria','=',$input['cat'])
+					->get(array(
+						'publicaciones.id',
+						'publicaciones.img_1',
+						'publicaciones.img_2',
+						'publicaciones.img_3',
+						'publicaciones.img_4',
+						'publicaciones.img_5',
+						'publicaciones.img_6',
+						'publicaciones.img_7',
+						'publicaciones.img_8',
+						'publicaciones.titulo',
+						'publicaciones.precio',
+						'publicaciones.moneda',
+						'usuario.email',
+						'usuario.auth_token',
+						'usuario.dir',
+						'usuario.id as user_id',
+						'usuario.id_carnet',
+						'usuario.lastname',
+						'usuario.name',
+						'usuario.nit',
+						'usuario.nombEmp',
+						'usuario.pag_web',
+						'usuario.pais',
+						'usuario.password',
+						'usuario.phone',
+						'usuario.postal_cod',
+						'usuario.register_cod',
+						'usuario.register_cod_active',
+						'usuario.reputation',
+						'usuario.role',
+						'usuario.state',
+						'usuario.user_deleted',
+						'usuario.user_suspended',
+						'usuario.username',
+						'usuario.votes',
+					));
 
 					$res = Publicaciones::where('publicaciones.status','=','Aprobado')
+					->leftJoin('usuario','usuario.id','=','publicaciones.user_id')
 					->where('categoria','=',$input['cat'])
 					->where('publicaciones.departamento','=',$inp->id)
 					->leftJoin('departamento','publicaciones.departamento','=','departamento.id')
@@ -683,27 +1044,89 @@ class AjaxController extends BaseController{
 						$query->where('publicaciones.fechFin','>=',date('Y-m-d',time()))
 						->orWhere('publicaciones.fechFinNormal','>=',date('Y-m-d',time()));
 					})		
-					->paginate(5,array(
+					->get(array(
 						'publicaciones.id',
 						'publicaciones.img_1',
+						'publicaciones.img_2',
+						'publicaciones.img_3',
+						'publicaciones.img_4',
+						'publicaciones.img_5',
+						'publicaciones.img_6',
+						'publicaciones.img_7',
+						'publicaciones.img_8',
 						'publicaciones.titulo',
 						'publicaciones.precio',
 						'publicaciones.moneda',
 						'departamento.id as dep_id',
-						'departamento.nombre as dep'));
+						'departamento.nombre as dep',
+						'usuario.email',
+						'usuario.auth_token',
+						'usuario.dir',
+						'usuario.id as user_id',
+						'usuario.id_carnet',
+						'usuario.lastname',
+						'usuario.name',
+						'usuario.nit',
+						'usuario.nombEmp',
+						'usuario.pag_web',
+						'usuario.pais',
+						'usuario.password',
+						'usuario.phone',
+						'usuario.postal_cod',
+						'usuario.register_cod',
+						'usuario.register_cod_active',
+						'usuario.reputation',
+						'usuario.role',
+						'usuario.state',
+						'usuario.user_deleted',
+						'usuario.user_suspended',
+						'usuario.username',
+						'usuario.votes',
+					));
 				}else
 				{
-					$lider = Publicaciones::where('status','=','Aprobado')
-					->where('deleted','=',0)
+					$lider = Publicaciones::leftJoin('usuario','usuario.id','=','publicaciones.user_id')
+					->where('publicaciones.status','=','Aprobado')
+					->where('publicaciones.deleted','=',0)
 					->where(function($query){
-						$query->where('ubicacion','=','Categoria')
-						->orWhere('ubicacion','=','Ambos');
+						$query->where('publicaciones.ubicacion','=','Categoria')
+						->orWhere('publicaciones.ubicacion','=','Ambos');
 					})
-					->where('fechFin','>=',date('Y-m-d'))
-					->where('categoria','=',$input['cat'])
-					->get(array('id','img_1','titulo','precio','moneda'));
+					->where('publicaciones.fechFin','>=',date('Y-m-d'))
+					->where('publicaciones.categoria','=',$input['cat'])
+					->get(array(
+						'id',
+						'img_1',
+						'titulo',
+						'precio',
+						'moneda',
+						'usuario.email',
+						'usuario.auth_token',
+						'usuario.dir',
+						'usuario.id as user_id',
+						'usuario.id_carnet',
+						'usuario.lastname',
+						'usuario.name',
+						'usuario.nit',
+						'usuario.nombEmp',
+						'usuario.pag_web',
+						'usuario.pais',
+						'usuario.password',
+						'usuario.phone',
+						'usuario.postal_cod',
+						'usuario.register_cod',
+						'usuario.register_cod_active',
+						'usuario.reputation',
+						'usuario.role',
+						'usuario.state',
+						'usuario.user_deleted',
+						'usuario.user_suspended',
+						'usuario.username',
+						'usuario.votes',
+					));
 
 					$res = Publicaciones::where('publicaciones.status','=','Aprobado')
+					->leftJoin('usuario','usuario.id','=','publicaciones.user_id')
 					->where('categoria','=',$input['cat'])
 					->leftJoin('departamento','publicaciones.departamento','=','departamento.id')
 					->where('publicaciones.tipo','=','Habitual')
@@ -716,14 +1139,45 @@ class AjaxController extends BaseController{
 						$query->where('publicaciones.fechFin','>=',date('Y-m-d',time()))
 						->orWhere('publicaciones.fechFinNormal','>=',date('Y-m-d',time()));
 					})		
-					->paginate(5,array(
+					->get(array(
 						'publicaciones.id',
 						'publicaciones.img_1',
+						'publicaciones.img_2',
+						'publicaciones.img_3',
+						'publicaciones.img_4',
+						'publicaciones.img_5',
+						'publicaciones.img_6',
+						'publicaciones.img_7',
+						'publicaciones.img_8',
 						'publicaciones.titulo',
 						'publicaciones.precio',
 						'publicaciones.moneda',
 						'departamento.id as dep_id',
-						'departamento.nombre as dep'));
+						'departamento.nombre as dep',
+						'usuario.email',
+						'usuario.auth_token',
+						'usuario.dir',
+						'usuario.id as user_id',
+						'usuario.id_carnet',
+						'usuario.lastname',
+						'usuario.name',
+						'usuario.nit',
+						'usuario.nombEmp',
+						'usuario.pag_web',
+						'usuario.pais',
+						'usuario.password',
+						'usuario.phone',
+						'usuario.postal_cod',
+						'usuario.register_cod',
+						'usuario.register_cod_active',
+						'usuario.reputation',
+						'usuario.role',
+						'usuario.state',
+						'usuario.user_deleted',
+						'usuario.user_suspended',
+						'usuario.username',
+						'usuario.votes',
+					));
 				}
 				$categorias = Categorias::where('id','=',$input['cat'])->pluck('id');
 				if (!is_null($categorias)) {
@@ -747,22 +1201,59 @@ class AjaxController extends BaseController{
 
 	public function getCategories($id)
 	{
-		$lider = Publicaciones::where('status','=','Aprobado')
-		->where('deleted','=',0)
+		$lider = Publicaciones::join('usuario','usuario.id','=','publicaciones.user_id')
+		->where('publicaciones.status','=','Aprobado')
+		->where('publicaciones.deleted','=',0)
 		->where(function($query){
-			$query->where('ubicacion','=','Categoria')
-			->orWhere('ubicacion','=','Ambos');
+			$query->where('publicaciones.ubicacion','=','Categoria')
+			->orWhere('publicaciones.ubicacion','=','Ambos');
 		})
 		->where(function($query){
-			$query->where('fechFin','>=',date('Y-m-d'))
-			->orWhere('fechFinNormal','>=',date('Y-m-d'));
+			$query->where('publicaciones.fechFin','>=',date('Y-m-d'))
+			->orWhere('publicaciones.fechFinNormal','>=',date('Y-m-d'));
 			
 		})
-		->where('categoria','=',$id)
-		->get(array('id','img_1','titulo','precio','moneda'));
-		$publicaciones = Publicaciones::where('publicaciones.status','=','Aprobado')
-		->where('categoria','=',$id)
+		->where('publicaciones.categoria','=',$id)
+		->get(array(
+			'publicaciones.id',
+			'publicaciones.img_1',
+			'publicaciones.img_2',
+			'publicaciones.img_3',
+			'publicaciones.img_4',
+			'publicaciones.img_5',
+			'publicaciones.img_6',
+			'publicaciones.img_7',
+			'publicaciones.img_8',
+			'publicaciones.titulo',
+			'publicaciones.precio',
+			'publicaciones.moneda',
+			'usuario.email',
+			'usuario.auth_token',
+			'usuario.dir',
+			'usuario.id as user_id',
+			'usuario.id_carnet',
+			'usuario.lastname',
+			'usuario.name',
+			'usuario.nit',
+			'usuario.nombEmp',
+			'usuario.pag_web',
+			'usuario.pais',
+			'usuario.password',
+			'usuario.phone',
+			'usuario.postal_cod',
+			'usuario.register_cod',
+			'usuario.register_cod_active',
+			'usuario.reputation',
+			'usuario.role',
+			'usuario.state',
+			'usuario.user_deleted',
+			'usuario.user_suspended',
+			'usuario.username',
+			'usuario.votes',));
+		$publicaciones = Publicaciones::join('usuario','usuario.id','=','publicaciones.user_id')
 		->leftJoin('departamento','publicaciones.departamento','=','departamento.id')
+		->where('publicaciones.status','=','Aprobado')
+		->where('publicaciones.categoria','=',$id)
 		->where('publicaciones.tipo','!=','Lider')
 		->where('publicaciones.deleted','=',0)
 		->where(function($query){
@@ -773,14 +1264,42 @@ class AjaxController extends BaseController{
 			$query->where('publicaciones.fechFin','>=',date('Y-m-d',time()))
 			->orWhere('publicaciones.fechFinNormal','>=',date('Y-m-d',time()));
 		})		
-		->paginate(5,array(
+		->get(array(
 			'publicaciones.id',
 			'publicaciones.img_1',
+			'publicaciones.img_2',
+			'publicaciones.img_3',
+			'publicaciones.img_4',
+			'publicaciones.img_5',
+			'publicaciones.img_6',
+			'publicaciones.img_7',
+			'publicaciones.img_8',
 			'publicaciones.titulo',
 			'publicaciones.precio',
 			'publicaciones.moneda',
-			'departamento.id as dep_id',
-			'departamento.nombre as dep'));
+			'usuario.email',
+			'usuario.auth_token',
+			'usuario.dir',
+			'usuario.id as user_id',
+			'usuario.id_carnet',
+			'usuario.lastname',
+			'usuario.name',
+			'usuario.nit',
+			'usuario.nombEmp',
+			'usuario.pag_web',
+			'usuario.pais',
+			'usuario.password',
+			'usuario.phone',
+			'usuario.postal_cod',
+			'usuario.register_cod',
+			'usuario.register_cod_active',
+			'usuario.reputation',
+			'usuario.role',
+			'usuario.state',
+			'usuario.user_deleted',
+			'usuario.user_suspended',
+			'usuario.username',
+			'usuario.votes',));
 		$departamentos = Department::get();
 		return Response::json(array(
 			'publicaciones' => $publicaciones,
@@ -792,21 +1311,60 @@ class AjaxController extends BaseController{
 	}
 	public function getPublicationCategory($id)
 	{
-		$lider = Publicaciones::where('status','=','Aprobado')
+		$lider = Publicaciones::leftJoin('usuario','usuario.id','=','publicaciones.user_id')
+		->where('publicaciones.status','=','Aprobado')
 		->where('deleted','=',0)
 		->where(function($query){
-			$query->where('ubicacion','=','Categoria')
-			->orWhere('ubicacion','=','Ambos');
+			$query->where('publicaciones.ubicacion','=','Categoria')
+			->orWhere('publicaciones.ubicacion','=','Ambos');
 		})
 		->where(function($query){
-			$query->where('fechFin','>=',date('Y-m-d'))
-			->orWhere('fechFinNormal','>=',date('Y-m-d'));
+			$query->where('publicaciones.fechFin','>=',date('Y-m-d'))
+			->orWhere('publicaciones.fechFinNormal','>=',date('Y-m-d'));
 			
 		})
-		->where('categoria','=',$id)
-		->get(array('id','img_1','titulo','precio','moneda'));
-		$publicaciones = Publicaciones::where('publicaciones.status','=','Aprobado')
-		->where('categoria','=',$id)
+		->where('publicaciones.categoria','=',$id)
+		->get(array(
+			'publicaciones.id',
+			'publicaciones.img_1',
+			'publicaciones.img_2',
+			'publicaciones.img_3',
+			'publicaciones.img_4',
+			'publicaciones.img_5',
+			'publicaciones.img_6',
+			'publicaciones.img_7',
+			'publicaciones.img_8',
+			'publicaciones.titulo',
+			'publicaciones.precio',
+			'publicaciones.moneda',
+			'publicaciones.id',
+			'usuario.email',
+			'usuario.auth_token',
+			'usuario.dir',
+			'usuario.id as user_id',
+			'usuario.id_carnet',
+			'usuario.lastname',
+			'usuario.name',
+			'usuario.nit',
+			'usuario.nombEmp',
+			'usuario.pag_web',
+			'usuario.pais',
+			'usuario.password',
+			'usuario.phone',
+			'usuario.postal_cod',
+			'usuario.register_cod',
+			'usuario.register_cod_active',
+			'usuario.reputation',
+			'usuario.role',
+			'usuario.state',
+			'usuario.user_deleted',
+			'usuario.user_suspended',
+			'usuario.username',
+			'usuario.votes',
+		));
+		$publicaciones = Publicaciones::leftJoin('usuario','usuario.id','=','publicaciones.user_id')
+		->where('publicaciones.status','=','Aprobado')
+		->where('publicaciones.categoria','=',$id)
 		->leftJoin('departamento','publicaciones.departamento','=','departamento.id')
 		->where('publicaciones.tipo','!=','Lider')
 		->where('publicaciones.deleted','=',0)
@@ -821,12 +1379,42 @@ class AjaxController extends BaseController{
 		->get(array(
 			'publicaciones.id',
 			'publicaciones.img_1',
+			'publicaciones.img_2',
+			'publicaciones.img_3',
+			'publicaciones.img_4',
+			'publicaciones.img_5',
+			'publicaciones.img_6',
+			'publicaciones.img_7',
+			'publicaciones.img_8',
 			'publicaciones.titulo',
 			'publicaciones.precio',
 			'publicaciones.moneda',
 			'publicaciones.descripcion',
 			'departamento.id as dep_id',
-			'departamento.nombre as dep'
+			'departamento.nombre as dep',
+			'usuario.email',
+			'usuario.auth_token',
+			'usuario.dir',
+			'usuario.id as user_id',
+			'usuario.id_carnet',
+			'usuario.lastname',
+			'usuario.name',
+			'usuario.nit',
+			'usuario.nombEmp',
+			'usuario.pag_web',
+			'usuario.pais',
+			'usuario.password',
+			'usuario.phone',
+			'usuario.postal_cod',
+			'usuario.register_cod',
+			'usuario.register_cod_active',
+			'usuario.reputation',
+			'usuario.role',
+			'usuario.state',
+			'usuario.user_deleted',
+			'usuario.user_suspended',
+			'usuario.username',
+			'usuario.votes',
 		));
 		$departamentos = Department::get();
 		return Response::json(array(
@@ -1697,28 +2285,12 @@ class AjaxController extends BaseController{
 			'publicaciones.email as pEmail',
 			'publicaciones.pag_web_hab as pPag_web',
 			'usuario.email',
-			'usuario.auth_token',
-			'usuario.dir',
 			'usuario.id as user_id',
-			'usuario.id_carnet',
 			'usuario.lastname',
 			'usuario.name',
-			'usuario.nit',
-			'usuario.nombEmp',
 			'usuario.pag_web',
-			'usuario.pais',
-			'usuario.password',
 			'usuario.phone',
-			'usuario.postal_cod',
-			'usuario.register_cod',
-			'usuario.register_cod_active',
-			'usuario.reputation',
-			'usuario.role',
-			'usuario.state',
-			'usuario.user_deleted',
-			'usuario.user_suspended',
 			'usuario.username',
-			'usuario.votes',
 		));
 
 		return Response::json(array(
