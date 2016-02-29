@@ -758,13 +758,13 @@ class AjaxController extends BaseController{
 						`publicaciones`.`img_6`,
 						`publicaciones`.`img_7`,
 						`publicaciones`.`img_8`,
-						`publicaciones`.`titulo` ,
+						`publicaciones`.`titulo`,
 						`publicaciones`.`precio`, 
-						`publicaciones`.`moneda`
+						`publicaciones`.`moneda`,
 						`usuario`.`email`,
 						`usuario`.`auth_token`,
 						`usuario`.`dir`,
-						`usuario`.`id as user_id`,
+						`usuario`.`id` as user_id,
 						`usuario`.`id_carnet`,
 						`usuario`.`lastname`,
 						`usuario`.`name`,
@@ -783,9 +783,9 @@ class AjaxController extends BaseController{
 						`usuario`.`user_deleted`,
 						`usuario`.`user_suspended`,
 						`usuario`.`username`,
-						`usuario`.`votes`, 
+						`usuario`.`votes` 
 					FROM  `publicaciones` 
-					LEFT JOIN  `usuario` ON  `usuario`.`id` =  `publicaciones`.`user_id`,
+					LEFT JOIN  `usuario` ON  `usuario`.`id` =  `publicaciones`.`user_id`
 					LEFT JOIN  `categoria` ON  `categoria`.`id` =  `publicaciones`.`categoria` 
 					WHERE `publicaciones`.`fechFin` >= '".date('Y-m-d',time())."' 
 						AND `publicaciones`.`status` =  'Aprobado' AND (
@@ -865,13 +865,13 @@ class AjaxController extends BaseController{
 							`publicaciones`.`img_6`,
 							`publicaciones`.`img_7`,
 							`publicaciones`.`img_8`,
-							`publicaciones`.`titulo` ,
+							`publicaciones`.`titulo`,
 							`publicaciones`.`precio`,
 							`publicaciones`.`moneda`,
 							`usuario`.`email`,
 							`usuario`.`auth_token`,
 							`usuario`.`dir`,
-							`usuario`.`id as user_id`,
+							`usuario`.`id` as user_id,
 							`usuario`.`id_carnet`,
 							`usuario`.`lastname`,
 							`usuario`.`name`,
@@ -890,9 +890,9 @@ class AjaxController extends BaseController{
 							`usuario`.`user_deleted`,
 							`usuario`.`user_suspended`,
 							`usuario`.`username`,
-							`usuario`.`votes`, 
+							`usuario`.`votes` 
 						FROM  `publicaciones` 
-						LEFT JOIN  `usuario` ON  `usuario`.`id` =  `publicaciones`.`user_id`,
+						LEFT JOIN  `usuario` ON  `usuario`.`id` =  `publicaciones`.`user_id`
 						LEFT JOIN  `categoria` ON  `categoria`.`id` =  `publicaciones`.`categoria` 
 						WHERE `publicaciones`.`fechFin` >= '".date('Y-m-d',time())."' 
 						AND `publicaciones`.`status` =  'Aprobado' AND (
@@ -991,6 +991,7 @@ class AjaxController extends BaseController{
 					})
 					->where('publicaciones.fechFin','>=',date('Y-m-d'))
 					->where('publicaciones.categoria','=',$input['cat'])
+					->where('departamento','=',$inp->id)
 					->get(array(
 						'publicaciones.id',
 						'publicaciones.img_1',
@@ -1277,6 +1278,9 @@ class AjaxController extends BaseController{
 			'publicaciones.titulo',
 			'publicaciones.precio',
 			'publicaciones.moneda',
+			'publicaciones.descripcion',
+			'departamento.id as dep_id',
+			'departamento.nombre as dep',
 			'usuario.email',
 			'usuario.auth_token',
 			'usuario.dir',
