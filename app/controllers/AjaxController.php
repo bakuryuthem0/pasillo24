@@ -1439,63 +1439,30 @@ class AjaxController extends BaseController{
 	/*                                                                                 */
 	/*                                                                                 */
 	/*---------------------------Subir Imagenes----------------------------------------*/
-	public function upload_image($carpeta)
+	public function upload_image($carpeta,$file)
 	{
 		$ruta 	 = "images/pubImages/".$carpeta."/";
-		$file 	 = Input::file('file');
-		if (file_exists($ruta.$file->getClientOriginalName())) {
-			//guardamos la imagen en public/imgs con el nombre original
-	        $i = 0;//indice para el while
-	        //separamos el nombre de la img y la extensión
-	        $info = explode(".",$file->getClientOriginalName());
-	        //asignamos de nuevo el nombre de la imagen completo
-	        $miImg = $file->getClientOriginalName();
-	        //mientras el archivo exista iteramos y aumentamos i
-	        while(file_exists($ruta.$miImg)){
-	            $i++;
-	            $miImg = $info[0]."(".$i.")".".".$info[1];              
-	        }
-	        //guardamos la imagen con otro nombre ej foto(1).jpg || foto(2).jpg etc
-	        $file->move($ruta,$miImg);
-	        $img = Image::make($ruta.$miImg);
-	        $blank = Image::make('images/blank.jpg');
-	         if ($img->width() > $img->height()) {
-	        	$img->widen(1604);
-	        }else
-	        {
-	        	$img->heighten(804);
-	        }
-	        if ($img->height() > 804) {
-	        	$img->heighten(804);
-	        }
-	        $mark = Image::make('images/watermark.png')->widen(400);
-	        $blank->insert($img,'center');
-	        $blank->insert($mark,'center')
-	       	->interlace()
-	        ->save($ruta.$miImg);
-	        return $carpeta.'/'.$miImg;
-		}else
-		{
-			$file->move($ruta,$file->getClientOriginalName());
-			$img = Image::make($ruta.$file->getClientOriginalName());
-	                    $blank = Image::make('images/blank.jpg');
-	                    if ($img->width() > $img->height()) {
-	        	      $img->widen(1604);
-	                }else
-	                {
-	        	      $img->heighten(804);
-	                }
-	        if ($img->height() > 804) {
-	        	$img->heighten(804);
-	        }
-	        $mark = Image::make('images/watermark.png')->widen(400);
-	        $blank->insert($img,'center');
-	        $blank->insert($mark,'center')
-	       	->interlace()
-	        ->save($ruta.$file->getClientOriginalName());
-	        return $carpeta.'/'.$file->getClientOriginalName();
-		}
-		return Response::json(array('type' => 'success' , 'msg' => 'Se ha subido la imagen.'));
+		$extension = File::extension($file->getClientOriginalName());
+		$time = time();
+		$miImg = $time.'.'.$extension;
+        $file->move($ruta,$miImg);
+        $img = Image::make($ruta.$miImg);
+        $blank = Image::make('images/blank.jpg');
+         if ($img->width() > $img->height()) {
+        	$img->widen(1604);
+        }else
+        {
+        	$img->heighten(804);
+        }
+        if ($img->height() > 804) {
+        	$img->heighten(804);
+        }
+        $mark = Image::make('images/watermark.png')->widen(400);
+        $blank->insert($img,'center');
+        $blank->insert($mark,'center')
+       	->interlace()
+        ->save($ruta.$miImg);
+        return $carpeta.'/'.$miImg;
 	}
 	/*---------------------------Publicar----------------------------------------------*/
 	/*                                                                                 */
@@ -1539,14 +1506,16 @@ class AjaxController extends BaseController{
 			'duration'  => 'required|min:0',
 			'time'      => 'required|in:d,s,m,a',
 			'fechIni'   => 'required|after:'.date('d-m-Y'),
-			'id'   => 'required',
+			'id'   		=> 'required',
+			'img_1'		=> 'required|image',
 		);
 		$msg = array(
 			'required' => ':attribute es obligatorio',
 			'min'      => ':attribute debe ser mas largo',
 			'in'       => 'Debe seleccionar una opción',
 			'after'    => 'Debe seleccionar una fecha posterior a hoy',
-			'active_url'=> 'Debe utilizar un url válido'
+			'active_url'=> 'Debe utilizar un url válido',
+			'image'		=> 'El archivo :attribute debe ser una imagen',
 		);
 		$attribute = array(
 			'ubication' => 'El campo ubicacion',
@@ -1554,7 +1523,8 @@ class AjaxController extends BaseController{
 			'duration'	=> 'El campo duracion',
 			'time'		=> 'El campo tiempo',
 			'fechIni'   => 'El campo fecha de inicio',
-			'id'	=> 'Id del usuario'
+			'id'		=> 'Id del usuario',
+			'img_1'		=> 'Imagen principal'
 
 		);
 		if ($input['ubication'] == 'Categoria'){
@@ -1638,7 +1608,15 @@ class AjaxController extends BaseController{
 				$publication->pag_web_hab = $input['pag_web'];
 			}
 			$publication->monto     = $monto;
-			
+			$user = User::find($id);
+			if (Input::hasFile('img_1')) {
+				$file1 = Input::file('img_1');
+				$publication->img_1 = upload_image($user->username,$file1);
+			}
+			if (Input::hasFile('img_2')) {
+				$file2 = Input::file('img_2');
+				$publication->img_1 = upload_image($user->username,$file2);
+			}
 			
 			if ($publication->save()) {
 				
@@ -1681,7 +1659,8 @@ class AjaxController extends BaseController{
 			'precio'		=> 'required_if:tipoTransac,venta,alquiler,Aticretico,otro',
 			'moneda'		=> 'required',
 			//'img1'			=> 'required|image',
-			'tipoTransac'	=> 'required'
+			'tipoTransac'	=> 'required',
+			'img_1'			=> 'required',
 
 		);
 		$messages = array(
@@ -1689,7 +1668,8 @@ class AjaxController extends BaseController{
 			'required_if' => ':attribute es obligatorio',
 			'min'		=> ':attribute debe ser mas largo',
 			//'image'		=> ':attribute debe ser una imagen',
-			'numeric'	=> ':attribute debe ser numerico'
+			'numeric'	=> ':attribute debe ser numerico',
+			'image'		=> 'El archivo :attribute debe ser una imagen',
 		);
 		$customAttributes = array(
 			'precio'	 	=> 'El campo precio',
@@ -1701,6 +1681,7 @@ class AjaxController extends BaseController{
 			'moneda'		=> 'El campo moneda',
 			'tipoTransac'	=> 'El campo tipo de operación',
 			'subCat'		=> 'El campo sub-categoria',
+			'img_1'			=> 'Imagen principal',
 
 		);
 		if ($input['cat_id'] == 34) {
@@ -1795,6 +1776,38 @@ class AjaxController extends BaseController{
 		}elseif($input['cat_id'] == 20)
 		{
 			$pub->extension     = $input['ext'];
+		}
+		if (Input::hasFile('img_1')) {
+			$file1 = Input::file('img_1');
+			$publication->img_1 = upload_image($user->username,$file1);
+		}
+		if (Input::hasFile('img_2')) {
+			$file2 = Input::file('img_2');
+			$publication->img_2 = upload_image($user->username,$file2);
+		}
+		if (Input::hasFile('img_3')) {
+			$file3 = Input::file('img_3');
+			$publication->img_3 = upload_image($user->username,$file3);
+		}
+		if (Input::hasFile('img_4')) {
+			$file4 = Input::file('img_4');
+			$publication->img_4 = upload_image($user->username,$file4);
+		}
+		if (Input::hasFile('img_5')) {
+			$file5 = Input::file('img_5');
+			$publication->img_5 = upload_image($user->username,$file5);
+		}
+		if (Input::hasFile('img_6')) {
+			$file6 = Input::file('img_6');
+			$publication->img_6 = upload_image($user->username,$file6);
+		}
+		if (Input::hasFile('img_7')) {
+			$file7 = Input::file('img_7');
+			$publication->img_7 = upload_image($user->username,$file7);
+		}
+		if (Input::hasFile('img_8')) {
+			$file8 = Input::file('img_8');
+			$publication->img_8 = upload_image($user->username,$file8);
 		}
 		if($pub->save())
 		{
@@ -2076,10 +2089,12 @@ class AjaxController extends BaseController{
 			'departamento' 	=> 'required',
 			'categoria'		=> 'required',
 			'titulo'		=> 'required',
+			'img_1'			=> 'required|image',
 		);
 		$messages = array(
 			'required' => ':attribute es requerido',
 			'numeric'  => ':attribute debe ser numerico',
+			'image'	   => 'El archivo :attribute debe ser una imagen',
 		);
 		$customAttributes = array(
 			'input' 		=> 'El campo descripcion',
@@ -2088,6 +2103,7 @@ class AjaxController extends BaseController{
 			'departamento' 	=> 'El campo departamento',
 			'categoria'		=> 'El campo categoria',
 			'titulo'		=> 'El campo titulo',
+			'img_1'			=> 'Imagen principal'
 		);
 		
 		$validator = Validator::make($input, $rules, $messages, $customAttributes);
@@ -2113,6 +2129,14 @@ class AjaxController extends BaseController{
 			$pub->fechFin	  = date('Y-m-d',time()+604800);
 			$pub->fechRepub	  = date('Y-m-d',time()+2543400);
 			$pub->status 	  = 'Procesando';
+			if (Input::hasFile('img_1')) {
+				$file1 = Input::file('img_1');
+				$publication->img_1 = upload_image($user->username,$file1);
+			}
+			if (Input::hasFile('img_2')) {
+				$file2 = Input::file('img_2');
+				$publication->img_2 = upload_image($user->username,$file2);
+			}
 			$pub->save();
 			return Response::json(array(
 				'type' => 'success',
