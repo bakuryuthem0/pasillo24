@@ -42,6 +42,7 @@ Route::get('inicio/terminos-y-condiciones', 'HomeController@getTermsAndCondition
 
 //app
 Route::get('app/inicio','AjaxController@showIndex');
+Route::get('app/publicacion','AjaxController@publicationSelf');
 Route::get('app/inicio/departamentos/{id}','AjaxController@showIndex');
 Route::get('app/inicio/categorias/{id}','AjaxController@getPublicationCategory');
 Route::get('app/inicio/buscar','AjaxController@search');

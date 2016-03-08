@@ -129,7 +129,7 @@
 						@endif
 						<div class="col-xs-12"><label class="textoPromedio">Moneda</label></div>
 						<div class="col-xs-12">
-							<select name="currency" class="form-control">
+							<select name="currency" class="form-control currency">
 								<option value="Bs" @if(isset($currency) && $currency == 'Bs') selected @endif>Bs.</option>
 								<option value="Usd" @if(isset($currency) && $currency == 'Usd') selected @endif>Usd.</option>
 							</select>

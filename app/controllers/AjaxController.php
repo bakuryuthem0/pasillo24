@@ -726,6 +726,159 @@ class AjaxController extends BaseController{
           	));
         }
 	}
+	public function publicationSelf()
+	{
+		$id = Input::get('pub_id');
+		$pub = Publicaciones::find($id);
+		$user = User::find($pub->user_id);
+		if ($pub->user_id != 21) {
+			$otrasPub = Publicaciones::where('user_id','=',$pub->user_id)
+			->where('id','!=',$id)
+			->where('status','=','Aprobado')
+			->where(function($query)
+			{
+				$query->where('tipo','=','Lider')
+				->where('fechFin','>=',date('Y-m-d',time()))
+				->orWhere(function($query)
+				{
+					$query->where(function($query){
+						/*Busco las habituales*/
+						$query->where('tipo','=','Habitual')
+						->where(function($query){
+							/*y que sigan activas*/
+							$query->where('fechFin','>=',date('Y-m-d',time()))
+							->orWhere('fechFinNormal','>=',date('Y-m-d',time()));
+
+						});
+					})
+					->orWhere(function($query){
+						$query->where('tipo','=','Casual')
+						->where('fechFin','>=',date('Y-m-d',time()));
+
+					});
+				});
+			})
+			->where('deleted','=',0)
+			->orderBy('id','desc')
+			->take(16)
+			->get();
+		}else
+		{
+			$otrasPub = array();
+		}
+		if ($pub->tipo == "Lider") {
+			$pub = Publicaciones::leftJoin('locations','locations.pub_id','=','publicaciones.id')
+			->join('usuario','usuario.id','=','publicaciones.user_id')
+			->where('publicaciones.id','=',$id)
+			->get(array(
+				'locations.longitude',
+				'locations.latitude',
+				'publicaciones.titulo',
+				'publicaciones.tipo',
+				'publicaciones.precio',
+				'publicaciones.moneda',
+				'publicaciones.img_1',
+				'publicaciones.img_2',
+				'publicaciones.pag_web',
+				'publicaciones.name as name_pub',
+				'publicaciones.lastname as lastname_pub',
+				'publicaciones.email as email_pub',
+				'publicaciones.phone as phone_pub',
+				'publicaciones.pag_web_hab',
+				'usuario.id',
+				'usuario.name',
+				'usuario.lastname',
+				'usuario.email',
+				'usuario.phone',
+				'usuario.reputation'
+			));
+			$publication = $pub[0];
+			
+		}elseif($pub->tipo == "Habitual")
+		{
+			if ($pub->categoria == 34) {
+				$pub = DB::table('publicaciones')
+				->leftJoin('locations','locations.pub_id','=','publicaciones.id')
+				->join('marcas','marcas.id','=','publicaciones.marca_id')
+				->join('modelo','modelo.id','=','publicaciones.modelo_id')
+				->join('departamento','departamento.id','=','publicaciones.departamento')
+				->join('usuario','usuario.id','=','publicaciones.user_id')
+				->where('publicaciones.id','=',$id)
+				->get(array(
+					'locations.longitude',
+					'locations.latitude',
+				'usuario.id',
+				'usuario.name as table_name',
+				'usuario.lastname as table_lastname',
+				'usuario.email as table_email',
+				'usuario.phone as table_phone',
+				'usuario.pag_web as table_pag_web',
+				'usuario.reputation',
+				'departamento.nombre as dep',
+				'marcas.nombre as marca',
+				'modelo.nombre as modelo',
+				'publicaciones.*'
+				));
+			}else {
+				$pub = DB::table('publicaciones')
+				->leftJoin('locations','locations.pub_id','=','publicaciones.id')
+				->join('usuario','usuario.id','=','publicaciones.user_id')
+				->join('departamento','departamento.id','=','publicaciones.departamento')
+				->where('publicaciones.id','=',$id)
+				->get(array(
+					'locations.longitude',
+					'locations.latitude',
+				'usuario.id as user_id',
+				'usuario.reputation',
+				'publicaciones.*',
+				'departamento.nombre as dep'
+				));
+			}		
+			
+			
+			$publication = $pub[0];
+
+		}elseif($pub->tipo == 'Casual')
+		{
+			$pub = Publicaciones::leftJoin('locations','locations.pub_id','=','publicaciones.id')
+			->join('categoria','categoria.id','=','publicaciones.categoria')
+			->join('usuario','usuario.id','=','publicaciones.user_id')
+			->join('departamento','departamento.id','=','publicaciones.departamento')
+			->where('publicaciones.id','=',$id)
+			->where('publicaciones.tipo','=','Casual')
+			->get(array(
+				'locations.longitude',
+				'locations.latitude',
+				'usuario.id as user_id',
+				'usuario.reputation',
+				'categoria.desc as cat',
+				'publicaciones.titulo',
+				'publicaciones.precio',
+				'publicaciones.moneda',
+				'publicaciones.id',
+				'publicaciones.img_1',
+				'publicaciones.img_2',
+				'publicaciones.descripcion',
+				'publicaciones.tipo',
+				'departamento.nombre'
+			));
+			$publication = $pub[0];
+		}
+		$comentarios = DB::table('comentario')
+		->join('usuario','usuario.id','=','comentario.user_id')
+		->where('comentario.pub_id','=',$id)
+		->get(array('comentario.id','comentario.comentario','comentario.created_at','usuario.username'));
+
+		$resp = Respuestas::where('pub_id','=',$publication->id)->get();
+		return Response::json(array(
+			'publication' 	=> $publication,/*Toda la info esta pub*/
+			'comentarios' 	=> $comentarios, /*comentarios de esta pub*/
+			'id' 			=> $id,
+			'respuestas' 	=> $resp, /*respuesta a los comentarios de esta pub*/
+			'otrasPub' 		=> $otrasPub,/*Otras pub de los usuarios*/
+			'username' 		=> $user->username,
+		));
+	}
 	/*---------------------------Busqueda----------------------------------------------*/
 	/*                                                                                 */
 	/*                                                                                 */
@@ -2131,11 +2284,11 @@ class AjaxController extends BaseController{
 			$pub->status 	  = 'Procesando';
 			if (Input::hasFile('img_1')) {
 				$file1 = Input::file('img_1');
-				$publication->img_1 = $this->upload_image($user->username,$file1);
+				$pub->img_1 = $this->upload_image($user->username,$file1);
 			}
 			if (Input::hasFile('img_2')) {
 				$file2 = Input::file('img_2');
-				$publication->img_2 = $this->upload_image($user->username,$file2);
+				$pub->img_2 = $this->upload_image($user->username,$file2);
 			}
 			$pub->save();
 			return Response::json(array(
