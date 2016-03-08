@@ -96,6 +96,7 @@
 							<input type="hidden" name="max">
 						@endif
 						
+					<input type="hidden" name="currency" value="{{ $currency }}">
 
 					<input type="hidden" name="cat" value="{{ $busq }}">
 				</form>

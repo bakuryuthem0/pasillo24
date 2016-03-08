@@ -88,6 +88,7 @@
 					<input type="hidden" name="min">
 					<input type="hidden" name="max">
 				@endif
+				<input type="hidden" name="currency" value="{{ $currency }}">
 				<input type="hidden" name="busq" value="{{ $busq }}">
 			</form>
 		</div>
