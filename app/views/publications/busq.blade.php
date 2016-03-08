@@ -88,7 +88,9 @@
 					<input type="hidden" name="min">
 					<input type="hidden" name="max">
 				@endif
+				@if(isset($currency))
 				<input type="hidden" name="currency" value="{{ $currency }}">
+				@endif
 				<input type="hidden" name="busq" value="{{ $busq }}">
 			</form>
 		</div>
@@ -114,7 +116,6 @@
 					<div class="col-xs-1" style="padding-left:0;padding-right:0;text-align:center;">
 						<button class="btn btn-default btn-xs btn-flat" title="Filtrar"><i class="fa fa-angle-right"></i></button>
 					</div>
-					<div class="clearfix"></div>
 					<input type="hidden" name="busq" value="{{ $busq }}">
 					@if(isset($filter->id))
 						<input type="hidden" name="filter" value="{{ $filter->id }}">
@@ -126,6 +127,7 @@
 							<option value="Usd">USD.</option>
 						</select>
 					</div>
+					<div class="clearfix"></div>
 				</form>
 			</div>
 		</div>

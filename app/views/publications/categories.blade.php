@@ -95,9 +95,9 @@
 							<input type="hidden" name="min">
 							<input type="hidden" name="max">
 						@endif
-						
+					@if(isset($currency))
 					<input type="hidden" name="currency" value="{{ $currency }}">
-
+					@endif
 					<input type="hidden" name="cat" value="{{ $busq }}">
 				</form>
 			</div>
