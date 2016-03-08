@@ -235,8 +235,8 @@ class HomeController extends BaseController {
 						$minmax = array($min, $max);
 						$currency = Input::get('currency');
 						$filterPrice = '&min='.$min.'&max='.$max.'&currency='.$currency;
-						$sql = $sql." AND (precio >= ".$min." AND `publicaciones`.`precio` <= ".$max.")";
-						$res = $auxRes->where('precio','>=',$min)->where('precio','<=',$max)
+						$sql = $sql." AND (`publicaciones`.`precio` >= ".$min." AND `publicaciones`.`precio` <= ".$max.")"." AND `publicaciones`.`moneda` = '".$currency."'";
+						$res = $auxRes->where('publicaciones.precio','>=',$min)->where('publicaciones.precio','<=',$max)->where('publicaciones.moneda','=',$curency)
 						->paginate(5,array('publicaciones.id',
 							'publicaciones.img_1',
 							'publicaciones.titulo',
@@ -250,8 +250,8 @@ class HomeController extends BaseController {
 							$minmax = array('', $max);
 							$currency = Input::get('currency');
 							$filterPrice = '&max='.$max.'&currency='.$currency;
-							$sql = $sql." AND `publicaciones`.`precio` <= ".$max;
-							$res = $auxRes->where('precio','<=',$max)
+							$sql = $sql." AND `publicaciones`.`precio` <= ".$max." AND `publicaciones`.`moneda` = '".$currency."'";
+							$res = $auxRes->where('publicaciones.precio','<=',$max)->where('publicaciones.moneda','=',$currency)
 							->paginate(5,array('publicaciones.id',
 								'publicaciones.img_1',
 								'publicaciones.titulo',
@@ -259,14 +259,13 @@ class HomeController extends BaseController {
 								'publicaciones.moneda',
 								'publicaciones.descripcion',
 								'departamento.nombre as dep'));
-							return $auxRes->toSql();
 						}elseif(Input::has('min')){
 							$min = Input::get('min');
 							$minmax = array($min, '');
 							$currency = Input::get('currency');
 							$filterPrice = '&min='.$min.'&currency='.$currency;
-							$sql = $sql." AND precio >= ".$min;
-							$res = $auxRes->where('precio','>=',$min)
+							$sql = $sql." AND precio >= ".$min." AND `publicaciones`.`moneda` = '".$currency."'";
+							$res = $auxRes->where('publicaciones.precio','>=',$min)->where('publicaciones.moneda','=',$curency)
 							->paginate(5,array('publicaciones.id',
 								'publicaciones.img_1',
 								'publicaciones.titulo',
@@ -321,8 +320,8 @@ class HomeController extends BaseController {
 						$minmax = array($min, $max);
 						$currency = Input::get('currency');
 						$filterPrice = '&min='.$min.'&max='.$max.'&currency='.$currency;
-						$sql = $sql." AND (precio >= ".$min." AND `publicaciones`.`precio` <= ".$max.")";
-						$res = $auxRes->where('precio','>=',$min)->where('precio','<=',$max)
+						$sql = $sql." AND (`publicaciones`.`precio` >= ".$min." AND `publicaciones`.`precio` <= ".$max.") AND `publicaciones`.`moneda` = '".$currency."'";
+						$res = $auxRes->where('publicaciones.precio','>=',$min)->where('publicaciones.precio','<=',$max)->where('publicaciones.moneda','=',$curency)
 						->paginate(5,array('publicaciones.id',
 							'publicaciones.img_1',
 							'publicaciones.titulo',
@@ -336,8 +335,8 @@ class HomeController extends BaseController {
 							$minmax = array('', $max);
 							$currency = Input::get('currency');
 							$filterPrice = '&max='.$max.'&currency='.$currency;
-							$sql = $sql." AND `publicaciones`.`precio` <= ".$max;
-							$res = $auxRes->where('precio','<=',$max)
+							$sql = $sql." AND `publicaciones`.`precio` <= ".$max." AND `publicaciones`.`moneda` = '".$currency."'";
+							$res = $auxRes->where('publicaciones.precio','<=',$max)->where('publicaciones.moneda','=',$currency)
 							->paginate(5,array('publicaciones.id',
 								'publicaciones.img_1',
 								'publicaciones.titulo',
@@ -350,8 +349,8 @@ class HomeController extends BaseController {
 							$minmax = array($min, '');
 							$currency = Input::get('currency');
 							$filterPrice = '&min='.$min.'&currency='.$currency;
-							$sql = $sql." AND precio >= ".$min;
-							$res = $auxRes->where('precio','>=',$min)
+							$sql = $sql." AND precio >= ".$min." AND `publicaciones`.`moneda` = '".$currency."'";
+							$res = $auxRes->where('publicaciones.precio','>=',$min)->where('publicaciones.moneda','=',$curency)
 							->paginate(5,array('publicaciones.id',
 								'publicaciones.img_1',
 								'publicaciones.titulo',
@@ -445,7 +444,7 @@ class HomeController extends BaseController {
 						$currency = Input::get('currency');
 						$filterPrice = '&min='.$min.'&max='.$max.'&currency='.$currency;
 						$lider =  $auxLider->where('moneda','=',$currency)->where('precio','>=',$min)->where('precio','<=',$max)->get(array('id','img_1','titulo','precio','moneda'));
-						$res   =  $auxRes->where('moneda','=',$currency)->where('precio','>=',$min)->where('precio','<=',$max)
+						$res   =  $auxRes->where('publicaciones.moneda','=',$currency)->where('publicaciones.precio','>=',$min)->where('publicaciones.precio','<=',$max)
 						->paginate(5,array(
 							'publicaciones.id',
 							'publicaciones.img_1',
@@ -464,7 +463,7 @@ class HomeController extends BaseController {
 							$currency = Input::get('currency');
 							$filterPrice = '&max='.$max.'&currency='.$currency;
 							$lider =  $auxLider->where('moneda','=',$currency)->where('precio','<=',$max)->get(array('id','img_1','titulo','precio','moneda'));
-							$res   =  $auxRes->where('moneda','=',$currency)->where('precio','<=',$max)
+							$res   =  $auxRes->where('publicaciones.moneda','=',$currency)->where('publicaciones.precio','<=',$max)
 							->paginate(5,array(
 								'publicaciones.id',
 								'publicaciones.img_1',
@@ -481,7 +480,7 @@ class HomeController extends BaseController {
 							$currency = Input::get('currency');
 							$filterPrice = '&min='.$min.'&currency='.$currency;
 							$lider =  $auxLider->where('moneda','=',$currency)->where('precio','>=',$min)->get(array('id','img_1','titulo','precio','moneda'));
-							$res   =  $auxRes->where('moneda','=',$currency)->where('precio','>=',$min)
+							$res   =  $auxRes->where('publicaciones.moneda','=',$currency)->where('publicaciones.precio','>=',$min)
 							->paginate(5,array(
 								'publicaciones.id',
 								'publicaciones.img_1',
@@ -548,7 +547,7 @@ class HomeController extends BaseController {
 						$currency = Input::get('currency');
 						$filterPrice = '&min='.$min.'&max='.$max.'&currency='.$currency;
 						$lider =  $auxLider->where('moneda','=',$currency)->where('precio','>=',$min)->where('precio','<=',$max)->get(array('id','img_1','titulo','precio','moneda'));
-						$res   =  $auxRes->where('moneda','=',$currency)->where('precio','>=',$min)->where('precio','<=',$max)
+						$res   =  $auxRes->where('publicaciones.moneda','=',$currency)->where('publicaciones.precio','>=',$min)->where('publicaciones.precio','<=',$max)
 						->paginate(5,array(
 							'publicaciones.id',
 							'publicaciones.img_1',
@@ -566,7 +565,7 @@ class HomeController extends BaseController {
 							$currency = Input::get('currency');
 							$filterPrice = '&max='.$max.'&currency='.$currency;
 							$lider =  $auxLider->where('moneda','=',$currency)->where('precio','<=',$max)->get(array('id','img_1','titulo','precio','moneda'));
-							$res   =  $auxRes->where('moneda','=',$currency)->where('precio','<=',$max)
+							$res   =  $auxRes->where('publicaciones.moneda','=',$currency)->where('publicaciones.precio','<=',$max)
 							->paginate(5,array(
 								'publicaciones.id',
 								'publicaciones.img_1',
@@ -583,7 +582,7 @@ class HomeController extends BaseController {
 							$currency = Input::get('currency');
 							$filterPrice = '&min='.$min.'&currency='.$currency;
 							$lider =  $auxLider->where('moneda','=',$currency)->where('precio','>=',$min)->get(array('id','img_1','titulo','precio','moneda'));
-							$res   =  $auxRes->where('moneda','=',$currency)->where('precio','>=',$min)
+							$res   =  $auxRes->where('publicaciones.moneda','=',$currency)->where('publicaciones.precio','>=',$min)
 							->paginate(5,array(
 								'publicaciones.id',
 								'publicaciones.img_1',
