@@ -122,11 +122,18 @@
 						<div class="col-xs-1" style="padding-left:0;padding-right:0;text-align:center;">
 							<button class="btn btn-default btn-xs btn-flat" title="Filtrar"><i class="fa fa-angle-right"></i></button>
 						</div>
-						<div class="clearfix"></div>
 						<input type="hidden" name="cat" value="{{ $busq }}">
 						@if(isset($filter->id))
 							<input type="hidden" name="filter" value="{{ $filter->id }}">
 						@endif
+						<div class="col-xs-12"><label class="textoPromedio">Moneda</label></div>
+						<div class="col-xs-12">
+							<select name="currency" class="form-control">
+								<option value="Bs">Bs.</option>
+								<option value="Usd">USD.</option>
+							</select>
+						</div>
+						<div class="clearfix"></div>
 					</form>
 				</div>
 			</div>

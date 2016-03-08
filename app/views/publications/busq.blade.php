@@ -118,6 +118,13 @@
 					@if(isset($filter->id))
 						<input type="hidden" name="filter" value="{{ $filter->id }}">
 					@endif
+					<div class="col-xs-12"><label class="textoPromedio">Moneda</label></div>
+					<div class="col-xs-12">
+						<select name="currency" class="form-control">
+							<option value="Bs">Bs.</option>
+							<option value="Usd">USD.</option>
+						</select>
+					</div>
 				</form>
 			</div>
 		</div>
