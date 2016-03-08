@@ -88,45 +88,84 @@
 							@endif
 						@endforeach
 					</select>
+						@if(isset($minmax))
+							<input type="hidden" name="min" value="{{ $minmax[0] }}">
+							<input type="hidden" name="max" value="{{ $minmax[1] }}">
+						@else
+							<input type="hidden" name="min">
+							<input type="hidden" name="max">
+						@endif
+						
+
 					<input type="hidden" name="cat" value="{{ $busq }}">
 				</form>
 			</div>
-			<div class="contAnaranjado contAnaranjadoBusq" style="margin-bottom:8em;">
+			<div class="col-xs-12 col-md-2 ">
+				<div class="contAnaranjado filter-container">
+					<form method="GET" action="{{ URL::to('inicio/buscar') }}">
+						<div class="col-xs-12"><label class="textoPromedio">Precio</label></div>
+						<div class="col-xs-5 contInputFilter" style="padding-right: 0;">
+							@if(isset($minmax))
+								<input type="text" class="form-control filter-price" name="min" placeholder="Min:" value="{{ $minmax[0] }}">
+							@else
+								<input type="text" class="form-control filter-price" name="min" placeholder="Min:">
+							@endif
+						</div>
+						<div class="col-xs-1" style="padding-left:0;padding-right:0;text-align:center;"><p class="textoPromedio">-</p></div>
+						<div class="col-xs-4 contInputFilter" style="padding-left:0;padding-right:0;margin-top:0;">
+							@if(isset($minmax))
+								<input type="text" class="form-control filter-price" name="max" placeholder="Max:" value="{{ $minmax[1] }}">
+							@else
+								<input type="text" class="form-control filter-price" name="max" placeholder="Max:">
+							@endif
+						</div>
+						<div class="col-xs-1" style="padding-left:0;padding-right:0;text-align:center;">
+							<button class="btn btn-default btn-xs btn-flat" title="Filtrar"><i class="fa fa-angle-right"></i></button>
+						</div>
+						<div class="clearfix"></div>
+						<input type="hidden" name="cat" value="{{ $busq }}">
+						@if(isset($filter->id))
+							<input type="hidden" name="filter" value="{{ $filter->id }}">
+						@endif
+					</form>
+				</div>
+			</div>
+			<div class="col-xs-12 col-md-10 contAnaranjado contAnaranjadoBusq" style="margin-bottom:8em;">
 			@if(!empty($publicaciones) && count($publicaciones)>0)
-			@foreach($publicaciones as $pub)
-			<div class="contCat">
-					<a href="{{ URL::to('publicacion/habitual/'.base64_encode($pub->id)) }}">
-						<div class="col-xs-12 col-md-4 contCatPub">
-								<img src="{{ asset('images/pubImages/'.$pub->img_1) }}" style="width:100%;">
-						</div>
-					</a>
-						<div class="col-xs-12 col-md-4 contCatPub">
-							<h3>{{ $pub->titulo }}</h3>
-								@if(strlen($pub->descripcion) <= 20)
-								<p class="textoPromedio">{{ strip_tags($pub->descripcion) }}</p>
-								@else
-								<p class="textoPromedio">{{ substr(strip_tags($pub->descripcion),0,100) }}...</p>
-								@endif
-								<label class="textoPromedio">{{ $pub->dep }}</label>
-						</div>
-						<div class="col-xs-12 col-md-4 contCatPub">
-                                                                <label class="textoPromedio" style="display:inline-block;">
-									Precio: 
-								</label>
-								<h3 class="precioPub" style="display:inline-block;">{{ $pub->precio.' '.ucfirst(strtolower($pub->moneda)) }}</h3>
-						
-							<br>
-							<a href="{{ URL::to('publicacion/habitual/'.base64_encode($pub->id)) }}" class="btn btn-primary btnBusq">
-								<i class="fa fa-hand-o-right">
-								</i> Ver publicación
+				@foreach($publicaciones as $pub)
+					<div class="contCat">
+							<a href="{{ URL::to('publicacion/habitual/'.base64_encode($pub->id)) }}">
+								<div class="col-xs-12 col-md-4 contCatPub">
+										<img src="{{ asset('images/pubImages/'.$pub->img_1) }}" style="width:100%;">
+								</div>
 							</a>
-						</div>
-				</div>		
-				<hr class="borderBlue">
-		
-			@endforeach
+								<div class="col-xs-12 col-md-4 contCatPub">
+									<h3>{{ $pub->titulo }}</h3>
+										@if(strlen($pub->descripcion) <= 20)
+										<p class="textoPromedio">{{ strip_tags($pub->descripcion) }}</p>
+										@else
+										<p class="textoPromedio">{{ substr(strip_tags($pub->descripcion),0,100) }}...</p>
+										@endif
+										<label class="textoPromedio">{{ $pub->dep }}</label>
+								</div>
+								<div class="col-xs-12 col-md-4 contCatPub">
+		                                                                <label class="textoPromedio" style="display:inline-block;">
+											Precio: 
+										</label>
+										<h3 class="precioPub" style="display:inline-block;">{{ $pub->precio.' '.ucfirst(strtolower($pub->moneda)) }}</h3>
+								
+									<br>
+									<a href="{{ URL::to('publicacion/habitual/'.base64_encode($pub->id)) }}" class="btn btn-primary btnBusq">
+										<i class="fa fa-hand-o-right">
+										</i> Ver publicación
+									</a>
+								</div>
+						</div>		
+						<hr class="borderBlue">
 			
-<nav role="navigation">
+				@endforeach
+			
+				<nav role="navigation">
 		          <?php  $presenter = new Illuminate\Pagination\BootstrapPresenter($publicaciones); ?>
 		          @if ($publicaciones->getLastPage() > 1)
 		          <ul class="cd-pagination no-space">
@@ -168,25 +207,43 @@
 		              else
 		              {
 		                $url = $publicaciones->getUrl(1);
-		           
-		                echo '<li><a class="textoMedio" href="'.$url.'&cat='.$busq.'">&lt;&lt; Primera</a></li>';
+		           		if(isset($filterPrice)){
+		                	echo '<li><a class="textoMedio" href="'.$url.'&cat='.$busq.$filterPrice.'">&lt;&lt; Primera</a></li>';
+		           		}
+		           		else{
+		                	echo '<li><a class="textoMedio" href="'.$url.'&cat='.$busq.'">&lt;&lt; Primera</a></li>';
+		           			
+		           		}
+
 		              }
 		           
 		              //Para ir a la anterior
 		              if(!empty($filter)){
-			              if (($currentPage-1) < $start) {
-			              	echo '<li class="disable"><span>&lt; Atras</span></li>' ;	
-			              }else
-			              {
-			              	echo '<li><a href="'.$publicaciones->getUrl($currentPage-1).'&cat='.$busq.'&filter='.$filter->id.'">&lt; Atras</a></li>' ;
-			              }
+			            if (($currentPage-1) < $start) {
+			            	echo '<li class="disable"><span>&lt; Atras</span></li>' ;	
+			            }else
+			            {
+		           			if(isset($filterPrice)){
+			              		echo '<li><a href="'.$publicaciones->getUrl($currentPage-1).'&cat='.$busq.'&filter='.$filter->id.$filterPrice.'">&lt; Atras</a></li>';
+
+		           			}else
+		           			{
+			              		echo '<li><a href="'.$publicaciones->getUrl($currentPage-1).'&cat='.$busq.'&filter='.$filter->id.'">&lt; Atras</a></li>';
+		           			}
+			            }
 		              }else
 		              {
 		              	if (($currentPage-1) < $start) {
 			              	echo '<li class="disable"><span>&lt; Atras</span></li>' ;	
 			              }else
 			              {
-			              	echo '<li><a href="'.$publicaciones->getUrl($currentPage-1).'&busq='.$busq.'">&lt; Atras</a></li>' ;
+			              	if(isset($filterPrice))
+			              	{
+			              		echo '<li><a href="'.$publicaciones->getUrl($currentPage-1).'&busq='.$busq.$filterPrice.'">&lt; Atras</a></li>' ;
+			              	}else
+			              	{
+			              		echo '<li><a href="'.$publicaciones->getUrl($currentPage-1).'&busq='.$busq.'">&lt; Atras</a></li>' ;
+			              	}
 			              }
 		              }
 		           
@@ -198,11 +255,24 @@
 		              	}else
 		              	{
 		              		if(!empty($filter)){
-		              			echo '<li><a href="'.$publicaciones->getUrl($i).'&cat='.$busq.'&filter='.$filter->id.'">'.$i.'</a></li>';
+			              		if(isset($filterPrice))
+			              		{
+		              				echo '<li><a href="'.$publicaciones->getUrl($i).'&cat='.$busq.'&filter='.$filter->id.$filterPrice.'">'.$i.'</a></li>';
+			              		}else
+			              		{
+		              				echo '<li><a href="'.$publicaciones->getUrl($i).'&cat='.$busq.'&filter='.$filter->id.'">'.$i.'</a></li>';
+			              		}
+
 
 		              		}else
 		              		{
-		              			echo '<li><a href="'.$publicaciones->getUrl($i).'&cat='.$busq.'">'.$i.'</a></li>';
+			              		if(isset($filterPrice))
+			              		{
+		              				echo '<li><a href="'.$publicaciones->getUrl($i).'&cat='.$busq.$filterPrice.'">'.$i.'</a></li>';
+			              		}else
+			              		{
+		              				echo '<li><a href="'.$publicaciones->getUrl($i).'&cat='.$busq.'">'.$i.'</a></li>';
+			              		}
 		              		}
 		              	}
 		              }
@@ -213,7 +283,14 @@
 			              	echo '<li class="disable"><span>Adelante &gt;</span></li>' ;
 			              }else
 			              {
-			              	echo '<li><a href="'.$publicaciones->getUrl($currentPage+1).'&cat='.$busq.'&filter='.$filter->id.'">Adelante &gt;</a></li>' ;
+			              		if(isset($filterPrice)){
+			              			echo '<li><a href="'.$publicaciones->getUrl($currentPage+1).'&cat='.$busq.'&filter='.$filter->id.$filterPrice.'">Adelante &gt;</a></li>';
+
+			              		}else
+			              		{
+			              			echo '<li><a href="'.$publicaciones->getUrl($currentPage+1).'&cat='.$busq.'&filter='.$filter->id.'">Adelante &gt;</a></li>';
+			              		}
+
 			              }
 		              }else
 		              {
@@ -221,7 +298,14 @@
 			              	echo '<li class="disable"><span>Adelante &gt;</span></li>' ;
 			              }else
 			              {
-			              	echo '<li><a href="'.$publicaciones->getUrl($currentPage+1).'&cat='.$busq.'">Adelante &gt;</a></li>' ;
+			              		if(isset($filterPrice))
+			              		{
+			              			echo '<li><a href="'.$publicaciones->getUrl($currentPage+1).'&cat='.$busq.$filterPrice.'">Adelante &gt;</a></li>' ;
+			              		}else
+			              		{
+			              			echo '<li><a href="'.$publicaciones->getUrl($currentPage+1).'&cat='.$busq.'">Adelante &gt;</a></li>' ;
+			              		}
+
 			              }
 		              }
 		           
@@ -234,7 +318,13 @@
 		              else
 		              {
 		                $url = $publicaciones->getUrl($lastPage);
-		                echo '<li><a class="textoMedio" href="'.$url.'&cat='.$busq.'">Última &gt;&gt;</a></li>';
+	              		if(isset($filterPrice))
+	              		{
+		                	echo '<li><a class="textoMedio" href="'.$url.'&cat='.$busq.$filterPrice.'">Última &gt;&gt;</a></li>';
+	              		}else
+	              		{
+		                	echo '<li><a class="textoMedio" href="'.$url.'&cat='.$busq.'">Última &gt;&gt;</a></li>';
+	              		}
 		              }
 		              ?>
 		            @endif

@@ -197,7 +197,7 @@ class HomeController extends BaseController {
 				$inp = '';
 			}
 			if (!empty($inp)) {
-				$lider = DB::select("SELECT `publicaciones`.`id`,`publicaciones`.`img_1`,`publicaciones`.`titulo` ,`publicaciones`.`precio`, `publicaciones`.`moneda` 
+				$sql = "SELECT `publicaciones`.`id`,`publicaciones`.`img_1`,`publicaciones`.`titulo` ,`publicaciones`.`precio`, `publicaciones`.`moneda` 
 					FROM  `publicaciones` 
 					LEFT JOIN  `categoria` ON  `categoria`.`id` =  `publicaciones`.`categoria` 
 					WHERE `publicaciones`.`fechFin` >= '".date('Y-m-d',time())."' 
@@ -208,10 +208,10 @@ class HomeController extends BaseController {
 					) 
 					AND `publicaciones`.`departamento` = ".$inp->id."
 					AND  `publicaciones`.`deleted` = 0
-					AND  (`publicaciones`.`ubicacion` = 'Categoria' OR `publicaciones`.`ubicacion` = 'Ambos')");
-					//OR LOWER( `publicaciones`.`descripcion` ) LIKE  '%".strtolower($input['busq'])."%'
+					AND  (`publicaciones`.`ubicacion` = 'Categoria' OR `publicaciones`.`ubicacion` = 'Ambos')";
 
-				$res = Publicaciones::leftJoin('categoria','publicaciones.categoria','=','categoria.id')
+
+				$auxRes = Publicaciones::leftJoin('categoria','publicaciones.categoria','=','categoria.id')
 				->leftJoin('departamento','publicaciones.departamento','=','departamento.id')
 				->where(function($query) use ($input){
 					$query->whereRaw("LOWER(`publicaciones`.`titulo`) LIKE  '%".strtolower($input['busq'])."%'")
@@ -226,17 +226,66 @@ class HomeController extends BaseController {
 					$query->where('publicaciones.fechFin','>=',date('Y-m-d'))
 					->orWhere('publicaciones.fechFinNormal','>=',date('Y-m-d'));
 				})
-				->where('publicaciones.departamento','=',Input::get('filter'))
-				->paginate(5,array('publicaciones.id',
+				->where('publicaciones.departamento','=',Input::get('filter'));
+				
+				if (Input::has('min') || Input::has('max'))
+				{
+					if (Input::has('min') && Input::has('max')) {
+						$min = Input::get('min');
+						$max = Input::get('max');
+						$filterPrice = '&min='.$min.'&max='.$max;
+						$minmax = array($min, $max);
+						$sql = $sql." AND (precio >= ".$min." AND precio <= ".$max.")";
+						$res = $auxRes->where('precio','>=',$min)->where('precio','<=',$max)
+						->paginate(5,array('publicaciones.id',
+							'publicaciones.img_1',
+							'publicaciones.titulo',
+							'publicaciones.precio',
+							'publicaciones.moneda',
+							'publicaciones.descripcion',
+							'departamento.nombre as dep'));
+					}else{
+						if(Input::has('max')){
+							$max = Input::get('max');
+							$minmax = array('', $max);
+							$filterPrice = '&max='.$max;
+							$sql = $sql." AND precio <= ".$max;
+							$res = $auxRes->where('precio','<=',$max)
+							->paginate(5,array('publicaciones.id',
+								'publicaciones.img_1',
+								'publicaciones.titulo',
+								'publicaciones.precio',
+								'publicaciones.moneda',
+								'publicaciones.descripcion',
+								'departamento.nombre as dep'));
+						}elseif(Input::has('min')){
+							$min = Input::get('min');
+							$minmax = array($min, '');
+							$filterPrice = '&min='.$min;
+							$sql = $sql." AND precio >= ".$min;
+							$res = $auxRes->where('precio','>=',$min)
+							->paginate(5,array('publicaciones.id',
+								'publicaciones.img_1',
+								'publicaciones.titulo',
+								'publicaciones.precio',
+								'publicaciones.moneda',
+								'publicaciones.descripcion',
+								'departamento.nombre as dep'));
+						}
+					}
+				}else
+				{
+					$res = $auxRes->paginate(5,array('publicaciones.id',
 					'publicaciones.img_1',
 					'publicaciones.titulo',
 					'publicaciones.precio',
 					'publicaciones.moneda',
 					'publicaciones.descripcion',
-					'departamento.nombre as dep'));
+					'departamento.nombre as dep'));	
+				}
 			}else
 			{
-				$lider = DB::select("SELECT `publicaciones`.`id`,`publicaciones`.`img_1`,`publicaciones`.`titulo` ,`publicaciones`.`precio`, `publicaciones`.`moneda` 
+				$sql = "SELECT `publicaciones`.`id`,`publicaciones`.`img_1`,`publicaciones`.`titulo` ,`publicaciones`.`precio`, `publicaciones`.`moneda` 
 					FROM  `publicaciones` 
 					LEFT JOIN  `categoria` ON  `categoria`.`id` =  `publicaciones`.`categoria` 
 					WHERE `publicaciones`.`fechFin` >= '".date('Y-m-d',time())."' 
@@ -246,10 +295,9 @@ class HomeController extends BaseController {
 						OR LOWER( `categoria`.`desc` ) LIKE  '%".strtolower($input['busq'])."%'
 					) 
 					AND  `publicaciones`.`deleted` = 0
-					AND  (`publicaciones`.`ubicacion` = 'Categoria' OR `publicaciones`.`ubicacion` = 'Ambos')");
-					//OR LOWER( `publicaciones`.`descripcion` ) LIKE  '%".strtolower($input['busq'])."%'
+					AND  (`publicaciones`.`ubicacion` = 'Categoria' OR `publicaciones`.`ubicacion` = 'Ambos')";
 
-				$res = Publicaciones::leftJoin('categoria','publicaciones.categoria','=','categoria.id')
+				$auxRes = Publicaciones::leftJoin('categoria','publicaciones.categoria','=','categoria.id')
 				->leftJoin('departamento','publicaciones.departamento','=','departamento.id')
 				->where(function($query) use ($input){
 					$query->whereRaw("LOWER(`publicaciones`.`titulo`) LIKE  '%".strtolower($input['busq'])."%'")
@@ -262,15 +310,64 @@ class HomeController extends BaseController {
 				{
 					$query->where('publicaciones.fechFin','>=',date('Y-m-d'))
 					->orWhere('publicaciones.fechFinNormal','>=',date('Y-m-d'));
-				})
-				->paginate(5,array('publicaciones.id',
+				});
+				if (Input::has('min') || Input::has('max')){
+					if (Input::has('min') && Input::has('max')) {
+						$min = Input::get('min');
+						$max = Input::get('max');
+						$filterPrice = '&min='.$min.'&max='.$max;
+						$minmax = array($min, $max);
+						$sql = $sql." AND (precio >= ".$min." AND precio <= ".$max.")";
+						$res = $auxRes->where('precio','>=',$min)->where('precio','<=',$max)
+						->paginate(5,array('publicaciones.id',
+							'publicaciones.img_1',
+							'publicaciones.titulo',
+							'publicaciones.precio',
+							'publicaciones.moneda',
+							'publicaciones.descripcion',
+							'departamento.nombre as dep'));
+					}else{
+						if(Input::has('max')){
+							$max = Input::get('max');
+							$minmax = array('', $max);
+							$filterPrice = '&max='.$max;
+							$sql = $sql." AND precio <= ".$max;
+							$res = $auxRes->where('precio','<=',$max)
+							->paginate(5,array('publicaciones.id',
+								'publicaciones.img_1',
+								'publicaciones.titulo',
+								'publicaciones.precio',
+								'publicaciones.moneda',
+								'publicaciones.descripcion',
+								'departamento.nombre as dep'));
+						}elseif(Input::has('min')){
+							$min = Input::get('min');
+							$minmax = array($min, '');
+							$filterPrice = '&min='.$min;
+							$sql = $sql." AND precio >= ".$min;
+							$res = $auxRes->where('precio','>=',$min)
+							->paginate(5,array('publicaciones.id',
+								'publicaciones.img_1',
+								'publicaciones.titulo',
+								'publicaciones.precio',
+								'publicaciones.moneda',
+								'publicaciones.descripcion',
+								'departamento.nombre as dep'));
+						}
+					}
+				}else
+				{
+					$res = $auxRes->paginate(5,array('publicaciones.id',
 					'publicaciones.img_1',
 					'publicaciones.titulo',
 					'publicaciones.precio',
 					'publicaciones.moneda',
 					'publicaciones.descripcion',
 					'departamento.nombre as dep'));
+				}
+				
 			}
+			$lider = DB::select($sql);
 
 			$categorias = Categorias::where('id','=',$input['busq'])->pluck('desc');
 			if (!is_null($categorias)) {
@@ -280,13 +377,20 @@ class HomeController extends BaseController {
 				$busq = $input['busq'];
 			}
 			$departamentos = Department::get();
-			return View::make('publications.busq')
+
+			$view = View::make('publications.busq')
 			->with('publicaciones',$res)
 			->with('title',$title)
 			->with('busq',$busq)
 			->with('lider',$lider)
 			->with('departamento',$departamentos)
 			->with('filter',$inp);
+			if (isset($filterPrice)) {
+				return $view->with('filterPrice',$filterPrice)->with('minmax',$minmax);
+			}else
+			{
+				return $view;
+			}
 		}elseif(Input::has('cat'))
 		{
 			$cat = Input::get('cat');
@@ -297,8 +401,7 @@ class HomeController extends BaseController {
 				$inp = '';
 			}
 			if (!empty($inp)) {
-
-				$lider = Publicaciones::where('status','=','Aprobado')
+				$auxLider = Publicaciones::where('status','=','Aprobado')
 				->where('deleted','=',0)
 				->where(function($query){
 					$query->where('ubicacion','=','Categoria')
@@ -310,9 +413,10 @@ class HomeController extends BaseController {
 					
 				})
 				->where('categoria','=',$input['cat'])
-				->get(array('id','img_1','titulo','precio','moneda'));
+				->where('departamento','=',$inp->id);
+				
 
-				$res = Publicaciones::where('publicaciones.status','=','Aprobado')
+				$auxRes = Publicaciones::where('publicaciones.status','=','Aprobado')
 				->where('categoria','=',$input['cat'])
 				->where('publicaciones.departamento','=',$inp->id)
 				->leftJoin('departamento','publicaciones.departamento','=','departamento.id')
@@ -325,58 +429,200 @@ class HomeController extends BaseController {
 				->where(function($query){
 					$query->where('publicaciones.fechFin','>=',date('Y-m-d',time()))
 					->orWhere('publicaciones.fechFinNormal','>=',date('Y-m-d',time()));
-				})		
-				->paginate(5,array(
-					'publicaciones.id',
-					'publicaciones.img_1',
-					'publicaciones.titulo',
-					'publicaciones.precio',
-					'publicaciones.moneda',
-					'publicaciones.descripcion',
-					'departamento.id as dep_id',
-					'departamento.nombre as dep'));
+				});
+				if (Input::has('min') || Input::has('max'))
+				{
+					if (Input::has('min') && Input::has('max')) {
+						$min = Input::get('min');
+						$max = Input::get('max');
+						$filterPrice = '&min='.$min.'&max='.$max;
+						$minmax = array($min, $max);
+						$lider =  $auxLider->where('precio','>=',$min)->where('precio','<=',$max)->get(array('id','img_1','titulo','precio','moneda'));
+						$res   =  $auxRes->where('precio','>=',$min)->where('precio','<=',$max)
+						->paginate(5,array(
+							'publicaciones.id',
+							'publicaciones.img_1',
+							'publicaciones.titulo',
+							'publicaciones.precio',
+							'publicaciones.moneda',
+							'publicaciones.descripcion',
+							'departamento.id as dep_id',
+							'departamento.nombre as dep'
+						));
+						
+					}else{
+						if(Input::has('max')){
+							$max = Input::get('max');
+							$minmax = array('', $max);
+							$filterPrice = '&max='.$max;
+							$lider =  $auxLider->where('precio','<=',$max)->get(array('id','img_1','titulo','precio','moneda'));
+							$res   =  $auxRes->where('precio','<=',$max)
+							->paginate(5,array(
+								'publicaciones.id',
+								'publicaciones.img_1',
+								'publicaciones.titulo',
+								'publicaciones.precio',
+								'publicaciones.moneda',
+								'publicaciones.descripcion',
+								'departamento.id as dep_id',
+								'departamento.nombre as dep'
+							));
+						}elseif(Input::has('min')){
+							$min = Input::get('min');
+							$minmax = array($min, '');
+							$filterPrice = '&min='.$min;
+							$lider =  $auxLider->where('precio','>=',$min)->get(array('id','img_1','titulo','precio','moneda'));
+							$res   =  $auxRes->where('precio','>=',$min)
+							->paginate(5,array(
+								'publicaciones.id',
+								'publicaciones.img_1',
+								'publicaciones.titulo',
+								'publicaciones.precio',
+								'publicaciones.moneda',
+								'publicaciones.descripcion',
+								'departamento.id as dep_id',
+								'departamento.nombre as dep'
+							));
+						}
+					}
+				}else
+				{
+					$lider = $auxLider->get(array('id','img_1','titulo','precio','moneda'));	
+					$res   = $auxRes->paginate(5,array(
+						'publicaciones.id',
+						'publicaciones.img_1',
+						'publicaciones.titulo',
+						'publicaciones.precio',
+						'publicaciones.moneda',
+						'publicaciones.descripcion',
+						'departamento.id as dep_id',
+						'departamento.nombre as dep'));
+				}
+
 			}else
 			{
 				$filter = Input::get('filter');
 				if ($filter == -1) {
 					return Redirect::to('publicaciones/categorias/'.$cat);
 				}
-				$lider = Publicaciones::where('status','=','Aprobado')
-				->where('deleted','=',0)
-				->where(function($query){
-					$query->where('ubicacion','=','Categoria')
-					->orWhere('ubicacion','=','Ambos');
-				})
-				->where(function($query){
-					$query->where('fechFin','>=',date('Y-m-d'))
-					->orWhere('fechFinNormal','>=',date('Y-m-d'));
-					
-				})
-				->where('categoria','=',$input['cat'])
-				->get(array('id','img_1','titulo','precio','moneda'));
+				/*Filtro por precio*/
+				if (Input::has('min') || Input::has('max')) {
+					$auxLider = Publicaciones::where('status','=','Aprobado')
+					->where('deleted','=',0)
+					->where(function($query){
+						$query->where('ubicacion','=','Categoria')
+						->orWhere('ubicacion','=','Ambos');
+					})
+					->where(function($query){
+						$query->where('fechFin','>=',date('Y-m-d'))
+						->orWhere('fechFinNormal','>=',date('Y-m-d'));
+						
+					})
+					->where('categoria','=',$input['cat']);
+					$auxRes = Publicaciones::where('publicaciones.status','=','Aprobado')
+					->where('categoria','=',$input['cat'])
+					->leftJoin('departamento','publicaciones.departamento','=','departamento.id')
+					->where('publicaciones.tipo','=','Habitual')
+					->where('publicaciones.deleted','=',0)
+					->where(function($query){
+						$query->where('publicaciones.ubicacion','=','Categoria')
+						->orWhere('publicaciones.ubicacion','=','Ambos');
+					})
+					->where(function($query){
+						$query->where('publicaciones.fechFin','>=',date('Y-m-d',time()))
+						->orWhere('publicaciones.fechFinNormal','>=',date('Y-m-d',time()));
+					});
+					if (Input::has('min') && Input::has('max')) {
+						$min = Input::get('min');
+						$max = Input::get('max');
+						$filterPrice = '&min='.$min.'&max='.$max;
+						$minmax = array($min, $max);
+						$lider =  $auxLider->where('precio','>=',$min)->where('precio','<=',$max)->get(array('id','img_1','titulo','precio','moneda'));
+						$res   =  $auxRes->where('precio','>=',$min)->where('precio','<=',$max)
+						->paginate(5,array(
+							'publicaciones.id',
+							'publicaciones.img_1',
+							'publicaciones.titulo',
+							'publicaciones.precio',
+							'publicaciones.moneda',
+							'publicaciones.descripcion',
+							'departamento.id as dep_id',
+							'departamento.nombre as dep'
+						));
+					}else{
+						if(Input::has('max')){
+							$max = Input::get('max');
+							$minmax = array('', $max);
+							$filterPrice = '&max='.$max;
+							$lider =  $auxLider->where('precio','<=',$max)->get(array('id','img_1','titulo','precio','moneda'));
+							$res   =  $auxRes->where('precio','<=',$max)
+							->paginate(5,array(
+								'publicaciones.id',
+								'publicaciones.img_1',
+								'publicaciones.titulo',
+								'publicaciones.precio',
+								'publicaciones.moneda',
+								'publicaciones.descripcion',
+								'departamento.id as dep_id',
+								'departamento.nombre as dep'
+							));
+						}elseif(Input::has('min')){
+							$min = Input::get('min');
+							$minmax = array($min, '');
+							$filterPrice = '&min='.$min;
+							$lider =  $auxLider->where('precio','>=',$min)->get(array('id','img_1','titulo','precio','moneda'));
+							$res   =  $auxRes->where('precio','>=',$min)
+							->paginate(5,array(
+								'publicaciones.id',
+								'publicaciones.img_1',
+								'publicaciones.titulo',
+								'publicaciones.precio',
+								'publicaciones.moneda',
+								'publicaciones.descripcion',
+								'departamento.id as dep_id',
+								'departamento.nombre as dep'
+							));
+						}
+					}
+				}else
+				{
+					$lider = Publicaciones::where('status','=','Aprobado')
+					->where('deleted','=',0)
+					->where(function($query){
+						$query->where('ubicacion','=','Categoria')
+						->orWhere('ubicacion','=','Ambos');
+					})
+					->where(function($query){
+						$query->where('fechFin','>=',date('Y-m-d'))
+						->orWhere('fechFinNormal','>=',date('Y-m-d'));
+						
+					})
+					->where('categoria','=',$input['cat'])
+					->get(array('id','img_1','titulo','precio','moneda'));
 
-				$res = Publicaciones::where('publicaciones.status','=','Aprobado')
-				->where('categoria','=',$input['cat'])
-				->leftJoin('departamento','publicaciones.departamento','=','departamento.id')
-				->where('publicaciones.tipo','=','Habitual')
-				->where('publicaciones.deleted','=',0)
-				->where(function($query){
-					$query->where('publicaciones.ubicacion','=','Categoria')
-					->orWhere('publicaciones.ubicacion','=','Ambos');
-				})
-				->where(function($query){
-					$query->where('publicaciones.fechFin','>=',date('Y-m-d',time()))
-					->orWhere('publicaciones.fechFinNormal','>=',date('Y-m-d',time()));
-				})		
-				->paginate(5,array(
-					'publicaciones.id',
-					'publicaciones.img_1',
-					'publicaciones.titulo',
-					'publicaciones.precio',
-					'publicaciones.moneda',
-					'publicaciones.descripcion',
-					'departamento.id as dep_id',
-					'departamento.nombre as dep'));
+					$res = Publicaciones::where('publicaciones.status','=','Aprobado')
+					->where('categoria','=',$input['cat'])
+					->leftJoin('departamento','publicaciones.departamento','=','departamento.id')
+					->where('publicaciones.tipo','=','Habitual')
+					->where('publicaciones.deleted','=',0)
+					->where(function($query){
+						$query->where('publicaciones.ubicacion','=','Categoria')
+						->orWhere('publicaciones.ubicacion','=','Ambos');
+					})
+					->where(function($query){
+						$query->where('publicaciones.fechFin','>=',date('Y-m-d',time()))
+						->orWhere('publicaciones.fechFinNormal','>=',date('Y-m-d',time()));
+					})		
+					->paginate(5,array(
+						'publicaciones.id',
+						'publicaciones.img_1',
+						'publicaciones.titulo',
+						'publicaciones.precio',
+						'publicaciones.moneda',
+						'publicaciones.descripcion',
+						'departamento.id as dep_id',
+						'departamento.nombre as dep'));
+				}
 			}
 			$categorias = Categorias::where('id','=',$input['cat'])->pluck('id');
 			if (!is_null($categorias)) {
@@ -386,13 +632,19 @@ class HomeController extends BaseController {
 				$busq = $input['cat'];
 			}
 			$departamentos = Department::get();
-			return View::make('publications.categories')
+			$view = View::make('publications.categories')
 			->with('publicaciones',$res)
 			->with('title',$title)
 			->with('busq',$busq)
 			->with('lider',$lider)
 			->with('departamento',$departamentos)
 			->with('filter',$inp);
+			if (isset($filterPrice)) {
+				return $view->with('filterPrice',$filterPrice)->with('minmax',$minmax);
+			}else
+			{
+				return $view;
+			}
 		}
 	}
 	public function getVerifyComment()
