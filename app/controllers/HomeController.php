@@ -259,6 +259,7 @@ class HomeController extends BaseController {
 								'publicaciones.moneda',
 								'publicaciones.descripcion',
 								'departamento.nombre as dep'));
+							return $auxRes->toSql();
 						}elseif(Input::has('min')){
 							$min = Input::get('min');
 							$minmax = array($min, '');
