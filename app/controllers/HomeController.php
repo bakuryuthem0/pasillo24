@@ -225,8 +225,7 @@ class HomeController extends BaseController {
 				{
 					$query->where('publicaciones.fechFin','>=',date('Y-m-d'))
 					->orWhere('publicaciones.fechFinNormal','>=',date('Y-m-d'));
-				})
-				->where('publicaciones.departamento','=',Input::get('filter'));
+				});
 				
 				if (Input::has('min') || Input::has('max'))
 				{
@@ -236,7 +235,7 @@ class HomeController extends BaseController {
 						$minmax = array($min, $max);
 						$currency = Input::get('currency');
 						$filterPrice = '&min='.$min.'&max='.$max.'&currency='.$currency;
-						$sql = $sql." AND (precio >= ".$min." AND precio <= ".$max.")";
+						$sql = $sql." AND (precio >= ".$min." AND `publicaciones`.`precio` <= ".$max.")";
 						$res = $auxRes->where('precio','>=',$min)->where('precio','<=',$max)
 						->paginate(5,array('publicaciones.id',
 							'publicaciones.img_1',
@@ -251,7 +250,7 @@ class HomeController extends BaseController {
 							$minmax = array('', $max);
 							$currency = Input::get('currency');
 							$filterPrice = '&max='.$max.'&currency='.$currency;
-							$sql = $sql." AND precio <= ".$max;
+							$sql = $sql." AND `publicaciones`.`precio` <= ".$max;
 							$res = $auxRes->where('precio','<=',$max)
 							->paginate(5,array('publicaciones.id',
 								'publicaciones.img_1',
@@ -321,7 +320,7 @@ class HomeController extends BaseController {
 						$minmax = array($min, $max);
 						$currency = Input::get('currency');
 						$filterPrice = '&min='.$min.'&max='.$max.'&currency='.$currency;
-						$sql = $sql." AND (precio >= ".$min." AND precio <= ".$max.")";
+						$sql = $sql." AND (precio >= ".$min." AND `publicaciones`.`precio` <= ".$max.")";
 						$res = $auxRes->where('precio','>=',$min)->where('precio','<=',$max)
 						->paginate(5,array('publicaciones.id',
 							'publicaciones.img_1',
@@ -336,7 +335,7 @@ class HomeController extends BaseController {
 							$minmax = array('', $max);
 							$currency = Input::get('currency');
 							$filterPrice = '&max='.$max.'&currency='.$currency;
-							$sql = $sql." AND precio <= ".$max;
+							$sql = $sql." AND `publicaciones`.`precio` <= ".$max;
 							$res = $auxRes->where('precio','<=',$max)
 							->paginate(5,array('publicaciones.id',
 								'publicaciones.img_1',
@@ -392,7 +391,7 @@ class HomeController extends BaseController {
 			->with('departamento',$departamentos)
 			->with('filter',$inp);
 			if (isset($filterPrice)) {
-				return $view->with('filterPrice',$filterPrice)->with('minmax',$minmax);
+				return $view->with('filterPrice',$filterPrice)->with('minmax',$minmax)->with('currency',$currency);
 			}else
 			{
 				return $view;
@@ -652,7 +651,7 @@ class HomeController extends BaseController {
 			->with('departamento',$departamentos)
 			->with('filter',$inp);
 			if (isset($filterPrice)) {
-				return $view->with('filterPrice',$filterPrice)->with('minmax',$minmax);
+				return $view->with('filterPrice',$filterPrice)->with('minmax',$minmax)->with('currency',$currency);
 			}else
 			{
 				return $view;

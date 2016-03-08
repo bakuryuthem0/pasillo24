@@ -123,8 +123,8 @@
 					<div class="col-xs-12"><label class="textoPromedio">Moneda</label></div>
 					<div class="col-xs-12">
 						<select name="currency" class="form-control">
-							<option value="Bs">Bs.</option>
-							<option value="Usd">USD.</option>
+							<option value="Bs" @if(isset($currency) && $currency == 'Bs') selected @endif>Bs.</option>
+							<option value="Usd" @if(isset($currency) && $currency == 'Usd') selected @endif>Usd.</option>
 						</select>
 					</div>
 					<div class="clearfix"></div>
