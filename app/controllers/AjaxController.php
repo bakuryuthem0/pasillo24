@@ -914,6 +914,7 @@ class AjaxController extends BaseController{
 						`publicaciones`.`titulo`,
 						`publicaciones`.`precio`, 
 						`publicaciones`.`moneda`,
+						`publicaciones`.`descripcion`,
 						`usuario`.`email`,
 						`usuario`.`auth_token`,
 						`usuario`.`dir`,
@@ -981,6 +982,7 @@ class AjaxController extends BaseController{
 						'publicaciones.titulo',
 						'publicaciones.precio',
 						'publicaciones.moneda',
+						'publicaciones.descripcion',
 						'departamento.nombre as dep',
 						'usuario.email',
 						'usuario.auth_token',
@@ -1021,6 +1023,7 @@ class AjaxController extends BaseController{
 							`publicaciones`.`titulo`,
 							`publicaciones`.`precio`,
 							`publicaciones`.`moneda`,
+							`publicaciones`.`descripcion`,
 							`usuario`.`email`,
 							`usuario`.`auth_token`,
 							`usuario`.`dir`,
@@ -1083,6 +1086,7 @@ class AjaxController extends BaseController{
 						'publicaciones.titulo',
 						'publicaciones.precio',
 						'publicaciones.moneda',
+						'publicaciones.descripcion',
 						'departamento.nombre as dep',
 						'usuario.email',
 						'usuario.auth_token',
@@ -1158,6 +1162,7 @@ class AjaxController extends BaseController{
 						'publicaciones.titulo',
 						'publicaciones.precio',
 						'publicaciones.moneda',
+						'publicaciones.descripcion',
 						'usuario.email',
 						'usuario.auth_token',
 						'usuario.dir',
@@ -1185,7 +1190,7 @@ class AjaxController extends BaseController{
 
 					$res = Publicaciones::where('publicaciones.status','=','Aprobado')
 					->leftJoin('usuario','usuario.id','=','publicaciones.user_id')
-					->where('categoria','=',$input['cat'])
+					->where('publicaciones.categoria','=',$input['cat'])
 					->where('publicaciones.departamento','=',$inp->id)
 					->leftJoin('departamento','publicaciones.departamento','=','departamento.id')
 					->where('publicaciones.tipo','!=','Lider')
@@ -1211,6 +1216,7 @@ class AjaxController extends BaseController{
 						'publicaciones.titulo',
 						'publicaciones.precio',
 						'publicaciones.moneda',
+						'publicaciones.descripcion',
 						'departamento.id as dep_id',
 						'departamento.nombre as dep',
 						'usuario.email',
@@ -1249,11 +1255,12 @@ class AjaxController extends BaseController{
 					->where('publicaciones.fechFin','>=',date('Y-m-d'))
 					->where('publicaciones.categoria','=',$input['cat'])
 					->get(array(
-						'id',
-						'img_1',
-						'titulo',
-						'precio',
-						'moneda',
+						'publicaciones.id',
+						'publicaciones.img_1',
+						'publicaciones.titulo',
+						'publicaciones.precio',
+						'publicaciones.moneda',
+						'publicaciones.descripcion',
 						'usuario.email',
 						'usuario.auth_token',
 						'usuario.dir',
@@ -1303,9 +1310,11 @@ class AjaxController extends BaseController{
 						'publicaciones.img_6',
 						'publicaciones.img_7',
 						'publicaciones.img_8',
+						'publicaciones.descripcion',
 						'publicaciones.titulo',
 						'publicaciones.precio',
 						'publicaciones.moneda',
+						'publicaciones.descripcion',
 						'departamento.id as dep_id',
 						'departamento.nombre as dep',
 						'usuario.email',
@@ -1381,6 +1390,7 @@ class AjaxController extends BaseController{
 			'publicaciones.titulo',
 			'publicaciones.precio',
 			'publicaciones.moneda',
+			'publicaciones.descripcion',
 			'usuario.email',
 			'usuario.auth_token',
 			'usuario.dir',
@@ -1494,6 +1504,7 @@ class AjaxController extends BaseController{
 			'publicaciones.titulo',
 			'publicaciones.precio',
 			'publicaciones.moneda',
+			'publicaciones.descripcion',
 			'publicaciones.id',
 			'usuario.email',
 			'usuario.auth_token',
@@ -2282,6 +2293,7 @@ class AjaxController extends BaseController{
 			$pub->fechFin	  = date('Y-m-d',time()+604800);
 			$pub->fechRepub	  = date('Y-m-d',time()+2543400);
 			$pub->status 	  = 'Procesando';
+			$user = User::find($id);
 			if (Input::hasFile('img_1')) {
 				$file1 = Input::file('img_1');
 				$pub->img_1 = $this->upload_image($user->username,$file1);
