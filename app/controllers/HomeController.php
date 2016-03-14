@@ -263,7 +263,9 @@ class HomeController extends BaseController {
 					}
 				}
 			}
-			return $auxRes->toSql();
+			$res = DB::select($auxRes->toSql());
+			return $res;
+			$res = DB::
 			$lider = $auxLider->get(array('publicaciones.id','publicaciones.img_1','publicaciones.titulo','publicaciones.precio','publicaciones.moneda'));
 			$res = $auxRes->paginate(5,array(
 				'publicaciones.id',
