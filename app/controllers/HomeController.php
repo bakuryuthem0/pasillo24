@@ -251,8 +251,8 @@ class HomeController extends BaseController {
 						$filterPrice = '&max='.$max.'&currency='.$currency;
 						$auxLider =  $auxLider->where('moneda','=',$currency)->where('precio','<=',$max);
 						$auxRes   =  $auxRes->where('publicaciones.moneda','=',$currency)->where('publicaciones.precio','<=',$max);
-						return $auxRes->toSql();
 					}elseif(Input::has('min')){
+						return 'hola';
 						$min = Input::get('min');
 						$minmax = array($min, '');
 						$currency = Input::get('currency');
