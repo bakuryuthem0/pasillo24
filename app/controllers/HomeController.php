@@ -223,7 +223,7 @@ class HomeController extends BaseController {
 			->where('publicaciones.status','=','Aprobado')
 			->where('publicaciones.deleted','=',0);
 			/*Se agrega*/
-
+			return $auxRes->get();
 			if (Input::has('filter')) {
 				$filter = Input::get('filter');
 				if ($filter != -1) {
@@ -263,7 +263,7 @@ class HomeController extends BaseController {
 					}
 				}
 			}
-			return $auxRes->get();
+			
 			$lider = $auxLider->get(array('publicaciones.id','publicaciones.img_1','publicaciones.titulo','publicaciones.precio','publicaciones.moneda'));
 			$res = $auxRes->paginate(5,array(
 				'publicaciones.id',
