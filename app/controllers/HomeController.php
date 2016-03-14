@@ -223,7 +223,6 @@ class HomeController extends BaseController {
 			->where('publicaciones.status','=','Aprobado')
 			->where('publicaciones.deleted','=',0);
 			/*Se agrega*/
-			return $auxRes->get();
 			if (Input::has('filter')) {
 				$filter = Input::get('filter');
 				if ($filter != -1) {
