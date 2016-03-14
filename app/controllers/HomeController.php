@@ -213,14 +213,15 @@ class HomeController extends BaseController {
 				$query->whereRaw("LOWER(`publicaciones`.`titulo`) LIKE  '%".strtolower($busq."%'"))
 				->orWhereRaw("LOWER(`departamento`.`nombre`) LIKE  '%".strtolower($busq."%'"))
 				->orWhereRaw("LOWER(`categoria`.`desc`) LIKE  '%".strtolower($busq."%'"));
-			})->where('publicaciones.tipo','!=','Lider')
-			->where('publicaciones.status','=','Aprobado')
-			->where('publicaciones.deleted','=',0)
+			})
 			->where(function($query)
 			{
 				$query->where('publicaciones.fechFin','>=',date('Y-m-d'))
 				->orWhere('publicaciones.fechFinNormal','>=',date('Y-m-d'));
-			});
+			})
+			->where('publicaciones.tipo','!=','Lider')
+			->where('publicaciones.status','=','Aprobado')
+			->where('publicaciones.deleted','=',0);
 			/*Se agrega*/
 
 			if (Input::has('filter')) {
@@ -262,7 +263,7 @@ class HomeController extends BaseController {
 					}
 				}
 			}
-			return $auxRes->get();
+			return $auxRes->toSql();
 			$lider = $auxLider->get(array('publicaciones.id','publicaciones.img_1','publicaciones.titulo','publicaciones.precio','publicaciones.moneda'));
 			$res = $auxRes->paginate(5,array(
 				'publicaciones.id',
