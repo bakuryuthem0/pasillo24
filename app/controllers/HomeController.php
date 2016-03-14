@@ -262,7 +262,6 @@ class HomeController extends BaseController {
 					}
 				}
 			}
-			return $auxRes->toSql();
 			$lider = $auxLider->get(array('publicaciones.id','publicaciones.img_1','publicaciones.titulo','publicaciones.precio','publicaciones.moneda'));
 			$res = $auxRes->paginate(5,array(
 				'publicaciones.id',
@@ -273,6 +272,7 @@ class HomeController extends BaseController {
 				'publicaciones.descripcion',
 				'departamento.id as dep_id',
 				'departamento.nombre as dep'));
+			return $res;
 			$categorias = Categorias::where('id','=',$busq)->pluck('desc');
 			if (!is_null($categorias)) {
 				$busq = $categorias;
