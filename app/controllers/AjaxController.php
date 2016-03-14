@@ -3045,6 +3045,43 @@ class AjaxController extends BaseController{
 	/*                                                                                 */
 	/*                                                                                 */
 	/*---------------------------Rutas Globales----------------------------------------*/
+	public function getDate()
+	{
+		define('CONST_SERVER_TIMEZONE', 'UTC');
+		date_default_timezone_set('America/La_Paz');
+		$input = Input::all();
+		$fecha = explode('-', $input['fecha']);
+		if (count($fecha)<3) {
+			return Response::json(array('code' => 0));
+		}else
+		{
+			if ($input['per'] == 'd') {
+				$prec = Precios::find(1);
+				$times = 86400;
+			}elseif ($input['per'] == 's') {
+				$prec = Precios::find(2);
+				$times = 604800;
+			}elseif ($input['per'] == 'm') {
+				$prec = Precios::find(3);
+				$times = 2629744;
+			}
+			$timestamp = strtotime($input['fecha'])+$times;
+			$fech = date('d-m-Y',$timestamp);
+			if ($fecha < date('d-m-Y')) {
+				return Response::json(array('code' => 1));
+			}
+			
+			if ($input['dur'] < 1) {
+				$costo = $prec->precio;
+			}else
+			{
+				$costo = $prec->precio*$input['dur'];
+
+			}
+			return Response::json(array('fecha' => $fech,'costo' => $costo));
+			
+		}
+	}
 	public function getCategory()
 	{
 		$cat = Categorias::where('tipo','=',1)->where('deleted','=',0)->get(array('id','desc'));

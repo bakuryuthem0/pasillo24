@@ -61,6 +61,7 @@ Route::group(array('before' => 'check_app_auth'),function()
 	Route::post('app/usuario/cambiar-clave','AjaxController@postChangePass');
 
 	Route::post('app/usuario/publicacion/lider/enviar','AjaxController@postLider');
+	Route::get('app/calcular-costo','AjaxController@getDate');
 	Route::post('app/usuario/publicacion/habitual/enviar','AjaxController@postHabitual');
 	Route::get('app/usuario/publicacion/habitual/{id}/previsualizar','AjaxController@getHabitualPreview');
 	Route::post('app/usuario/publicacion/habitual/incremento','AjaxController@postHabitualAdd');
