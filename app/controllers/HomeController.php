@@ -314,7 +314,7 @@ class HomeController extends BaseController {
 			//->get(array('id','img_1','titulo','precio','moneda'));
 			$auxRes = Publicaciones::leftJoin('departamento','publicaciones.departamento','=','departamento.id')
 			->where('publicaciones.status','=','Aprobado')
-			->where('.publicaciones.categoria','=',$id)
+			->where('publicaciones.categoria','=',$id)
 			->where('publicaciones.tipo','!=','Lider')
 			->where('publicaciones.deleted','=',0)
 			->where(function($query){
@@ -366,6 +366,7 @@ class HomeController extends BaseController {
 					}
 				}
 			}
+			return $auxRes->get();
 			$lider = $auxLider->get(array('id','img_1','titulo','precio','moneda'));
 			$res = $auxRes->paginate(5,array(
 				'publicaciones.id',
