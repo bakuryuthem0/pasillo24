@@ -366,7 +366,6 @@ class HomeController extends BaseController {
 					}
 				}
 			}
-			return $auxRes->get();
 			$lider = $auxLider->get(array('id','img_1','titulo','precio','moneda'));
 			$res = $auxRes->paginate(5,array(
 				'publicaciones.id',
