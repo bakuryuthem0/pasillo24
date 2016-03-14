@@ -262,6 +262,7 @@ class HomeController extends BaseController {
 					}
 				}
 			}
+			return $auxRes->toSql();
 			$lider = $auxLider->get(array('publicaciones.id','publicaciones.img_1','publicaciones.titulo','publicaciones.precio','publicaciones.moneda'));
 			$res = $auxRes->paginate(5,array(
 				'publicaciones.id',
