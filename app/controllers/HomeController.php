@@ -185,6 +185,235 @@ class HomeController extends BaseController {
 	}
 	public function getSearch()
 	{
+		$title = "Búsqueda | pasillo24.com";
+
+		if (Input::has('busq')) {
+			$busq = Input::get('busq');
+			$auxLider = Publicaciones::leftJoin('categoria','categoria.id','=','publicaciones.categoria')
+			->where('publicaciones.status','=','Aprobado')
+			->where('publicaciones.deleted','=',0)
+			->where(function($query){
+				$query->where('publicaciones.ubicacion','=','Categoria')
+				->orWhere('publicaciones.ubicacion','=','Ambos');
+			})
+			->where(function($query){
+				$query->where('publicaciones.fechFin','>=',date('Y-m-d'))
+				->orWhere('publicaciones.fechFinNormal','>=',date('Y-m-d'));
+			})
+			->where(function($query) use($busq)
+			{
+				$query->whereRaw("LOWER(`publicaciones`.`titulo`) LIKE  '%".strtolower($busq."%'"))
+				->orWhereRaw("LOWER(`publicaciones`.`pag_web`) LIKE  '%".strtolower($busq."%'"))
+				->orWhereRaw("LOWER(`categoria`.`desc`) LIKE  '%".strtolower($busq."%'"));
+			});
+
+			$auxRes = Publicaciones::leftJoin('categoria','publicaciones.categoria','=','categoria.id')
+			->leftJoin('departamento','publicaciones.departamento','=','departamento.id')
+			->where(function($query) use ($busq){
+				$query->whereRaw("LOWER(`publicaciones`.`titulo`) LIKE  '%".strtolower($busq."%'"))
+				->orWhereRaw("LOWER(`departamento`.`nombre`) LIKE  '%".strtolower($busq."%'"))
+				->orWhereRaw("LOWER(`categoria`.`desc`) LIKE  '%".strtolower($busq."%'"));
+			})->where('publicaciones.tipo','!=','Lider')
+			->where('publicaciones.status','=','Aprobado')
+			->where('publicaciones.deleted','=',0)
+			->where(function($query)
+			{
+				$query->where('publicaciones.fechFin','>=',date('Y-m-d'))
+				->orWhere('publicaciones.fechFinNormal','>=',date('Y-m-d'));
+			});
+			/*Se agrega*/
+
+			if (Input::has('filter')) {
+				$filter = Input::get('filter');
+				if ($filter != -1) {
+					$filter = Department::find(Input::get('filter'));
+					$auxRes = $auxRes->where('publicaciones.departamento','=',$filter->id);
+				}else
+				{
+					$filter = "";
+				}
+			}
+			if (Input::has('min') || Input::has('max'))
+			{
+				if (Input::has('min') && Input::has('max')) {
+					$min = Input::get('min');
+					$max = Input::get('max');
+					$minmax = array($min, $max);
+					$currency = Input::get('currency');
+					$filterPrice = '&min='.$min.'&max='.$max.'&currency='.$currency;
+					$auxLider =  $auxLider->where('moneda','=',$currency)->where('precio','>=',$min)->where('precio','<=',$max);
+					$auxRes   =  $auxRes->where('publicaciones.moneda','=',$currency)->where('publicaciones.precio','>=',$min)->where('publicaciones.precio','<=',$max);
+				}else{
+					if(Input::has('max')){
+						$max = Input::get('max');
+						$minmax = array('', $max);
+						$currency = Input::get('currency');
+						$filterPrice = '&max='.$max.'&currency='.$currency;
+						$auxLider =  $auxLider->where('moneda','=',$currency)->where('precio','<=',$max);
+						$auxRes   =  $auxRes->where('publicaciones.moneda','=',$currency)->where('publicaciones.precio','<=',$max);
+						
+					}elseif(Input::has('min')){
+						$min = Input::get('min');
+						$minmax = array($min, '');
+						$currency = Input::get('currency');
+						$filterPrice = '&min='.$min.'&currency='.$currency;
+						$auxLider =  $auxLider->where('moneda','=',$currency)->where('precio','>=',$min);
+						$auxRes   =  $auxRes->where('publicaciones.moneda','=',$currency)->where('publicaciones.precio','>=',$min);
+					}
+				}
+			}
+			$lider = $auxLider->get(array('publicaciones.id','publicaciones.img_1','publicaciones.titulo','publicaciones.precio','publicaciones.moneda'));
+			$res = $auxRes->paginate(5,array(
+				'publicaciones.id',
+				'publicaciones.img_1',
+				'publicaciones.titulo',
+				'publicaciones.precio',
+				'publicaciones.moneda',
+				'publicaciones.descripcion',
+				'departamento.id as dep_id',
+				'departamento.nombre as dep'));
+			$categorias = Categorias::where('id','=',$busq)->pluck('desc');
+			if (!is_null($categorias)) {
+				$busq = $categorias;
+			}else
+			{
+				$busq = $busq;
+			}
+			$departamentos = Department::get();
+
+			$view = View::make('publications.busq')
+			->with('publicaciones',$res)
+			->with('title',$title)
+			->with('busq',$busq)
+			->with('lider',$lider)
+			->with('departamento',$departamentos);
+			if (isset($filter)) {
+				$view = $view->with('filter',$filter);
+			}
+			if (isset($filterPrice)) {
+				$view = $view->with('filterPrice',$filterPrice)->with('minmax',$minmax)->with('currency',$currency);
+			}
+			return $view;
+
+		}elseif(Input::has('cat'))
+		{
+			$id = Input::geT('cat');
+			/*Query inicial*/
+			$auxLider = Publicaciones::where('status','=','Aprobado')
+			->where('deleted','=',0)
+			->where(function($query){
+				$query->where('ubicacion','=','Categoria')
+				->orWhere('ubicacion','=','Ambos');
+			})
+			->where(function($query){
+				$query->where('fechFin','>=',date('Y-m-d'))
+				->orWhere('fechFinNormal','>=',date('Y-m-d'));
+				
+			})
+			->where('categoria','=',$id);
+			//->get(array('id','img_1','titulo','precio','moneda'));
+			$auxRes = Publicaciones::leftJoin('departamento','publicaciones.departamento','=','departamento.id')
+			->where('publicaciones.status','=','Aprobado')
+			->where('.publicaciones.categoria','=',$id)
+			->where('publicaciones.tipo','!=','Lider')
+			->where('publicaciones.deleted','=',0)
+			->where(function($query){
+				$query->where('publicaciones.ubicacion','=','Categoria')
+				->orWhere('publicaciones.ubicacion','=','Ambos');
+			})
+			->where(function($query){
+				$query->where('publicaciones.fechFin','>=',date('Y-m-d',time()))
+				->orWhere('publicaciones.fechFinNormal','>=',date('Y-m-d',time()));
+			});
+			/*Se agrega*/
+
+			if (Input::has('filter')) {
+				$filter = Input::get('filter');
+				if ($filter != -1) {
+					$filter = Department::find(Input::get('filter'));
+					$auxRes = $auxRes->where('publicaciones.departamento','=',$filter->id);
+				}else
+				{
+					$filter = "";
+				}
+			}
+			if (Input::has('min') || Input::has('max'))
+			{
+				if (Input::has('min') && Input::has('max')) {
+					$min = Input::get('min');
+					$max = Input::get('max');
+					$minmax = array($min, $max);
+					$currency = Input::get('currency');
+					$filterPrice = '&min='.$min.'&max='.$max.'&currency='.$currency;
+					$auxLider =  $auxLider->where('moneda','=',$currency)->where('precio','>=',$min)->where('precio','<=',$max);
+					$auxRes   =  $auxRes->where('publicaciones.moneda','=',$currency)->where('publicaciones.precio','>=',$min)->where('publicaciones.precio','<=',$max);
+				}else{
+					if(Input::has('max')){
+						$max = Input::get('max');
+						$minmax = array('', $max);
+						$currency = Input::get('currency');
+						$filterPrice = '&max='.$max.'&currency='.$currency;
+						$auxLider =  $auxLider->where('moneda','=',$currency)->where('precio','<=',$max);
+						$auxRes   =  $auxRes->where('publicaciones.moneda','=',$currency)->where('publicaciones.precio','<=',$max);
+						
+					}elseif(Input::has('min')){
+						$min = Input::get('min');
+						$minmax = array($min, '');
+						$currency = Input::get('currency');
+						$filterPrice = '&min='.$min.'&currency='.$currency;
+						$auxLider =  $auxLider->where('moneda','=',$currency)->where('precio','>=',$min);
+						$auxRes   =  $auxRes->where('publicaciones.moneda','=',$currency)->where('publicaciones.precio','>=',$min);
+					}
+				}
+			}
+			$lider = $auxLider->get(array('id','img_1','titulo','precio','moneda'));
+			$res = $auxRes->paginate(5,array(
+				'publicaciones.id',
+				'publicaciones.img_1',
+				'publicaciones.titulo',
+				'publicaciones.precio',
+				'publicaciones.moneda',
+				'publicaciones.descripcion',
+				'departamento.id as dep_id',
+				'departamento.nombre as dep'));
+
+			$categorias = Categorias::where('id','=',$id)->pluck('id');
+			if (!is_null($categorias)) {
+				$busq = $categorias;
+			}else
+			{
+				$busq = $id;
+			}
+			$departamentos = Department::get();
+			$view = View::make('publications.categories')
+			->with('publicaciones',$res)
+			->with('title',$title)
+			->with('busq',$busq)
+			->with('lider',$lider)
+			->with('departamento',$departamentos);
+			if(isset($filter))
+			{
+				$view = $view->with('filter',$filter);
+			}
+			if (isset($filterPrice)) {
+				$view = $view->with('filterPrice',$filterPrice)->with('minmax',$minmax)->with('currency',$currency);
+			}
+				return $view;
+			/*
+			->paginate(5,array(
+				'publicaciones.id',
+				'publicaciones.img_1',
+				'publicaciones.titulo',
+				'publicaciones.precio',
+				'publicaciones.moneda',
+				'publicaciones.descripcion',
+				'departamento.id as dep_id',
+				'departamento.nombre as dep'));
+				*/
+		}
+	}
+	/*public function getSearch()
+	{
 
 		$input = Input::all();
 		$title = "Búsqueda | pasillo24.com";
@@ -513,7 +742,6 @@ class HomeController extends BaseController {
 				if ($filter == -1) {
 					return Redirect::to('publicaciones/categorias/'.$cat);
 				}
-				/*Filtro por precio*/
 				if (Input::has('min') || Input::has('max')) {
 					$auxLider = Publicaciones::where('status','=','Aprobado')
 					->where('deleted','=',0)
@@ -657,7 +885,7 @@ class HomeController extends BaseController {
 				return $view;
 			}
 		}
-	}
+	}*/
 	public function getVerifyComment()
 	{
 		if (Request::ajax()) {
