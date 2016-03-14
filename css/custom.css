@@ -2167,3 +2167,8 @@ select.currency
 	max-height: 30px;
 	font-size: 12px;
 }
+
+.filter-container .depFilter,.filter-container label.depFilterLabel
+{
+	font-size: 9px;
+}

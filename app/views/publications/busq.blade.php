@@ -68,53 +68,49 @@
 		<div class="col-xs-12">
 			<legend style="text-align:center;margin:2em 0px;">Listado de publicaciones encontradas para: "{{ $busq }}"</legend>
 		</div>
-		<div class="depFilterCont">
-			<label class="textoPromedio">Filtro por departamento</label>
-			<form class="formDepFilter" method="GET" action="{{ URL::to('inicio/buscar') }}">
-				<select name="filter" class="form-control depFilter">
-					<option value="">Busqueda general</option>
-					@foreach($departamento as $dep)
-						@if(!empty($filter) && $filter->id == $dep->id)
-							<option value="{{ $dep->id }}" selected>{{ ucfirst(strtolower($dep->nombre)) }}</option>
-						@else
-							<option value="{{ $dep->id }}">{{ ucfirst(strtolower($dep->nombre)) }}</option>
-						@endif
-					@endforeach
-				</select>
-				@if(isset($minmax))
-					<input type="hidden" name="min" value="{{ $minmax[0] }}">
-					<input type="hidden" name="max" value="{{ $minmax[1] }}">
-				@else
-					<input type="hidden" name="min">
-					<input type="hidden" name="max">
-				@endif
-				@if(isset($currency))
-				<input type="hidden" name="currency" value="{{ $currency }}">
-				@endif
-				<input type="hidden" name="busq" value="{{ $busq }}">
-			</form>
-		</div>
 		<div class="col-xs-12 col-md-2 ">
 			<div class="contAnaranjado filter-container">
+				<div class="col-xs-12">
+					<label class="depFilterLabel">Filtro por departamento</label>
+					<form class="formDepFilter" method="GET" action="{{ URL::to('inicio/buscar') }}">
+						<select name="filter" class="form-control depFilter" autocomplete="off">
+							<option value="-1">Busqueda general</option>
+							@foreach($departamento as $dep)
+								@if(!empty($filter) && $filter->id == $dep->id)
+									<option value="{{ $dep->id }}" selected>{{ ucfirst(strtolower($dep->nombre)) }}</option>
+								@else
+									<option value="{{ $dep->id }}">{{ ucfirst(strtolower($dep->nombre)) }}</option>
+								@endif
+							@endforeach
+						</select>
+							@if(isset($minmax))
+								<input type="hidden" name="min" value="{{ $minmax[0] }}">
+								<input type="hidden" name="max" value="{{ $minmax[1] }}">
+							@else
+								<input type="hidden" name="min">
+								<input type="hidden" name="max">
+							@endif
+						@if(isset($currency))
+						<input type="hidden" name="currency" value="{{ $currency }}">
+						@endif
+						<input type="hidden" name="busq" value="{{ $busq }}">
+					</form>
+				</div>
 				<form method="GET" action="{{ URL::to('inicio/buscar') }}">
 					<div class="col-xs-12"><label class="textoPromedio">Precio</label></div>
-					<div class="col-xs-5 contInputFilter" style="padding-right: 0;">
+					<div class="col-xs-12 contInputFilter">
 						@if(isset($minmax))
-							<input type="text" class="form-control filter-price" name="min" placeholder="Min:" value="{{ $minmax[0] }}">
+							<input type="text" class="form-control" name="min" placeholder="Min:" value="{{ $minmax[0] }}">
 						@else
-							<input type="text" class="form-control filter-price" name="min" placeholder="Min:">
+							<input type="text" class="form-control" name="min" placeholder="Min:">
 						@endif
 					</div>
-					<div class="col-xs-1" style="padding-left:0;padding-right:0;text-align:center;"><p class="textoPromedio">-</p></div>
-					<div class="col-xs-4 contInputFilter" style="padding-left:0;padding-right:0;margin-top:0;">
+					<div class="col-xs-12 contInputFilter">
 						@if(isset($minmax))
-							<input type="text" class="form-control filter-price" name="max" placeholder="Max:" value="{{ $minmax[1] }}">
+							<input type="text" class="form-control" name="max" placeholder="Max:" value="{{ $minmax[1] }}">
 						@else
-							<input type="text" class="form-control filter-price" name="max" placeholder="Max:">
+							<input type="text" class="form-control" name="max" placeholder="Max:">
 						@endif
-					</div>
-					<div class="col-xs-1" style="padding-left:0;padding-right:0;text-align:center;">
-						<button class="btn btn-default btn-xs btn-flat" title="Filtrar"><i class="fa fa-angle-right"></i></button>
 					</div>
 					<input type="hidden" name="busq" value="{{ $busq }}">
 					@if(isset($filter->id))
@@ -127,8 +123,12 @@
 							<option value="Usd" @if(isset($currency) && $currency == 'Usd') selected @endif>Usd.</option>
 						</select>
 					</div>
+					<div class="col-xs-12">
+						<button class="btn btn-default btn-xs btn-flat" title="Filtrar">Filtrar <strong><i class="fa fa-angle-right"></i></strong></button>
+					</div>
 					<div class="clearfix"></div>
 				</form>
+
 			</div>
 		</div>
 		<div class="col-xs-12 col-md-10 contAnaranjado contAnaranjadoBusq">
