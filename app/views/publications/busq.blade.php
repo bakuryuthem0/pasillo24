@@ -70,10 +70,11 @@
 		</div>
 		<div class="col-xs-12 col-md-2 ">
 			<div class="contAnaranjado filter-container">
-				<div class="col-xs-12">
-					<label class="depFilterLabel">Filtro por departamento</label>
-					<form class="formDepFilter" method="GET" action="{{ URL::to('inicio/buscar') }}">
-						<select name="filter" class="form-control depFilter" autocomplete="off">
+				<form method="GET" action="{{ URL::to('inicio/buscar') }}">
+					<div class="col-xs-12">
+						<h3>Filtros</h3>
+						<label class="textoPromedio">departamento</label>
+						<select name="filter" class="form-control depFilterNotWorking" autocomplete="off">
 							<option value="-1">Busqueda general</option>
 							@foreach($departamento as $dep)
 								@if(!empty($filter) && $filter->id == $dep->id)
@@ -83,20 +84,8 @@
 								@endif
 							@endforeach
 						</select>
-							@if(isset($minmax))
-								<input type="hidden" name="min" value="{{ $minmax[0] }}">
-								<input type="hidden" name="max" value="{{ $minmax[1] }}">
-							@else
-								<input type="hidden" name="min">
-								<input type="hidden" name="max">
-							@endif
-						@if(isset($currency))
-						<input type="hidden" name="currency" value="{{ $currency }}">
-						@endif
 						<input type="hidden" name="busq" value="{{ $busq }}">
-					</form>
-				</div>
-				<form method="GET" action="{{ URL::to('inicio/buscar') }}">
+					</div>
 					<div class="col-xs-12"><label class="textoPromedio">Precio</label></div>
 					<div class="col-xs-12 contInputFilter">
 						@if(isset($minmax))
@@ -113,9 +102,6 @@
 						@endif
 					</div>
 					<input type="hidden" name="busq" value="{{ $busq }}">
-					@if(isset($filter->id))
-						<input type="hidden" name="filter" value="{{ $filter->id }}">
-					@endif
 					<div class="col-xs-12"><label class="textoPromedio">Moneda</label></div>
 					<div class="col-xs-12">
 						<select name="currency" class="form-control currency">
