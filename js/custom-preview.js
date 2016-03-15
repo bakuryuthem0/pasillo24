@@ -1717,7 +1717,7 @@ function showError(error)
 jQuery(document).ready(function($) {
 	$('.btn-filtralo').on('click', function(event) {
 		var proceed = 0;
-		if ($('.depFilterNotWorking').val() != "") {
+		if ($('.depFilterNotWorking').val() != "" && $('.depFilterNotWorking').val() != -1) {
 			proceed = 1;
 			$('.form-filter').append('<input type="hidden" name="filter" value="'+$('.depFilterNotWorking').val()+'">')
 		};
