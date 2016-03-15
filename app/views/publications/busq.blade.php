@@ -70,7 +70,8 @@
 		</div>
 		<div class="col-xs-12 col-md-2 ">
 			<div class="contAnaranjado filter-container">
-				<form method="GET" action="{{ URL::to('inicio/buscar') }}">
+				<form method="GET" action="{{ URL::to('inicio/buscar') }}" class="form-filter">
+				</form>
 					<div class="col-xs-12">
 						<h3>Filtros</h3>
 						<label class="textoPromedio">departamento</label>
@@ -110,10 +111,9 @@
 						</select>
 					</div>
 					<div class="col-xs-12">
-						<button class="btn btn-default btn-xs btn-flat" title="Filtrar">Filtrar <strong><i class="fa fa-angle-right"></i></strong></button>
+						<button class="btn btn-default btn-xs btn-flat btn-filtralo" title="Filtrar">Filtrar <strong><i class="fa fa-angle-right"></i></strong></button>
 					</div>
 					<div class="clearfix"></div>
-				</form>
 
 			</div>
 		</div>

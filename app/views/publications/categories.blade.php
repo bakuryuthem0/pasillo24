@@ -77,7 +77,8 @@
 			</legend>
 			<div class="col-xs-12 col-md-2 ">
 				<div class="contAnaranjado filter-container">
-					<form method="GET" action="{{ URL::to('inicio/buscar') }}">
+					<form method="GET" action="{{ URL::to('inicio/buscar') }}" class="form-filter">
+					</form>
 						<div class="col-xs-12">
 							<h3>Filtros</h3>
 							<label class="textoPromedio">departamento</label>
@@ -96,16 +97,16 @@
 						<div class="col-xs-12"><label class="textoPromedio">Precio</label></div>
 						<div class="col-xs-12 contInputFilter">
 							@if(isset($minmax))
-								<input type="text" class="form-control" name="min" placeholder="Min:" value="{{ $minmax[0] }}">
+								<input type="text" class="form-control min" name="min" placeholder="Min:" value="{{ $minmax[0] }}">
 							@else
-								<input type="text" class="form-control" name="min" placeholder="Min:">
+								<input type="text" class="form-control min" name="min" placeholder="Min:">
 							@endif
 						</div>
 						<div class="col-xs-12 contInputFilter">
 							@if(isset($minmax))
-								<input type="text" class="form-control" name="max" placeholder="Max:" value="{{ $minmax[1] }}">
+								<input type="text" class="form-control max" name="max" placeholder="Max:" value="{{ $minmax[1] }}">
 							@else
-								<input type="text" class="form-control" name="max" placeholder="Max:">
+								<input type="text" class="form-control max" name="max" placeholder="Max:">
 							@endif
 						</div>
 						<input type="hidden" name="cat" value="{{ $busq }}">
@@ -117,10 +118,9 @@
 							</select>
 						</div>
 						<div class="col-xs-12">
-							<button class="btn btn-default btn-xs btn-flat" title="Filtrar">Filtrar <strong><i class="fa fa-angle-right"></i></strong></button>
+							<button class="btn btn-default btn-xs btn-flat btn-filtralo" title="Filtrar">Filtrar <strong><i class="fa fa-angle-right"></i></strong></button>
 						</div>
 						<div class="clearfix"></div>
-					</form>
 
 				</div>
 			</div>

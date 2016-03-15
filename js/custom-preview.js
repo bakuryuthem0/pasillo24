@@ -1715,7 +1715,21 @@ function showError(error)
   	};
   }
 jQuery(document).ready(function($) {
-
+	$('.btn-filtralo').on('click', function(event) {
+		if ($('.depFilterNotWorking').val() != "") {
+			$('.form-filter').append('<input type="hidden" name="filter" value="'+$('.depFilterNotWorking').val()+'">')
+		};
+		if ($('.min').val() != "") {
+			$('.form-filter').append('<input type="hidden" name="min" value="'+$('.min').val()+'">')
+		};
+		if ($('.max').val() != "") {
+			$('.form-filter').append('<input type="hidden" name="max" value="'+$('.max').val()+'">')
+		};
+		if ($('.min').val() != "" || $('.max').val() != "") {
+			$('.form-filter').append('<input type="hidden" name="currency" value="'+$('.currency').val()+'">')
+		};
+		$('.form-filter').submit();
+	});
 	$('.doMap').on('click', function(event) {
 		if ($('#mapcontainer').length > 0) {
 			$('#mapcontainer').remove();
