@@ -241,14 +241,14 @@ class HomeController extends BaseController {
 				if (!is_null($min) && !is_null($max) && !empty($min) && !empty($max)) {
 					$minmax = array($min, $max);
 					$filterPrice = '&min='.$min.'&max='.$max.'&currency='.$currency;
-					$auxLider =  $auxLider->where('moneda','=',$currency)->where('precio','>=',$min)->where('precio','<=',$max);
+					$auxLider =  $auxLider->where('moneda','=',$currency)->where('precio','>=',$min)->where('precio','=<',$max);
 					$auxRes   =  $auxRes->where('publicaciones.moneda','=',$currency)->where('publicaciones.precio','>=',$min)->where('publicaciones.precio','<=',$max);
 				}else{
 					if(!is_null($max) && !empty($max)){
 						$minmax = array('', $max);
 						$filterPrice = '&max='.$max.'&currency='.$currency;
 						$auxLider =  $auxLider->where('moneda','=',$currency)->where('precio','<=',$max);
-						$auxRes   =  $auxRes->where('publicaciones.moneda','=',$currency)->where('publicaciones.precio','<=',$max);
+						$auxRes   =  $auxRes->where('publicaciones.moneda','=',$currency)->where('publicaciones.precio','=<',$max);
 					}elseif(!is_null($min) && !empty($min)){
 						$minmax = array($min, '');
 						$filterPrice = '&min='.$min.'&currency='.$currency;
