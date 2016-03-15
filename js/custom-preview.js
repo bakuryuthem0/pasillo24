@@ -1716,19 +1716,27 @@ function showError(error)
   }
 jQuery(document).ready(function($) {
 	$('.btn-filtralo').on('click', function(event) {
+		var proceed = 0;
 		if ($('.depFilterNotWorking').val() != "") {
+			proceed = 1;
 			$('.form-filter').append('<input type="hidden" name="filter" value="'+$('.depFilterNotWorking').val()+'">')
 		};
 		if ($('.min').val() != "") {
+			proceed = 1;
 			$('.form-filter').append('<input type="hidden" name="min" value="'+$('.min').val()+'">')
 		};
 		if ($('.max').val() != "") {
+			proceed = 1;
 			$('.form-filter').append('<input type="hidden" name="max" value="'+$('.max').val()+'">')
 		};
 		if ($('.min').val() != "" || $('.max').val() != "") {
+			proceed = 1;
 			$('.form-filter').append('<input type="hidden" name="currency" value="'+$('.currency').val()+'">')
 		};
-		$('.form-filter').submit();
+		if (proceed == 1) {
+			$('.form-filter').submit();
+			
+		};
 	});
 	$('.doMap').on('click', function(event) {
 		if ($('#mapcontainer').length > 0) {
