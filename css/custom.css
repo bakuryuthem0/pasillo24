@@ -2168,7 +2168,34 @@ select.currency
 	font-size: 12px;
 }
 
-.filter-container .depFilter,.filter-container label.depFilterLabel
+.filter-container .depFilterNotWorking,.filter-container label.depFilterLabel
 {
 	font-size: 9px;
+}
+.btn-transparent
+{
+	background-color: transparent;
+    border: 0;
+    background-image: none;
+    box-shadow: 0px 0px 0px 0px transparent;
+}
+.btn-transparent:hover, .btn-transparent:focus
+{
+	background-color: transparent;
+}
+.btn-fav
+{
+	font-size: 3em;
+	border-radius: 50%;
+}
+.ui-tooltip-content
+{
+	font-size: 12px;
+	color: #fff;
+	background-color: #333;
+}
+.ui-tooltip.ui-widget.ui-corner-all.ui-widget-content
+{
+	background-color: #333;
+	background: #333;
 }
