@@ -1716,6 +1716,7 @@ function showError(error)
   }
 jQuery(document).ready(function($) {
 	$('.btn-filtralo').on('click', function(event) {
+		$(this).attr('disabled',true);
 		var proceed = 0;
 		if ($('.depFilterNotWorking').val() != "" && $('.depFilterNotWorking').val() != -1) {
 			proceed = 1;
