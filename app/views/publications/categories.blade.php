@@ -92,7 +92,7 @@
 									@endif
 								@endforeach
 							</select>
-							<input type="hidden" name="cat" value="{{ $busq }}">
+							<input type="hidden" name="cat" class="to-filter cat" value="{{ $busq }}">
 						</div>
 						<div class="col-xs-12"><label class="textoPromedio">Precio</label></div>
 						<div class="col-xs-12 contInputFilter">
@@ -109,7 +109,6 @@
 								<input type="text" class="form-control max" name="max" placeholder="Max:">
 							@endif
 						</div>
-						<input type="hidden" name="cat" value="{{ $busq }}">
 						<div class="col-xs-12"><label class="textoPromedio">Moneda</label></div>
 						<div class="col-xs-12">
 							<select name="currency" class="form-control currency">

@@ -1733,6 +1733,13 @@ jQuery(document).ready(function($) {
 			proceed = 1;
 			$('.form-filter').append('<input type="hidden" name="currency" value="'+$('.currency').val()+'">')
 		};
+		if ($('.to-filter').hasClass('busq')) {
+			$('.form-filter').append('<input type="hidden" name="busq" value="'+$('.to-filter').val()+'">')
+		}else
+		{
+			$('.form-filter').append('<input type="hidden" name="cat" value="'+$('.to-filter').val()+'">')
+
+		}
 		if (proceed == 1) {
 			$('.form-filter').submit();
 			

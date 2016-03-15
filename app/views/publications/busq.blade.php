@@ -85,24 +85,23 @@
 								@endif
 							@endforeach
 						</select>
-						<input type="hidden" name="busq" value="{{ $busq }}">
+						<input type="hidden" name="busq" class="to-filter busq" value="{{ $busq }}">
 					</div>
 					<div class="col-xs-12"><label class="textoPromedio">Precio</label></div>
 					<div class="col-xs-12 contInputFilter">
 						@if(isset($minmax))
-							<input type="text" class="form-control" name="min" placeholder="Min:" value="{{ $minmax[0] }}">
+							<input type="text" class="form-control min" name="min" placeholder="Min:" value="{{ $minmax[0] }}">
 						@else
-							<input type="text" class="form-control" name="min" placeholder="Min:">
+							<input type="text" class="form-control min" name="min" placeholder="Min:">
 						@endif
 					</div>
 					<div class="col-xs-12 contInputFilter">
 						@if(isset($minmax))
-							<input type="text" class="form-control" name="max" placeholder="Max:" value="{{ $minmax[1] }}">
+							<input type="text" class="form-control max" name="max" placeholder="Max:" value="{{ $minmax[1] }}">
 						@else
-							<input type="text" class="form-control" name="max" placeholder="Max:">
+							<input type="text" class="form-control max" name="max" placeholder="Max:">
 						@endif
 					</div>
-					<input type="hidden" name="busq" value="{{ $busq }}">
 					<div class="col-xs-12"><label class="textoPromedio">Moneda</label></div>
 					<div class="col-xs-12">
 						<select name="currency" class="form-control currency">
