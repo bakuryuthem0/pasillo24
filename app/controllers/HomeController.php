@@ -336,30 +336,31 @@ class HomeController extends BaseController {
 			}
 			if (Input::has('min') || Input::has('max'))
 			{
-				$min = Input::get('min');
-				$max = Input::get('max');
-
 				$currency = Input::get('currency');
-				if (!is_null($min) && !is_null($max) && !empty($min) && !empty($max)) {
+				if (Input::has('min') && Input::has('max')) {
+					$min = Input::get('min');
+					$max = Input::get('max');
 					$minmax = array($min, $max);
 					$filterPrice = '&min='.$min.'&max='.$max.'&currency='.$currency;
 					$auxLider =  $auxLider->where('moneda','=',$currency)->where('precio','>=',$min)->whereRaw('`publicaciones`.`precio` <= '.$max);
-					$auxRes   =  $auxRes->whereRaw('`publicaciones`.`precio` >= '.$min)->whereRaw('`publicaciones`.`precio` <= '.$max)->where('publicaciones.moneda','=',$currency);
+					$auxRes   =  $auxRes->where('publicaciones.precio','>=',$min)->whereRaw('`publicaciones`.`precio` <= '.$max)->where('publicaciones.moneda','=',$currency);
 				}else{
-					if(!is_null($max) && !empty($max)){
+					if(Input::has('max')){
+						$max = Input::get('max');
 						$minmax = array('', $max);
 						$filterPrice = '&max='.$max.'&currency='.$currency;
-						$auxLider =  $auxLider->whereRaw('`publicaciones`.`precio` <= '.$max)->where('moneda','=',$currency);
+						$auxLider =  $auxLider->where('moneda','=',$currency)->whereRaw('`publicaciones`.`precio` <= '.$max);
 						$auxRes   =  $auxRes->whereRaw('`publicaciones`.`precio` <= '.$max)->where('publicaciones.moneda','=',$currency);
-					}elseif(!is_null($min) && !empty($min)){
+
+					}elseif(Input::has('min')){
+						$min = Input::get('min');
 						$minmax = array($min, '');
 						$filterPrice = '&min='.$min.'&currency='.$currency;
 						$auxLider =  $auxLider->where('moneda','=',$currency)->where('precio','>=',$min);
-						$auxRes   =  $auxRes->where('publicaciones.moneda','=',$currency)->whereRaw('`publicaciones`.`precio` >= '.$min);
+						$auxRes   =  $auxRes->where('publicaciones.moneda','=',$currency)->where('publicaciones.precio','>=',$min);
 					}
 				}
 			}
-			return $auxRes->toSql();
 			$lider = $auxLider->get(array('id','img_1','titulo','precio','moneda'));
 			$res = $auxRes->paginate(5,array(
 				'publicaciones.id',
