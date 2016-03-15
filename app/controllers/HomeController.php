@@ -235,11 +235,11 @@ class HomeController extends BaseController {
 			}
 			if (Input::has('min') || Input::has('max'))
 			{
+				$currency = Input::get('currency');
 				if (Input::has('min') && Input::has('max')) {
 					$min = Input::get('min');
 					$max = Input::get('max');
 					$minmax = array($min, $max);
-					$currency = Input::get('currency');
 					$filterPrice = '&min='.$min.'&max='.$max.'&currency='.$currency;
 					$auxLider =  $auxLider->where('moneda','=',$currency)->where('precio','>=',$min)->where('precio','<=',$max);
 					$auxRes   =  $auxRes->where('publicaciones.moneda','=',$currency)->where('publicaciones.precio','>=',$min)->where('publicaciones.precio','<=',$max);
@@ -247,15 +247,13 @@ class HomeController extends BaseController {
 					if(Input::has('max')){
 						$max = Input::get('max');
 						$minmax = array('', $max);
-						$currency = Input::get('currency');
 						$filterPrice = '&max='.$max.'&currency='.$currency;
 						$auxLider =  $auxLider->where('moneda','=',$currency)->where('precio','<=',$max);
 						$auxRes   =  $auxRes->where('publicaciones.moneda','=',$currency)->where('publicaciones.precio','<=',$max);
-						return $auxRes->toSql();
+						return $auxRes->get();
 					}elseif(Input::has('min')){
 						$min = Input::get('min');
 						$minmax = array($min, '');
-						$currency = Input::get('currency');
 						$filterPrice = '&min='.$min.'&currency='.$currency;
 						$auxLider =  $auxLider->where('moneda','=',$currency)->where('precio','>=',$min);
 						$auxRes   =  $auxRes->where('publicaciones.moneda','=',$currency)->where('publicaciones.precio','>=',$min);
@@ -340,11 +338,11 @@ class HomeController extends BaseController {
 			}
 			if (Input::has('min') || Input::has('max'))
 			{
+				$currency = Input::get('currency');
 				if (Input::has('min') && Input::has('max')) {
 					$min = Input::get('min');
 					$max = Input::get('max');
 					$minmax = array($min, $max);
-					$currency = Input::get('currency');
 					$filterPrice = '&min='.$min.'&max='.$max.'&currency='.$currency;
 					$auxLider =  $auxLider->where('moneda','=',$currency)->where('precio','>=',$min)->where('precio','<=',$max);
 					$auxRes   =  $auxRes->where('publicaciones.moneda','=',$currency)->where('publicaciones.precio','>=',$min)->where('publicaciones.precio','<=',$max);
@@ -352,15 +350,13 @@ class HomeController extends BaseController {
 					if(Input::has('max')){
 						$max = Input::get('max');
 						$minmax = array('', $max);
-						$currency = Input::get('currency');
 						$filterPrice = '&max='.$max.'&currency='.$currency;
 						$auxLider =  $auxLider->where('moneda','=',$currency)->where('precio','<=',$max);
 						$auxRes   =  $auxRes->where('publicaciones.moneda','=',$currency)->where('publicaciones.precio','<=',$max);
-						
+
 					}elseif(Input::has('min')){
 						$min = Input::get('min');
 						$minmax = array($min, '');
-						$currency = Input::get('currency');
 						$filterPrice = '&min='.$min.'&currency='.$currency;
 						$auxLider =  $auxLider->where('moneda','=',$currency)->where('precio','>=',$min);
 						$auxRes   =  $auxRes->where('publicaciones.moneda','=',$currency)->where('publicaciones.precio','>=',$min);
