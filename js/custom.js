@@ -1760,5 +1760,60 @@ jQuery(document).ready(function($) {
 			
 		}
 	});
-
+	$('.btn-fav').on('click', function(event) {
+		var btn = $(this);
+		if (typeof btn.val() != "undefined" || btn.val() != "") {
+			favFunction(btn);
+		}
+	});
+	$('.btn-remove-fav').on('click', function(event) {
+		var btn = $(this);
+		if (typeof btn.val() != "undefined" || btn.val() != "") {
+			favFunction(btn);
+		}
+	});
+	$('.btn-fav-remove').on('click', function(event) {
+		$(this).addClass('to-elim');
+		$('.btn-fav-remove-modal').val($(this).val());
+	});
+	$('#removeFav').on('hide.bs.modal', function(event) {
+		$('.to-elim').removeClass('to-elim');
+		$('.btn-fav-close-modal').addClass('hidden');
+		$('.btn-fav-remove-modal').attr('disabled',false).removeClass('hidden');	
+		removeResponseAjax();
+	});
+	$('.btn-fav-remove-modal').on('click', function(event) {
+		var btn = $(this);
+		var url = 'http://pasillo24.com/usuario/publicaciones/remover-favorito/'+btn.val();
+		$.ajax({
+			url: url,
+			type: 'GET',
+			dataType: 'json',
+			beforeSend:function()
+			{
+				$('.miniLoader').addClass('active');
+				btn.attr('disabled',true);
+			},
+			success:function(response)
+			{
+				$('.miniLoader').removeClass('active')
+				btn.addClass('hidden');
+				$('.btn-fav-close-modal').removeClass('hidden');
+				$('.responseDanger').addClass('alert-'+response.type).addClass('active');
+				$('.responseDanger').children('p').html(response.msg);
+				if (response.type == 'success') {
+					$('.to-elim').parent().parent().remove();
+				};
+				setTimeout(removeResponseAjax,5000)
+			},
+			error:function()
+			{
+				btn.attr('disabled',false);
+				$('.miniLoader').removeClass('active');
+				$('.responseDanger').addClass('alert-danger').addClass('active');
+				$('.responseDanger').children('p').html('Ups, el servidor no responde.');
+				setTimeout(removeResponseAjax,5000)
+			}
+		});
+	});
 });

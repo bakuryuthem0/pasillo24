@@ -39,10 +39,14 @@
 									@endif
 								</td>
 								<td>
-									@if(strlen($f->descripcion) <= 20)
-									<p class="">{{ strip_tags($f->descripcion) }}</p>
+									@if(empty($f->descripcion))
+										Sin descripción
 									@else
-									<p class="">{{ substr(strip_tags($f->descripcion),0,100) }}...</p>
+										@if(strlen($f->descripcion) <= 20)
+										<p class="">{{ strip_tags($f->descripcion) }}</p>
+										@else
+										<p class="">{{ substr(strip_tags($f->descripcion),0,100) }}...</p>
+										@endif
 									@endif
 								</td>
 								<td class="text-center">
