@@ -73,7 +73,7 @@
 				<form method="GET" action="{{ URL::to('inicio/buscar') }}" class="form-filter">
 				</form>
 					<div class="col-xs-12">
-						<h3>Filtros</h3>
+						<h3 class="text-center">Filtros</h3>
 						<label class="textoPromedio">departamento</label>
 						<select name="filter" class="form-control depFilterNotWorking" autocomplete="off">
 							<option value="-1">Busqueda general</option>

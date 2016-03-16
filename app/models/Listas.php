@@ -1,13 +1,7 @@
 <?php
+ 
+class Listas extends Eloquent {
 
-use Illuminate\Auth\UserTrait;
-use Illuminate\Auth\UserInterface;
-use Illuminate\Auth\Reminders\RemindableTrait;
-use Illuminate\Auth\Reminders\RemindableInterface;
-
-class Listas extends Eloquent implements UserInterface, RemindableInterface {
-
-	use UserTrait, RemindableTrait;
 
 	/**
 	 * The database table used by the model.
@@ -21,6 +15,5 @@ class Listas extends Eloquent implements UserInterface, RemindableInterface {
 	 *
 	 * @var array
 	 */
-	protected $hidden = array('password', 'remember_token');
 
 }
