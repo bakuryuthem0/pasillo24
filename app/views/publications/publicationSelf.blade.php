@@ -115,11 +115,11 @@
 								<a target="_blank" href="{{ $publication->pag_web_web }}" class="btn btn-primary" style="margin:2em 0.5em;">Ir a la página</a>
 							@endif
 						@endif
-						@if(Auth::check() && Auth::id() != $publication->user_id && Auth::user()['role'] != 'Administrador' && Auth::user()['role'] != 'Gestor')
-							@if(!Auth::check())
-								<button class="btn btn-default btn-transparent btn-fav nosepuedeClick" data-container="body" data-toggle="popover" data-placement="right" data-content="Agregar a favoritos." data-trigger="hover"><i class="fa fa-heart-o"></i></button>
-								<p class="bg-info textoPromedio noSePuede" style="padding:1em;margin-top:2em;"><strong>Para poder agregar a favoritos se debe iniciar sesion en el portal.</strong></p>
-							@else
+						@if(!Auth::check())
+							<button class="btn btn-default btn-transparent btn-fav nosepuedeClick" data-container="body" data-toggle="popover" data-placement="right" data-content="Agregar a favoritos." data-trigger="hover"><i class="fa fa-heart-o"></i></button>
+							<p class="bg-info textoPromedio noSePuede" style="padding:1em;margin-top:2em;"><strong>Para poder agregar a favoritos se debe iniciar sesion en el portal.</strong></p>
+						@else
+							@if(Auth::check() && Auth::id() != $publication->user_id && Auth::user()['role'] != 'Administrador' && Auth::user()['role'] != 'Gestor')
 								@if(isset($publication->fav_user_id) && $publication->fav_user_id == Auth::id())
 									<button class="btn btn-default btn-transparent btn-remove-fav" 
 									value="{{ URL::to('usuario/publicaciones/remover-favorito/'.$publication->fav_id) }}" 
@@ -135,11 +135,11 @@
 									data-content="Agregar a favoritos." 
 									data-trigger="hover"><i class="fa fa-heart-o"></i></button>
 								@endif
-								<img src="{{ asset('images/loading.gif') }}" class="miniLoader">
-								<div class="alert responseDanger">
-									<p class="textoPromedio"></p>
-								</div>
 							@endif
+							<img src="{{ asset('images/loading.gif') }}" class="miniLoader">
+							<div class="alert responseDanger">
+								<p class="textoPromedio"></p>
+							</div>
 						@endif
 						<div>
 							<a href="https://twitter.com/share" class="twitter-share-button" data-via="pasillo_24" data-hashtags="pasillo_24" data-dnt="true">Tweet</a>
