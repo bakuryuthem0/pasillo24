@@ -5,7 +5,7 @@
 <div class="container contenedorUnico">
 	<div class="row">
 		<div class="col-xs-12">
-				<legend>Sistema de reputación de pasillo24.com</legend>
+				<legend>Mis publicaciones favoritas.</legend>
 				<div class="table-responsive">
 					<table class="table table-striped table-hover vertical-middle textoPromedio">
 						<thead>
