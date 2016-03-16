@@ -13,7 +13,9 @@
 							<tr>
 								<th class="text-center">Título</th>
 								<th class="text-center">Precio</th>
-								<th class="text-center">imagen</th>
+								<th class="text-center">Departamento</th>
+								<th class="text-center">Descripción</th>
+								<th class="text-center">Imagen</th>
 								<th class="text-center">Ir a la publicación</th>
 								<th class="text-center">Remover de favoritos</th>
 							</tr>
@@ -23,7 +25,25 @@
 							<tr>
 								<td class="text-center">{{ $f->titulo }}</td>
 								<td class="text-center">
-									{{ $f->precio.' '.$f->moneda }}
+									@if($f->precio == 0)
+										Sin especificar
+									@else
+										{{ $f->precio.' '.$f->moneda }}
+									@endif
+								</td>
+								<td>
+									@if(!isset($f->dep_desc))
+										Sin especificar
+									@else
+										{{ $f->dep_desc }}
+									@endif
+								</td>
+								<td>
+									@if(strlen($f->descripcion) <= 20)
+									<p class="">{{ strip_tags($f->descripcion) }}</p>
+									@else
+									<p class="">{{ substr(strip_tags($f->descripcion),0,100) }}...</p>
+									@endif
 								</td>
 								<td class="text-center">
 									<img src="{{ asset('images/pubImages/'.$f->img_1) }}" class="imgFav">
@@ -224,6 +244,7 @@
 				<div class="modal-footer">
 						<img src="{{ asset('images/loading.gif') }}" class="miniLoader">
 						<button class="btn btn-danger btn-fav-remove-modal">Remover</button>
+						<button type="button" class="btn btn-success btn-fav-close-modal hidden" data-dismiss="modal">Aceptar</button>
 				</div>
 		</div>
 	</div>

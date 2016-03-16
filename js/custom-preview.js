@@ -1849,6 +1849,9 @@ jQuery(document).ready(function($) {
 	});
 	$('#removeFav').on('hide.bs.modal', function(event) {
 		$('.to-elim').removeClass('to-elim');
+		$('.btn-fav-close-modal').addClass('hidden');
+		$('.btn-fav-remove-modal').attr('disabled',false).removeClass('hidden');	
+		removeResponseAjax();
 	});
 	$('.btn-fav-remove-modal').on('click', function(event) {
 		var btn = $(this);
@@ -1865,7 +1868,8 @@ jQuery(document).ready(function($) {
 			success:function(response)
 			{
 				$('.miniLoader').removeClass('active')
-				btn.attr('disabled',false);
+				btn.addClass('hidden');
+				$('.btn-fav-close-modal').removeClass('hidden');
 				$('.responseDanger').addClass('alert-'+response.type).addClass('active');
 				$('.responseDanger').children('p').html(response.msg);
 				if (response.type == 'success') {

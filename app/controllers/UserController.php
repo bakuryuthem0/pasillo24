@@ -956,6 +956,7 @@ class UserController extends BaseController {
 	{
 		$title = "Mis publicacioens favoritas | pasillo24.com";
 		$fav = Publicaciones::join('favoritos','favoritos.pub_id','=','publicaciones.id')
+		->leftJoin('departamento','departamento.id','=','publicaciones.departamento')
 		->where(function($query){
 			$query->where('publicaciones.fechFin','>=',date('Y-m-d',time()))
 			->orWhere('publicaciones.fechFinNormal','>=',date('Y-m-d',time()));
@@ -969,6 +970,8 @@ class UserController extends BaseController {
 			'publicaciones.titulo',
 			'publicaciones.precio',
 			'publicaciones.moneda',
+			'publicaciones.descripcion',
+			'departamento.nombre as dep_desc',
 			'favoritos.id as fav_id'
 		));
 		return View::make('user.myFav')
