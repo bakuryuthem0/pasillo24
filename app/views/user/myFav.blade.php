@@ -5,7 +5,8 @@
 <div class="container contenedorUnico">
 	<div class="row">
 		<div class="col-xs-12">
-				<legend>Mis publicaciones favoritas.</legend>
+				<div class="formulario"><legend>Mis publicaciones favoritas.</legend></div>
+
 				<div class="table-responsive">
 					<table class="table table-striped table-hover vertical-middle textoPromedio">
 						<thead>
