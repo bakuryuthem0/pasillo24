@@ -1852,7 +1852,7 @@ jQuery(document).ready(function($) {
 	});
 	$('.btn-fav-remove-modal').on('click', function(event) {
 		var btn = $(this);
-		var url = 'http://localhost/pasillo24/usuario/publicaciones/remover-favorito/'+btn.val();
+		var url = 'http://preview.pasillo24.com/usuario/publicaciones/remover-favorito/'+btn.val();
 		$.ajax({
 			url: url,
 			type: 'GET',
