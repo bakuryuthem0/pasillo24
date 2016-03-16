@@ -354,7 +354,7 @@ class HomeController extends BaseController {
 					}elseif(!is_null($min) && !empty($min)){
 						$minmax = array($min, '');
 						$filterPrice = '&min='.$min.'&currency='.$currency;
-						$auxLider =  $auxLider->where('`publicaciones`.`precio` >= '.$min)->where('moneda','=',$currency);
+						$auxLider =  $auxLider->whereRaw('`publicaciones`.`precio` >= '.$min)->where('moneda','=',$currency);
 						$auxRes   =  $auxRes->where('publicaciones.moneda','=',$currency)->whereRaw('`publicaciones`.`precio` >= '.$min);
 					}
 				}
