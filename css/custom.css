@@ -2183,7 +2183,7 @@ select.currency
 {
 	background-color: transparent;
 }
-.btn-fav
+.btn-fav,.btn-remove-fav
 {
 	font-size: 3em;
 	border-radius: 50%;
@@ -2198,4 +2198,17 @@ select.currency
 {
 	background-color: #333;
 	background: #333;
+}
+.imgFav
+{
+	max-width: 300px;
+}
+.table.vertical-middle > thead > tr > th,
+.table.vertical-middle > tbody > tr > th, 
+.table.vertical-middle > tfoot > tr > th, 
+.table.vertical-middle > thead > tr > td, 
+.table.vertical-middle > tbody > tr > td,
+.table.vertical-middle > tfoot > tr > td
+{
+	vertical-align: middle;
 }

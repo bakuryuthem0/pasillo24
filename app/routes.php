@@ -24,6 +24,7 @@ Route::get('inicio/contactenos','HomeController@getContact');
 Route::post('inicio/contactenos/enviar','ContactoController@postContacto');
 Route::get('mision-y-vision','HomeController@getMision');
 Route::get('inicio/politica-de-privacidad','HomeController@getPolitics');
+
 //Buscar
 Route::get('inicio/buscar', 'HomeController@getSearch');
 //categorias
@@ -98,6 +99,11 @@ Route::post('app/subir-imagenes/{carpeta}','AjaxController@upload_image');
 
 Route::group(array('before' =>'auth'),function()
 {
+	//favoritos
+	Route::get('usuario/mis-favoritos','UserController@getMyFav');
+	Route::get('usuario/publicaciones/agregar-favorito/{id}','UserController@addFav');
+	Route::get('usuario/publicaciones/remover-favorito/{id}','UserController@removeFav');
+	
 	//perfil
 	Route::get('usuario/perfil','UserController@getProfile');
 	Route::post('usuario/perfil/enviar','UserController@postProfile');

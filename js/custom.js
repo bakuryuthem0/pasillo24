@@ -1697,7 +1697,45 @@ function showError(error)
   	};
   }
 jQuery(document).ready(function($) {
+	$('.btn-filtralo').on('click', function(event) {
+		$(this).attr('disabled',true);
+		var proceed = 0;
+		if ($('.depFilterNotWorking').val() != "" && $('.depFilterNotWorking').val() != -1) {
+			proceed = 1;
+			$('.form-filter').append('<input type="hidden" name="filter" value="'+$('.depFilterNotWorking').val()+'">')
+		};
+		if ($('.min').val() != "") {
+			proceed = 1;
+			$('.form-filter').append('<input type="hidden" name="min" value="'+$('.min').val()+'">')
+		};
+		if ($('.max').val() != "") {
+			proceed = 1;
+			$('.form-filter').append('<input type="hidden" name="max" value="'+$('.max').val()+'">')
+		};
+		if ($('.min').val() != "" || $('.max').val() != "") {
+			proceed = 1;
+			$('.form-filter').append('<input type="hidden" name="currency" value="'+$('.currency').val()+'">')
+		};
+		if ($('.to-filter').hasClass('busq')) {
+			$('.form-filter').append('<input type="hidden" name="busq" value="'+$('.to-filter').val()+'">')
+		}else
+		{
+			$('.form-filter').append('<input type="hidden" name="cat" value="'+$('.to-filter').val()+'">')
 
+		}
+		if (proceed == 1) {
+			$('.form-filter').submit();
+			
+		}else
+		{
+			if ($('.to-filter').hasClass('busq')) {
+				window.location.replace('http://pasillo24.com/inicio/buscar?busq='+$('.to-filter').val());			
+			}else
+			{
+				window.location.replace('http://pasillo24.com/publicaciones/categorias/'+$('.to-filter').val());
+			}
+		}
+	});
 	$('.doMap').on('click', function(event) {
 		if ($('#mapcontainer').length > 0) {
 			$('#mapcontainer').remove();

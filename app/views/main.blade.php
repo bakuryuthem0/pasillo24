@@ -219,10 +219,15 @@ margin-top: 0.5em;display:inline-block;">
 												<li>
 													<a href="{{ URL::to('usuario/mis-ventas') }}">
 														<i class="fa fa-cart-arrow-down"></i>
- Mis ventas
+ 														Mis ventas
 													</a>
 												</li>
-												
+												<li>
+													<a href="{{ URL::to('usuario/mis-favoritos') }}">
+														<i class="fa fa-heart"></i>
+ 														Mis favoritos
+													</a>
+												</li>
 												<li class="divider"></li>
 												<li>
 													<a href="{{ URL::to('usuario/mi-reputacion') }}">
@@ -390,7 +395,7 @@ margin-top: 0.5em;display:inline-block;">
 	
 	{{ HTML::script('js/jquery.min.js') }}
 	{{ HTML::script('js/bootstrap.min.js') }}
-	{{ HTML::script('js/custom-preview.js?v=1.7')}}
+	{{ HTML::script('js/custom.js?v=1.7')}}
 	
 	{{ HTML::script('js/ckeditor.js') }}
 	{{ HTML::script('js/jquery.ckeditor.js') }}
