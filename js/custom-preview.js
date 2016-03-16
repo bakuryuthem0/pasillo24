@@ -1747,10 +1747,10 @@ jQuery(document).ready(function($) {
 		}else
 		{
 			if ($('.to-filter').hasClass('busq')) {
-				window.location.replace('http://preview.pasillo24.com/publicaciones/categorias/'+$('.to-filter').val());
+				window.location.replace('http://preview.pasillo24.com/inicio/buscar?busq='+$('.to-filter').val());			
 			}else
 			{
-				window.location.replace('http://preview.pasillo24.com/inicio/buscar?busq='+$('.to-filter').val());			
+				window.location.replace('http://preview.pasillo24.com/publicaciones/categorias/'+$('.to-filter').val());
 			}
 		}
 	});
