@@ -1744,7 +1744,15 @@ jQuery(document).ready(function($) {
 		if (proceed == 1) {
 			$('.form-filter').submit();
 			
-		};
+		}else
+		{
+			if ($('.to-filter').hasClass('busq')) {
+				window.location.replace('http://preview.pasillo24.com/publicaciones/categorias/'+$('.to-filter').val());
+			}else
+			{
+				window.location.replace('http://preview.pasillo24.com/inicio/buscar?busq='+$('.to-filter').val());			
+			}
+		}
 	});
 	$('.doMap').on('click', function(event) {
 		if ($('#mapcontainer').length > 0) {
