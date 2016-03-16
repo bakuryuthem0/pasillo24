@@ -104,6 +104,7 @@
 							</table>
 						</div>
 						@else
+
 							<p class="bg-info textoPromedio" style="padding:1em;margin-top:2em;"><strong>Para poder ver la información del usuario se debe iniciar sesión en el portal.</strong></p>
 						@endif
 						<a href="{{ URL::to('inicio') }}" class="btn btn-warning" style="margin:2em 0.5em;">Volver</a>
@@ -112,6 +113,32 @@
 						@else
 							@if(!empty($publication->pag_web_hab))
 								<a target="_blank" href="{{ $publication->pag_web_web }}" class="btn btn-primary" style="margin:2em 0.5em;">Ir a la página</a>
+							@endif
+						@endif
+						@if(Auth::check() && Auth::id() != $publication->user_id && Auth::user()['role'] != 'Administrador' && Auth::user()['role'] != 'Gestor')
+							@if(!Auth::check())
+								<button class="btn btn-default btn-transparent btn-fav nosepuedeClick" data-container="body" data-toggle="popover" data-placement="right" data-content="Agregar a favoritos." data-trigger="hover"><i class="fa fa-heart-o"></i></button>
+								<p class="bg-info textoPromedio noSePuede" style="padding:1em;margin-top:2em;"><strong>Para poder agregar a favoritos se debe iniciar sesion en el portal.</strong></p>
+							@else
+								@if(isset($publication->fav_user_id) && $publication->fav_user_id == Auth::id())
+									<button class="btn btn-default btn-transparent btn-remove-fav" 
+									value="{{ URL::to('usuario/publicaciones/remover-favorito/'.$publication->fav_id) }}" 
+									data-container="body" data-toggle="popover" 
+									data-placement="right" 
+									data-content="Remover de favoritos." 
+									data-trigger="hover"><i class="fa fa-heart"></i></button>
+								@else
+									<button class="btn btn-default btn-transparent btn-fav" 
+									value="{{ URL::to('usuario/publicaciones/agregar-favorito/'.$id) }}" 
+									data-container="body" data-toggle="popover" 
+									data-placement="right" 
+									data-content="Agregar a favoritos." 
+									data-trigger="hover"><i class="fa fa-heart-o"></i></button>
+								@endif
+								<img src="{{ asset('images/loading.gif') }}" class="miniLoader">
+								<div class="alert responseDanger">
+									<p class="textoPromedio"></p>
+								</div>
 							@endif
 						@endif
 						<div>
@@ -267,23 +294,43 @@
 					
 						<div class="col-xs-12" style="padding:0px;">
 							@if(Auth::check() && Auth::id() != $publication->user_id && Auth::user()['role'] != 'Administrador' && Auth::user()['role'] != 'Gestor')
-							<a href="#" class="btn btn-primary" data-toggle="modal" data-target="#modalComprar">Contactar</a>
-							@if(Session::has('error'))
-							<div class="alert alert-danger" style="margin-top: 2em;">
-								<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-								<p class="textoPromedio">{{ Session::get('error') }}</p>
-							</div>
-							@endif
+								<a href="#" class="btn btn-primary" data-toggle="modal" data-target="#modalComprar">Contactar</a>
+								@if(isset($publication->fav_user_id) && $publication->fav_user_id == Auth::id())
+									<button class="btn btn-default btn-transparent btn-remove-fav" 
+									value="{{ URL::to('usuario/publicaciones/remover-favorito/'.$publication->fav_id) }}" 
+									data-container="body" data-toggle="popover" 
+									data-placement="right" 
+									data-content="Remover de favoritos." 
+									data-trigger="hover"><i class="fa fa-heart"></i></button>
+								@else
+									<button class="btn btn-default btn-transparent btn-fav" 
+									value="{{ URL::to('usuario/publicaciones/agregar-favorito/'.$id) }}" 
+									data-container="body" data-toggle="popover" 
+									data-placement="right" 
+									data-content="Agregar a favoritos." 
+									data-trigger="hover"><i class="fa fa-heart-o"></i></button>
+								@endif
+								<img src="{{ asset('images/loading.gif') }}" class="miniLoader">
+								<div class="alert responseDanger">
+									<p class="textoPromedio"></p>
+								</div>
+								@if(Session::has('error'))
+								<div class="alert alert-danger" style="margin-top: 2em;">
+									<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+									<p class="textoPromedio">{{ Session::get('error') }}</p>
+								</div>
+								@endif
 							@endif
 							@if(!Auth::check())
 							<div class="col-xs-12">
 								<button class="btn btn-primary nosepuedeClick">Contactar</button>
-								<p class="bg-info textoPromedio noSePuede" style="padding:1em;margin-top:2em;"><strong>Para poder contactar con el usuario se debe iniciar sesion en el portal.</strong></p>
+								<button class="btn btn-default btn-transparent btn-fav nosepuedeClick" data-container="body" data-toggle="popover" data-placement="right" data-content="Agregar a favoritos." data-trigger="hover"><i class="fa fa-heart-o"></i></button>
+								<p class="bg-info textoPromedio noSePuede" style="padding:1em;margin-top:2em;"><strong>Para poder contactar con el usuario o agregar a favoritos se debe iniciar sesion en el portal.</strong></p>
 							</div>
 							@endif
 					
 						</div>
-						<div class="col-xs-12">
+						<div class="col-xs-12 no-padding">
 							<a href="https://twitter.com/share" class="twitter-share-button" data-via="pasillo_24" data-hashtags="pasillo_24" data-dnt="true">Tweet</a>
 					<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
 							<div class="fb-share-button" 
@@ -338,13 +385,33 @@
 					@if(Auth::check() && Auth::id() != $publication->user_id && Auth::user()['role'] != 'Administrador' && Auth::user()['role'] != 'Gestor')
 					<div class="col-xs-12" style="padding-left: 0px;">
 						<button class="btn btn-primary" data-toggle="modal" data-target="#modalComprar">Contactar</button>
+						@if(isset($publication->fav_user_id) && $publication->fav_user_id == Auth::id())
+							<button class="btn btn-default btn-transparent btn-remove-fav" 
+							value="{{ URL::to('usuario/publicaciones/remover-favorito/'.$publication->fav_id) }}" 
+							data-container="body" data-toggle="popover" 
+							data-placement="right" 
+							data-content="Remover de favoritos." 
+							data-trigger="hover"><i class="fa fa-heart"></i></button>
+						@else
+							<button class="btn btn-default btn-transparent btn-fav" 
+							value="{{ URL::to('usuario/publicaciones/agregar-favorito/'.$id) }}" 
+							data-container="body" data-toggle="popover" 
+							data-placement="right" 
+							data-content="Agregar a favoritos." 
+							data-trigger="hover"><i class="fa fa-heart-o"></i></button>
+						@endif
+						<img src="{{ asset('images/loading.gif') }}" class="miniLoader">
+						<div class="alert responseDanger">
+							<p class="textoPromedio"></p>
+						</div>
 					</div>
 						
 					@endif
 					@if(!Auth::check())
 					<div class="col-xs-12" style="padding-left: 0px;">
 						<button class="btn btn-primary nosepuedeClick">Contactar</button>
-						<p class="bg-info textoPromedio noSePuede" style="padding:1em;margin-top:2em;"><strong>Para poder contactar con el usuario se debe iniciar sesion en el portal.</strong></p>
+						<button class="btn btn-default btn-transparent btn-fav nosepuedeClick" data-container="body" data-toggle="popover" data-placement="right" data-content="Agregar a favoritos." data-trigger="hover"><i class="fa fa-heart-o"></i></button>
+						<p class="bg-info textoPromedio noSePuede" style="padding:1em;margin-top:2em;"><strong>Para poder contactar con el usuario o agregar a favoritos se debe iniciar sesion en el portal.</strong></p>
 					</div>
 					@endif
 				</div>
@@ -550,5 +617,6 @@
 		    }
 		})
 	});
+	$('.btn-fav').popover()
 </script>
 @stop

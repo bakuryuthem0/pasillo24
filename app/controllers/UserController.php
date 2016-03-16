@@ -907,4 +907,72 @@ class UserController extends BaseController {
 			}
 		}
 	}
+	public function addFav($id)
+	{
+		if (Auth::check()) {
+			$user_id = Auth::id();
+		}elseif(Input::has('id'))
+		{
+			$user_id = Input::get('id');
+		}
+		$aux = Favorito::where('user_id','=',$user_id)->where('pub_id','=',$id)->first();
+		if (is_null($aux) || empty($aux)) 
+		{
+			$fav = new Favorito;
+			$fav->user_id = $user_id;
+			$fav->pub_id  = $id;
+			$fav->save();
+			$response = array(
+				'type' 		=> 'success',
+				'action'    => 'add',
+				'msg'  		=> 'Se ha agregado esta publicación a favoritos.',
+				'popover' 	=> 'Remover de favoritos',
+				'url'   	=> URL::to('usuario/publicaciones/remover-favorito/'.$fav->id),
+			);
+		}else
+		{
+			$response = array(
+				'type' 		=> 'danger',
+				'msg'  		=> 'Ya agregaste esta publicación a favoritos.',
+			);
+		}
+		return Response::json($response);
+	}
+	public function removeFav($id)
+	{
+		$fav = Favorito::find($id);
+		$pub = $fav->pub_id;
+		$fav->delete();
+		return Response::json(array(
+			'type' 	 => 'success',
+			'action' => 'remove',
+			'msg'    => 'Se removio esta publicación de sus favoritos.',
+			'url'    => URL::to('usuario/publicaciones/agregar-favorito/'.$pub),
+			'popover'=> 'Agregar a favoritos.',
+
+		));
+	}
+	public function getMyFav()
+	{
+		$title = "Mis publicacioens favoritas | pasillo24.com";
+		$fav = Publicaciones::join('favoritos','favoritos.pub_id','=','publicaciones.id')
+		->where(function($query){
+			$query->where('publicaciones.fechFin','>=',date('Y-m-d',time()))
+			->orWhere('publicaciones.fechFinNormal','>=',date('Y-m-d',time()));
+		})	
+		->where('publicaciones.deleted','=',0)
+		->where('favoritos.user_id','=',Auth::id())
+		->paginate(5,array(
+			'publicaciones.id',
+			'publicaciones.img_1',
+			'publicaciones.tipo',
+			'publicaciones.titulo',
+			'publicaciones.precio',
+			'publicaciones.moneda',
+			'favoritos.id as fav_id'
+		));
+		return View::make('user.myFav')
+		->with('title',$title)
+		->with('fav',$fav);
+	}
 }

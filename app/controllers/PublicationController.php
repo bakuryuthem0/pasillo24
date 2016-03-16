@@ -140,11 +140,12 @@ class PublicationController extends BaseController {
 	}
 	public function getPublication($id)
 	{
-		$pub = Publicaciones::find(base64_decode($id));
+		$id = base64_decode($id);
+		$pub = Publicaciones::find($id);
 		$user = User::find($pub->user_id);
 		if ($pub->user_id != 21) {
 			$otrasPub = Publicaciones::where('user_id','=',$pub->user_id)
-			->where('id','!=',base64_decode($id))
+			->where('id','!=',$id)
 			->where('status','=','Aprobado')
 			->where(function($query)
 			{
@@ -159,13 +160,11 @@ class PublicationController extends BaseController {
 							/*y que sigan activas*/
 							$query->where('fechFin','>=',date('Y-m-d',time()))
 							->orWhere('fechFinNormal','>=',date('Y-m-d',time()));
-
 						});
 					})
 					->orWhere(function($query){
 						$query->where('tipo','=','Casual')
 						->where('fechFin','>=',date('Y-m-d',time()));
-
 					});
 				});
 			})
@@ -177,11 +176,13 @@ class PublicationController extends BaseController {
 		{
 			$otrasPub = array();
 		}
+		$aux = Publicaciones::leftJoin('locations','locations.pub_id','=','publicaciones.id')
+		->join('usuario','usuario.id','=','publicaciones.user_id')
+		->leftJoin('favoritos','favoritos.pub_id','=','publicaciones.id')
+		->where('publicaciones.id','=',$id);
 		if ($pub->tipo == "Lider") {
-			$pub = Publicaciones::leftJoin('locations','locations.pub_id','=','publicaciones.id')
-			->join('usuario','usuario.id','=','publicaciones.user_id')
-			->where('publicaciones.id','=',base64_decode($id))
-			->get(array(
+			$publication = $aux
+			->first(array(
 				'locations.longitude',
 				'locations.latitude',
 				'publicaciones.titulo',
@@ -201,69 +202,64 @@ class PublicationController extends BaseController {
 				'usuario.lastname',
 				'usuario.email',
 				'usuario.phone',
-				'usuario.reputation'
+				'usuario.reputation',
+				'favoritos.user_id as fav_user_id',
+				'favoritos.id as fav_id',
 			));
 			$volver = 'administrador/publicacion/lider';
-			$publication = $pub[0];
-			
 		}elseif($pub->tipo == "Habitual")
 		{
 			if ($pub->categoria == 34) {
-				$pub = DB::table('publicaciones')
-				->leftJoin('locations','locations.pub_id','=','publicaciones.id')
-				->join('marcas','marcas.id','=','publicaciones.marca_id')
-				->join('modelo','modelo.id','=','publicaciones.modelo_id')
-				->join('departamento','departamento.id','=','publicaciones.departamento')
-				->join('usuario','usuario.id','=','publicaciones.user_id')
-				->where('publicaciones.id','=',base64_decode($id))
-				->get(array(
+				$publication = $aux
+				->leftJoin('marcas','marcas.id','=','publicaciones.marca_id')
+				->leftJoin('modelo','modelo.id','=','publicaciones.modelo_id')
+				->leftJoin('departamento','departamento.id','=','publicaciones.departamento')
+				->first(array(
 					'locations.longitude',
 					'locations.latitude',
-				'usuario.id',
-				'usuario.name as table_name',
-				'usuario.lastname as table_lastname',
-				'usuario.email as table_email',
-				'usuario.phone as table_phone',
-				'usuario.pag_web as table_pag_web',
-				'usuario.reputation',
-				'departamento.nombre as dep',
-				'marcas.nombre as marca',
-				'modelo.nombre as modelo',
-				'publicaciones.*'
+					'usuario.id',
+					'usuario.name as table_name',
+					'usuario.lastname as table_lastname',
+					'usuario.email as table_email',
+					'usuario.phone as table_phone',
+					'usuario.pag_web as table_pag_web',
+					'usuario.reputation',
+					'favoritos.user_id as fav_user_id',
+					'favoritos.id as fav_id',
+					'departamento.nombre as dep',
+					'marcas.nombre as marca',
+					'modelo.nombre as modelo',
+					'publicaciones.*'
 				));
 			}else {
-				$pub = DB::table('publicaciones')
-				->leftJoin('locations','locations.pub_id','=','publicaciones.id')
-				->join('usuario','usuario.id','=','publicaciones.user_id')
-				->join('departamento','departamento.id','=','publicaciones.departamento')
-				->where('publicaciones.id','=',base64_decode($id))
-				->get(array(
+				$publication = $aux
+				->leftJoin('departamento','departamento.id','=','publicaciones.departamento')
+				->first(array(
 					'locations.longitude',
 					'locations.latitude',
-				'usuario.id as user_id',
-				'usuario.reputation',
-				'publicaciones.*',
-				'departamento.nombre as dep'
+					'usuario.id as user_id',
+					'usuario.reputation',
+					'favoritos.user_id as fav_user_id',
+					'favoritos.id as fav_id',
+					'publicaciones.*',
+					'departamento.nombre as dep'
 				));
 			}		
-			
-			
-			$publication = $pub[0];
 			$volver = 'administrador/publicacion/habitual';
 
 		}elseif($pub->tipo == 'Casual')
 		{
-			$pub = Publicaciones::leftJoin('locations','locations.pub_id','=','publicaciones.id')
-			->join('categoria','categoria.id','=','publicaciones.categoria')
-			->join('usuario','usuario.id','=','publicaciones.user_id')
+			$publication = $aux
 			->join('departamento','departamento.id','=','publicaciones.departamento')
-			->where('publicaciones.id','=',base64_decode($id))
+			->join('categoria','categoria.id','=','publicaciones.categoria')
 			->where('publicaciones.tipo','=','Casual')
-			->get(array(
+			->first(array(
 				'locations.longitude',
 				'locations.latitude',
 				'usuario.id as user_id',
 				'usuario.reputation',
+				'favoritos.user_id as fav_user_id',
+				'favoritos.id as fav_id',
 				'categoria.desc as cat',
 				'publicaciones.titulo',
 				'publicaciones.precio',
@@ -275,21 +271,19 @@ class PublicationController extends BaseController {
 				'publicaciones.tipo',
 				'departamento.nombre'
 			));
-			$publication = $pub[0];
 			$volver = 'administrador/publicacion/casual';
 		}
 		$comentarios = DB::table('comentario')
 		->join('usuario','usuario.id','=','comentario.user_id')
-		->where('comentario.pub_id','=',base64_decode($id))
+		->where('comentario.pub_id','=',$id)
 		->get(array('comentario.id','comentario.comentario','comentario.created_at','usuario.username'));
-
 		$resp = Respuestas::where('pub_id','=',$publication->id)->get();
 		$title = $publication->titulo." | pasillo24.com";
 		return View::make('publications.publicationSelf')
 		->with('title',$title)
 		->with('publication',$publication)
 		->with('comentarios',$comentarios)
-		->with('id',base64_decode($id))
+		->with('id',$id)
 		->with('respuestas',$resp)
 		->with('otrasPub',$otrasPub)
 		->with('username',$user->username)
