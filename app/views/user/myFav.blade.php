@@ -6,8 +6,6 @@
 	<div class="row">
 		<div class="col-xs-12">
 				<legend>Sistema de reputación de pasillo24.com</legend>
-				
-				<p class=textoPromedio>Una vez que hayas realizado tu compra, podrás valorar al vendedor según tus experiencias, pasadas las 48 horas.</p>
 				<div class="table-responsive">
 					<table class="table table-striped table-hover vertical-middle textoPromedio">
 						<thead>
