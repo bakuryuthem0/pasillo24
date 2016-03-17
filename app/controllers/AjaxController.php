@@ -3092,6 +3092,18 @@ class AjaxController extends BaseController{
 			'servicios'  => $ser, 
 		));
 	}
+	public function getSubCategory()
+	{
+		$id = Input::get('cat_id');
+		$subCat = SubCat::where('categoria_id','=',$id)
+		->where('deleted','=',0)
+		->orderBy('desc')
+		->get();
+		return Response::json(array(
+			'type' => 'success',
+			'data' => $subCat,
+		));
+	}
 	public function getDepartments()
 	{
 		$dep = Department::get();

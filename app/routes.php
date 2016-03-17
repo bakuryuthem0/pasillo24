@@ -86,6 +86,7 @@ Route::group(array('before' => 'check_app_auth'),function()
 });
 //rutas globales
 Route::get('app/categorias','AjaxController@getCategory');
+Route::get('app/sub-categoria','AjaxController@getSubCategory');
 Route::get('app/departamentos','AjaxController@getDepartments');
 Route::get('app/marcas','AjaxController@getBrand');
 Route::get('app/modelos','AjaxController@getModel');
