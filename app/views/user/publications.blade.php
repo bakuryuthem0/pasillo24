@@ -115,7 +115,7 @@
 							</td>
 							<td class="textoMedio">
 								@if($publication->fechFin < date('Y-m-d') && $publication->status != 'Procesando')
-									<a href="{{ URL::to('usuario/publicaciones/pago/'.$publication->id) }}" class="btn btn-primary btn-xs">Reactivar</a>	
+									<a href="{{ URL::to('usuario/publicaciones/reactivar/'.$publication->id) }}" class="btn btn-primary btn-xs">Reactivar</a>	
 								@elseif($publication->status == 'Pendiente')
 									<a href="{{ URL::to('usuario/publicaciones/pago/'.$publication->id) }}" class="btn btn-primary btn-xs">Pagar</a>
 								@elseif($publication->status == "Rechazado")
@@ -267,7 +267,7 @@
 							</td>
 							<td class="textoMedio">
 								@if($publication->fechFin < date('Y-m-d') && $publication->fechFin != "0000-00-00" && $publication->status != 'Procesando')
-									<a href="{{ URL::to('usuario/publicacion/habitual/pago/'.$publication->id) }}" class="btn btn-primary">Reactivar</a>	
+									<a href="{{ URL::to('usuario/publicaciones/reactivar/'.$publication->id) }}" class="btn btn-primary btn-xs">Reactivar</a>	
 								@elseif($publication->status == 'Pendiente')
 									<a href="{{ URL::to('usuario/publicacion/habitual/pago/'.$publication->id) }}" class="btn btn-primary btn-xs">Pagar</a>
 								@elseif($publication->status == "Rechazado")

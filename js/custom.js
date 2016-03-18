@@ -582,15 +582,95 @@ jQuery(document).ready(function($) {
 	$('#ubication').change(function(){
 		var esto = $(this);
 		if (esto.val() == 'Categoria') {
-			esto.parent().removeClass('col-xs-12').addClass('col-xs-6');
+			esto.parent().removeClass('col-md-12').addClass('col-md-6');
 			$('.contCatLider').addClass('showit')
 		}else
 		{
-			esto.parent().removeClass('col-xs-6').addClass('col-xs-12');
+			esto.parent().removeClass('col-md-6').addClass('col-md-12');
 			$('.contCatLider').removeClass('showit');
 		}
 	})
 });
+function cambiarFecha()
+{
+	var period = $('#period').val();
+	if (period == 'd') {
+		time = 86400;
+	}else if(period == 's')
+	{
+		time = 604800;
+	}else if(period == 'm')
+	{
+		time = 2629744;
+	}
+	var fecha = $('#fechIni').val(),duration=$('#duration').val();
+	var total = duration*time;
+	$('.error').remove();
+	$('input').css('box-shadow','none');
+	$('.finalFecha').remove();
+	$.ajax({
+			url: 'http://pasillo24.com/usuario/publicacion/lider/fecha',
+			type: 'get',
+			data: {'fecha':fecha,'timestamp':total,'period':period,'duration':duration},
+			beforeSend:function()
+			{
+				$('.loading').css({
+					'display': 'inline-block'
+				}).animate({'opacity':1},500);
+			},
+			success: function (data) {
+				$('.errorBlur').remove();
+				$('.loading').css({
+					'display': 'none'
+				});
+				if (data.code == 0) {
+					$('#fechIni').after('<p class="errorBlur textoPromedio" data-proceed="0">Formato incorrecto, la fecha debe de estar en formato DD-MM-AAAA</p>')
+				}else if(data.code == 1){
+					$('#fechIni').after('<p class="errorBlur textoPromedio" data-proceed="0">Debe elegir una fecha posterior a hoy</p>')
+				}else if(data.code == 2)
+				{
+					$('#fechIni').after('<p class="errorBlur textoPromedio" data-proceed="0">Debe introducir una fecha valida</p>')
+				}else
+				{
+
+					$('.finalFecha').remove();
+					$('.fechaFin').append('<p class="finalFecha textoPromedio">'+data.fecha+'</p>');
+
+					$('.contPrecioShow').append('<p class="finalFecha bg-info textoPromedio" style="padding:0.5em;border-radius:4px;margin-top:1em;">El total a pagar sera de '+data.costo+' Bs.</p>')
+				}
+			},
+			error:function()
+			{
+				console.log('error');
+			}
+		});
+}
+$('.ui-state-default').click(function(){
+	$('.fechError').remove();
+	if ($('#period').val()!= "" && $('#duration').val() != "") {
+		if ($('#fechIni').val()!= "") {
+			$('.errorBlur').remove();
+			cambiarFecha();
+		}else
+		{
+			$('.errorBlur').remove();
+			$('#fechIni').css({'border':'1px red solid'});
+			$('#fechIni').after('<div class="alert alert- errorBlur"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>Debe introducir una fecha</div>');
+		}
+	}
+	
+});
+$('#duration').blur(function(){
+	if ($('#fechIni').val()!="" && $('#period').val()!="") {
+		cambiarFecha();
+	};
+});
+$('#period').change(function()
+{
+	if ($('#fechIni').val()!="" && $('#duration').val() != "") {
+		cambiarFecha();
+	};
+})
 $('.continue').click(function(event) {
 	$('.info').animate({'opacity': 0},500, function(){
 			$(this).remove();	
@@ -602,86 +682,6 @@ $('.continue').click(function(event) {
 			);
 	});
 	
-	function cambiarFecha()
-	{
-		var period = $('#period').val();
-		if (period == 'd') {
-			time = 86400;
-		}else if(period == 's')
-		{
-			time = 604800;
-		}else if(period == 'm')
-		{
-			time = 2629744;
-		}
-		var fecha = $('#fechIni').val(),duration=$('#duration').val();
-		var total = duration*time;
-		$('.error').remove();
-		$('input').css('box-shadow','none');
-		$('.finalFecha').remove();
-		$.ajax({
-				url: 'http://pasillo24.com/usuario/publicacion/lider/fecha',
-				type: 'get',
-				data: {'fecha':fecha,'timestamp':total,'period':period,'duration':duration},
-				beforeSend:function()
-				{
-					$('.loading').css({
-						'display': 'inline-block'
-					}).animate({'opacity':1},500);
-				},
-				success: function (data) {
-					$('.errorBlur').remove();
-					$('.loading').css({
-						'display': 'none'
-					});
-					if (data.code == 0) {
-						$('#fechIni').after('<p class="errorBlur textoPromedio" data-proceed="0">Formato incorrecto, la fecha debe de estar en formato DD-MM-AAAA</p>')
-					}else if(data.code == 1){
-						$('#fechIni').after('<p class="errorBlur textoPromedio" data-proceed="0">Debe elegir una fecha posterior a hoy</p>')
-					}else if(data.code == 2)
-					{
-						$('#fechIni').after('<p class="errorBlur textoPromedio" data-proceed="0">Debe introducir una fecha valida</p>')
-					}else
-					{
-
-						$('.finalFecha').remove();
-						$('.fechaFin').append('<p class="finalFecha textoPromedio">'+data.fecha+'</p>');
-
-						$('.contPrecioShow').append('<p class="finalFecha bg-info textoPromedio" style="padding:0.5em;border-radius:4px;margin-top:1em;">El total a pagar sera de '+data.costo+' Bs.</p>')
-					}
-				},
-				error:function()
-				{
-					console.log('error');
-				}
-			});
-	}
-	$('.ui-state-default').click(function(){
-		$('.fechError').remove();
-		if ($('#period').val()!= "" && $('#duration').val() != "") {
-			if ($('#fechIni').val()!= "") {
-				$('.errorBlur').remove();
-				cambiarFecha();
-			}else
-			{
-				$('.errorBlur').remove();
-				$('#fechIni').css({'border':'1px red solid'});
-				$('#fechIni').after('<div class="alert alert- errorBlur"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>Debe introducir una fecha</div>');
-			}
-		}
-		
-	});
-	$('#duration').blur(function(){
-		if ($('#fechIni').val()!="" && $('#period').val()!="") {
-			cambiarFecha();
-		};
-	});
-	$('#period').change(function()
-	{
-		if ($('#fechIni').val()!="" && $('#duration').val() != "") {
-			cambiarFecha();
-		};
-	})
 	$('.enviarPub').click(function(event) {
 		$('.erroneo').remove();
 		function alerta(esto,msg)
@@ -1696,58 +1696,58 @@ function showError(error)
 
   	};
   }
-  function removeResponseAjax() {
-$('.responseDanger').removeClass('alert-success');
-$('.responseDanger').removeClass('alert-danger');
-$('.responseDanger').removeClass('active');
+function removeResponseAjax() {
+	$('.responseDanger').removeClass('alert-success');
+	$('.responseDanger').removeClass('alert-danger');
+	$('.responseDanger').removeClass('active');
 
 }
 function favFunction (btn) {
-var url = btn.val();
-$.ajax({
-	url: url,
-	type: 'GET',
-	dataType: 'json',
-	beforeSend:function()
-	{
-		btn.next('.miniLoader').addClass('active');
-		btn.attr('disabled',true);
-	},
-	success:function(response)
-	{
-		btn.next('.miniLoader').removeClass('active')
-		btn.attr('disabled',false);
-		$('.responseDanger').addClass('alert-'+response.type).addClass('active');
-		$('.responseDanger').children('p').html(response.msg);
-		if (response.type == 'success') {
-			btn.attr('data-content',response.popover);
-			btn.val(response.url);
-			if (response.action == 'add') {
-				btn.children('i').removeClass('fa-heart-o').fadeOut('fast',function(){
-					btn.children('i').addClass('fa-heart').fadeIn('fast');
-				});
-				btn.removeClass('btn-fav').addClass('btn-remove-fav');
-				btn = $('.btn-remove-fav');
-			}else
-			{
-				btn.children('i').removeClass('fa-heart').fadeOut('fast',function(){
-					btn.children('i').addClass('fa-heart-o').fadeIn('fast');
-				});
-				btn.removeClass('btn-remove-fav').addClass('btn-fav');
-				btn = $('.btn-fav');
-			}
-		};
-		setTimeout(removeResponseAjax,5000)
-	},
-	error:function()
-	{
-		btn.attr('disabled',false);
-		btn.next('.miniLoader').removeClass('active');
-		$('.responseDanger').addClass('alert-danger').addClass('active');
-		$('.responseDanger').children('p').html('Ups, el servidor no responde.');
-		setTimeout(removeResponseAjax,5000)
-	}
-});
+	var url = btn.val();
+	$.ajax({
+		url: url,
+		type: 'GET',
+		dataType: 'json',
+		beforeSend:function()
+		{
+			btn.next('.miniLoader').addClass('active');
+			btn.attr('disabled',true);
+		},
+		success:function(response)
+		{
+			btn.next('.miniLoader').removeClass('active')
+			btn.attr('disabled',false);
+			$('.responseDanger').addClass('alert-'+response.type).addClass('active');
+			$('.responseDanger').children('p').html(response.msg);
+			if (response.type == 'success') {
+				btn.attr('data-content',response.popover);
+				btn.val(response.url);
+				if (response.action == 'add') {
+					btn.children('i').removeClass('fa-heart-o').fadeOut('fast',function(){
+						btn.children('i').addClass('fa-heart').fadeIn('fast');
+					});
+					btn.removeClass('btn-fav').addClass('btn-remove-fav');
+					btn = $('.btn-remove-fav');
+				}else
+				{
+					btn.children('i').removeClass('fa-heart').fadeOut('fast',function(){
+						btn.children('i').addClass('fa-heart-o').fadeIn('fast');
+					});
+					btn.removeClass('btn-remove-fav').addClass('btn-fav');
+					btn = $('.btn-fav');
+				}
+			};
+			setTimeout(removeResponseAjax,5000)
+		},
+		error:function()
+		{
+			btn.attr('disabled',false);
+			btn.next('.miniLoader').removeClass('active');
+			$('.responseDanger').addClass('alert-danger').addClass('active');
+			$('.responseDanger').children('p').html('Ups, el servidor no responde.');
+			setTimeout(removeResponseAjax,5000)
+		}
+	});
 }
 jQuery(document).ready(function($) {
 	$('.btn-filtralo').on('click', function(event) {

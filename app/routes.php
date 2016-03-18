@@ -117,6 +117,9 @@ Route::group(array('before' =>'auth'),function()
 	Route::get('verificar-comentarios','HomeController@getVerifyComment');
 	Route::post('usuario/publicaciones/comentarios/respuesta', 'PublicationController@postResponse');
 	Route::post('usuario/publicaciones/mis-publicaciones/eliminar/publicacion','PublicationController@postElimPub');
+
+	Route::get('usuario/publicaciones/reactivar/{id}','UserController@getReactivate');
+	Route::post('usuario/publicaciones/reactivar/{id}/enviar','UserController@postReactivate');
 	//publicar
 	Route::get('usuario/publicar','UserController@getpublication');
 	//lider
