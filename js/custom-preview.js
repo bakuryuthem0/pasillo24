@@ -1714,7 +1714,7 @@ function showError(error)
 
   	};
   }
-  function removeResponseAjax() {
+function removeResponseAjax() {
 	$('.responseDanger').removeClass('alert-success');
 	$('.responseDanger').removeClass('alert-danger');
 	$('.responseDanger').removeClass('active');
@@ -1771,9 +1771,17 @@ jQuery(document).ready(function($) {
 	$('.btn-filtralo').on('click', function(event) {
 		$(this).attr('disabled',true);
 		var proceed = 0;
-		if ($('.depFilterNotWorking').val() != "" && $('.depFilterNotWorking').val() != -1) {
+		if ($('.filterDep').val() != "" && $('.filterDep').val() != -1) {
 			proceed = 1;
-			$('.form-filter').append('<input type="hidden" name="filter" value="'+$('.depFilterNotWorking').val()+'">')
+			$('.form-filter').append('<input type="hidden" name="filter" value="'+$('.filterDep').val()+'">')
+		};
+		if ($('.filterRel').val() != "" && $('.filterRel').val() != -1) {
+			proceed = 1;
+			$('.form-filter').append('<input type="hidden" name="rel" value="'+$('.filterRel').val()+'">')
+		};
+		if ($('.filterBuss').val() != "" && $('.filterBuss').val() != -1) {
+			proceed = 1;
+			$('.form-filter').append('<input type="hidden" name="buss" value="'+$('.filterBuss').val()+'">')
 		};
 		if ($('.min').val() != "") {
 			proceed = 1;
@@ -1786,6 +1794,10 @@ jQuery(document).ready(function($) {
 		if ($('.min').val() != "" || $('.max').val() != "") {
 			proceed = 1;
 			$('.form-filter').append('<input type="hidden" name="currency" value="'+$('.currency').val()+'">')
+		};
+		if ($('.filterCond').val() != "" && $('.filterCond').val() != -1) {
+			proceed = 1;
+			$('.form-filter').append('<input type="hidden" name="cond" value="'+$('.filterCond').val()+'">')
 		};
 		if ($('.to-filter').hasClass('busq')) {
 			$('.form-filter').append('<input type="hidden" name="busq" value="'+$('.to-filter').val()+'">')

@@ -56,7 +56,6 @@ class HomeController extends BaseController {
 
 			})
 			->orderBy('fechFin','desc')->get();
-			
 			$casual = Publicaciones::where('tipo','=','Casual')
 			->where('fechFin','>=',date('Y-m-d',time()))
 			->where('status','=','Aprobado')
@@ -98,6 +97,7 @@ class HomeController extends BaseController {
 			})
 			->where('deleted','=',0)
 			->orderBy('fechFin','desc')->get();
+
 			$casual = Publicaciones::where('tipo','=','Casual')
 			->where('fechFin','>=',date('Y-m-d',time()))
 			->where('status','=','Aprobado')
@@ -186,7 +186,7 @@ class HomeController extends BaseController {
 	public function getSearch()
 	{
 		$title = "Búsqueda | pasillo24.com";
-
+		$paginatorFilter = "";
 		if (Input::has('busq')) {
 			$busq = Input::get('busq');
 			$auxLider = Publicaciones::leftJoin('categoria','categoria.id','=','publicaciones.categoria')
@@ -228,6 +228,7 @@ class HomeController extends BaseController {
 				if ($filter != -1) {
 					$filter = Department::find(Input::get('filter'));
 					$auxRes = $auxRes->where('publicaciones.departamento','=',$filter->id);
+					$paginatorFilter .= '&filter='.$filter->id;
 				}else
 				{
 					$filter = "";
@@ -241,24 +242,56 @@ class HomeController extends BaseController {
 				$currency = Input::get('currency');
 				if (!is_null($min) && !is_null($max) && !empty($min) && !empty($max)) {
 					$minmax = array($min, $max);
-					$filterPrice = '&min='.$min.'&max='.$max.'&currency='.$currency;
+					$paginatorFilter .= '&min='.$min.'&max='.$max.'&currency='.$currency;
 					$auxLider =  $auxLider->where('moneda','=',$currency)->where('precio','>=',$min)->whereRaw('`publicaciones`.`precio` <= '.$max);
 					$auxRes   =  $auxRes->where('publicaciones.precio','>=',$min)->whereRaw('`publicaciones`.`precio` <= '.$max)->where('publicaciones.moneda','=',$currency);
 				}else{
 					if(!is_null($max) && !empty($max)){
 						$minmax = array('', $max);
-						$filterPrice = '&max='.$max.'&currency='.$currency;
+						$paginatorFilter .= '&max='.$max.'&currency='.$currency;
 						$auxLider =  $auxLider->where('moneda','=',$currency)->whereRaw('`publicaciones`.`precio` <= '.$max);
 						$auxRes   =  $auxRes->whereRaw('`publicaciones`.`precio` <= '.$max)->where('publicaciones.moneda','=',$currency);
 					}elseif(!is_null($min) && !empty($min)){
 						$minmax = array($min, '');
-						$filterPrice = '&min='.$min.'&currency='.$currency;
+						$paginatorFilter .= '&min='.$min.'&currency='.$currency;
 						$auxLider =  $auxLider->where('moneda','=',$currency)->where('precio','>=',$min);
 						$auxRes   =  $auxRes->where('publicaciones.moneda','=',$currency)->where('publicaciones.precio','>=',$min);
 					}
 				}
 			}
-			
+			if (Input::has('rel')) {
+				$rel = Input::get('rel');
+				switch ($rel) {
+					case 'rep':
+						$auxLider =  $auxLider->leftJoin('usuario','usuario.id','=','publicaciones.user_id')->orderBy('usuario.reputation','DESC');
+						$auxRes   =  $auxRes->leftJoin('usuario','usuario.id','=','publicaciones.user_id')->orderBy('usuario.reputation','DESC');
+						$paginatorFilter .= '&rel=rep';
+						break;
+					case 'fin':
+						$auxLider =  $auxLider->orderBy('publicaciones.fechFin','ASC')->orderBy('publicaciones.fechFinNormal','ASC');
+						$auxRes   =  $auxRes->orderBy('publicaciones.fechFin','ASC')->orderBy('publicaciones.fechFinNormal','ASC');
+						$paginatorFilter .= '&rel=fin';
+						break;
+					case 'ini':
+						$auxLider =  $auxLider->orderBy('publicaciones.fechIni','DESC')->orderBy('publicaciones.fechIniNormal','DESC');
+						$auxRes   =  $auxRes->orderBy('publicaciones.fechIni','DESC')->orderBy('publicaciones.fechIniNormal','DESC');
+						$paginatorFilter .= '&rel=ini';
+						break;
+					default:
+						break;
+				}
+			}
+			if (Input::has('cond')) {
+				$cond 			  = Input::get('cond');
+				$paginatorFilter .= '&cond='.$cond;
+				$auxRes   		  =  $auxRes->where('publicaciones.condicion','=',strtolower($cond));
+			}
+			if (Input::has('buss')) {
+				$buss 			  = Input::get('buss');
+				$paginatorFilter .= '&buss='.$buss;
+				$auxLider =  $auxLider->where('publicaciones.bussiness_type','=',strtolower($buss));
+				$auxRes   =  $auxRes->where('publicaciones.bussiness_type','=',strtolower($buss));
+			}
 			$lider = $auxLider->get(array('publicaciones.id','publicaciones.img_1','publicaciones.titulo','publicaciones.precio','publicaciones.moneda'));
 			$res = $auxRes->paginate(5,array(
 				'publicaciones.id',
@@ -267,6 +300,8 @@ class HomeController extends BaseController {
 				'publicaciones.precio',
 				'publicaciones.moneda',
 				'publicaciones.descripcion',
+				'publicaciones.fechFin',
+				'publicaciones.fechFinNormal',
 				'departamento.id as dep_id',
 				'departamento.nombre as dep'));
 			$categorias = Categorias::where('id','=',$busq)->pluck('desc');
@@ -283,12 +318,22 @@ class HomeController extends BaseController {
 			->with('title',$title)
 			->with('busq',$busq)
 			->with('lider',$lider)
-			->with('departamento',$departamentos);
+			->with('departamento',$departamentos)
+			->with('paginatorFilter',$paginatorFilter);
 			if (isset($filter)) {
 				$view = $view->with('filter',$filter);
 			}
-			if (isset($filterPrice)) {
-				$view = $view->with('filterPrice',$filterPrice)->with('minmax',$minmax)->with('currency',$currency);
+			if (isset($currency)) {
+				$view = $view->with('minmax',$minmax)->with('currency',$currency);
+			}
+			if (isset($cond)) {
+				$view = $view->with('cond',$cond);
+			}
+			if (isset($buss)) {
+				$view = $view->with('buss',$buss);
+			}
+			if (isset($rel)) {
+				$view = $view->with('rel',$rel);
 			}
 			return $view;
 
@@ -329,6 +374,7 @@ class HomeController extends BaseController {
 				if ($filter != -1) {
 					$filter = Department::find(Input::get('filter'));
 					$auxRes = $auxRes->where('publicaciones.departamento','=',$filter->id);
+					$paginatorFilter .= '&filter='.$filter->id;
 				}else
 				{
 					$filter = "";
@@ -342,24 +388,57 @@ class HomeController extends BaseController {
 				$currency = Input::get('currency');
 				if (!is_null($min) && !is_null($max) && !empty($min) && !empty($max)) {
 					$minmax = array($min, $max);
-					$filterPrice = '&min='.$min.'&max='.$max.'&currency='.$currency;
+					$paginatorFilter .= '&min='.$min.'&max='.$max.'&currency='.$currency;
 					$auxLider =  $auxLider->whereRaw('`publicaciones`.`precio` >= '.$min)->whereRaw('`publicaciones`.`precio` <= '.$max)->where('moneda','=',$currency);
 					$auxRes   =  $auxRes->whereRaw('`publicaciones`.`precio` >= '.$min)->whereRaw('`publicaciones`.`precio` <= '.$max)->where('publicaciones.moneda','=',$currency);
 				}else{
 					if(!is_null($max) && !empty($max)){
 						$minmax = array('', $max);
-						$filterPrice = '&max='.$max.'&currency='.$currency;
+						$paginatorFilter .= '&max='.$max.'&currency='.$currency;
 						$auxLider =  $auxLider->where('moneda','=',$currency)->whereRaw('`publicaciones`.`precio` <= '.$max);
 						$auxRes   =  $auxRes->whereRaw('`publicaciones`.`precio` <= '.$max)->where('publicaciones.moneda','=',$currency);
 					}elseif(!is_null($min) && !empty($min)){
 						$minmax = array($min, '');
-						$filterPrice = '&min='.$min.'&currency='.$currency;
+						$paginatorFilter .= '&min='.$min.'&currency='.$currency;
 						$auxLider =  $auxLider->whereRaw('`publicaciones`.`precio` >= '.$min)->where('moneda','=',$currency);
 						$auxRes   =  $auxRes->where('publicaciones.moneda','=',$currency)->whereRaw('`publicaciones`.`precio` >= '.$min);
 					}
 				}
 			}
-			$lider = $auxLider->get(array('id','img_1','titulo','precio','moneda'));
+			if (Input::has('rel')) {
+				$rel = Input::get('rel');
+				switch ($rel) {
+					case 'rep':
+						$auxLider =  $auxLider->leftJoin('usuario','usuario.id','=','publicaciones.user_id')->orderBy('usuario.reputation','DESC');
+						$auxRes   =  $auxRes->leftJoin('usuario','usuario.id','=','publicaciones.user_id')->orderBy('usuario.reputation','DESC');
+						$paginatorFilter .= '&rel=rep';
+						break;
+					case 'fin':
+						$auxLider =  $auxLider->orderBy('publicaciones.fechFin','ASC')->orderBy('publicaciones.fechFinNormal','ASC');
+						$auxRes   =  $auxRes->orderBy('publicaciones.fechFin','ASC')->orderBy('publicaciones.fechFinNormal','ASC');
+						$paginatorFilter .= '&rel=fin';
+						break;
+					case 'ini':
+						$auxLider =  $auxLider->orderBy('publicaciones.fechIni','DESC')->orderBy('publicaciones.fechIniNormal','DESC');
+						$auxRes   =  $auxRes->orderBy('publicaciones.fechIni','DESC')->orderBy('publicaciones.fechIniNormal','DESC');
+						$paginatorFilter .= '&rel=ini';
+						break;
+					default:
+						break;
+				}
+			}
+			if (Input::has('cond')) {
+				$cond 			  = Input::get('cond');
+				$paginatorFilter .= '&cond='.$cond;
+				$auxRes   		  =  $auxRes->where('publicaciones.condicion','=',strtolower($cond));
+			}
+			if (Input::has('buss')) {
+				$buss 			  = Input::get('buss');
+				$paginatorFilter .= '&buss='.$buss;
+				$auxLider =  $auxLider->where('publicaciones.bussiness_type','=',strtolower($buss));
+				$auxRes   =  $auxRes->where('publicaciones.bussiness_type','=',strtolower($buss));
+			}
+			$lider = $auxLider->get(array('publicaciones.id','publicaciones.img_1','publicaciones.titulo','publicaciones.precio','publicaciones.moneda'));
 			$res = $auxRes->paginate(5,array(
 				'publicaciones.id',
 				'publicaciones.img_1',
@@ -367,6 +446,8 @@ class HomeController extends BaseController {
 				'publicaciones.precio',
 				'publicaciones.moneda',
 				'publicaciones.descripcion',
+				'publicaciones.fechFin',
+				'publicaciones.fechFinNormal',
 				'departamento.id as dep_id',
 				'departamento.nombre as dep'));
 
@@ -383,15 +464,24 @@ class HomeController extends BaseController {
 			->with('title',$title)
 			->with('busq',$busq)
 			->with('lider',$lider)
-			->with('departamento',$departamentos);
-			if(isset($filter))
-			{
+			->with('departamento',$departamentos)
+			->with('paginatorFilter',$paginatorFilter);
+			if (isset($filter)) {
 				$view = $view->with('filter',$filter);
 			}
-			if (isset($filterPrice)) {
-				$view = $view->with('filterPrice',$filterPrice)->with('minmax',$minmax)->with('currency',$currency);
+			if (isset($currency)) {
+				$view = $view->with('minmax',$minmax)->with('currency',$currency);
 			}
-				return $view;
+			if (isset($cond)) {
+				$view = $view->with('cond',$cond);
+			}
+			if (isset($buss)) {
+				$view = $view->with('buss',$buss);
+			}
+			if (isset($rel)) {
+				$view = $view->with('rel',$rel);
+			}
+			return $view;
 		}
 	}
 	public function getVerifyComment()

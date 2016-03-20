@@ -554,15 +554,19 @@ class PublicationController extends BaseController {
 			'publicaciones.precio',
 			'publicaciones.moneda',
 			'publicaciones.descripcion',
+			'publicaciones.fechFin',
+			'publicaciones.fechFinNormal',
 			'departamento.id as dep_id',
 			'departamento.nombre as dep'));
 		$departamentos = Department::get();
+		$paginatorFilter = "";
 		return View::make('publications.categories')
 		->with('title',$title)
 		->with('publicaciones',$publicaciones)
 		->with('lider',$lider)
 		->with('departamento',$departamentos)
-		->with('busq',$id);
+		->with('busq',$id)
+		->with('paginatorFilter',$paginatorFilter);
 		
 	}
 	public function getPublicationDepartment($id)
@@ -772,8 +776,10 @@ class PublicationController extends BaseController {
 			'precio'=> 'required|numeric',
 			'moneda'=> 'required',
 			'casCity' => 'required',
-			'resultado' => 'required|numeric'
+			'resultado' => 'required|numeric',
+			'negocioType' => 'required',
 		);
+
 		$messages = array(
 			'required' => ':attribute es requerido',
 			'image'    => ':attrubute debe ser una imagen',
@@ -787,14 +793,24 @@ class PublicationController extends BaseController {
 			'resultado'     => 'El captcha',
 			'precio'=> 'El precio',
 			'moneda'=> 'El campo moneda',
-			'casCity' => 'El campo departamento'
+			'casCity' => 'El campo departamento',
+			'negocioType' => 'El campo clase de negocio',
 		);
+		$aux = Categorias::find($input['casCat']);
+		if ($aux->tipo == 1){
+			$rules = $rules+array('condition'  => 'required');
+			$customAttributes = array(
+				'condition'	=> 'El campo condición',
+				
+			);
+		}
 		if ($input['x']+$input['y'] != $input['resultado']) {
 			Session::flash('error', 'El captcha es incorrecto');
 			return Redirect::back()->withInput();
 		}
 		$validator = Validator::make($input, $rules, $messages, $customAttributes);
 		if ($validator->fails()) {
+			Session::flash('error','Campos invalidos');
 			return Redirect::back()->withErrors($validator)->withInput();
 		}else
 		{
@@ -814,11 +830,17 @@ class PublicationController extends BaseController {
 			$pub->ubicacion   = 'Principal';
 			$pub->precio 	  = $input['precio'];
 			$pub->moneda 	  = $input['moneda'];
+
 			$pub->descripcion = $input['input'];
 			$pub->fechIni 	  = date('Y-m-d',time());
 			$pub->fechFin	  = date('Y-m-d',time()+604800);
 			$pub->fechRepub	  = date('Y-m-d',time()+2543400);
+			$pub->bussiness_type = $input['negocioType'];
 			$pub->status 	  = 'Procesando';
+			if(Input::has('condition'))
+			{
+				$pub->condicion = $input['condition'];
+			}
 			if ($pub->save()) {
 				if (Input::has('longitud') && Input::has('latitud')) {
 					$lon = Input::get('longitud');
@@ -952,7 +974,8 @@ class PublicationController extends BaseController {
 			'precio'		=> 'required_if:tipoTransac,venta,alquiler,Aticretico,otro',
 			'moneda'		=> 'required',
 			'img1'			=> 'required|image',
-			'tipoTransac'	=> 'required'
+			'tipoTransac'	=> 'required',
+			'negocioType'   => 'required',
 
 		);
 		$messages = array(
@@ -971,8 +994,19 @@ class PublicationController extends BaseController {
 			'img1'		 	=> 'El campo imagen de portada',
 			'moneda'		=> 'El campo moneda',
 			'tipoTransac'	=> 'El campo tipo de operación',
+			'negocioType'   => 'El campo clase de negocio',
 
 		);
+		$aux = Input::get('cat_id');
+		$aux = Categorias::find($aux);
+		if ($aux->tipo == 1) {
+			$rules = $rules+array(
+				'condition' 	=> 'required',
+			);
+			$customAttributes = $customAttributes+array(
+				'condition'		=> 'El campo condición',
+			);
+		}
 		if ($input['cat_id'] == 34) {
 			$rules = $rules+array(
 				'marca' 	=> 'required',
@@ -1027,6 +1061,10 @@ class PublicationController extends BaseController {
 		$pub->moneda 		= $input['moneda'];
 		$pub->tipo 			= 'Habitual';
 		$pub->transaccion	= $input['tipoTransac'];
+		$pub->bussiness_type = $input['negocioType'];
+		if (Input::has('condition')) {
+			$pub->condicion	    = $input['condition'];
+		}
 		$pub->img_1 		= Auth::user()['username'].'/'.$img1->getClientOriginalName();
 
 		if (!empty($input['nomb'])) {

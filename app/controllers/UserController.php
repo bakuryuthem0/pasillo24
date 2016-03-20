@@ -148,6 +148,7 @@ class UserController extends BaseController {
 		$url = 'usuario/publicacion/lider/enviar';
 		$textos = Textos::where('id','=',1)->first();
 		$precio = Precios::where('pub_type_id','=',1)->get();
+		$dep = Department::get();
 		return View::make('publications.publicacion')
 		->with('title',$title)
 		->with('tipo','lider')
@@ -157,7 +158,8 @@ class UserController extends BaseController {
 		->with('precio',$precio)
 		->with('servicios',$servicios)
 		->with('otros',$otros)
-		->with('otros2',$otros2);
+		->with('otros2',$otros2)
+		->with('dep',$dep);
 	}
 	public function postPublicationLider()
 	{
@@ -293,7 +295,9 @@ class UserController extends BaseController {
 			'namePub'   => 'required|min:4',
 			'duration'  => 'required|min:0',
 			'time'      => 'required|in:d,s,m,a',
-			'fechIni'   => 'required|after:'.date('d-m-Y')
+			'fechIni'   => 'required|after:'.date('d-m-Y'),
+			'dep'		=> 'required',
+			'negocioType' => 'required',
 		);
 		$msg = array(
 			'required' => ':attribute es obligatorio',
@@ -306,6 +310,8 @@ class UserController extends BaseController {
 			'ubication' => 'El campo ubicacion',
 			'namePub' 	=> 'El campo titulo',
 			'duration'	=> 'El campo duracion',
+			'dep' 		=> 'El campo departamento',
+			'negocioType'=> 'El campo tipo de negocio',
 
 		);
 		if ($input['ubication'] == 'Categoria'){
@@ -342,6 +348,8 @@ class UserController extends BaseController {
 			$publication = new Publicaciones;
 			$publication->user_id   = Auth::id();
 			$publication->tipo 		= 'Lider';
+			$publication->departamento 	= $input['dep'];
+
 			$publication->ubicacion = $input['ubication'];
 			if ($publication->ubicacion == 'Categoria') {
 				$publication->categoria = $input['cat'];
@@ -351,6 +359,7 @@ class UserController extends BaseController {
 			$publication->fechIni   = date('Y-m-d',strtotime($input['fechIni']));
 			$publication->fechFin   = $fechFin;
 			$publication->status    = 'Pendiente';
+			$publication->bussiness_type = $input['negocioType'];
 			if(!empty($input['nomb'])){
 				$publication->name = $input['nomb'];
 			}

@@ -82,7 +82,7 @@
 						<div class="col-xs-12">
 							<h3 class="text-center">Filtros</h3>
 							<label class="textoPromedio">Departamento</label>
-							<select name="filter" class="form-control depFilterNotWorking" autocomplete="off">
+							<select name="filter" class="form-control filterDep depFilterNotWorking" autocomplete="off">
 								<option value="-1">Busqueda general</option>
 								@foreach($departamento as $dep)
 									@if(!empty($filter) && $filter->id == $dep->id)
@@ -93,6 +93,34 @@
 								@endforeach
 							</select>
 							<input type="hidden" name="cat" class="to-filter cat" value="{{ $busq }}">
+						</div>
+						<div class="col-xs-12">
+							<label class="textoPromedio">Relevancia.</label>
+							<select name="rel" class="form-control filterRel depFilterNotWorking" autocomplete="off">
+								<option value="-1">Busqueda general</option>
+								<option value="rep" @if(isset($rel) && $rel == 'rep') selected @endif>Mayor reputación.</option>
+								<option value="fin" @if(isset($rel) && $rel == 'fin') selected @endif>Primeros en finalizar</option>
+								<option value="ini" @if(isset($rel) && $rel == 'ini') selected @endif>Mas recientes.</option>
+							</select>
+						</div>
+						<div class="col-xs-12">
+							<label class="textoPromedio">Condición.</label>
+							<select name="cond" class="form-control filterCond depFilterNotWorking" autocomplete="off">
+								<option value="-1">Busqueda general</option>
+								<option value="nuevo" @if(isset($cond) && $cond == 'nuevo') selected @endif>Nuevo.</option>
+								<option value="usado" @if(isset($cond) && $cond == 'usado') selected @endif>Usado</option>
+							</select>
+						</div>
+						<div class="col-xs-12">
+							<label class="textoPromedio">Clase de Negocio.</label>
+							<select name="buss" class="form-control filterBuss depFilterNotWorking" autocomplete="off">
+								<option value="-1">Busqueda general</option>
+								<option value="fiscal" @if(isset($buss) && $buss == 'fiscal') selected @endif>Fiscal.</option>
+								<option value="virtual" @if(isset($buss) && $buss == 'virtual') selected @endif>Virtual</option>
+								<option value="independiente" @if(isset($buss) && $buss == 'independiente') selected @endif>Independiente</option>
+								<option value="otro" @if(isset($buss) && $buss == 'otro') selected @endif>Otro</option>
+
+							</select>
 						</div>
 						<div class="col-xs-12"><label class="textoPromedio">Precio</label></div>
 						<div class="col-xs-12 contInputFilter">
@@ -142,12 +170,19 @@
 										<label class="textoPromedio">{{ $pub->dep }}</label>
 								</div>
 								<div class="col-xs-12 col-md-4 contCatPub">
-		                                                                <label class="textoPromedio" style="display:inline-block;">
+                                        <label class="textoPromedio" style="display:inline-block;">
 											Precio: 
 										</label>
 										<h3 class="precioPub" style="display:inline-block;">{{ $pub->precio.' '.ucfirst(strtolower($pub->moneda)) }}</h3>
-								
 									<br>
+									<label class="textoPromedio" style="display:inline-block;margin-top: 0.5em;margin-left: 1em;">
+										Finaliza:
+										@if($pub->fechFinNormal != "0000-00-00")
+											{{ date('d-m-Y',strtotime($pub->fechFinNormal)) }}
+										@else
+											{{ date('d-m-Y',strtotime($pub->fechFin)) }}
+										@endif 
+									</label>
 									<a href="{{ URL::to('publicacion/habitual/'.base64_encode($pub->id)) }}" class="btn btn-primary btnBusq">
 										<i class="fa fa-hand-o-right">
 										</i> Ver publicación
@@ -162,164 +197,85 @@
 		          <?php  $presenter = new Illuminate\Pagination\BootstrapPresenter($publicaciones); ?>
 		          @if ($publicaciones->getLastPage() > 1)
 		          <ul class="cd-pagination no-space">
-		            <?php
-		              $beforeAndAfter = 2;
-		           
-		              //Página actual
-		              $currentPage = $publicaciones->getCurrentPage();
-		           
-		              //Última página
-		              $lastPage = $publicaciones->getLastPage();
-		           
-		              //Comprobamos si las páginas anteriores y siguientes de la actual existen
-		              $start = $currentPage - $beforeAndAfter;
-		           
-		                  //Comprueba si la primera página en la paginación está por debajo de 1
-		                  //para saber como colocar los enlaces
-		              if($start < 1)
-		              {
-		                $pos = $start - 1;
-		                $start = $currentPage - ($beforeAndAfter + $pos);
-		              }
-		           
-		              //Último enlace a mostrar
-		              $end = $currentPage + $beforeAndAfter;
-		           
-		              if($end > $lastPage)
-		              {
-		                $pos = $end - $lastPage;
-		                $end = $end - $pos;
-		              }
-		           
-		              //Si es la primera página mostramos el enlace desactivado
-		              if ($currentPage <= 1)
-		              {
-		                echo '<li class="disabled"><span class="textoMedio">Primera</span></li>';
-		              }
-		              //en otro caso obtenemos la url y mostramos en forma de link
-		              else
-		              {
-		                $url = $publicaciones->getUrl(1);
-		           		if(isset($filterPrice)){
-		                	echo '<li><a class="textoMedio" href="'.$url.'&cat='.$busq.$filterPrice.'">&lt;&lt; Primera</a></li>';
-		           		}
-		           		else{
-		                	echo '<li><a class="textoMedio" href="'.$url.'&cat='.$busq.'">&lt;&lt; Primera</a></li>';
-		           			
-		           		}
+				<?php
+				$beforeAndAfter = 3;
 
-		              }
+				//Página actual
+				$currentPage = $publicaciones->getCurrentPage();
+
+				//Última página
+				$lastPage = $publicaciones->getLastPage();
+
+				//Comprobamos si las páginas anteriores y siguientes de la actual existen
+				$start = $currentPage - $beforeAndAfter;
+					
+				  //Comprueba si la primera página en la paginación está por debajo de 1
+				  //para saber como colocar los enlaces
+				if($start < 1)
+				{
+				$pos = $start - 1;
+				$start = $currentPage - ($beforeAndAfter + $pos);
+				}
+				//Último enlace a mostrar
+				$end = $currentPage + $beforeAndAfter;
+
+				if($end > $lastPage)
+				{
+				$pos = $end - $lastPage;
+				$end = $end - $pos;
+				}
+
+				//Si es la primera página mostramos el enlace desactivado
+				if ($currentPage <= 1)
+				{
+				echo '<li class="disabled"><span class="textoMedio">Primera</span></li>';
+					//en otro caso obtenemos la url y mostramos en forma de link
+				}
+				else
+				{
+				$url = $publicaciones->getUrl(1);
+				echo '<li><a class="textoMedio" href="'.$url.'&cat='.$busq.$paginatorFilter.'">&lt;&lt; Primera</a></li>';
+
+				}
+				//Para ir a la anterior
+            	if (($currentPage-1) < $start) {
+	            	echo '<li class="disable"><span>&lt; Atras</span></li>' ;	
+	            }else
+	            {
+              		echo '<li><a href="'.$publicaciones->getUrl($currentPage-1).'&cat='.$busq.$paginatorFilter.'">&lt; Atras</a></li>';
+	            }
+	           
+				//Rango de enlaces desde el principio al final, 3 delante y 3 detrás
+				for($i = $start; $i<=$end;$i++)
+				{
+					if ($currentPage == $i) {
+						echo '<li class="disabled"><span>'.$i.'</span></li>';
+					}else
+					{
+						echo '<li><a href="'.$publicaciones->getUrl($i).'&cat='.$busq.$paginatorFilter.'">'.$i.'</a></li>';
+					}
+				}
 		           
-		              //Para ir a la anterior
-		              if(!empty($filter)){
-			            if (($currentPage-1) < $start) {
-			            	echo '<li class="disable"><span>&lt; Atras</span></li>' ;	
-			            }else
-			            {
-		           			if(isset($filterPrice)){
-			              		echo '<li><a href="'.$publicaciones->getUrl($currentPage-1).'&cat='.$busq.'&filter='.$filter->id.$filterPrice.'">&lt; Atras</a></li>';
+				//Para ir a la siguiente
+				if (($currentPage+1) > $end) {
+					echo '<li class="disable"><span>Adelante &gt;</span></li>' ;
+				}else
+				{
+					echo '<li><a href="'.$publicaciones->getUrl($currentPage+1).'&cat='.$busq.$paginatorFilter.'">Adelante &gt;</a></li>';
+				}
 
-		           			}else
-		           			{
-			              		echo '<li><a href="'.$publicaciones->getUrl($currentPage-1).'&cat='.$busq.'&filter='.$filter->id.'">&lt; Atras</a></li>';
-		           			}
-			            }
-		              }else
-		              {
-		              	if (($currentPage-1) < $start) {
-			              	echo '<li class="disable"><span>&lt; Atras</span></li>' ;	
-			              }else
-			              {
-			              	if(isset($filterPrice))
-			              	{
-			              		echo '<li><a href="'.$publicaciones->getUrl($currentPage-1).'&busq='.$busq.$filterPrice.'">&lt; Atras</a></li>' ;
-			              	}else
-			              	{
-			              		echo '<li><a href="'.$publicaciones->getUrl($currentPage-1).'&busq='.$busq.'">&lt; Atras</a></li>' ;
-			              	}
-			              }
-		              }
-		           
-		              //Rango de enlaces desde el principio al final, 3 delante y 3 detrás
-		              for($i = $start; $i<=$end;$i++)
-		              {
-		              	if ($currentPage == $i) {
-		              		echo '<li class="disabled"><span>'.$i.'</span></li>';
-		              	}else
-		              	{
-		              		if(!empty($filter)){
-			              		if(isset($filterPrice))
-			              		{
-		              				echo '<li><a href="'.$publicaciones->getUrl($i).'&cat='.$busq.'&filter='.$filter->id.$filterPrice.'">'.$i.'</a></li>';
-			              		}else
-			              		{
-		              				echo '<li><a href="'.$publicaciones->getUrl($i).'&cat='.$busq.'&filter='.$filter->id.'">'.$i.'</a></li>';
-			              		}
-
-
-		              		}else
-		              		{
-			              		if(isset($filterPrice))
-			              		{
-		              				echo '<li><a href="'.$publicaciones->getUrl($i).'&cat='.$busq.$filterPrice.'">'.$i.'</a></li>';
-			              		}else
-			              		{
-		              				echo '<li><a href="'.$publicaciones->getUrl($i).'&cat='.$busq.'">'.$i.'</a></li>';
-			              		}
-		              		}
-		              	}
-		              }
-		           
-		              //Para ir a la siguiente
-		              if (!empty($filter)) {
-			              if (($currentPage+1) > $end) {
-			              	echo '<li class="disable"><span>Adelante &gt;</span></li>' ;
-			              }else
-			              {
-			              		if(isset($filterPrice)){
-			              			echo '<li><a href="'.$publicaciones->getUrl($currentPage+1).'&cat='.$busq.'&filter='.$filter->id.$filterPrice.'">Adelante &gt;</a></li>';
-
-			              		}else
-			              		{
-			              			echo '<li><a href="'.$publicaciones->getUrl($currentPage+1).'&cat='.$busq.'&filter='.$filter->id.'">Adelante &gt;</a></li>';
-			              		}
-
-			              }
-		              }else
-		              {
-		              	if (($currentPage+1) > $end) {
-			              	echo '<li class="disable"><span>Adelante &gt;</span></li>' ;
-			              }else
-			              {
-			              		if(isset($filterPrice))
-			              		{
-			              			echo '<li><a href="'.$publicaciones->getUrl($currentPage+1).'&cat='.$busq.$filterPrice.'">Adelante &gt;</a></li>' ;
-			              		}else
-			              		{
-			              			echo '<li><a href="'.$publicaciones->getUrl($currentPage+1).'&cat='.$busq.'">Adelante &gt;</a></li>' ;
-			              		}
-
-			              }
-		              }
-		           
-		              ////Si es la última página mostramos desactivado
-		              if ($currentPage >= $lastPage)
-		              {
-		                echo '<li class="disabled"><span class="textoMedio">Última</span></li>';
-		              }
-		              //en otro caso obtenemos la url y mostramos en forma de link
-		              else
-		              {
-		                $url = $publicaciones->getUrl($lastPage);
-	              		if(isset($filterPrice))
-	              		{
-		                	echo '<li><a class="textoMedio" href="'.$url.'&cat='.$busq.$filterPrice.'">Última &gt;&gt;</a></li>';
-	              		}else
-	              		{
-		                	echo '<li><a class="textoMedio" href="'.$url.'&cat='.$busq.'">Última &gt;&gt;</a></li>';
-	              		}
-		              }
-		              ?>
+				////Si es la última página mostramos desactivado
+				if ($currentPage >= $lastPage)
+				{
+				echo '<li class="disabled"><span class="textoMedio">Última</span></li>';
+					//en otro caso obtenemos la url y mostramos en forma de link
+				}
+				else
+				{
+				$url = $publicaciones->getUrl($lastPage);
+				echo '<li><a class="textoMedio" href="'.$url.'&cat='.$busq.$paginatorFilter.'">Última &gt;&gt;</a></li>';
+				  }
+				?>
 		            @endif
 		          </ul>
 		        </nav> <!-- cd-pagination-wrapper -->

@@ -79,7 +79,7 @@
 					</div>
 				</div>
 				@endif
-				<div class="@if (Input::old('ubication') && Input::old('ubication') == 'Categoria') col-xs-6 @else col-xs-12 @endif inputLider">
+				<div class="col-xs-12 @if (Input::old('ubication') && Input::old('ubication') == 'Categoria') col-md-6 @else col-md-12 @endif inputLider">
 					<label for="department" class="textoPromedio">(*) Ubicación:</label>
 					<select name="ubication" class="form-control" id="ubication" required>
 						<option value="">Seleccione la ubicación a publicar</option>
@@ -97,7 +97,7 @@
 						 @endforeach
 					@endif
 				</div>
-				<div class="col-xs-6 contCatLider inputLider @if(Input::old('ubication') && Input::old('ubication') == 'Categoria') showit @endif">
+				<div class="col-xs-12 col-md-6 contCatLider inputLider @if(Input::old('ubication') && Input::old('ubication') == 'Categoria') showit @endif">
 					<label for="cat" class="textoPromedio">(*) Categoría</label>
 					<select name="cat" id="category" class="form-control">
 						<option value="">Seleccione la categoría</option>
@@ -144,7 +144,7 @@
 					@endif
 				</div>
 				<div class="col-xs-12 textoPromedio inputLider">
-					<label for="namePub">(*) Nombre / Título de la publicación:</label>
+					<label for="namePub" >(*) Nombre / Título de la publicación:</label>
 					{{ Form::text('namePub',
 					 Input::old('namePub'),
 					 array('class' => 'form-control','id' => 'name','placeholder' => 'Titulo','required' => 'required')) }}
@@ -157,7 +157,37 @@
 						 @endforeach
 					@endif
 				</div>
-				
+				<div class="col-xs-12 col-md-6 textoPromedio">
+					<label for="dep">(*) Departamento:</label>
+					<select name="dep" class="form-control">
+						<option value="">Seleccione un departamento.</option>
+						@foreach($dep as $d)
+							<option value="{{ $d->id }}">{{ ucfirst(strtolower($d->nombre)) }}</option>
+						@endforeach
+					</select>
+				</div>
+				<div class="col-xs-12 col-md-6">
+					<label class="textoPromedio">(*) Clase de negocio.</label>
+					<div class="col-xs-12" class="textoPromedio">
+						<span for="negocioType" class="textoPromedio">Negocio con domicilio fiscal</span>
+						{{ Form::radio('negocioType','fiscal',Input::old('negocioType'),array('required' => 'required')) }}
+						<span for="negocioType" class="textoPromedio">Tienda-negocio virtual</span>
+						{{ Form::radio('negocioType','virtual',Input::old('negocioType'),array('required' => 'required')) }}
+						<span for="negocioType" class="textoPromedio">Independiente </span>
+						{{ Form::radio('negocioType','independiente',Input::old('negocioType'),array('required' => 'required')) }}
+						<span for="negocioType" class="textoPromedio">Otro</span>
+						{{ Form::radio('negocioType','otro',Input::old('negocioType'),array('required' => 'required')) }}
+					</div>
+					@if ($errors->has('negocioType'))
+						 @foreach($errors->get('negocioType') as $err)
+						 	<div class="alert alert-danger">
+						 		<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+						 		<p class="textoPromedio">{{ $err }}</p>
+						 	</div>
+						 @endforeach
+					@endif
+				</div>
+				<div class="clearfix"></div>
 				<div class="col-xs-6 inputLider">
 
 					<label for="fechIni" class="textoPromedio">(*) Fecha de inicio</label>
@@ -376,23 +406,23 @@
 				@endif
 				<div class="col-xs-12 col-md-6">
 					<label for="casCat" class="textoPromedio">(*) Categoría</label>
-					<select name="casCat" id="category" class="form-control" required>
+					<select name="casCat" id="category" class="form-control check-cat-or-service" required>
 						<option value="">Seleccione la categoría</option>
 						<optgroup label="Categoría">
 						@foreach($categorias as $categoria)
 						@if($categoria->id != $otros->id)
-							<option value="{{ $categoria->id }}">{{ $categoria->nombre }}</option>
+							<option class="cat-option" value="{{ $categoria->id }}">{{ $categoria->nombre }}</option>
 						@endif
 						@endforeach
-							<option value="{{ $otros->id }}">{{ $otros->nombre }}</option>
+							<option class="cat-option" value="{{ $otros->id }}">{{ $otros->nombre }}</option>
 						</optgroup>
 						<optgroup label="Servicios">
 						@foreach($servicios as $servicio)
 						@if($servicio->id != $otros2->id)
-							<option value="{{ $servicio->id }}">{{ $servicio->nombre }}</option>
+							<option class="service-option" value="{{ $servicio->id }}">{{ $servicio->nombre }}</option>
 						@endif
 						@endforeach
-							<option value="{{ $otros2->id }}">{{ $otros2->nombre }}</option>
+							<option class="service-option" value="{{ $otros2->id }}">{{ $otros2->nombre }}</option>
 						</optgroup>
 					</select>
 				</div>
@@ -476,6 +506,44 @@
 					</article>
 					<input type="hidden" name="latitud" class="latitud">
 					<input type="hidden" name="longitud" class="longitud">
+				</div>
+				<div class="col-xs-12 col-md-6">
+					<label class="textoPromedio"><span class="required-on-cat">(*)</span> Condición</label>
+					<div class="col-xs-12" class="textoPromedio">
+						<span for="condition" class="textoPromedio">Nuevo</span>
+						{{ Form::radio('condition','nuevo',Input::old('condition')) }}
+						<span for="condition" class="textoPromedio">Usado</span>
+						{{ Form::radio('condition','usado',Input::old('condition')) }}
+					</div>
+					@if ($errors->has('condition'))
+						 @foreach($errors->get('condition') as $err)
+						 	<div class="alert alert-danger">
+						 		<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+						 		<p class="textoPromedio">{{ $err }}</p>
+						 	</div>
+						 @endforeach
+					@endif
+				</div>
+				<div class="col-xs-12 col-md-6">
+					<label class="textoPromedio">(*) Clase de negocio.</label>
+					<div class="col-xs-12" class="textoPromedio">
+						<span for="negocioType" class="textoPromedio">Negocio con domicilio fiscal</span>
+						{{ Form::radio('negocioType','fiscal',Input::old('negocioType'),array('required' => 'required')) }}
+						<span for="negocioType" class="textoPromedio">Tienda-negocio virtual</span>
+						{{ Form::radio('negocioType','virtual',Input::old('negocioType'),array('required' => 'required')) }}
+						<span for="negocioType" class="textoPromedio">Independiente </span>
+						{{ Form::radio('negocioType','independiente',Input::old('negocioType'),array('required' => 'required')) }}
+						<span for="negocioType" class="textoPromedio">Otro</span>
+						{{ Form::radio('negocioType','otro',Input::old('negocioType'),array('required' => 'required')) }}
+					</div>
+					@if ($errors->has('negocioType'))
+						 @foreach($errors->get('negocioType') as $err)
+						 	<div class="alert alert-danger">
+						 		<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+						 		<p class="textoPromedio">{{ $err }}</p>
+						 	</div>
+						 @endforeach
+					@endif
 				</div>
 				<div class="col-xs-12">
 					<p class="bg-info textoPromedio" style="text-align:center;padding:1em;">La descripción deberá tener máximo 400 caracteres.</p>

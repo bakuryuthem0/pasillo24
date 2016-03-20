@@ -582,15 +582,96 @@ jQuery(document).ready(function($) {
 	$('#ubication').change(function(){
 		var esto = $(this);
 		if (esto.val() == 'Categoria') {
-			esto.parent().removeClass('col-xs-12').addClass('col-xs-6');
+			esto.parent().removeClass('col-md-12').addClass('col-md-6');
 			$('.contCatLider').addClass('showit')
 		}else
 		{
-			esto.parent().removeClass('col-xs-6').addClass('col-xs-12');
+			esto.parent().removeClass('col-md-6').addClass('col-md-12');
 			$('.contCatLider').removeClass('showit');
 		}
 	})
 });
+function cambiarFecha()
+{
+	console.log('hola')
+	var period = $('#period').val();
+	if (period == 'd') {
+		time = 86400;
+	}else if(period == 's')
+	{
+		time = 604800;
+	}else if(period == 'm')
+	{
+		time = 2629744;
+	}
+	var fecha = $('#fechIni').val(),duration=$('#duration').val();
+	var total = duration*time;
+	$('.error').remove();
+	$('input').css('box-shadow','none');
+	$('.finalFecha').remove();
+	$.ajax({
+			url: 'http://localhost/pasillo24/usuario/publicacion/lider/fecha',
+			type: 'get',
+			data: {'fecha':fecha,'timestamp':total,'period':period,'duration':duration},
+			beforeSend:function()
+			{
+				$('.loading').css({
+					'display': 'inline-block'
+				}).animate({'opacity':1},500);
+			},
+			success: function (data) {
+				$('.errorBlur').remove();
+				$('.loading').css({
+					'display': 'none'
+				});
+				if (data.code == 0) {
+					$('#fechIni').after('<p class="errorBlur textoPromedio" data-proceed="0">Formato incorrecto, la fecha debe de estar en formato DD-MM-AAAA</p>')
+				}else if(data.code == 1){
+					$('#fechIni').after('<p class="errorBlur textoPromedio" data-proceed="0">Debe elegir una fecha posterior a hoy</p>')
+				}else if(data.code == 2)
+				{
+					$('#fechIni').after('<p class="errorBlur textoPromedio" data-proceed="0">Debe introducir una fecha valida</p>')
+				}else
+				{
+
+					$('.finalFecha').remove();
+					$('.fechaFin').append('<p class="finalFecha textoPromedio">'+data.fecha+'</p>');
+
+					$('.contPrecioShow').append('<p class="finalFecha bg-info textoPromedio" style="padding:0.5em;border-radius:4px;margin-top:1em;">El total a pagar sera de '+data.costo+' Bs.</p>')
+				}
+			},
+			error:function()
+			{
+				console.log('error');
+			}
+		});
+}
+$('.ui-state-default').click(function(){
+	$('.fechError').remove();
+	if ($('#period').val()!= "" && $('#duration').val() != "") {
+		if ($('#fechIni').val()!= "") {
+			$('.errorBlur').remove();
+			cambiarFecha();
+		}else
+		{
+			$('.errorBlur').remove();
+			$('#fechIni').css({'border':'1px red solid'});
+			$('#fechIni').after('<div class="alert alert- errorBlur"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>Debe introducir una fecha</div>');
+		}
+	}
+	
+});
+$('#duration').blur(function(){
+	if ($('#fechIni').val()!="" && $('#period').val()!="") {
+		cambiarFecha();
+	};
+});
+$('#period').change(function()
+{
+	if ($('#fechIni').val()!="" && $('#duration').val() != "") {
+		cambiarFecha();
+	};
+})
 $('.continue').click(function(event) {
 	$('.info').animate({'opacity': 0},500, function(){
 			$(this).remove();	
@@ -602,86 +683,8 @@ $('.continue').click(function(event) {
 			);
 	});
 	
-	function cambiarFecha()
-	{
-		var period = $('#period').val();
-		if (period == 'd') {
-			time = 86400;
-		}else if(period == 's')
-		{
-			time = 604800;
-		}else if(period == 'm')
-		{
-			time = 2629744;
-		}
-		var fecha = $('#fechIni').val(),duration=$('#duration').val();
-		var total = duration*time;
-		$('.error').remove();
-		$('input').css('box-shadow','none');
-		$('.finalFecha').remove();
-		$.ajax({
-				url: 'http://localhost/pasillo24/usuario/publicacion/lider/fecha',
-				type: 'get',
-				data: {'fecha':fecha,'timestamp':total,'period':period,'duration':duration},
-				beforeSend:function()
-				{
-					$('.loading').css({
-						'display': 'inline-block'
-					}).animate({'opacity':1},500);
-				},
-				success: function (data) {
-					$('.errorBlur').remove();
-					$('.loading').css({
-						'display': 'none'
-					});
-					if (data.code == 0) {
-						$('#fechIni').after('<p class="errorBlur textoPromedio" data-proceed="0">Formato incorrecto, la fecha debe de estar en formato DD-MM-AAAA</p>')
-					}else if(data.code == 1){
-						$('#fechIni').after('<p class="errorBlur textoPromedio" data-proceed="0">Debe elegir una fecha posterior a hoy</p>')
-					}else if(data.code == 2)
-					{
-						$('#fechIni').after('<p class="errorBlur textoPromedio" data-proceed="0">Debe introducir una fecha valida</p>')
-					}else
-					{
 
-						$('.finalFecha').remove();
-						$('.fechaFin').append('<p class="finalFecha textoPromedio">'+data.fecha+'</p>');
-
-						$('.contPrecioShow').append('<p class="finalFecha bg-info textoPromedio" style="padding:0.5em;border-radius:4px;margin-top:1em;">El total a pagar sera de '+data.costo+' Bs.</p>')
-					}
-				},
-				error:function()
-				{
-					console.log('error');
-				}
-			});
-	}
-	$('.ui-state-default').click(function(){
-		$('.fechError').remove();
-		if ($('#period').val()!= "" && $('#duration').val() != "") {
-			if ($('#fechIni').val()!= "") {
-				$('.errorBlur').remove();
-				cambiarFecha();
-			}else
-			{
-				$('.errorBlur').remove();
-				$('#fechIni').css({'border':'1px red solid'});
-				$('#fechIni').after('<div class="alert alert- errorBlur"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>Debe introducir una fecha</div>');
-			}
-		}
-		
-	});
-	$('#duration').blur(function(){
-		if ($('#fechIni').val()!="" && $('#period').val()!="") {
-			cambiarFecha();
-		};
-	});
-	$('#period').change(function()
-	{
-		if ($('#fechIni').val()!="" && $('#duration').val() != "") {
-			cambiarFecha();
-		};
-	})
+	
 	$('.enviarPub').click(function(event) {
 		$('.erroneo').remove();
 		function alerta(esto,msg)
@@ -1772,9 +1775,17 @@ jQuery(document).ready(function($) {
 	$('.btn-filtralo').on('click', function(event) {
 		$(this).attr('disabled',true);
 		var proceed = 0;
-		if ($('.depFilterNotWorking').val() != "" && $('.depFilterNotWorking').val() != -1) {
+		if ($('.filterDep').val() != "" && $('.filterDep').val() != -1) {
 			proceed = 1;
-			$('.form-filter').append('<input type="hidden" name="filter" value="'+$('.depFilterNotWorking').val()+'">')
+			$('.form-filter').append('<input type="hidden" name="filter" value="'+$('.filterDep').val()+'">')
+		};
+		if ($('.filterRel').val() != "" && $('.filterRel').val() != -1) {
+			proceed = 1;
+			$('.form-filter').append('<input type="hidden" name="rel" value="'+$('.filterRel').val()+'">')
+		};
+		if ($('.filterBuss').val() != "" && $('.filterBuss').val() != -1) {
+			proceed = 1;
+			$('.form-filter').append('<input type="hidden" name="buss" value="'+$('.filterBuss').val()+'">')
 		};
 		if ($('.min').val() != "") {
 			proceed = 1;
@@ -1787,6 +1798,10 @@ jQuery(document).ready(function($) {
 		if ($('.min').val() != "" || $('.max').val() != "") {
 			proceed = 1;
 			$('.form-filter').append('<input type="hidden" name="currency" value="'+$('.currency').val()+'">')
+		};
+		if ($('.filterCond').val() != "" && $('.filterCond').val() != -1) {
+			proceed = 1;
+			$('.form-filter').append('<input type="hidden" name="cond" value="'+$('.filterCond').val()+'">')
 		};
 		if ($('.to-filter').hasClass('busq')) {
 			$('.form-filter').append('<input type="hidden" name="busq" value="'+$('.to-filter').val()+'">')
@@ -1887,5 +1902,13 @@ jQuery(document).ready(function($) {
 				setTimeout(removeResponseAjax,5000)
 			}
 		});
+	});
+	$('.check-cat-or-service').on('change', function(event) {
+		if ($('.check-cat-or-service option:selected').hasClass('service-option')) {
+			$('.required-on-cat').addClass('hidden');
+		}else
+		{
+			$('.required-on-cat').removeClass('hidden');
+		}
 	});
 });

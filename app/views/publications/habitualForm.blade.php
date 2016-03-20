@@ -27,7 +27,7 @@
 					</div>
 				</div>
 				@endif
-				<div class="col-xs-12">
+				<div class="col-xs-12 col-md-6">
 					<label for="subCat" class="textoPromedio">(*) Sub-categoría</label>
 					<?php $arr = array(
 							'' => 'Seleccione la sub-categoría');
@@ -52,7 +52,27 @@
 						 @endforeach
 					@endif
 				</div>
-				
+				<div class="col-xs-12 col-md-6">
+					<label class="textoPromedio">(*) Clase de negocio.</label>
+					<div class="col-xs-12" class="textoPromedio">
+						<span for="negocioType" class="textoPromedio">Negocio con domicilio fiscal</span>
+						{{ Form::radio('negocioType','fiscal',Input::old('negocioType'),array('required' => 'required')) }}
+						<span for="negocioType" class="textoPromedio">Tienda-negocio virtual</span>
+						{{ Form::radio('negocioType','virtual',Input::old('negocioType'),array('required' => 'required')) }}
+						<span for="negocioType" class="textoPromedio">Independiente </span>
+						{{ Form::radio('negocioType','independiente',Input::old('negocioType'),array('required' => 'required')) }}
+						<span for="negocioType" class="textoPromedio">Otro</span>
+						{{ Form::radio('negocioType','otro',Input::old('negocioType'),array('required' => 'required')) }}
+					</div>
+					@if ($errors->has('negocioType'))
+						 @foreach($errors->get('negocioType') as $err)
+						 	<div class="alert alert-danger">
+						 		<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+						 		<p class="textoPromedio">{{ $err }}</p>
+						 	</div>
+						 @endforeach
+					@endif
+				</div>
 				<div class="col-xs-12">
 					<label for="title" class="textoPromedio">(*) Título</label>
 					{{ Form::text('title',Input::old('title'),array('placeholder' => 'Titulo','class' => 'form-control','required' => 'required')) }}
@@ -260,7 +280,7 @@
 						@endif
 					</div>
 				@endif
-				<div class="col-xs-12">
+				<div class="col-xs-12 col-md-6">
 					<label class="textoPromedio">(*) Operación</label>
 					<div class="col-xs-12" class="textoPromedio">
 						<span for="tipoTransac" class="textoPromedio">Venta</span>
@@ -287,6 +307,25 @@
 						 @endforeach
 					@endif
 				</div>
+				@if($cat->tipo == 1)
+				<div class="col-xs-12 col-md-6">
+					<label class="textoPromedio"><span class="required-on-cat">(*)</span> Condición</label>
+					<div class="col-xs-12" class="textoPromedio">
+						<span for="condition" class="textoPromedio">Nuevo</span>
+						{{ Form::radio('condition','nuevo',Input::old('condition')) }}
+						<span for="condition" class="textoPromedio">Usado</span>
+						{{ Form::radio('condition','usado',Input::old('condition')) }}
+					</div>
+					@if ($errors->has('condition'))
+						 @foreach($errors->get('condition') as $err)
+						 	<div class="alert alert-danger">
+						 		<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+						 		<p class="textoPromedio">{{ $err }}</p>
+						 	</div>
+						 @endforeach
+					@endif
+				</div>
+				@endif
 				<div class="col-xs-12">
 					<label for="input" class="textoPromedio">(*) Descripción</label>
 					<!--<textarea id="input" name="input" class="form-control descHabitual"></textarea>-->
