@@ -1043,6 +1043,7 @@ class AjaxController extends BaseController{
 	public function getPublicationCategory($id)
 	{
 		$lider = Publicaciones::leftJoin('usuario','usuario.id','=','publicaciones.user_id')
+		->leftJoin('departamento','departamento.id','=','publicaciones.departamento')
 		->where('publicaciones.status','=','Aprobado')
 		->where('deleted','=',0)
 		->where(function($query){
@@ -1057,9 +1058,9 @@ class AjaxController extends BaseController{
 		->where('publicaciones.categoria','=',$id)
 		->get($this->toReturn);
 		$publicaciones = Publicaciones::leftJoin('usuario','usuario.id','=','publicaciones.user_id')
+		->leftJoin('departamento','publicaciones.departamento','=','departamento.id')
 		->where('publicaciones.status','=','Aprobado')
 		->where('publicaciones.categoria','=',$id)
-		->leftJoin('departamento','publicaciones.departamento','=','departamento.id')
 		->where('publicaciones.tipo','!=','Lider')
 		->where('publicaciones.deleted','=',0)
 		->where(function($query){
