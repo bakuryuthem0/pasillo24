@@ -1159,6 +1159,7 @@ class AjaxController extends BaseController{
 			'time'      => 'required|in:d,s,m,a',
 			'fechIni'   => 'required|after:'.date('d-m-Y'),
 			'id'   		=> 'required',
+			'negocioType' => 'required',
 			'img_1'		=> 'required|image',
 		);
 		$msg = array(
@@ -1176,6 +1177,7 @@ class AjaxController extends BaseController{
 			'time'		=> 'El campo tiempo',
 			'fechIni'   => 'El campo fecha de inicio',
 			'id'		=> 'Id del usuario',
+			'negocioType'=> 'El campo tipo de negocio',
 			'img_1'		=> 'Imagen principal'
 
 		);
@@ -1234,6 +1236,7 @@ class AjaxController extends BaseController{
 			$publication->user_id   = $id;
 			$publication->tipo 		= 'Lider';
 			$publication->ubicacion = $input['ubication'];
+			
 			if ($publication->ubicacion == 'Categoria') {
 				$publication->categoria = $input['cat'];
 			}
@@ -1247,6 +1250,7 @@ class AjaxController extends BaseController{
 			$publication->fechIni   = date('Y-m-d',strtotime($input['fechIni']));
 			$publication->fechFin   = $fechFin;
 			$publication->status    = 'Pendiente';
+			$publication->bussiness_type = $input['negocioType'];
 			if(isset($input['nomb']) && !empty($input['nomb'])){
 				$publication->name = $input['nomb'];
 			}
@@ -1312,6 +1316,8 @@ class AjaxController extends BaseController{
 			'moneda'		=> 'required',
 			//'img1'			=> 'required|image',
 			'tipoTransac'	=> 'required',
+			'negocioType'   => 'required',
+
 			'img_1'			=> 'required',
 
 		);
@@ -1336,6 +1342,16 @@ class AjaxController extends BaseController{
 			'img_1'			=> 'Imagen principal',
 
 		);
+		$aux = Input::get('cat_id');
+		$aux = Categorias::find($aux);
+		if ($aux->tipo == 1) {
+			$rules = $rules+array(
+				'condition' 	=> 'required',
+			);
+			$customAttributes = $customAttributes+array(
+				'condition'		=> 'El campo condición',
+			);
+		}
 		if ($input['cat_id'] == 34) {
 			$rules = $rules+array(
 				'marca' 	=> 'required',
@@ -1381,7 +1397,10 @@ class AjaxController extends BaseController{
 		{
 			$pub->typeCat = 0;
 		}
-
+		$pub->bussiness_type = $input['negocioType'];
+		if (Input::has('condition')) {
+			$pub->condicion	    = $input['condition'];
+		}
 		$pub->departamento  = $input['departamento'];
 		$pub->ciudad 		= $input['ciudad'];
 		$pub->descripcion	= $input['input'];
@@ -1741,6 +1760,7 @@ class AjaxController extends BaseController{
 			'departamento' 	=> 'required',
 			'categoria'		=> 'required',
 			'titulo'		=> 'required',
+			'negocioType' => 'required',
 			'img_1'			=> 'required|image',
 		);
 		$messages = array(
@@ -1755,6 +1775,7 @@ class AjaxController extends BaseController{
 			'departamento' 	=> 'El campo departamento',
 			'categoria'		=> 'El campo categoria',
 			'titulo'		=> 'El campo titulo',
+			'negocioType' => 'El campo clase de negocio',
 			'img_1'			=> 'Imagen principal'
 		);
 		
@@ -1780,6 +1801,7 @@ class AjaxController extends BaseController{
 			$pub->fechIni 	  = date('Y-m-d',time());
 			$pub->fechFin	  = date('Y-m-d',time()+604800);
 			$pub->fechRepub	  = date('Y-m-d',time()+2543400);
+			$pub->bussiness_type = $input['negocioType'];
 			$pub->status 	  = 'Procesando';
 			$user = User::find($id);
 			if (Input::hasFile('img_1')) {
