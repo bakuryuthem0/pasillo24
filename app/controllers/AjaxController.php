@@ -65,6 +65,14 @@ class AjaxController extends BaseController{
 			if (Hash::check($password, $user->password)) 
 			{
 				/*Se toma el id del movil y se busca en la base de datos*/
+				$regId = Input::get('regId');
+				$aux = GcmDevices::find($regId);
+				if (is_null($aux) || empty($aux)) {
+					$new   = new GcmDevices;
+					$new->gcm_regid = $regId;
+					$new->user_id   = $user->id;
+					$new->save();
+				}
 				/*Si no se encuentra (primera vez que inicia en este movil) se crea un nuevo registro*/
 				/*Se devuelven los datos en forma de json*/
 				$username = $user->username;
@@ -2392,6 +2400,24 @@ class AjaxController extends BaseController{
 		$comentarios->updated_at = date('Y-m-d',time());
 		$comentarios->created_at = date('Y-m-d',time());
 		$comentarios->save();
+		$msg = "Han comentado tu publicacion: ".$publication->titulo;
+		$user = User::find($publication->user_id);
+		$data = array(
+			'message' 		=> $msg,
+			'title'   		=> $msg,
+			'msgcnt'  		=> null,
+			'timeToLive' 	=> 3000,
+		);
+		$gcm = GcmDevices::where('user_id','=',$user->id)->orderBy('id','DESC')->get(array('gcm_regid'));
+		$regId = array();
+		$i = 0;
+		foreach($gcm as $g)
+		{
+			$regId[$i] = $g['gcm_regid'];
+			$i++;
+		}
+		$doGcm = new Gcm;
+		$response = $doGcm->send_notification($regId,$data);
 		return Response::json(array(
 			'type' => 'success', 
 			'msg' => 'Comentario Guardado Sactisfactoriamente',

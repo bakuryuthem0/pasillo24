@@ -404,7 +404,7 @@ class PublicationController extends BaseController {
 				'msgcnt'  		=> null,
 				'timeToLive' 	=> 3000,
 			);
-			$gcm = GcmDevices::where('usuario','=',$user->username)->orderBy('id','DESC')->get(array('gcm_regid'));
+			$gcm = GcmDevices::where('user_id','=',$user->id)->orderBy('id','DESC')->get(array('gcm_regid'));
 			$regId = array();
 			$i = 0;
 			foreach($gcm as $g)
@@ -658,7 +658,7 @@ class PublicationController extends BaseController {
 				'msgcnt'  		=> null,
 				'timeToLive' 	=> 3000,
 			);
-			$gcm = GcmDevices::where('usuario','=',$user->username)->orderBy('id','DESC')->get(array('gcm_regid'));
+			/*$gcm = GcmDevices::where('usuario','=',$user->username)->orderBy('id','DESC')->get(array('gcm_regid'));
 			$regId = array();
 			$i = 0;
 			foreach($gcm as $g)
@@ -667,7 +667,7 @@ class PublicationController extends BaseController {
 				$i++;
 			}
 			$doGcm = new Gcm;
-			$response = $doGcm->send_notification($regId,$data);
+			$response = $doGcm->send_notification($regId,$data);*/
 			return Response::json(array('type' => 'success','msg' => 'Respuesta guardada satisfactoriamente'));
 		}else
 		{
@@ -1356,7 +1356,7 @@ class PublicationController extends BaseController {
 				'msgcnt'  		=> null,
 				'timeToLive' 	=> 3000,
 			);
-			$gcm = GcmDevices::where('usuario','=',$user->username)->orderBy('id','DESC')->get(array('gcm_regid'));
+			/*$gcm = GcmDevices::where('usuario','=',$user->username)->orderBy('id','DESC')->get(array('gcm_regid'));
 			$regId = array();
 			$i = 0;
 			foreach($gcm as $g)
@@ -1365,7 +1365,7 @@ class PublicationController extends BaseController {
 				$i++;
 			}
 			$doGcm = new Gcm;
-			$response = $doGcm->send_notification($regId,$data);
+			$response = $doGcm->send_notification($regId,$data);*/
 			return Redirect::to('usuario/mis-compras');
 		}
 	}
