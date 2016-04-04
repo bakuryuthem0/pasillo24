@@ -1283,7 +1283,17 @@ class AjaxController extends BaseController{
 			}
 			
 			if ($publication->save()) {
-				
+				if (Input::has('longitud') && Input::has('latitud')) {
+					$lon = Input::get('longitud');
+					$lat = Input::get('latitud');
+					if (!empty($lon) && !empty($lat)) {
+						$loc = new Location;
+						$loc->latitude  = Input::get('latitud');
+						$loc->longitude = Input::get('longitud');
+						$loc->pub_id    = $pub->id;
+						$loc->save();
+					}
+				}
 				return Response::json(array(
 					'type' 		=> 'success',
 					'msg'  		=> 'Publcación creada satisfactoriamente.',
@@ -1311,6 +1321,7 @@ class AjaxController extends BaseController{
 				'msg'  => 'Error, no se consigue el id de la categoria',
 			));
 		}
+		$user = User::find($id);
 		$input = Input::all();
 		$rules = array(
 
@@ -1325,9 +1336,6 @@ class AjaxController extends BaseController{
 			//'img1'			=> 'required|image',
 			'tipoTransac'	=> 'required',
 			'negocioType'   => 'required',
-
-			'img_1'			=> 'required',
-
 		);
 		$messages = array(
 			'required' 	=> ':attribute es obligatorio',
@@ -1490,6 +1498,17 @@ class AjaxController extends BaseController{
 		}
 		if($pub->save())
 		{
+			if (Input::has('longitud') && Input::has('latitud')) {
+				$lon = Input::get('longitud');
+				$lat = Input::get('latitud');
+				if (!empty($lon) && !empty($lat)) {
+					$loc = new Location;
+					$loc->latitude  = Input::get('latitud');
+					$loc->longitude = Input::get('longitud');
+					$loc->pub_id    = $pub->id;
+					$loc->save();
+				}
+			}
 			return Response::json(array(
 				'type' 		=> 'success',
 				'msg'  		=> 'Publcación creada satisfactoriamente.',
@@ -1821,6 +1840,17 @@ class AjaxController extends BaseController{
 				$pub->img_2 = $this->upload_image($user->username,$file2);
 			}
 			$pub->save();
+			if (Input::has('longitud') && Input::has('latitud')) {
+				$lon = Input::get('longitud');
+				$lat = Input::get('latitud');
+				if (!empty($lon) && !empty($lat)) {
+					$loc = new Location;
+					$loc->latitude  = Input::get('latitud');
+					$loc->longitude = Input::get('longitud');
+					$loc->pub_id    = $pub->id;
+					$loc->save();
+				}
+			}
 			return Response::json(array(
 				'type' => 'success',
 				'msg'  => 'publicación creada satisfactoriamente.',
