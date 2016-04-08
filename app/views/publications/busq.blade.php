@@ -8,23 +8,16 @@
 			<legend style="margin-bottom:2em;margin-top:2em;text-align:center;">Publicaciones LÍDER encontradas para: "{{ $busq }}"</legend>
 			<div class="owl-carousel1">
 				@foreach($lider as $pubLider)
-				<div class="item contCatCat">
-					<a href="{{ URL::to('publicacion/lider/'.base64_encode($pubLider->id)) }}">
-						<img src="{{ asset('images/pubImages/'.$pubLider->img_1) }}" class="imgPubCarousel">
-						<div class="dataIndex textoPromedio">
-							<div class="col-xs-6">{{ $pubLider->titulo }}</div>
-							@if($pubLider->precio)
-							<div class="col-xs-6" >
-							 <label>Precio: </label>{{ $pubLider->precio.' '.ucfirst(strtolower($pubLider->moneda)).'.' }}
-							</div>
-							@endif
-							<div class="col-xs-12">
-								<a href="{{ URL::to('publicacion/lider/'.base64_encode($pubLider->id)) }}" style="color:white;">
-									<i class="fa fa-hand-o-right"></i> Ver publicación
-								</a>
-							</div>
-						</div>
-					</a>
+				<div class="item contCatIndex">
+					<div class="col-xs-12 pubTitle"><h4>{{ ucfirst($pubLider->titulo) }}</h4></div>
+					<div class="col-xs-12">
+						<a href="{{ URL::to('publicacion/lider/'.base64_encode($pubLider->id)) }}">
+							<img src="{{ asset('images/pubImages/'.$pubLider->img_1) }}" class="imgPubCarousel">
+						</a>
+					</div>
+					<div class="col-xs-12">
+						<a href="{{ URL::to('publicacion/lider/'.base64_encode($pubLider->id)) }}" class="btn btn-warning" style="width:100%;"><i class="fa fa-hand-o-right"></i> Ver publicación</a>
+					</div>
 				</div>
 				@endforeach
 				@if(count($lider)<1)

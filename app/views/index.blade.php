@@ -155,49 +155,50 @@ display: block;">
 						<div class="owl-carousel1">
 							@foreach($lider as $pubLider)
 							<div class="item contCatIndex">
-								<a href="{{ URL::to('publicacion/lider/'.base64_encode($pubLider->id)) }}">
-									<img src="{{ asset('images/pubImages/'.$pubLider->img_1) }}" class="imgPubCarousel">
-								</a>
-								<div class="dataIndex textoPromedio">
-									<div class="col-xs-6" style="padding-top:0px;margin-top:0px;">{{ $pubLider->titulo }}</div>
-									<div class="col-xs-12"><a href="{{ URL::to('publicacion/lider/'.base64_encode($pubLider->id)) }}" style="color:white;"><i class="fa fa-hand-o-right"></i> Ver publicación</a>
-									</div>
+								<div class="col-xs-12 pubTitle"><h4>{{ ucfirst($pubLider->titulo) }}</h4></div>
+								<div class="col-xs-12">
+									<a href="{{ URL::to('publicacion/lider/'.base64_encode($pubLider->id)) }}">
+										<img src="{{ asset('images/pubImages/'.$pubLider->img_1) }}" class="imgPubCarousel">
+									</a>
+								</div>
+								<div class="col-xs-12">
+									<a href="{{ URL::to('publicacion/lider/'.base64_encode($pubLider->id)) }}" class="btn btn-warning" style="width:100%;"><i class="fa fa-hand-o-right"></i> Ver publicación</a>
 								</div>
 							</div>
 							@endforeach
 							@if(count($lider)<1)
-							<div class="item">
+							<div class="item" style="margin-top:55px;">
 									<img src="{{ asset('images/anuncios-01.png') }}">
 							</div>
-							<div class="item">
+							<div class="item" style="margin-top:55px;">
 									<img src="{{ asset('images/anuncios-02.png') }}">
 							</div>
-							<div class="item">
+							<div class="item" style="margin-top:55px;">
 									<img src="{{ asset('images/anuncios-03.png') }}">
 							</div>
-							<div class="item">
+							<div class="item" style="margin-top:55px;">
 									<img src="{{ asset('images/anuncios-04.png') }}">
 							</div>
 							@elseif(count($lider)>=1 && count($lider)<2)
-							<div class="item">
+							<div class="item" style="margin-top:55px;">
 									<img src="{{ asset('images/anuncios-02.png') }}">
 							</div>
-							<div class="item">
+							<div class="item" style="margin-top:55px;">
 									<img src="{{ asset('images/anuncios-03.png') }}">
 							</div>
-							<div class="item">
+							<div class="item" style="margin-top:55px;">
 									<img src="{{ asset('images/anuncios-04.png') }}">
 							</div>
 							@elseif(count($lider)>=2 && count($lider)<3)
-							<div class="item">
+							<div class="item" style="margin-top:55px;">
 									<img src="{{ asset('images/anuncios-03.png') }}">
 							</div>
-							<div class="item">
+							<div class="item" style="margin-top:55px;">
 									<img src="{{ asset('images/anuncios-04.png') }}">
 							</div>
 							@else
 							
-							<div class="item">
+							<div class="item" style="margin-top:55px;">
 									<img src="{{ asset('images/anuncios-04.png') }}">
 							</div>
 							@endif
@@ -211,21 +212,27 @@ display: block;">
 								@if($x%2 == 0)
 								<div class="item">
 								@endif
-							 		<div class="contCatIndex">
-										<a href="{{ URL::to('publicacion/habitual/'.base64_encode($pubHabitual->id)) }}">
-											<img src="{{ asset('images/pubImages/'.$pubHabitual->img_1) }}" class="imgPubCarousel">
-										</a>
-										<div class="dataIndex textoPromedio">
-											<div class="col-xs-6" style="padding-top:0px;margin-top:0px;">{{ $pubHabitual->titulo }}</div>
-											<div class="col-xs-6" style="padding-top:0px;margin-top:0px;">
-											@if($pubHabitual->precio)
-											 <label>Precio: </label>{{ $pubHabitual->precio.' '.ucfirst(strtolower($pubHabitual->moneda)).'.' }}
-											@endif
-											</div>
-											<div class="col-xs-12"><a href="{{ URL::to('publicacion/lider/'.base64_encode($pubHabitual->id)) }}" style="color:white;"><i class="fa fa-hand-o-right"></i> Ver publicación</a>
-											</div>
+							 		<div class="item contCatIndex">
+										<div class="col-xs-12 pubTitle"><h4>{{ ucfirst($pubHabitual->titulo) }}</h4></div>
+										<div class="col-xs-12">
+											<a href="{{ URL::to('publicacion/lider/'.base64_encode($pubHabitual->id)) }}">
+												<img src="{{ asset('images/pubImages/'.$pubHabitual->img_1) }}" class="imgPubCarousel">
+											</a>
 										</div>
-							 		</div>
+										<div class="col-xs-12 conDescIndex">
+											@if(strlen($pubHabitual->descripcion) <= 20)
+											<p class="textoPromedio">{{ strip_tags($pubHabitual->descripcion) }}</p>
+											@else
+											<p class="textoPromedio">{{ substr(strip_tags($pubHabitual->descripcion),0,100) }}...</p>
+											@endif
+										</div>
+										<div class="col-xs-12 textoPromedio">
+											<i class="fa fa-money"></i> Precio: {{ $pubHabitual->precio.' '.$pubHabitual->moneda }}
+										</div>
+										<div class="col-xs-12">
+											<a href="{{ URL::to('publicacion/lider/'.base64_encode($pubHabitual->id)) }}" class="btn btn-warning" style="width:100%;"><i class="fa fa-hand-o-right"></i> Ver publicación</a>
+										</div>
+									</div>
 								@if(($x+1)%2 == 0)
 								</div>
 								@endif
@@ -233,20 +240,20 @@ display: block;">
 							
 							@endforeach
 							@if(count($habitual)<8)
-							<div class="item">
+							<div class="item" style="margin-top:55px;">
 									<div class="contCatIndex"><img src="{{ asset('images/anuncios-01.png') }}"></div>
 									<div class="contCatIndex"><img src="{{ asset('images/anuncios-02.png') }}"></div>
 							</div>
-							<div class="item">
+							<div class="item" style="margin-top:55px;">
 									<div class="contCatIndex"><img src="{{ asset('images/anuncios-03.png') }}"></div>
 
 									<div class="contCatIndex"><img src="{{ asset('images/anuncios-04.png') }}"></div>
 							</div>
-							<div class="item">
+							<div class="item" style="margin-top:55px;">
 									<div class="contCatIndex"><img src="{{ asset('images/anuncios-01.png') }}"></div>
 									<div class="contCatIndex"><img src="{{ asset('images/anuncios-02.png') }}"></div>
 							</div>
-							<div class="item">
+							<div class="item" style="margin-top:55px;">
 									<div class="contCatIndex"><img src="{{ asset('images/anuncios-03.png') }}"></div>
 
 									<div class="contCatIndex"><img src="{{ asset('images/anuncios-04.png') }}"></div>
@@ -263,50 +270,60 @@ display: block;">
 						<div class="owl-carousel3">
 							@foreach($casual as $pubCasual)
 							<div class="item contCatIndex">
-								<a href="{{ URL::to('publicacion/casual/'.base64_encode($pubCasual->id)) }}">
-									<img src="{{ asset('images/pubImages/'.$pubCasual->img_1) }}" class="imgPubCarousel">
-								</a>
-								<div class="dataIndex textoPromedio">
-									<div class="col-xs-6" style="padding-top:0px;margin-top:0px;">{{ $pubCasual->titulo }}</div>
-									<div class="col-xs-6" style="padding-top:0px;margin-top:0px;"><label>Precio: </label>{{ $pubCasual->precio.' '.ucfirst(strtolower($pubCasual->moneda)).'.' }}</div>
-									<div class="col-xs-12"><a href="{{ URL::to('publicacion/lider/'.base64_encode($pubCasual->id)) }}" style="color:white;"><i class="fa fa-hand-o-right"></i> Ver publicación</a>
-									</div>
+								<div class="col-xs-12 pubTitle"><h4>{{ ucfirst($pubCasual->titulo) }}</h4></div>
+								<div class="col-xs-12">
+									<a href="{{ URL::to('publicacion/lider/'.base64_encode($pubCasual->id)) }}">
+										<img src="{{ asset('images/pubImages/'.$pubCasual->img_1) }}" class="imgPubCarousel">
+									</a>
+								</div>
+								<div class="col-xs-12 conDescIndex">
+									@if(strlen($pubCasual->descripcion) <= 20)
+									<p class="textoPromedio">{{ strip_tags($pubCasual->descripcion) }}</p>
+									@else
+									<p class="textoPromedio">{{ substr(strip_tags($pubCasual->descripcion),0,100) }}...</p>
+									@endif
+								</div>
+								<div class="col-xs-12 textoPromedio">
+									<i class="fa fa-money"></i> Precio: {{ $pubCasual->precio.' '.$pubCasual->moneda }}
+								</div>
+								<div class="col-xs-12">
+									<a href="{{ URL::to('publicacion/lider/'.base64_encode($pubCasual->id)) }}" class="btn btn-warning" style="width:100%;"><i class="fa fa-hand-o-right"></i> Ver publicación</a>
 								</div>
 							</div>
 							@endforeach
 							@if(count($casual)<1)
-							<div class="item">
+							<div class="item" style="margin-top:55px;">
 									<img src="{{ asset('images/anuncios-01.png') }}">
 							</div>
-							<div class="item">
+							<div class="item" style="margin-top:55px;">
 									<img src="{{ asset('images/anuncios-02.png') }}">
 							</div>
-							<div class="item">
+							<div class="item" style="margin-top:55px;">
 									<img src="{{ asset('images/anuncios-03.png') }}">
 							</div>
-							<div class="item">
+							<div class="item" style="margin-top:55px;">
 									<img src="{{ asset('images/anuncios-04.png') }}">
 							</div>
 							@elseif(count($casual)>=1 && count($casual)<2)
-							<div class="item">
+							<div class="item" style="margin-top:55px;">
 									<img src="{{ asset('images/anuncios-02.png') }}">
 							</div>
-							<div class="item">
+							<div class="item" style="margin-top:55px;">
 									<img src="{{ asset('images/anuncios-03.png') }}">
 							</div>
-							<div class="item">
+							<div class="item" style="margin-top:55px;">
 									<img src="{{ asset('images/anuncios-04.png') }}">
 							</div>
 							@elseif(count($casual)>=2 && count($casual)<3)
-							<div class="item">
+							<div class="item" style="margin-top:55px;">
 									<img src="{{ asset('images/anuncios-03.png') }}">
 							</div>
-							<div class="item">
+							<div class="item" style="margin-top:55px;">
 									<img src="{{ asset('images/anuncios-04.png') }}">
 							</div>
 							@else
 							
-							<div class="item">
+							<div class="item" style="margin-top:55px;">
 									<img src="{{ asset('images/anuncios-04.png') }}">
 							</div>
 							@endif

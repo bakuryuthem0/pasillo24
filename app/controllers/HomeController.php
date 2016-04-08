@@ -26,6 +26,8 @@ class HomeController extends BaseController {
 				'publicaciones.precio',
 				'publicaciones.moneda',
 				'publicaciones.id',
+				'publicaciones.descripcion',
+
 				)
 			);
 			$habitual = Publicaciones::where(function($query) use($id){

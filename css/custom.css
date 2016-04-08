@@ -168,56 +168,17 @@ margin-left:1em;
 }
 .data
 {
-	-webkit-transform: translateY(-25px);
-	   -moz-transform: translateY(-25px);
-	    -ms-transform: translateY(-25px);
-	     -o-transform: translateY(-25px);
-	        transform: translateY(-25px);
-	-webkit-transition: all .5s ease-in-out;
-	   -moz-transition: all .5s ease-in-out;
-	    -ms-transition: all .5s ease-in-out;
-	     -o-transition: all .5s ease-in-out;
-	        transition: all .5s ease-in-out;
-	background-color: rgba(0,0,0,0.8);
 	width: 100%;
-	height: 200px;
 	display: block;
-	color: white;
-}
-.data:hover
-{
-	-webkit-transform: translateY(-200px);
-	   -moz-transform: translateY(-200px);
-	    -ms-transform: translateY(-200px);
-	     -o-transform: translateY(-200px);
-	        transform: translateY(-200px);
+	color: #333;
 }
 .dataIndex
 {
-	-webkit-transform: translateY(-25px);
-	   -moz-transform: translateY(-25px);
-	    -ms-transform: translateY(-25px);
-	     -o-transform: translateY(-25px);
-	        transform: translateY(-25px);
-	-webkit-transition: all .5s ease-in-out;
-	   -moz-transition: all .5s ease-in-out;
-	    -ms-transition: all .5s ease-in-out;
-	     -o-transition: all .5s ease-in-out;
-	        transition: all .5s ease-in-out;
-	background-color: rgba(0,0,0,0.8);
 	width: 100%;
-	height: 200px;
 	display: block;
-	color: white;
+	color: #333;
 }
-.dataIndex:hover
-{
-	-webkit-transform: translateY(-100px);
-	   -moz-transform: translateY(-100px);
-	    -ms-transform: translateY(-100px);
-	     -o-transform: translateY(-100px);
-	        transform: translateY(-100px);
-}
+
 .catPub  img{
 	width: 100%;
 }
@@ -1013,6 +974,8 @@ html,body
 .imgPubCarousel
 {
 	max-height: 180px;
+	border-left: 1px solid #333;
+	border-right: 1px solid #333;
 }
 #beni
 {
@@ -1282,8 +1245,7 @@ and (min-width : 651px) {
 }
 .contCatIndex
 {
-	max-height: 131px;
-	overflow: hidden;
+	
 }
 
 .formPub
@@ -2215,4 +2177,17 @@ select.currency
 .contCatIndex
 {
 	margin-bottom: 2em;
+}
+.conDescIndex
+{
+	height: 75px;
+	max-height: 75px;
+	overflow: hidden;
+
+}
+.pubTitle
+{
+	height: 50px;
+	max-height: 50px;
+	overflow: hidden;
 }
