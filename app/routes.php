@@ -10,7 +10,7 @@
 | and give it the Closure to execute when that URI is requested.
 |
 */
-
+Route::get('test','AjaxController@testAjax');
 Route::get('/', 'HomeController@showFront');
 Route::get('inicio','HomeController@showIndex');
 Route::get('inicio/departamentos/{id}','HomeController@showIndex');
@@ -81,6 +81,12 @@ Route::group(array('before' => 'check_app_auth'),function()
 	Route::get('app/usuario/mis-comentarios','AjaxController@getMyComment');
 	Route::post('app/usuario/comentarios/marcar','AjaxController@postElimCommentrecividos');
 	Route::post('app/usuario/responder','AjaxController@postResponse');
+
+	Route::get('app/agregar-favorito/{id}','AjaxController@addFav');
+	Route::get('app/remover-favorito/{id}','AjaxController@removeFav');
+	Route::get('app/ver-favorito','AjaxController@getMyFav');
+
+
 
 	Route::get('app/usuario-datos','AjaxController@getUserData');
 });

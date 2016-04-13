@@ -833,7 +833,7 @@ class AjaxController extends BaseController{
 				$auxRes   =  $auxRes->where('publicaciones.bussiness_type','=',strtolower($buss));
 			}	
 			$lider = $auxLider->get($this->toReturn);
-			$res = $auxRes->paginate(5,$this->toReturn);
+			$res = $auxRes->get($this->toReturn);
 			$categorias = Categorias::where('id','=',$busq)->pluck('desc');
 			if (!is_null($categorias)) {
 				$busq = $categorias;
@@ -970,7 +970,7 @@ class AjaxController extends BaseController{
 				$auxRes   =  $auxRes->where('publicaciones.bussiness_type','=',strtolower($buss));
 			}
 			$lider = $auxLider->get($this->toReturn);
-			$res = $auxRes->paginate(5,$this->toReturn);
+			$res = $auxRes->get($this->toReturn);
 
 			$categorias = Categorias::where('id','=',$id)->pluck('id');
 			if (!is_null($categorias)) {
@@ -2552,6 +2552,81 @@ class AjaxController extends BaseController{
 			));
 		}
 	}
+
+	/*---------------------------favoritos---------------------------------------------*/
+	/*                                                                                 */
+	/*                                                                                 */
+	/*                                                                                 */
+	/*                                                                                 */
+	/*                                                                                 */
+	/*                                                                                 */
+	/*                                                                                 */
+	/*                                                                                 */
+	/*                                                                                 */
+	/*---------------------------favoritos---------------------------------------------*/
+	public function addFav($id)
+	{
+		
+		$user_id = Input::get('id');
+		$aux = Favorito::where('user_id','=',$user_id)->where('pub_id','=',$id)->first();
+		if (is_null($aux) || empty($aux)) 
+		{
+			$fav = new Favorito;
+			$fav->user_id = $user_id;
+			$fav->pub_id  = $id;
+			$fav->save();
+			$response = array(
+				'type' 		=> 'success',
+				'msg'  		=> 'Se ha agregado esta publicación a favoritos.',
+				'data'		=> $fav->id,
+			);
+		}else
+		{
+			$response = array(
+				'type' 		=> 'danger',
+				'msg'  		=> 'Ya agregaste esta publicación a favoritos.',
+			);
+		}
+		return Response::json($response);
+	}
+	public function removeFav($id)
+	{
+		$fav = Favorito::find($id);
+		if (is_null($fav) || empty($fav)) {
+			return Response::json(array(
+				'type' 	 => 'danger',
+				'msg'    => 'Favorito no existe o ya se ha eliminado.',
+			));	
+		}
+		$pub = $fav->pub_id;
+		$fav->delete();
+		return Response::json(array(
+			'type' 	 => 'success',
+			'msg'    => 'Se ha removido la publicación de sus favoritos.',
+		));
+	}
+	public function getMyFav()
+	{
+		$toReturn = array_merge($this->toReturn,array(
+			'favoritos.id as fav_id',
+		));
+		$id = Input::get('id');
+		$fav = Publicaciones::leftJoin('favoritos','favoritos.pub_id','=','publicaciones.id')
+		->join('usuario','usuario.id','=','publicaciones.user_id')
+		->leftJoin('departamento','departamento.id','=','publicaciones.departamento')
+		->where(function($query){
+			$query->where('publicaciones.fechFin','>=',date('Y-m-d',time()))
+			->orWhere('publicaciones.fechFinNormal','>=',date('Y-m-d',time()));
+		})	
+		->where('publicaciones.deleted','=',0)
+		->where('favoritos.user_id','=',$id)
+		->get($toReturn);
+		return Response::json(array(
+			'pub'  => $fav,
+			'type' => 'success',
+		));
+	}
+
 	/*---------------------------Compras-----------------------------------------------*/
 	/*                                                                                 */
 	/*                                                                                 */
@@ -2706,5 +2781,23 @@ class AjaxController extends BaseController{
 			'type' => 'success',
 			'data' => $user,
 		));
+	}
+	public function testAjax()
+	{
+		$regId = Input::get('regid');
+		$data = array(
+			'message' 		=> 'hola msg push',
+			'title'   		=> 'titulo msg push',
+			'msgcnt'  		=> null,
+			'timeToLive' 	=> 3000,
+		);
+		$doGcm = new Gcm;
+		$response = $doGcm->send_notification($regId,$data);
+		return Response::json(array(
+			'type' => 'success', 
+			'msg' => 'Respuesta push',
+
+		));
+		
 	}
 }

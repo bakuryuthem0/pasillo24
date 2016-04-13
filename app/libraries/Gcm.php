@@ -13,7 +13,7 @@ class Gcm {
         ); 
 
         $headers = array( 
-            'Authorization: key=AIzaSyBChFiGP0sqvN_T7izQHUKQYuxBj1Dq5pI', 
+            'Authorization: key=AIzaSyAOl6aJphBjnH-ASb-jw09GTulkqGQCb3s', 
             'Content-Type: application/json' 
         ); 
         // abriendo la conexion 
@@ -39,7 +39,7 @@ class Gcm {
         } 
         // Cerramos la conexion 
         curl_close($ch);
-return 'termino sin errores'; 
+        return 'termino sin errores'; 
     } 
 }
 ?>
