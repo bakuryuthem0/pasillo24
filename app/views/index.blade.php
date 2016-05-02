@@ -1,6 +1,6 @@
 @extends('main')
 @section('content')
-<div class="container contenedorUnico">
+<div class=" contenedorUnico">
 	<div class="row">
 		<div class="col-xs-12 no-padding-movil" style="margin-top:0;">
 			<div class="col-xs-2 contCategorias contAnaranjado">
@@ -109,10 +109,10 @@ display: block;">
 			  </ul>
 			</div>
 		</div>
-		<div class="container">
+		<div class="contPubIcidades">
 			<div class="row">
 				<div clas="col-xs-12">
-					<div class="container">
+					<div class="">
 						<div clas="col-xs-12">
 							@if($publi[0]->activo == 0)
 
@@ -147,7 +147,7 @@ display: block;">
 				</div>
 			</div>
 		</div>
-		<div class="container"> 
+		<div class=""> 
 			<div class="row">
 				<div class="col-xs-12 publication">
 					<h3>Anuncios LÍDER de Empresas y Particulares con sitio web.
@@ -341,7 +341,7 @@ display: block;">
       $(document).ready(function(){
       	$('.owl-carousel1').owlCarousel({
 		    loop:true,
-		    margin:30,
+		    margin:0,
 		    nav:true,
 		    navText: [ 'Anterior', 'Siguiente' ],
 		    itemsScaleUp:true,
@@ -349,8 +349,8 @@ display: block;">
 		    autoplay:true,
 			autoplayTimeout:5000,
 			autoplayHoverPause:true,
-			items : 3,
-      		itemsDesktop : [1200,3],
+			items : 4,
+      		itemsDesktop : [1200,4],
       		itemsDesktopSmall : [979,2],
 		    responsive:{
 		        0:{
@@ -370,7 +370,7 @@ display: block;">
 		})
 		  $('.owl-carousel2').owlCarousel({
 		    loop:true,
-		    margin:30,
+		    margin:0,
 		    nav:true,
 		    navText: [ 'Anterior', 'Siguiente' ],
 		    itemsScaleUp:true,
@@ -399,7 +399,7 @@ display: block;">
 		})
 		  $('.owl-carousel3').owlCarousel({
 		    loop:true,
-		    margin:30,
+		    margin:0,
 		    nav:true,
 		    navText: [ 'Anterior', 'Siguiente' ],
 		    itemsScaleUp:true,

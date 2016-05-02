@@ -14,7 +14,65 @@ class UserController extends BaseController {
 	|	Route::get('/', 'HomeController@showWelcome');
 	|
 	*/
+	function chequear($publication,$img1,$donde,$size,$watermark)
+	{
+		if (file_exists('images/pubImages/'.Auth::user()['username'].'/'.$img1->getClientOriginalName())) {
+			//guardamos la imagen en public/imgs con el nombre original
+            $i = 0;//indice para el while
+            //separamos el nombre de la img y la extensión
+            $info = explode(".",$img1->getClientOriginalName());
+            //asignamos de nuevo el nombre de la imagen completo
+            $miImg = $img1->getClientOriginalName();
+            //mientras el archivo exista iteramos y aumentamos i
+            while(file_exists('images/pubImages/'.Auth::user()['username'].'/'. $miImg)){
+                $i++;
+                $miImg = $info[0]."(".$i.")".".".$info[1];              
+            }
+            //guardamos la imagen con otro nombre ej foto(1).jpg || foto(2).jpg etc
+            $img1->move("images/pubImages/".Auth::user()['username'],$miImg);
 
+            $img 	= Image::make('images/pubImages/'.Auth::user()['username'].'/'.$miImg);
+
+            $blank = Image::make('images/blank.jpg');
+             if ($img->width() > $img->height()) {
+	        	$img->widen($size/2);
+	        }else
+	        {
+	        	$img->heighten($size);
+	        }
+	        if ($img->height() > $size) {
+	        	$img->heighten($size);
+	        }
+	        $mark = Image::make('images/watermark.png')->widen($watermark);
+	        $blank->insert($img,'center');
+	        $blank->insert($mark,'center')
+           	->interlace()
+            ->save('images/pubImages/'.Auth::user()['username'].'/'.$miImg);
+		}else
+		{
+			$img1->move("images/pubImages/".Auth::user()['username'],$img1->getClientOriginalName());
+
+			$img = Image::make('images/pubImages/'.Auth::user()['username'].'/'.$img1->getClientOriginalName());
+            
+            $blank = Image::make('images/blank.jpg');
+             if ($img->width() > $img->height()) {
+	        	$img->widen($size/2);
+	        }else
+	        {
+	        	$img->heighten($size);
+	        }
+	        if ($img->height() > $size) {
+	        	$img->heighten($size);
+	        }
+	        $mark = Image::make('images/watermark.png')->widen($watermark);
+	        $blank->insert($img,'center');
+	        $blank->insert($mark,'center')
+           	->interlace()
+            ->save('images/pubImages/'.Auth::user()['username'].'/'.$img1->getClientOriginalName());
+
+            
+		}
+	}
 	public function getProfile()
 	{
 		if(Auth::check()){
@@ -162,101 +220,13 @@ class UserController extends BaseController {
 		->with('dep',$dep);
 	}
 	public function postPublicationLider()
-	{
-		function chequear($publication,$img1,$donde)
-		{
-			if (file_exists('images/pubImages/'.Auth::user()['username'].'/'.$img1->getClientOriginalName())) {
-				//guardamos la imagen en public/imgs con el nombre original
-	            $i = 0;//indice para el while
-	            //separamos el nombre de la img y la extensión
-	            $info = explode(".",$img1->getClientOriginalName());
-	            //asignamos de nuevo el nombre de la imagen completo
-	            $miImg = $img1->getClientOriginalName();
-	            //mientras el archivo exista iteramos y aumentamos i
-	            while(file_exists('images/pubImages/'.Auth::user()['username'].'/'. $miImg)){
-	                $i++;
-	                $miImg = $info[0]."(".$i.")".".".$info[1];              
-	            }
-	            //guardamos la imagen con otro nombre ej foto(1).jpg || foto(2).jpg etc
-	            $img1->move("images/pubImages/".Auth::user()['username'],$miImg);
-	            $img = Image::make('images/pubImages/'.Auth::user()['username'].'/'.$miImg);
-	            $blank = Image::make('images/blank.jpg');
-	             if ($img->width() > $img->height()) {
-		        	$img->widen(1604);
-		        }else
-		        {
-		        	$img->heighten(804);
-		        }
-		        if ($img->height() > 804) {
-		        	$img->heighten(804);
-		        }
-		        $mark = Image::make('images/watermark.png')->widen(400);
-		        $blank->insert($img,'center');
-		        $blank->insert($mark,'center')
-	           	->interlace()
-	            ->save('images/pubImages/'.Auth::user()['username'].'/'.$miImg);
-	            if($miImg != $img1->getClientOriginalName()){
-	            	if($donde == 1)
-	            	{
-		                $publication->img_1 = Auth::user()['username'].'/'.$miImg;
-	            	}elseif($donde == 2)
-	            	{
-	            		$publication->img_2 = Auth::user()['username'].'/'.$miImg;
-	            	}
-	            }	
-			}else
-			{
-				$img1->move("images/pubImages/".Auth::user()['username'],$img1->getClientOriginalName());
-				$img = Image::make('images/pubImages/'.Auth::user()['username'].'/'.$img1->getClientOriginalName());
-	            $blank = Image::make('images/blank.jpg');
-	             if ($img->width() > $img->height()) {
-		        	$img->widen(1604);
-		        }else
-		        {
-		        	$img->heighten(804);
-		        }
-		        if ($img->height() > 804) {
-		        	$img->heighten(804);
-		        }
-		        $mark = Image::make('images/watermark.png')->widen(400);
-		        $blank->insert($img,'center');
-		        $blank->insert($mark,'center')
-	           	->interlace()
-	            ->save('images/pubImages/'.Auth::user()['username'].'/'.$img1->getClientOriginalName());
-			}
-		}
-
-		
+	{	
 		$input = Input::all();
 		/* validar que exista al menos una imagen*/
 		if (!Input::hasFile('portada') && !Input::hasFile('portada2'))
 		{
 		    Session::flash('error', 'Debe ingresar al menos una imagen.');
-			return Redirect::to('usuario/publicacion/lider')->withInput();
-		}
-
-		if (Input::hasFile('portada')) {
-			$img1  = Input::file('portada');
-			$rules = array('img1' => 'image');
-			$validator = Validator::make(array('img1' => $img1), $rules);
-			if ($validator->fails()) {
-				Session::flash('error','Error, el archivo '.$img1->getClientOriginalName().' debe ser una imagen en formato: jpg, png o gif');
-				return Redirect::back()->withInput();
-			}
-			$tam = getimagesize($img1);
-			$width = $tam[0];
-		}
-
-		if (Input::hasFile('portada2')) {
-			$img2  = Input::file('portada2');
-			$rules = array('img2' => 'image');
-			$validator = Validator::make(array('img2' => $img2), $rules);
-			if ($validator->fails()) {
-				Session::flash('error','Error, el archivo '.$img2->getClientOriginalName().' debe ser una imagen en formato: jpg, png o gif');
-				return Redirect::back();
-			}
-			$tam2 = getimagesize($img2);
-			$width2 = $tam2[0];
+			return Redirect::back()->withInput();
 		}
 
 		/* validar pagina web */
@@ -284,7 +254,7 @@ class UserController extends BaseController {
 		}else
 		{
 			Session::flash('error', 'Debe elegir un periodo válido');
-			return Redirect::to('usuario/publicacion/lider');
+			return Redirect::back();
 		}
 		$monto = $monto*$dur;
 		/* Validador general */
@@ -298,13 +268,17 @@ class UserController extends BaseController {
 			'fechIni'   => 'required|after:'.date('d-m-Y'),
 			'dep'		=> 'required',
 			'negocioType' => 'required',
+			'img1'		  => 'image',
+			'img2'		  => 'image',
+
 		);
 		$msg = array(
 			'required' => ':attribute es obligatorio',
 			'min'      => ':attribute debe ser mas largo',
 			'in'       => 'Debe seleccionar una opción',
 			'after'    => 'Debe seleccionar una fecha posterior a hoy',
-			'active_url'=> 'Debe utilizar un url válido'
+			'active_url'=> 'Debe utilizar un url válido',
+			'image'    => 'El archivo debe ser una imagen',
 		);
 		$attribute = array(
 			'ubication' => 'El campo ubicacion',
@@ -317,9 +291,9 @@ class UserController extends BaseController {
 		if ($input['ubication'] == 'Categoria'){
 			$rules = $rules+array('cat'  => 'required');
 			$attribute = array(
-			'cat'	=> 'El campo categoria',
-			
-		);
+				'cat'	=> 'El campo categoria',
+				
+			);
 		}
 		$validator = Validator::make($input, $rules, $msg,$attribute);
 		if ($validator->fails()) {
@@ -374,19 +348,23 @@ class UserController extends BaseController {
 			}
 
 			if (Input::hasFile('portada')) {
+				$img1 = Input::file('portada');
 				$publication->img_1		= Auth::user()['username'].'/'.$img1->getClientOriginalName();
-				chequear($publication,$img1,1);
+				$this->chequear($publication,$img1,1,1500,500);
 				if (Input::hasFile('portada2')) {
+					$img2 = Input::file('portada2');
 					$publication->img_2		= Auth::user()['username'].'/'.$img2->getClientOriginalName();
-					chequear($publication,$img2,2);
+					$this->chequear($publication,$img2,2,1500,500);
 				}						
 			}else
 			{
+				$img2 = Input::file('portada2');
 				$publication->img_1		= Auth::user()['username'].'/'.$img2->getClientOriginalName();
-				chequear($publication,$img2,1);
+				$this->chequear($publication,$img2,1,1500,500);
 				if (Input::hasFile('portada')) {
+					$img1 = Input::file('portada');
 					$publication->img_2		= Auth::user()['username'].'/'.$img1->getClientOriginalName();
-					chequear($publication,$img1,2);
+					$this->chequear($publication,$img1,2,1500,500);
 				}	
 			}
 			

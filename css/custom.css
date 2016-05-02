@@ -973,7 +973,7 @@ html,body
 /*----------Index---------*/
 .imgPubCarousel
 {
-	max-height: 180px;
+	max-height: 320px;
 	border-left: 1px solid #333;
 	border-right: 1px solid #333;
 }
@@ -2190,4 +2190,20 @@ select.currency
 	height: 50px;
 	max-height: 50px;
 	overflow: hidden;
+}
+
+.contenedorUnico .row
+{
+	margin-right: 0;
+	margin-left: 0;
+}
+.contPubIcidades
+{
+	padding-left: 2em;
+	padding-right: 2em;
+}
+.item .col-xs-12
+{
+	padding-left: 4px;
+	padding-right: 4px;
 }
