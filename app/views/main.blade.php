@@ -395,7 +395,7 @@ margin-top: 0.5em;display:inline-block;">
 	
 	{{ HTML::script('js/jquery.min.js') }}
 	{{ HTML::script('js/bootstrap.min.js') }}
-	{{ HTML::script('js/custom-preview.js?v=1.7')}}
+	{{ HTML::script('js/custom.js?v=1.8')}}
 	
 	{{ HTML::script('js/ckeditor.js') }}
 	{{ HTML::script('js/jquery.ckeditor.js') }}
