@@ -473,7 +473,7 @@ class PublicationController extends BaseController {
 		->where('fechRepub','>',date('Y-m-d',time()))
 		->orderBy('fechRepub','desc')
 		->first();
-		if (count($pub)>0) {
+		if (count($pub)>0 && Auth::id() != 21) {
 			Session::flash('error', 'Usted ha consumido el máximo de publicaciones casuales. Inténtelo nuevamente cuando su última publicación casual expire.');
 			return Redirect::to('usuario/publicar');
 		}
