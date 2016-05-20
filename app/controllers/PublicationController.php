@@ -197,6 +197,7 @@ class PublicationController extends BaseController {
 				'publicaciones.email as email_pub',
 				'publicaciones.phone as phone_pub',
 				'publicaciones.pag_web_hab',
+				'publicaciones.bussiness_type',
 				'usuario.id',
 				'usuario.name',
 				'usuario.lastname',
@@ -269,6 +270,8 @@ class PublicationController extends BaseController {
 				'publicaciones.img_2',
 				'publicaciones.descripcion',
 				'publicaciones.tipo',
+				'publicaciones.condicion',
+				'publicaciones.bussiness_type',
 				'departamento.nombre'
 			));
 			$volver = 'administrador/publicacion/casual';
