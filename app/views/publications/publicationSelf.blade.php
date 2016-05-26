@@ -100,6 +100,16 @@
 											<td>{{ $publication->pag_web }}</td>
 										@endif
 									</tr>
+									@if(!is_null($publication->bussiness_type))
+									<tr>
+										<th>
+											Tipo de negocio
+										</th>
+										<td>
+											{{ ucfirst($publication->bussiness_type) }}
+										</td>
+									</tr>
+									@endif
 								</tbody>
 							</table>
 						</div>
@@ -291,7 +301,22 @@
 						<h4>Ciudad</h4><label class="textoPromedio">{{ $publication->ciudad }}</label>
 
 					</div>	
-					
+					@if(!is_null($publication->bussiness_type))
+
+					<div class="col-xs-6 caracteristicasPub">
+						<h4>Tipo de negocio</h4><label class="textoPromedio">{{ ucfirst($publication->bussiness_type)
+						 }}</label>
+
+					</div>
+					@endif
+					@if(!is_null($publication->condicion))
+
+					<div class="col-xs-6 caracteristicasPub">
+						<h4>Condición</h4><label class="textoPromedio">{{ ucfirst($publication->condicion)
+						 }}</label>
+
+					</div>
+					@endif
 						<div class="col-xs-12" style="padding:0px;">
 							@if(Auth::check() && Auth::id() != $publication->user_id && Auth::user()['role'] != 'Administrador' && Auth::user()['role'] != 'Gestor')
 								<a href="#" class="btn btn-primary" data-toggle="modal" data-target="#modalComprar">Contactar</a>
@@ -369,18 +394,32 @@
 				<div class="col-xs-12">
 					<legend class="precioPub"><h2>{{ ucfirst($publication->titulo) }}</h2></legend>
 				</div>
-				<div class="col-xs-6">
+				<div class="col-xs-12 col-sm-6">
 					<h4>Categoria </h4><label class="textoPromedio">{{ $publication->cat }}</label>
 
 				</div>
-				<div class="col-xs-6">
+				<div class="col-xs-12 col-sm-6">
 					<h4>Precio </h4><label class="textoPromedio">{{ $publication->precio.' '.$publication->moneda }}</label>
 
 				</div>
-				<div class="col-xs-6">
+				<div class="col-xs-12 col-sm-6">
 					<h4>Departamento </h4><label class="textoPromedio">{{ $publication->nombre }}</label>
 
 				</div>
+				@if(!is_null($publication->bussiness_type))
+
+				<div class="col-xs-12 col-sm-6">
+					<h4>Tipo de negocio</h4><label class="textoPromedio">{{ ucfirst($publication->bussiness_type)
+					 }}</label>
+				</div>
+				@endif
+				@if(!is_null($publication->condicion))
+
+				<div class="col-xs-12 col-sm-6">
+					<h4>Condición</h4><label class="textoPromedio">{{ ucfirst($publication->condicion)
+					 }}</label>
+				</div>
+				@endif
 				<div class="col-xs-12">
 					@if(Auth::check() && Auth::id() != $publication->user_id && Auth::user()['role'] != 'Administrador' && Auth::user()['role'] != 'Gestor')
 					<div class="col-xs-12" style="padding-left: 0px;">

@@ -803,8 +803,8 @@ class AjaxController extends BaseController{
 				$rel = Input::get('rel');
 				switch ($rel) {
 					case 'rep':
-						$auxLider =  $auxLider->leftJoin('usuario','usuario.id','=','publicaciones.user_id')->orderBy('usuario.reputation','DESC');
-						$auxRes   =  $auxRes->leftJoin('usuario','usuario.id','=','publicaciones.user_id')->orderBy('usuario.reputation','DESC');
+						$auxLider =  $auxLider->orderBy('usuario.reputation','DESC');
+						$auxRes   =  $auxRes->orderBy('usuario.reputation','DESC');
 						$paginatorFilter .= '&rel=rep';
 						break;
 					case 'fin':
