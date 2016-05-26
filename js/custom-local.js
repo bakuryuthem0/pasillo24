@@ -1665,6 +1665,7 @@ function success(position) {
   	google.maps.event.addListenerOnce(map, 'idle', function(){
 	    $('.contLoaderBig').removeClass('active');
 	});
+	
 }
 
 function showError(error)
@@ -1715,7 +1716,28 @@ function showError(error)
 	  	google.maps.event.addListenerOnce(map, 'idle', function(){
 		    $('.contLoaderBig').removeClass('active');
 		});
+	  	//Add listener
+		google.maps.event.addListener(marker, "click", function (event) {
+		    var latitude = event.latLng.lat();
+		    var longitude = event.latLng.lng();
+		    console.log( latitude + ', ' + longitude );
 
+		    radius = new google.maps.Circle({map: map,
+		        radius: 100,
+		        center: event.latLng,
+		        fillColor: '#777',
+		        fillOpacity: 0.1,
+		        strokeColor: '#AA0000',
+		        strokeOpacity: 0.8,
+		        strokeWeight: 2,
+		        draggable: true,    // Dragable
+		        editable: true      // Resizable
+		    });
+
+		    // Center of map
+		    map.panTo(new google.maps.LatLng(latitude,longitude));
+
+		}); //end addListener
   	};
   }
 function removeResponseAjax() {
