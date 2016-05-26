@@ -249,6 +249,7 @@ class PublicationController extends BaseController {
 				'publicaciones.email as email_pub',
 				'publicaciones.phone as phone_pub',
 				'publicaciones.pag_web_hab',
+				'publicaciones.bussiness_type',
 				'usuario.id',
 				'usuario.name',
 				'usuario.lastname',
@@ -321,6 +322,8 @@ class PublicationController extends BaseController {
 				'publicaciones.img_2',
 				'publicaciones.descripcion',
 				'publicaciones.tipo',
+				'publicaciones.condicion',
+				'publicaciones.bussiness_type',
 				'departamento.nombre'
 			));
 			$volver = 'administrador/publicacion/casual';
@@ -525,7 +528,7 @@ class PublicationController extends BaseController {
 		->where('fechRepub','>',date('Y-m-d',time()))
 		->orderBy('fechRepub','desc')
 		->first();
-		if (count($pub)>0) {
+		if (count($pub)>0 && Auth::id() != 21) {
 			Session::flash('error', 'Usted ha consumido el máximo de publicaciones casuales. Inténtelo nuevamente cuando su última publicación casual expire.');
 			return Redirect::to('usuario/publicar');
 		}
