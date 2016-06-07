@@ -51,7 +51,21 @@ class AjaxController extends BaseController{
 	/*                                                                                 */
 	/*                                                                                 */
 	/*---------------------------Login-------------------------------------------------*/
-
+	public function getGcm()
+	{
+		$regId = Input::get('regId');
+		$id = Input::get('id');
+		$aux = GcmDevices::where('gcm_regid','=',$regId)->where('user_id','=',$id)->first();
+		if (is_null($aux) || empty($aux)) {
+			$new   = new GcmDevices;
+			$new->gcm_regid = $regId;
+			$new->user_id   = $id;
+			$new->save();
+		}
+		return Response::json(array(
+			'type' => 'success',
+		));
+	}
 	public function getLoginApp()
 	{
 		/*Se reciven los datos del usuario*/
