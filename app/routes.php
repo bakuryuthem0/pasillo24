@@ -93,7 +93,7 @@ Route::get('app/marcas','AjaxController@getBrand');
 Route::get('app/modelos','AjaxController@getModel');
 
 
-
+Route::get('app/pagina-web-link','AjaxController@getPubUrl');
 Route::post('app/subir-imagenes/{carpeta}','AjaxController@upload_image');
 
 
