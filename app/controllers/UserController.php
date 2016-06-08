@@ -180,8 +180,8 @@ class UserController extends BaseController {
 	            //guardamos la imagen con otro nombre ej foto(1).jpg || foto(2).jpg etc
 	            $img1->move("images/pubImages/".Auth::user()['username'],$miImg);
 	            $img = Image::make('images/pubImages/'.Auth::user()['username'].'/'.$miImg);
-	            $blank = Image::make('images/blank.jpg');
-	             if ($img->width() > $img->height()) {
+	            /*$blank = Image::make('images/blank.jpg');
+	            if ($img->width() > $img->height()) {
 		        	$img->widen(1604);
 		        }else
 		        {
@@ -189,10 +189,9 @@ class UserController extends BaseController {
 		        }
 		        if ($img->height() > 804) {
 		        	$img->heighten(804);
-		        }
+		        }*/
 		        $mark = Image::make('images/watermark.png')->widen(400);
-		        $blank->insert($img,'center');
-		        $blank->insert($mark,'center')
+		        $img->insert($mark,'center')
 	           	->interlace()
 	            ->save('images/pubImages/'.Auth::user()['username'].'/'.$miImg);
 	            if($miImg != $img1->getClientOriginalName()){
@@ -208,7 +207,7 @@ class UserController extends BaseController {
 			{
 				$img1->move("images/pubImages/".Auth::user()['username'],$img1->getClientOriginalName());
 				$img = Image::make('images/pubImages/'.Auth::user()['username'].'/'.$img1->getClientOriginalName());
-	            $blank = Image::make('images/blank.jpg');
+	            /*$blank = Image::make('images/blank.jpg');
 	             if ($img->width() > $img->height()) {
 		        	$img->widen(1604);
 		        }else
@@ -217,10 +216,9 @@ class UserController extends BaseController {
 		        }
 		        if ($img->height() > 804) {
 		        	$img->heighten(804);
-		        }
+		        }*/
 		        $mark = Image::make('images/watermark.png')->widen(400);
-		        $blank->insert($img,'center');
-		        $blank->insert($mark,'center')
+		        $img->insert($mark,'center')
 	           	->interlace()
 	            ->save('images/pubImages/'.Auth::user()['username'].'/'.$img1->getClientOriginalName());
 			}

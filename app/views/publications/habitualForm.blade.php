@@ -3,31 +3,31 @@
 @section('content')
 <div class="container contenedorUnico">
 	<div class="row">
-		<div class="col-xs-12 contAnaranjado">
-			<div class="col-xs-12">
+		<div class="col-sm-12 contAnaranjado">
+			<div class="col-sm-12">
 				<ol class="breadcrumb textoPromedio">
 				  <li><a href="{{ URL::to('usuario/publicar') }}" class="breadcrums"><span class="num">1</span> Elije el tipo de publicación.</a></li>
 				  <li class="active"><a href="{{ URL::to('usuario/publicacion/habitual') }}" class="breadcrums"><span class="num numActivo">2</span> Elija la categoría y llene el formulario</a></li>
 				</ol>
 			</div>
-			<div class="col-xs-12">
+			<div class="col-sm-12">
 				<h3>Publicación HABITUAL</h3>
 				<h5>(*) Campo obligatorio</h5>
 				<hr>
 			</div>
 			<form method="post" action="{{ URL::to($url) }}" enctype="multipart/form-data">
-				<div class="col-xs-12">
+				<div class="col-sm-12">
 					<legend>Información de la publicación</legend>
 				</div>
 				@if(Session::has('error'))
-				<div class="col-xs-12">
+				<div class="col-sm-12">
 					<div class="alert alert-danger">
 						<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
 						<p class="textoPromedio">{{ Session::get('error') }}</p>
 					</div>
 				</div>
 				@endif
-				<div class="col-xs-12 col-md-6">
+				<div class="col-sm-12 col-md-6 formulario">
 					<label for="subCat" class="textoPromedio">(*) Sub-categoría</label>
 					<?php $arr = array(
 							'' => 'Seleccione la sub-categoría');
@@ -52,9 +52,9 @@
 						 @endforeach
 					@endif
 				</div>
-				<div class="col-xs-12 col-md-6">
+				<div class="col-sm-12 col-md-6 formulario">
 					<label class="textoPromedio">(*) Clase de negocio.</label>
-					<div class="col-xs-12" class="textoPromedio">
+					<div class="col-sm-12" class="textoPromedio">
 						<span for="negocioType" class="textoPromedio">Negocio con domicilio fiscal</span>
 						{{ Form::radio('negocioType','fiscal',Input::old('negocioType'),array('required' => 'required')) }}
 						<span for="negocioType" class="textoPromedio">Tienda-negocio virtual</span>
@@ -73,7 +73,7 @@
 						 @endforeach
 					@endif
 				</div>
-				<div class="col-xs-12">
+				<div class="col-sm-12">
 					<label for="title" class="textoPromedio">(*) Título</label>
 					{{ Form::text('title',Input::old('title'),array('placeholder' => 'Titulo','class' => 'form-control','required' => 'required')) }}
 					@if ($errors->has('title'))
@@ -85,7 +85,7 @@
 						 @endforeach
 					@endif
 				</div>
-				<div class="col-xs-12 col-md-6">
+				<div class="col-sm-12 col-md-6 formulario">
 					<label for="precio" class="textoPromedio">(*) Precio</label>
 					{{ Form::text('precio',Input::old('precio'),array('placeholder' => 'Precio','class' => 'form-control')) }}
 					@if ($errors->has('precio'))
@@ -97,9 +97,9 @@
 						 @endforeach
 					@endif
 				</div>
-				<div class="col-xs-12 col-md-6">
+				<div class="col-sm-12 col-md-6 formulario">
 					<label class="textoPromedio">(*) Moneda</label>
-					<div class="col-xs-12" class="textoPromedio">
+					<div class="col-sm-12" class="textoPromedio">
 						<span for="moneda" class="textoPromedio">USD</span>
 						{{ Form::radio('moneda','Usd',Input::old('moneda'),array('required' => 'required')) }}
 						<span for="moneda" class="textoPromedio">BS</span>
@@ -115,7 +115,7 @@
 					@endif
 				</div>
 				<div class="clearfix"></div>
-				<div class="col-xs-12 col-md-6">
+				<div class="col-sm-12 col-md-6 formulario">
 					<label for="" class="textoPromedio">(*) Departamento</label>
 					<?php $arr = array(
 							'' => 'Seleccione su departamento');
@@ -136,7 +136,7 @@
 						 @endforeach
 					@endif
 				</div>
-				<div class="col-xs-12 col-md-6">
+				<div class="col-sm-12 col-md-6 formulario">
 					<label for="" class="textoPromedio">(*) Ciudad</label>
 					{{ Form::text('ciudad',Input::old('ciudad'),array('class' => 'form-control','placeholder' => 'Ciudad','required' => 'required')) }}
 					@if ($errors->has('ciudad'))
@@ -150,7 +150,7 @@
 				</div>
 				
 				@if($cat_id == 34)
-					<div class="col-xs-12 col-md-6">
+					<div class="col-sm-12 col-md-6 formulario">
 						<label class="textoPromedio">(*) Marca</label>
 						<select name="marca" class="form-control" id="veiMarca" required>
 							<option value="">Seleccione una marca</option>
@@ -167,7 +167,7 @@
 						 @endforeach
 						@endif
 					</div>
-					<div class="col-xs-12 col-md-6">
+					<div class="col-sm-12 col-md-6 formulario">
 						<label class="textoPromedio">(*) Modelo</label>
 						<select name="modelo" class="form-control" id="veiModel" required>
 							<option value="">Seleccione un modelo</option>
@@ -181,7 +181,7 @@
 						 @endforeach
 						@endif
 					</div>
-					<div class="col-xs-12 col-md-6">
+					<div class="col-sm-12 col-md-6 formulario">
 						<label class="textoPromedio">(*) Año</label>
 						{{ Form::text('anio',Input::old('anio'),array('class' => 'form-control','placeholder' => 'Año','required' => 'required')) }}
 						@if ($errors->has('anio'))
@@ -193,7 +193,7 @@
 						 @endforeach
 						@endif
 					</div>
-					<div class="col-xs-12 col-md-6">
+					<div class="col-sm-12 col-md-6 formulario">
 						<label class="textoPromedio">(*) Documentación</label>
 						{{ Form::text('doc',Input::old('doc'),array('class' => 'form-control','placeholder' => 'Documentacion','required' => 'required')) }}
 						@if ($errors->has('doc'))
@@ -205,7 +205,7 @@
 						 @endforeach
 						@endif
 					</div>
-					<div class="col-xs-12">
+					<div class="col-sm-12 formulario">
 						<label class="textoPromedio">(*) Kilometraje</label>
 						{{ Form::text('kilo',Input::old('kilo'),array('class' => 'form-control','placeholder' => 'Kilometraje','required' => 'required')) }}
 						@if ($errors->has('kilo'))
@@ -218,7 +218,7 @@
 						@endif
 					</div>
 					
-					<div class="col-xs-12 col-md-6">
+					<div class="col-sm-12 col-md-6 formulario">
 						<label class="textoPromedio">Cilindrada</label>
 						{{ Form::text('cilin',Input::old('cilin'),array('class' => 'form-control','placeholder' => 'Cilindrada')) }}
 						@if ($errors->has('cilin'))
@@ -230,7 +230,7 @@
 						 @endforeach
 						@endif
 					</div>
-					<div class="col-xs-12 col-md-6">
+					<div class="col-sm-12 col-md-6 formulario">
 						<label class="textoPromedio">Transmisión</label>
 						{{ Form::text('trans',Input::old('trans'),array('class' => 'form-control','placeholder' => 'Transmisión')) }}
 						@if ($errors->has('trans'))
@@ -242,7 +242,7 @@
 						 @endforeach
 						@endif
 					</div>
-					<div class="col-xs-12 col-md-6">
+					<div class="col-sm-12 col-md-6 formulario">
 						<label class="textoPromedio">Combustible</label>
 						{{ Form::text('comb',Input::old('comb'),array('class' => 'form-control','placeholder' => 'Combustible')) }}
 						@if ($errors->has('comb'))
@@ -254,7 +254,7 @@
 						 @endforeach
 						@endif
 					</div>
-					<div class="col-xs-12 col-md-6">
+					<div class="col-sm-12 col-md-6 formulario">
 						<label class="textoPromedio">Tracción</label>
 						{{ Form::text('trac',Input::old('trac'),array('class' => 'form-control','placeholder' => 'Tracción')) }}
 						@if ($errors->has('trac'))
@@ -267,7 +267,7 @@
 						@endif
 					</div>
 				@elseif($cat_id == 20)
-					<div class="col-xs-12">
+					<div class="col-sm-12 formulario">
 						<label class="textoPromedio">(*) Extensión (mt<sup>2</sup>)</label>
 						{{ Form::text('ext',Input::old('ext'),array('class' => 'form-control','placeholder' => 'metros cuadrados','required' => 'required')) }}
 						@if ($errors->has('ext'))
@@ -280,9 +280,9 @@
 						@endif
 					</div>
 				@endif
-				<div class="col-xs-12 col-md-6">
+				<div class="col-sm-12 col-md-6 formulario">
 					<label class="textoPromedio">(*) Operación</label>
-					<div class="col-xs-12" class="textoPromedio">
+					<div class="col-sm-12" class="textoPromedio">
 						<span for="tipoTransac" class="textoPromedio">Venta</span>
 						{{ Form::radio('tipoTransac','venta',Input::old('tipoTransac'),array('required' => 'required')) }}
 						<span for="tipoTransac" class="textoPromedio">Alquiler</span>
@@ -308,9 +308,9 @@
 					@endif
 				</div>
 				@if($cat->tipo == 1)
-				<div class="col-xs-12 col-md-6">
+				<div class="col-sm-12 col-md-6 formulario">
 					<label class="textoPromedio"><span class="required-on-cat">(*)</span> Condición</label>
-					<div class="col-xs-12" class="textoPromedio">
+					<div class="col-sm-12" class="textoPromedio">
 						<span for="condition" class="textoPromedio">Nuevo</span>
 						{{ Form::radio('condition','nuevo',Input::old('condition')) }}
 						<span for="condition" class="textoPromedio">Usado</span>
@@ -326,7 +326,7 @@
 					@endif
 				</div>
 				@endif
-				<div class="col-xs-12">
+				<div class="col-sm-12 formulario">
 					<label for="input" class="textoPromedio">(*) Descripción</label>
 					<!--<textarea id="input" name="input" class="form-control descHabitual"></textarea>-->
 					<textarea  id="editor1" name="input" required>{{ Input::old('input') }}</textarea>
@@ -339,22 +339,22 @@
 						 @endforeach
 					@endif
 				</div>
-				<div class="col-xs-12">
+				<div class="col-sm-12 formulario">
 					<h4>¿Desea mostrar la ubicación de su publicación?</h4>
 					<input type="checkbox" class="doMap">
-					<label class="textoPromedio">si desea publicar su ubicación, permita en el popup para poder acceder a ella.</label>
+					<label class="textoPromedio">Si desea publicar su ubicación, permita en el popup para poder acceder a ella.</label>
 					
 				</div>
-				<div class="col-xs-12">
-					<article class="mapContainer" id="" style="position:relative;">
+				<div class="col-sm-12">
+					<article class="mapContainer hidden" id="" style="position:relative;">
 						<div class="contLoaderBig">
-							<img src="{{ asset('images/loading.gif') }}" class="loaderBig">
+							<img src="{{ asset('assets/images/loading.gif') }}" class="loaderBig">
 						</div>
 					</article>
 					<input type="hidden" name="latitud" class="latitud">
 					<input type="hidden" name="longitud" class="longitud">
 				</div>
-				<div class="col-xs-12 textoPromedio">
+				<div class="col-sm-12 formulario textoPromedio">
 					
 					<label>(*) Imagen principal</label>
 					<input type="file" name="img1" required>
@@ -367,26 +367,26 @@
 						 @endforeach
 					@endif
 				</div>
-				<div class="col-xs-12" style="margin-top:5em;">
+				<div class="col-sm-12 formulario" style="margin-top:5em;">
 					<legend>Información de contacto</legend>
 				</div>
-				<div class="col-xs-12 col-md-6">
+				<div class="col-sm-12 col-md-6 formulario">
 					<label for="" class="textoPromedio">Nombre de contacto</label>
 					{{ Form::text('nomb',Input::old('nomb'),array('class' => 'form-control','placeholder' => 'Nombre de contacto')) }}
 				</div>
-				<div class="col-xs-12 col-md-6">
+				<div class="col-sm-12 col-md-6 formulario">
 					<label for="" class="textoPromedio">Teléfono de contacto</label>
 					{{ Form::text('phone',Input::old('phone'),array('class' => 'form-control','placeholder' => 'Telefono de contacto')) }}
 				</div>
-				<div class="col-xs-12 col-md-6">
+				<div class="col-sm-12 col-md-6 formulario">
 					<label for="" class="textoPromedio">Correo electrónico</label>
 					{{ Form::text('email',Input::old('email'),array('class' => 'form-control', 'placeholder' => 'Correo electronico')) }}
 				</div>
-				<div class="col-xs-12 col-md-6">
+				<div class="col-sm-12 col-md-6 formulario">
 					<label for="" class="textoPromedio">Sitio web</label>
 					{{ Form::text('pag_web',Input::old('pag_web'),array('class' => 'form-control', 'placeholder' => 'Sitio web')) }}
 				</div>
-				<div class="col-xs-12" style="margin-bottom:2em;">
+				<div class="col-sm-12 formulario" style="margin-bottom:2em;">
 					<button value="{{ $cat_id }}" name="cat_id" class="btn btn-success">Enviar</button>
 					<input type="reset" value="Borrar" class="btn btn-warning">
 				</div>

@@ -1911,4 +1911,14 @@ jQuery(document).ready(function($) {
 			$('.required-on-cat').removeClass('hidden');
 		}
 	});
+	jQuery(document).ready(function($) {
+		function resizeCategoryContainer() {
+			$('.cat-container').css('max-height',$('.portada').height());
+		}
+		$(window).on('resize', function(event) {
+			resizeCategoryContainer()
+			
+		});
+		resizeCategoryContainer()
+	});
 });

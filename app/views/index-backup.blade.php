@@ -95,31 +95,28 @@
 			</div>
 			<div>
 				<div class="col-xs-12 pubs col-sm-6 pubLeft" >
-					<img src="{{ asset('images/publicidad/pub1.gif') }}">
+					<img src="{{ asset('images/publicidad/pub1.png') }}">
 				</div>
 				<div class="col-xs-12 pubs col-sm-6 pubRight" >
-					<img src="{{ asset('images/publicidad/pub2.gif') }}">
+					<img src="{{ asset('images/publicidad/pub2.png') }}">
 				</div>
 			</div>
 		</div>
 	</div>
-	<div class=""> 
+	<div class="container"> 
 			<div class="row">
 				<div class="col-xs-12 publication">
 					<h3>Anuncios LÍDER de Empresas y Particulares con sitio web.</h3>
 						<div class="owl-carousel1">
 							@foreach($lider as $pubLider)
 							<div class="item contCatIndex">
-								<div class="col-xs-12 image">
-									<a href="{{ URL::to('publicacion/lider/'.base64_encode($pubLider->id)) }}">
-										<img src="{{ asset('images/pubImages/'.$pubLider->img_1) }}" class="imgPubCarousel">
-									</a>
-								</div>
-								<div class="col-xs-12 texto-desc">
-
-								</div>
-								<div class="col-xs-12 btn-group no-padding">
-									<a class="btn btn-warning">Ver publicación</a>
+								<a href="{{ URL::to('publicacion/lider/'.base64_encode($pubLider->id)) }}">
+									<img src="{{ asset('images/pubImages/'.$pubLider->img_1) }}" class="imgPubCarousel">
+								</a>
+								<div class="dataIndex textoPromedio">
+									<div class="col-xs-6" style="padding-top:0px;margin-top:0px;">{{ $pubLider->titulo }}</div>
+									<div class="col-xs-12"><a href="{{ URL::to('publicacion/lider/'.base64_encode($pubLider->id)) }}" style="color:white;"><i class="fa fa-hand-o-right"></i> Ver publicación</a>
+									</div>
 								</div>
 							</div>
 							@endforeach
@@ -169,19 +166,21 @@
 								@if($x%2 == 0)
 								<div class="item">
 								@endif
-									<div class="col-xs-12 contCatIndex separator no-padding">
-								 		<div class="col-xs-12 image">
-											<a href="{{ URL::to('publicacion/habitual/'.base64_encode($pubHabitual->id)) }}">
-												<img src="{{ asset('images/pubImages/'.$pubHabitual->img_1) }}" class="imgPubCarousel">
-											</a>
-								 		</div>
-								 		<div class="col-xs-12 texto-desc">
-								 			{{ ucfirst(strtolower(strip_tags($pubHabitual->descripcion))) }}
-								 		</div>
-								 		<div class="col-xs-12 btn-group no-padding">
-								 			<a href="{{ URL::to('publicacion/habitual/'.base64_encode($pubHabitual->id)) }}" class="btn btn-warning">Ver publicación</a>
-								 		</div>
-									</div>
+							 		<div class="contCatIndex">
+										<a href="{{ URL::to('publicacion/habitual/'.base64_encode($pubHabitual->id)) }}">
+											<img src="{{ asset('images/pubImages/'.$pubHabitual->img_1) }}" class="imgPubCarousel">
+										</a>
+										<div class="dataIndex textoPromedio">
+											<div class="col-xs-6" style="padding-top:0px;margin-top:0px;">{{ $pubHabitual->titulo }}</div>
+											<div class="col-xs-6" style="padding-top:0px;margin-top:0px;">
+											@if($pubHabitual->precio)
+											 <label>Precio: </label>{{ $pubHabitual->precio.' '.ucfirst(strtolower($pubHabitual->moneda)).'.' }}
+											@endif
+											</div>
+											<div class="col-xs-12"><a href="{{ URL::to('publicacion/lider/'.base64_encode($pubHabitual->id)) }}" style="color:white;"><i class="fa fa-hand-o-right"></i> Ver publicación</a>
+											</div>
+										</div>
+							 		</div>
 								@if(($x+1)%2 == 0)
 								</div>
 								@endif
@@ -218,19 +217,15 @@
 					<h3>Últimos anuncios CASUALES</h3>
 						<div class="owl-carousel3">
 							@foreach($casual as $pubCasual)
-							<div class="item">
-								<div class="col-xs-12 contCatIndex separator no-padding">
-							 		<div class="col-xs-12 image">
-										<a href="{{ URL::to('publicacion/habitual/'.base64_encode($pubCasual->id)) }}">
-											<img src="{{ asset('images/pubImages/'.$pubCasual->img_1) }}" class="imgPubCarousel">
-										</a>
-							 		</div>
-							 		<div class="col-xs-12 texto-desc">
-							 			{{ ucfirst(strtolower(strip_tags($pubCasual->descripcion))) }}
-							 		</div>
-							 		<div class="col-xs-12 btn-group no-padding">
-							 			<a href="{{ URL::to('publicacion/habitual/'.base64_encode($pubCasual->id)) }}" class="btn btn-warning">Ver publicación</a>
-							 		</div>
+							<div class="item contCatIndex">
+								<a href="{{ URL::to('publicacion/casual/'.base64_encode($pubCasual->id)) }}">
+									<img src="{{ asset('images/pubImages/'.$pubCasual->img_1) }}" class="imgPubCarousel">
+								</a>
+								<div class="dataIndex textoPromedio">
+									<div class="col-xs-6" style="padding-top:0px;margin-top:0px;">{{ $pubCasual->titulo }}</div>
+									<div class="col-xs-6" style="padding-top:0px;margin-top:0px;"><label>Precio: </label>{{ $pubCasual->precio.' '.ucfirst(strtolower($pubCasual->moneda)).'.' }}</div>
+									<div class="col-xs-12"><a href="{{ URL::to('publicacion/lider/'.base64_encode($pubCasual->id)) }}" style="color:white;"><i class="fa fa-hand-o-right"></i> Ver publicación</a>
+									</div>
 								</div>
 							</div>
 							@endforeach
