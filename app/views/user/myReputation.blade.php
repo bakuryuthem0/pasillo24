@@ -6,7 +6,7 @@
 	<div class="row">
 		<div class="col-xs-12 contAnaranjado" style="margin-top:5em;">
 			<legend style="text-align:center;">Sistema de reputación</legend>
-			<div class="col-xs-6 cotMyRep table-responsive">
+			<div class="col-sm-12 col-md-6 table-responsive">
 				<legend><h3>Reputación como comprador</h3></legend>
 				<table class="table table-striped table-hover textoPromedio ">
 					<thead>
@@ -120,7 +120,7 @@
 		          </ul>
 		        </nav> <!-- cd-pagination-wrapper -->
 		      </div>
-			<div class="col-xs-6 cotMyRep table-responsive">
+			<div class="col-sm-12 col-md-6 table-responsive">
 				<legend><h3>Reputación como Vendedor</h3></legend>
 				<table class="table table-striped table-hover textoPromedio">
 					<thead>
@@ -273,8 +273,8 @@
 				</div>
 				<div class="modal-footer " style="text-align:center;">
 					<div class="col-xs-12">
-						<p class="bg-primary textoPromedio" style="float:left;padding:1em;">Niveles de reputación</p>
-					<p class="bg-primary textoPromedio" style="float:right;padding:1em;"><i class="fa fa-plus-circle" style="color:white;"></i> Reputación positiva</p>
+						<p class="col-sm-12 col-md-4 bg-primary textoPromedio pull-left" >Niveles de reputación</p>
+						<p class="col-sm-12 col-md-4 bg-primary textoPromedio pull-right" ><i class="fa fa-plus-circle" style="color:white;"></i> Reputación positiva</p>
 					</div>
 					
 					<div clas="clearfix"></div>

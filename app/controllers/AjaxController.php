@@ -51,7 +51,42 @@ class AjaxController extends BaseController{
 	/*                                                                                 */
 	/*                                                                                 */
 	/*---------------------------Login-------------------------------------------------*/
+	public function getGcm()
+	{
+		$regId = Input::get('regId');
+		$id = Input::get('id');
+		$aux = GcmDevices::where('gcm_regid','=',$regId)->where('user_id','=',$id)->first();
+		if (is_null($aux) || empty($aux)) {
+			$new   = new GcmDevices;
+			$new->gcm_regid = $regId;
+			$new->user_id   = $id;
+			$new->save();
+		}
+		return Response::json(array(
+			'type' => 'success',
+		));
+	}
+	public function getPubUrl()
+	{
+		$id = Input::get('pub_id');
+		$pub = Publicaciones::find($id);
+		if ($pub->tipo == 'Lider') {
+			$url = URL::to('publicacion/lider/'.base64_encode($id));
+			
+		}elseif($pub->tipo == "Habitual")
+		{
+			$url = URL::to('publicacion/habitual/'.base64_encode($id));
 
+		}elseif($pub->tipo == "Casual")
+		{
+			$url = URL::to('publicacion/casual/'.base64_encode($id));
+			
+		}
+		return Response::json(array(
+			'type' => 'success',
+			'data' => $url,
+		));
+	}
 	public function getLoginApp()
 	{
 		/*Se reciven los datos del usuario*/

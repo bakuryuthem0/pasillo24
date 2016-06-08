@@ -2,7 +2,7 @@
 @section('content')
 <div class="container contenedorUnico">
 	<div class="row">
-		<div class="col-xs-12 contAnaranjado" style="margin-top:8em;">
+		<div class="col-xs-12 contAnaranjado formulario">
 			@if(Session::has('error'))
 			<div class="alert alert-danger">
 				<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
@@ -28,16 +28,6 @@
 			</div>
 			<div class="clearfix"></div>
 				@if($type == 'lider')
-
-			<form action="#" method="get">
-				<div class="input-group">
-					<!-- USE TWITTER TYPEAHEAD JSON WITH API TO SEARCH -->
-					<input class="form-control" id="buscar-usuario" name="q" placeholder="Busqueda general" required>
-					<span class="input-group-addon">
-						<i class="glyphicon glyphicon-search"></i>
-					</span>
-				</div>
-			</form>
 			<div class="table-responsive" style="width:100%;">
 				<table id="tablesorter" class="table table-striped table-hover table-list-search">
 					<thead>
@@ -135,17 +125,8 @@
 				</table>
 			</div>
 			@elseif($type == 'habitual')
-			<form action="#" method="get">
-				<div class="input-group">
-					<!-- USE TWITTER TYPEAHEAD JSON WITH API TO SEARCH -->
-					<input class="form-control" id="buscar-usuario" name="q" placeholder="Busqueda general" required>
-					<span class="input-group-addon">
-						<i class="glyphicon glyphicon-search"></i>
-					</span>
-				</div>
-			</form>
 			<div class="table-responsive" style="width:100%;">
-				<table class="table table-striped table-hover table-list-search">
+				<table id="tablesorter" class="table table-striped table-hover table-list-search">
 					<thead>
 						<tr>
 							<th class="textoMedio">
@@ -291,17 +272,8 @@
 			@if(!is_null($rePub))
 				<p class="bg-info textoPromedio" style="padding:0.5em;">Fecha para la siguiente publicacion casual:   {{ date('d-m-Y',strtotime($rePub->fechRepub)) }} </p>
 				@endif
-			<form action="#" method="get">
-				<div class="input-group">
-					<!-- USE TWITTER TYPEAHEAD JSON WITH API TO SEARCH -->
-					<input class="form-control" id="buscar-usuario" name="q" placeholder="Busqueda general" required>
-					<span class="input-group-addon">
-						<i class="glyphicon glyphicon-search"></i>
-					</span>
-				</div>
-			</form>
 			<div class="table-responsive" style="width:100%;">
-				<table class="table table-striped table-hover table-list-search">
+				<table id="tablesorter" class="table table-striped table-hover table-list-search">
 					<thead>
 						<tr>
 							<th class="textoMedio">
@@ -323,7 +295,7 @@
 							
 							<!--<th class="textoMedio">Modificar</th>-->
 							<th class="textoMedio">
-								estatus
+								Estatus
 							</th>
 							<th class="textoMedio">
 								Eliminar
@@ -389,23 +361,51 @@
 			@endif
 			@else
 			<div class="col-xs-12">
-				<div class="col-xs-4 typePub imgLiderUp">
-					<h3 class="footerText" style="margin-bottom:1em;">ANUNCIO LÍDER</h3>
-					<img src="{{asset('images/lider-01.png')}}" class="pubType">
-				
-					<a href="{{ URL::to('usuario/publicaciones/mis-publicaciones/lider') }}" class="btn btn-primary footerText " style="margin-top:2em;width:100%;">Ver publicación</a>
+				<div class="col-xs-12 pubBottonsCont">
+					<div class="col-sm-12 col-md-4 visible-md visible-lg" >
+						<h3 class="footerText text-center">ANUNCIO LÍDER</h3>
+					</div>
+					<div class="col-sm-12 col-md-4 visible-md visible-lg" >
+						<h3 class="footerText text-center">ANUNCIO HABITUAL</h3>
+
+					</div>
+					<div class="col-sm-12 col-md-4 visible-md visible-lg" >
+						<h3 class="footerText text-center">ANUNCIO CASUAL</h3>
+
+					</div>
 				</div>
-				<div class="col-xs-4 typePub imgLiderUp">
-					<h3 class="footerText" style="margin-bottom:1em;">ANUNCIO HABITUAL</h3>
-					<img src="{{asset('images/habitual-01.png')}}" class="pubType">
+				<div class="col-sm-12">
+					<div class="col-sm-12 col-md-4">
+						<h3 class="footerText text-center hidden-md hidden-lg">ANUNCIO LÍDER</h3>
+						<img src="{{asset('images/lider-01.png')}}" class="pubType center-block">
 					
-					<a href="{{ URL::to('usuario/publicaciones/mis-publicaciones/habitual') }}" class="btn btn-primary footerText " style="margin-top:2em;width:100%;">Ver publicación</a>
+						<a href="{{ URL::to('usuario/publicaciones/mis-publicaciones/lider') }}" class="btn btn-primary pubBtn footerText hidden-md hidden-lg">Ver publicación</a>
+					</div>
+					<div class="col-sm-12 col-md-4">
+						<h3 class="footerText text-center hidden-md hidden-lg">ANUNCIO HABITUAL</h3>
+						<img src="{{asset('images/habitual-01.png')}}" class="pubType center-block">
+						
+						<a href="{{ URL::to('usuario/publicaciones/mis-publicaciones/habitual') }}" class="btn btn-primary pubBtn footerText hidden-md hidden-lg">Ver publicación</a>
+					</div>
+					<div class="col-sm-12 col-md-4">
+						<h3 class="footerText text-center hidden-md hidden-lg">ANUNCIO CASUAL</h3>
+						<img src="{{asset('images/casual-01.png')}}" class="pubType center-block">
+				
+						<a href="{{ URL::to('usuario/publicaciones/mis-publicaciones/casual') }}" class="btn btn-primary pubBtn footerText hidden-md hidden-lg">Ver publicación</a>
+					</div>
 				</div>
-				<div class="col-xs-4 typePub imgLiderUp">
-					<h3 class="footerText" style="margin-bottom:1em;">ANUNCIO CASUAL</h3>
-					<img src="{{asset('images/casual-01.png')}}" class="pubType">
-			
-					<a href="{{ URL::to('usuario/publicaciones/mis-publicaciones/casual') }}" class="btn btn-primary footerText " style="margin-top:2em;width:100%;">Ver publicación</a>
+				<div class="col-xs-12 pubBottonsCont">
+					<div class="col-sm-12 col-md-4 formulario visible-md visible-lg" >
+						<a href="{{ URL::to('usuario/publicaciones/mis-publicaciones/lider') }}" class="btn btn-primary footerText" style="width:100%;">Ver publicación</a>
+					</div>
+					<div class="col-sm-12 col-md-4 formulario visible-md visible-lg" >
+					<a href="{{ URL::to('usuario/publicaciones/mis-publicaciones/habitual') }}" class="btn btn-primary footerText" style="width:100%;">Ver publicación</a>
+
+					</div>
+					<div class="col-sm-12 col-md-4 formulario visible-md visible-lg" >
+					<a href="{{ URL::to('usuario/publicaciones/mis-publicaciones/casual') }}" class="btn btn-primary footerText" style="width:100%;">Ver publicación</a>
+
+					</div>
 				</div>
 			</div>
 			@endif
@@ -434,4 +434,24 @@
 		</div><!-- /.modal-content -->
 	</div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
+@stop
+
+
+@section('postscript')
+    {{ HTML::style('js/datatables/dataTables.bootstrap.css') }}
+    {{ HTML::script('js/datatables/jquery.dataTables.min.js') }}
+    {{ HTML::script('js/datatables/dataTables.bootstrap.min.js') }}
+    <script>
+      $(function () {
+        $('#tablesorter').DataTable({
+          "paging": true,
+          "lengthChange": true,
+          "searching": true,
+          "ordering": true,
+          "info": true,
+          "autoWidth": false
+        });
+      });
+    </script>
+
 @stop

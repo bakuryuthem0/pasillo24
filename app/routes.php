@@ -55,6 +55,7 @@ Route::post('app/registro','AjaxController@postRegisterApp');
 Route::post('app/cambiar-clave','AjaxController@resetPassword');
 Route::group(array('before' => 'check_app_auth'),function()
 {
+	Route::post('app/registrar-gcm','AjaxController@getGcm');
 	Route::post('app/publicacion/comentar','AjaxController@postComment');
 
 	Route::post('app/publicacion/contactar','AjaxController@getCompra');
@@ -98,7 +99,7 @@ Route::get('app/marcas','AjaxController@getBrand');
 Route::get('app/modelos','AjaxController@getModel');
 
 
-
+Route::get('app/pagina-web-link','AjaxController@getPubUrl');
 Route::post('app/subir-imagenes/{carpeta}','AjaxController@upload_image');
 
 
