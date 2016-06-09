@@ -69,9 +69,9 @@
                                 <img src="{{ asset('images/logo.png') }}">
                             </div>
                             <div class="menu visible-md-block visible-lg-block">
-                                <form class="navbar-form navbar-left" role="search">
+                                <form class="navbar-form navbar-left" role="search" method="GET" action="{{ URL::to('inicio/buscar') }}">
                                     <div class="form-group">
-                                        <input type="text" class="form-control" placeholder="Search">
+                                        <input type="text" name="busq" class="form-control" placeholder="Buscar">
                                     </div>
                                     <button type="submit" class="btn btn-flat btn-search">Buscar</button>
                                 </form>
@@ -291,9 +291,9 @@
                                 <i class="fa fa-bars"></i>
                             </button>
                             <div  class="col-xs-12 col-sm-8 hidden-md hidden-lg menu-movil collapse " id="menu-movile">
-                                <form class="navbar-form form-movil" role="search">
+                                <form class="navbar-form form-movil" role="search" method="GET" action="{{ URL::to('inicio/buscar') }}">
                                     <div class="form-group">
-                                        <input type="text" class="form-control" placeholder="Search">
+                                        <input type="text" class="form-control" placeholder="Buscar" name="busq">
                                     </div>
                                     <button type="submit" class="btn btn-flat btn-search">Buscar</button>
                                 </form>
@@ -509,7 +509,7 @@
 	
 	{{ HTML::script('js/jquery.min.js') }}
 	{{ HTML::script('js/bootstrap.min.js') }}
-	{{ HTML::script('js/custom-preview.js?v=1.8')}}
+	{{ HTML::script('js/custom.js?v=1.8')}}
 	
 	{{ HTML::script('js/ckeditor.js') }}
 	{{ HTML::script('js/jquery.ckeditor.js') }}
