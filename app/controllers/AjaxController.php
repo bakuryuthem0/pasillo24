@@ -66,27 +66,6 @@ class AjaxController extends BaseController{
 			'type' => 'success',
 		));
 	}
-	public function getPubUrl()
-	{
-		$id = Input::get('pub_id');
-		$pub = Publicaciones::find($id);
-		if ($pub->tipo == 'Lider') {
-			$url = URL::to('publicacion/lider/'.base64_encode($id));
-			
-		}elseif($pub->tipo == "Habitual")
-		{
-			$url = URL::to('publicacion/habitual/'.base64_encode($id));
-
-		}elseif($pub->tipo == "Casual")
-		{
-			$url = URL::to('publicacion/casual/'.base64_encode($id));
-			
-		}
-		return Response::json(array(
-			'type' => 'success',
-			'data' => $url,
-		));
-	}
 	public function getLoginApp()
 	{
 		/*Se reciven los datos del usuario*/
@@ -595,6 +574,18 @@ class AjaxController extends BaseController{
 	{
 		$id = Input::get('pub_id');
 		$pub = Publicaciones::find($id);
+		if ($pub->tipo == 'Lider') {
+			$url = URL::to('publicacion/lider/'.base64_encode($id));
+			
+		}elseif($pub->tipo == "Habitual")
+		{
+			$url = URL::to('publicacion/habitual/'.base64_encode($id));
+
+		}elseif($pub->tipo == "Casual")
+		{
+			$url = URL::to('publicacion/casual/'.base64_encode($id));
+			
+		}
 		$user = User::find($pub->user_id);
 		if ($pub->user_id != 21) {
 			$otrasPub = Publicaciones::where('user_id','=',$pub->user_id)
@@ -742,6 +733,7 @@ class AjaxController extends BaseController{
 			'respuestas' 	=> $resp, /*respuesta a los comentarios de esta pub*/
 			'otrasPub' 		=> $otrasPub,/*Otras pub de los usuarios*/
 			'username' 		=> $user->username,
+			'url' 			=> $url
 		));
 	}
 	/*---------------------------Busqueda----------------------------------------------*/
