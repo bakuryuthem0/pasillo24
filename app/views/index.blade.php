@@ -209,25 +209,25 @@ display: block;">
 							<?php $x = 0;?>
 							@foreach($habitual as $pubHabitual)
 								@if($x%2 == 0)
-								<div class="item">
+									<div class="item">
 								@endif
-							 		<div class="contCatIndex">
-										<a href="{{ URL::to('publicacion/habitual/'.base64_encode($pubHabitual->id)) }}">
-											<img src="{{ asset('images/pubImages/'.$pubHabitual->img_1) }}" class="imgPubCarousel">
-										</a>
-										<div class="dataIndex textoPromedio">
-											<div class="col-xs-6" style="padding-top:0px;margin-top:0px;">{{ $pubHabitual->titulo }}</div>
-											<div class="col-xs-6" style="padding-top:0px;margin-top:0px;">
-											@if($pubHabitual->precio)
-											 <label>Precio: </label>{{ $pubHabitual->precio.' '.ucfirst(strtolower($pubHabitual->moneda)).'.' }}
-											@endif
+								 		<div class="contCatIndex">
+											<a href="{{ URL::to('publicacion/habitual/'.base64_encode($pubHabitual->id)) }}">
+												<img src="{{ asset('images/pubImages/'.$pubHabitual->img_1) }}" class="imgPubCarousel">
+											</a>
+											<div class="dataIndex textoPromedio">
+												<div class="col-xs-6" style="padding-top:0px;margin-top:0px;">{{ $pubHabitual->titulo }}</div>
+												<div class="col-xs-6" style="padding-top:0px;margin-top:0px;">
+												@if($pubHabitual->precio)
+												 <label>Precio: </label>{{ $pubHabitual->precio.' '.ucfirst(strtolower($pubHabitual->moneda)).'.' }}
+												@endif
+												</div>
+												<div class="col-xs-12"><a href="{{ URL::to('publicacion/lider/'.base64_encode($pubHabitual->id)) }}" style="color:white;"><i class="fa fa-hand-o-right"></i> Ver publicación</a>
+												</div>
 											</div>
-											<div class="col-xs-12"><a href="{{ URL::to('publicacion/lider/'.base64_encode($pubHabitual->id)) }}" style="color:white;"><i class="fa fa-hand-o-right"></i> Ver publicación</a>
-											</div>
-										</div>
-							 		</div>
+								 		</div>
 								@if(($x+1)%2 == 0)
-								</div>
+									</div>
 								@endif
 								<?php $x++;?>
 							
@@ -235,24 +235,6 @@ display: block;">
 							@if(count($habitual)<8)
 							<div class="item">
 									<div class="contCatIndex"><img src="{{ asset('images/anuncios-01.png') }}"></div>
-									<div class="contCatIndex"><img src="{{ asset('images/anuncios-02.png') }}"></div>
-							</div>
-							<div class="item">
-									<div class="contCatIndex"><img src="{{ asset('images/anuncios-03.png') }}"></div>
-
-									<div class="contCatIndex"><img src="{{ asset('images/anuncios-04.png') }}"></div>
-							</div>
-							<div class="item">
-									<div class="contCatIndex"><img src="{{ asset('images/anuncios-01.png') }}"></div>
-									<div class="contCatIndex"><img src="{{ asset('images/anuncios-02.png') }}"></div>
-							</div>
-							<div class="item">
-									<div class="contCatIndex"><img src="{{ asset('images/anuncios-03.png') }}"></div>
-
-									<div class="contCatIndex"><img src="{{ asset('images/anuncios-04.png') }}"></div>
-							</div>
-							@elseif(count($habitual)%2 != 0)
-								<div class="contCatIndex"><img src="{{ asset('images/anuncios-04.png') }}"></div>
 							</div>
 							@endif
 						</div>
