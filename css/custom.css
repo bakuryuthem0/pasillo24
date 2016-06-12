@@ -241,6 +241,7 @@ footer
     background-color: #133F1E;
     display: inline-block;
     width: 100%;
+    margin-top: 5em;
 }
 
 footer .panel-footer
@@ -503,11 +504,189 @@ select.currency
   color: rgb(36, 85, 128);
   font-weight: 600;
 }
+.contPubLiderBusq
+{
+    height: 215px;
+    overflow: hidden;
+    position: relative;
+}
 
+@media(max-width: 768px){
+	.text-center-xs
+	{
+		text-align: center;
+	}
+	.pub-title
+	{
+	    margin-top: 7px;
+	}
+}
+@media(min-width: 426px) and (max-width: 768px){
+	.contPubLiderBusq
+	{
+	    height: 300px;
+	    overflow: hidden;
+    	position: relative;
+	}
+	.contPubLiderBusq .dataIndex
+	{
+		-webkit-transform: translateY(-90px);
+		   -moz-transform: translateY(-90px);
+		    -ms-transform: translateY(-90px);
+		     -o-transform: translateY(-90px);
+		        transform: translateY(-90px);
+	}
+	.contPubLiderBusq .dataIndex:hover
+	{
+		-webkit-transform: translateY(-90px);
+		   -moz-transform: translateY(-90px);
+		    -ms-transform: translateY(-90px);
+		     -o-transform: translateY(-90px);
+		        transform: translateY(-90px);
+	}
+	.contPubNoLider .dataIndex
+	{
+		-webkit-transform: translateY(-100px);
+		   -moz-transform: translateY(-100px);
+		    -ms-transform: translateY(-100px);
+		     -o-transform: translateY(-100px);
+		        transform: translateY(-100px);
+	}
+	.contPubNoLider .dataIndex:hover
+	{
+		-webkit-transform: translateY(-100px);
+		   -moz-transform: translateY(-100px);
+		    -ms-transform: translateY(-100px);
+		     -o-transform: translateY(-100px);
+		        transform: translateY(-100px);
+	}
+}
+.owl-carousel-busq 	> .owl-controls > .owl-dots > .owl-dot
+{
+	display: none;
+}
+.owl-carousel-busq 	> .owl-controls > .owl-dots > .owl-dot:nth-child(-n+6)
+{
+	display: inline-block;
+}
+.btn-full
+{
+	width: 100%;
+}
+.owl-carousel .owl-item
+{
+	background-color: #fff;
+}
+#bronce
+{
+	background-image: url('../images/trop.jpg');
+	background-size: 150px 100px;
+	background-position: 50px 48px;
+}
+#plata
+{
+	background-image: url('../images/trop.jpg');
+	background-size: 150px 100px;
+	background-position: 100px 48px;
+}
+#oro
+{
+	background-image: url('../images/trop.jpg');
+	background-size: 150px 100px;
+	background-position: 150px 48px;
+}
+#c_bronce
+{
+	background-image: url('../images/trop.jpg');
+	background-size: 150px 100px;
+	background-position: 50px 2px;
+}
+#c_plata
+{
+	background-image: url('../images/trop.jpg');
+	background-size: 150px 100px;
+	background-position: 100px 2px;
+}
+#c_oro
+{
+	background-image: url('../images/trop.jpg');
+	background-size: 150px 100px;
+	background-position: 150px 2px;
+}
+.trofeos
+{
+	width: 50px;
+	height: 50px;
+	float: right;
+	margin-left: 2em;
+}
+@media(max-width: 991px){
+	.trofeos
+	{
+		margin-left: 0;
+	}
+}
+.heightTransition
+{
+	-webkit-transition: height .5s ease-out;
+	   -moz-transition: height .5s ease-out;
+	    -ms-transition: height .5s ease-out;
+	     -o-transition: height .5s ease-out;
+	        transition: height .5s ease-out;
+}
+.inputComentario
+{
+	height: 75px !important;
+}
+.inputComentario.textareaFocused
+{
+    height: 150px !important;
+}
+.contTypePub
+{
+	width: 20%;
+	height: 50px;
+	float: right;
+	margin-top: 20px;
+}
+.contTypePub img
+{
+	height: 100%;
+	float: right;
+	max-width: 50px;
+	border-radius: 4px;
+}
+.typePub
+{
+    max-height: 50px;
+    width: auto;
+}
+.pika_stage_lider_container .pika-stage
+{
+	width: 100%;
+	height: auto !important;
+}
+.pika-stage .caption
+{
+	display: none !important;
+}
+.pika_stage_lider.pika-thumbs
+{
+	padding: 0;
+	margin-top: 1em;
+}
+.pika_stage_lider.pika-thumbs li
+{
+	margin: 0 5px 0 0;
+}
+.fancybox-inner .pika-stage 
+{
+	height: auto !important;
+}
 
 .data
 {
-	-webkit-transform: translateY(-25px);
+	-webkit-transform: translateY(-90px);
 	   -moz-transform: translateY(-25px);
 	    -ms-transform: translateY(-25px);
 	     -o-transform: translateY(-25px);
@@ -567,27 +746,121 @@ select.currency
 		     -o-transform: translateY(-50px);
 		        transform: translateY(-50px);
 	}
+	.contPubNoLider .dataIndex
+	{
+		height: 100px;
+		-webkit-transform: translateY(-100px);
+		   -moz-transform: translateY(-100px);
+		    -ms-transform: translateY(-100px);
+		     -o-transform: translateY(-100px);
+		        transform: translateY(-100px);
+	}
 	#tablesorter
 	{
 		font-size: smaller;
 	}
-}
-@media(max-width: 425px){
-	.text-center-xs
+	.pika-textnav
 	{
-		text-align: center;
+		width: 100% !important;
+    	padding: 0 1em;
+	}
+	.pika_stage_lider_container .pika-stage
+	{
+		position: relative;
 	}
 }
-.btn-full
-{
-	width: 100%;
-}
+
 /* -------------------------------- 
  
 custom icons - customize the small arrow inside the next and prev buttons 
  
 -------------------------------- */
- 
+
+.blog-pagination {
+  text-align: center;
+  padding-top: 10px;
+  padding-bottom: 55px;
+}
+
+.portfolio-pagination{
+  text-align: center;
+  
+  padding-top: 40px;
+  padding-bottom: 90px;
+}
+
+.pagination li{
+  display: inline-block;
+  margin: 0 10px;
+}
+
+.pagination li a{
+  color: #000;
+  padding: 5px 10px;
+  border-radius: 5px;
+  border: 1px solid #fff;
+}
+
+.pagination li:first-child a{
+  background: url(../images/portfolio/left.png);
+  background-repeat: no-repeat;
+  text-indent: -999999999px;
+  background-position: center top 10px;
+  width: 32px;
+  height: 36px;
+  border: none;
+  -webkit-transition: 300ms;
+  -moz-transition: 300ms;
+  -o-transition: 300ms;
+  transition: 300ms;
+}
+
+.pagination li:first-child a:hover{
+  background: url(../images/portfolio/left.png);
+  background-position: center top -37px;
+  background-repeat: no-repeat;
+  -webkit-transition: 300ms;
+  -moz-transition: 300ms;
+  -o-transition: 300ms;
+  transition: 300ms;
+}
+
+.pagination li:last-child a{
+  background: url(../images/portfolio/right.png);
+  background-repeat: no-repeat;
+  text-indent: -999999999px;
+  background-position: center top 10px;
+  width: 32px;
+  height: 36px;
+  border: none;
+  -webkit-transition: 300ms;
+  -moz-transition: 300ms;
+  -o-transition: 300ms;
+  transition: 300ms;
+}
+
+.pagination li:last-child a:hover{
+  background: url(../images/portfolio/right.png);
+  background-position: center top -37px;
+  background-repeat: no-repeat;
+  -webkit-transition: 300ms;
+  -moz-transition: 300ms;
+  -o-transition: 300ms;
+  transition: 300ms;
+}
+
+.pagination li a:hover,
+.pagination .active a, 
+.pagination a:active, 
+.pagination .active a:hover,
+.pagination .active a:focus, 
+.pagination a:focus {
+  background: transparent;
+  border-color: #C03035;
+  color: #C03035;
+}
+
+/*
 nav[role="navigation"] {
   text-align: center;
 }
@@ -599,12 +872,10 @@ nav[role="navigation"] {
   text-align: center;
 }
 .cd-pagination li {
-  /* hide numbers on small devices */
   display: none;
   margin: 0 .2em;
 }
 .cd-pagination li.button {
-  /* make sure prev next buttons are visible */
   display: inline-block;
 }
 .cd-pagination a, .cd-pagination span {
@@ -613,7 +884,6 @@ nav[role="navigation"] {
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
-  /* use padding and font-size to change buttons size */
   padding: .6em .8em;
   font-size: 1.5rem;
 }
@@ -625,7 +895,6 @@ nav[role="navigation"] {
   background-color: #f2f2f2;
 }
 .cd-pagination a:active {
-  /* click effect */
   -webkit-transform: scale(0.9);
   -moz-transform: scale(0.9);
   -ms-transform: scale(0.9);
@@ -633,7 +902,6 @@ nav[role="navigation"] {
   transform: scale(0.9);
 }
 .cd-pagination a.disabled {
-  /* button disabled */
   color: rgba(46, 64, 87, 0.4);
   pointer-events: none;
 }
@@ -647,7 +915,6 @@ nav[role="navigation"] {
   content: ' \00bb';
 }
 .cd-pagination .current {
-  /* selected number */
   background-color: #64a281;
   border-color: #64a281;
   color: #ffffff;
@@ -664,11 +931,7 @@ nav[role="navigation"] {
   }
 }
 
-/* -------------------------------- 
 
-No space - remove distance between list items
-
--------------------------------- */
 .cd-pagination.no-space {
   width: auto;
   max-width: none;
@@ -702,11 +965,6 @@ No space - remove distance between list items
   border-radius: 0 0.25em 0.25em 0;
 }
 
-/* -------------------------------- 
-
-move buttons - move prev and next buttons to the sides
-
--------------------------------- */
 .cd-pagination.move-buttons:after {
   content: "";
   display: table;
@@ -733,11 +991,6 @@ move buttons - move prev and next buttons to the sides
   float: none;
 }
 
-/* -------------------------------- 
-
-custom icons - customize the small arrow inside the next and prev buttons 
-
--------------------------------- */
 .cd-pagination.custom-icons .button a {
   position: relative;
 }
@@ -752,11 +1005,9 @@ custom icons - customize the small arrow inside the next and prev buttons
   content: '';
   position: absolute;
   display: inline-block;
-  /* set size for custom icons */
   width: 16px;
   height: 16px;
   top: 50%;
-  /* set margin-top = icon height/2 */
   margin-top: -8px;
   background: transparent url("../img/cd-icon-arrow-1.svg") no-repeat center center;
 }
@@ -772,18 +1023,11 @@ custom icons - customize the small arrow inside the next and prev buttons
   transform: rotate(180deg);
 }
 
-/* -------------------------------- 
-
-custom buttons - replace prev and next buttons text with a custom icon 
-
--------------------------------- */
 .cd-pagination.custom-buttons a, .cd-pagination.custom-buttons span {
   vertical-align: middle;
 }
 .cd-pagination.custom-buttons .button a {
-  /* set custom width */
   width: 40px;
-  /* image replacement */
   overflow: hidden;
   white-space: nowrap;
   text-indent: 100%;
@@ -811,11 +1055,6 @@ custom buttons - replace prev and next buttons text with a custom icon
   border-radius: 0.25em 0 0 0.25em;
 }
 
-/* -------------------------------- 
-
-animated buttons - animate the text inside prev and next buttons 
-
--------------------------------- */
 .cd-pagination.animated-buttons a, .cd-pagination.animated-buttons span {
   padding: 0 1.4em;
   height: 50px;
@@ -882,3 +1121,4 @@ animated buttons - animate the text inside prev and next buttons
   -o-transform: translateX(-50%) rotate(180deg) translateY(50px);
   transform: translateX(-50%) rotate(180deg) translateY(50px);
 }
+*/

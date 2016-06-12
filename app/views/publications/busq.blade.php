@@ -6,17 +6,16 @@
 	<div class="row">
 		<div class="col-xs-12">
 			<legend style="margin-bottom:2em;margin-top:2em;text-align:center;">Publicaciones LÍDER encontradas para: "{{ $busq }}"</legend>
-			<div class="owl-carousel1">
+			<div class="owl-carousel1 owl-carousel-busq">
 				@foreach($lider as $pubLider)
-				<div class="item contCatIndex">
-					<div class="col-xs-12 pubTitle"><h4>{{ ucfirst($pubLider->titulo) }}</h4></div>
-					<div class="col-xs-12">
-						<a href="{{ URL::to('publicacion/lider/'.base64_encode($pubLider->id)) }}">
-							<img src="{{ asset('images/pubImages/'.$pubLider->img_1) }}" class="imgPubCarousel">
-						</a>
-					</div>
-					<div class="col-xs-12">
-						<a href="{{ URL::to('publicacion/lider/'.base64_encode($pubLider->id)) }}" class="btn btn-warning" style="width:100%;"><i class="fa fa-hand-o-right"></i> Ver publicación</a>
+				<div class="item contCatIndex contPubLiderBusq">
+					<a href="{{ URL::to('publicacion/lider/'.base64_encode($pubLider->id)) }}">
+						<img src="{{ asset('images/pubImages/'.$pubLider->img_1) }}" class="imgPubCarousel">
+					</a>
+					<div class="dataIndex textoPromedio">
+						<div class="col-xs-12" style="padding-top:0px;margin-top:0px;">{{ $pubLider->titulo }}</div>
+						<div class="col-xs-12"><a href="{{ URL::to('publicacion/lider/'.base64_encode($pubLider->id)) }}" style="color:white;"><i class="fa fa-hand-o-right"></i> Ver publicación</a>
+						</div>
 					</div>
 				</div>
 				@endforeach
@@ -53,7 +52,7 @@
 				@else
 				
 				<div class="item">
-						<img src="{{ asset('images/anuncios-04.png') }}">
+						<img src="{{ asset('images/anuncios-05.png') }}">
 				</div>
 				@endif
 			</div>
@@ -116,7 +115,7 @@
 							<input type="text" class="form-control min" name="min" placeholder="Min:">
 						@endif
 					</div>
-					<div class="col-xs-12 contInputFilter">
+					<div class="col-xs-12 formulario contInputFilter">
 						@if(isset($minmax))
 							<input type="text" class="form-control max" name="max" placeholder="Max:" value="{{ $minmax[1] }}">
 						@else
@@ -131,7 +130,7 @@
 							<option value="Usd" @if(isset($currency) && $currency == 'Usd') selected @endif>Usd.</option>
 						</select>
 					</div>
-					<div class="col-xs-12">
+					<div class="col-xs-12 formulario">
 						<button class="btn btn-default btn-xs btn-flat btn-filtralo" title="Filtrar">Filtrar <strong><i class="fa fa-angle-right"></i></strong></button>
 					</div>
 					<div class="clearfix"></div>
@@ -141,28 +140,44 @@
 		<div class="col-xs-12 col-md-10 contAnaranjado contAnaranjadoBusq">
 			@if(!empty($publicaciones) && count($publicaciones)>0)
 				@foreach($publicaciones as $pub)
-				<div class="contCat">
-					<a href="{{ URL::to('publicacion/habitual/'.base64_encode($pub->id)) }}">
-						<div class="col-xs-12 col-md-4 contCatPub">
-								<img src="{{ asset('images/pubImages/'.$pub->img_1) }}" style="width:100%;">
-						</div>
-					</a>
-						<div class="col-xs-12 col-md-4 contCatPub">
-							<h3>{{ $pub->titulo }}</h3>
-								@if(strlen($pub->descripcion) <= 20)
-								<p class="textoPromedio">{{ strip_tags($pub->descripcion) }}</p>
-								@else
-								<p class="textoPromedio">{{ substr(strip_tags($pub->descripcion),0,100) }}...</p>
-								@endif
-								<label class="textoPromedio">{{ $pub->dep }}</label>
-						</div>
-						<div class="col-xs-12 col-md-4 contCatPub">
-						 <label class="textoPromedio" style="display:inline-block;margin-top: 0.5em;margin-left: 1em;">
+				<div class="col-xs-12 contCat formulario">
+					<div class="col-xs-12 col-md-4 contCatPub">
+						<a href="{{ URL::to('publicacion/habitual/'.base64_encode($pub->id)) }}">
+							<img src="{{ asset('images/pubImages/'.$pub->img_1) }}" style="width:100%;">
+						</a>
+					</div>
+					<div class="col-xs-12 col-sm-6 col-md-4 text-center-xs">
+						<h3>{{ $pub->titulo }}</h3>
+							@if(strlen($pub->descripcion) <= 20)
+							<p class="textoPromedio">{{ strip_tags($pub->descripcion) }}</p>
+							@else
+							<p class="textoPromedio">{{ substr(strip_tags($pub->descripcion),0,100) }}...</p>
+							@endif
+							<label class="textoPromedio">{{ $pub->dep }}</label>
+					</div>
+					<div class="col-sm-6 visible-sm text-center-xs">
+						<label class="textoPromedio">
+								Precio: 
+						</label>
+						<h3 class="precioPub" style="display:inline-block;">{{ $pub->precio.' '.ucfirst(strtolower($pub->moneda)) }}</h3>
+						<br>
+						<label class="textoPromedio">
+							Finaliza:
+							@if($pub->fechFinNormal != "0000-00-00")
+								{{ date('d-m-Y',strtotime($pub->fechFinNormal)) }}
+							@else
+								{{ date('d-m-Y',strtotime($pub->fechFin)) }}
+							@endif 
+						</label>
+					</div>
+					<div class="col-xs-12 col-md-4 contCatPub">
+						<div class="col-xs-12 text-center-xs hidden-sm no-padding">
+						 	<label class="textoPromedio">
 									Precio: 
-								</label>
-								<h3 class="precioPub" style="display:inline-block;">{{ $pub->precio.' '.ucfirst(strtolower($pub->moneda)) }}</h3>
+							</label>
+							<h3 class="precioPub" style="display:inline-block;">{{ $pub->precio.' '.ucfirst(strtolower($pub->moneda)) }}</h3>
 							<br>
-							<label class="textoPromedio" style="display:inline-block;margin-top: 0.5em;margin-left: 1em;">
+							<label class="textoPromedio">
 								Finaliza:
 								@if($pub->fechFinNormal != "0000-00-00")
 									{{ date('d-m-Y',strtotime($pub->fechFinNormal)) }}
@@ -170,101 +185,106 @@
 									{{ date('d-m-Y',strtotime($pub->fechFin)) }}
 								@endif 
 							</label>
-							<a href="{{ URL::to('publicacion/habitual/'.base64_encode($pub->id)) }}" class="btn btn-primary btnBusq">
+						</div>
+						<div class="col-xs-12 no-padding">
+							<a href="{{ URL::to('publicacion/habitual/'.base64_encode($pub->id)) }}" class="btn btn-primary btn-full">
 								<i class="fa fa-hand-o-right">
 								</i> Ver publicación
 							</a>
 						</div>
+					</div>
 				</div>	
 				<hr class="borderBlue">
 				@endforeach
+				<div class="blog-pagination">
 
-				<nav role="navigation">
-		          <?php  $presenter = new Illuminate\Pagination\BootstrapPresenter($publicaciones); ?>
-		          @if ($publicaciones->getLastPage() > 1)
-		          <ul class="cd-pagination no-space">
-				<?php
-				$beforeAndAfter = 3;
+					<nav role="navigation">
+			          <?php  $presenter = new Illuminate\Pagination\BootstrapPresenter($publicaciones); ?>
+			          @if ($publicaciones->getLastPage() > 1)
+			          <ul class="pagination cd-pagination no-space">
+					<?php
+					$beforeAndAfter = 3;
 
-				//Página actual
-				$currentPage = $publicaciones->getCurrentPage();
+					//Página actual
+					$currentPage = $publicaciones->getCurrentPage();
 
-				//Última página
-				$lastPage = $publicaciones->getLastPage();
+					//Última página
+					$lastPage = $publicaciones->getLastPage();
 
-				//Comprobamos si las páginas anteriores y siguientes de la actual existen
-				$start = $currentPage - $beforeAndAfter;
-					
-				  //Comprueba si la primera página en la paginación está por debajo de 1
-				  //para saber como colocar los enlaces
-				if($start < 1)
-				{
-				$pos = $start - 1;
-				$start = $currentPage - ($beforeAndAfter + $pos);
-				}
-				//Último enlace a mostrar
-				$end = $currentPage + $beforeAndAfter;
+					//Comprobamos si las páginas anteriores y siguientes de la actual existen
+					$start = $currentPage - $beforeAndAfter;
+						
+					  //Comprueba si la primera página en la paginación está por debajo de 1
+					  //para saber como colocar los enlaces
+					if($start < 1)
+					{
+					$pos = $start - 1;
+					$start = $currentPage - ($beforeAndAfter + $pos);
+					}
+					//Último enlace a mostrar
+					$end = $currentPage + $beforeAndAfter;
 
-				if($end > $lastPage)
-				{
-				$pos = $end - $lastPage;
-				$end = $end - $pos;
-				}
+					if($end > $lastPage)
+					{
+					$pos = $end - $lastPage;
+					$end = $end - $pos;
+					}
 
-				//Si es la primera página mostramos el enlace desactivado
-				if ($currentPage <= 1)
-				{
-				echo '<li class="disabled"><span class="textoMedio">Primera</span></li>';
-					//en otro caso obtenemos la url y mostramos en forma de link
-				}
-				else
-				{
-				$url = $publicaciones->getUrl(1);
-				echo '<li><a class="textoMedio" href="'.$url.'&busq='.$busq.$paginatorFilter.'">&lt;&lt; Primera</a></li>';
+					//Si es la primera página mostramos el enlace desactivado
+					if ($currentPage <= 1)
+					{
+					echo '<li class="disabled"><a href="#!" class="textoMedio">&lt;&lt; Primera</a></li>';
+						//en otro caso obtenemos la url y mostramos en forma de link
+					}
+					else
+					{
+					$url = $publicaciones->getUrl(1);
+					echo '<li><a class="textoMedio" href="'.$url.'&busq='.$busq.$paginatorFilter.'">&lt;&lt; Primera</a></li>';
 
-				}
-				//Para ir a la anterior
-            	if (($currentPage-1) < $start) {
-	            	echo '<li class="disable"><span>&lt; Atras</span></li>' ;	
-	            }else
-	            {
-              		echo '<li><a href="'.$publicaciones->getUrl($currentPage-1).'&busq='.$busq.$paginatorFilter.'">&lt; Atras</a></li>';
-	            }
-	           
-				//Rango de enlaces desde el principio al final, 3 delante y 3 detrás
-				for($i = $start; $i<=$end;$i++)
-				{
-					if ($currentPage == $i) {
-						echo '<li class="disabled"><span>'.$i.'</span></li>';
+					}
+					//Para ir a la anterior
+	            	if (($currentPage-1) < $start) {
+		            	echo '<li class="disable"><a href="#!">&lt; Atras</a></li>' ;	
+		            }else
+		            {
+	              		echo '<li><a href="'.$publicaciones->getUrl($currentPage-1).'&busq='.$busq.$paginatorFilter.'">&lt; Atras</a></li>';
+		            }
+		           
+					//Rango de enlaces desde el principio al final, 3 delante y 3 detrás
+					for($i = $start; $i<=$end;$i++)
+					{
+						if ($currentPage == $i) {
+							echo '<li class="disabled"><a href="#!">'.$i.'</a></li>';
+						}else
+						{
+							echo '<li><a href="'.$publicaciones->getUrl($i).'&busq='.$busq.$paginatorFilter.'">'.$i.'</a></li>';
+						}
+					}
+			           
+					//Para ir a la siguiente
+					if (($currentPage+1) > $end) {
+						echo '<li class="disable"><a href="#!">Adelante &gt;</a></li>' ;
 					}else
 					{
-						echo '<li><a href="'.$publicaciones->getUrl($i).'&busq='.$busq.$paginatorFilter.'">'.$i.'</a></li>';
+						echo '<li><a href="'.$publicaciones->getUrl($currentPage+1).'&busq='.$busq.$paginatorFilter.'">Adelante &gt;</a></li>';
 					}
-				}
-		           
-				//Para ir a la siguiente
-				if (($currentPage+1) > $end) {
-					echo '<li class="disable"><span>Adelante &gt;</span></li>' ;
-				}else
-				{
-					echo '<li><a href="'.$publicaciones->getUrl($currentPage+1).'&busq='.$busq.$paginatorFilter.'">Adelante &gt;</a></li>';
-				}
 
-				////Si es la última página mostramos desactivado
-				if ($currentPage >= $lastPage)
-				{
-				echo '<li class="disabled"><span class="textoMedio">Última</span></li>';
-					//en otro caso obtenemos la url y mostramos en forma de link
-				}
-				else
-				{
-				$url = $publicaciones->getUrl($lastPage);
-				echo '<li><a class="textoMedio" href="'.$url.'&busq='.$busq.$paginatorFilter.'">Última &gt;&gt;</a></li>';
-				  }
-				?>
-		            @endif
-		          </ul>
-		        </nav> <!-- cd-pagination-wrapper -->
+					////Si es la última página mostramos desactivado
+					if ($currentPage >= $lastPage)
+					{
+					echo '<li class="disabled"><a href="#!" class="textoMedio">Última &gt;&gt;</a></li>';
+						//en otro caso obtenemos la url y mostramos en forma de link
+					}
+					else
+					{
+					$url = $publicaciones->getUrl($lastPage);
+					echo '<li><a class="textoMedio" href="'.$url.'&busq='.$busq.$paginatorFilter.'">Última &gt;&gt;</a></li>';
+					  }
+					?>
+			            @endif
+			          </ul>
+			        </nav> <!-- cd-pagination-wrapper -->
+			    </div>
 			@else
 				<p class="textoPromedio bg-primary" style="padding:1em;border-radius:4px;text-align:center;margin-top:1em;.">No se encontraron resultados para: "{{ $busq }}".</p>
 			@endif

@@ -119,44 +119,44 @@
 
 								</div>
 								<div class="col-xs-12 btn-group no-padding">
-									<a class="btn btn-warning">Ver publicación</a>
+									<a href="{{ URL::to('publicacion/lider/'.base64_encode($pubLider->id)) }}" class="btn btn-warning">Ver publicación</a>
 								</div>
 							</div>
 							@endforeach
 							@if(count($lider)<1)
 							<div class="item">
-									<img src="{{ asset('images/anuncios-01.png') }}">
+									<img src="{{ asset('images/anuncios-01.png') }}" class="disponible">
 							</div>
 							<div class="item">
-									<img src="{{ asset('images/anuncios-02.png') }}">
+									<img src="{{ asset('images/anuncios-02.png') }}" class="disponible">
 							</div>
 							<div class="item">
-									<img src="{{ asset('images/anuncios-03.png') }}">
+									<img src="{{ asset('images/anuncios-03.png') }}" class="disponible">
 							</div>
 							<div class="item">
-									<img src="{{ asset('images/anuncios-04.png') }}">
+									<img src="{{ asset('images/anuncios-04.png') }}" class="disponible">
 							</div>
 							@elseif(count($lider)>=1 && count($lider)<2)
 							<div class="item">
-									<img src="{{ asset('images/anuncios-02.png') }}">
+									<img src="{{ asset('images/anuncios-02.png') }}" class="disponible">
 							</div>
 							<div class="item">
-									<img src="{{ asset('images/anuncios-03.png') }}">
+									<img src="{{ asset('images/anuncios-03.png') }}" class="disponible">
 							</div>
 							<div class="item">
-									<img src="{{ asset('images/anuncios-04.png') }}">
+									<img src="{{ asset('images/anuncios-04.png') }}" class="disponible">
 							</div>
 							@elseif(count($lider)>=2 && count($lider)<3)
 							<div class="item">
-									<img src="{{ asset('images/anuncios-03.png') }}">
+									<img src="{{ asset('images/anuncios-03.png') }}" class="disponible">
 							</div>
 							<div class="item">
-									<img src="{{ asset('images/anuncios-04.png') }}">
+									<img src="{{ asset('images/anuncios-04.png') }}" class="disponible">
 							</div>
 							@else
 							
 							<div class="item">
-									<img src="{{ asset('images/anuncios-04.png') }}">
+									<img src="{{ asset('images/anuncios-04.png') }}" class="disponible">
 							</div>
 							@endif
 						</div>
@@ -190,25 +190,25 @@
 							@endforeach
 							@if(count($habitual)<8)
 							<div class="item">
-									<div class="contCatIndex"><img src="{{ asset('images/anuncios-01.png') }}"></div>
-									<div class="contCatIndex"><img src="{{ asset('images/anuncios-02.png') }}"></div>
+									<div class="contCatIndex"><img src="{{ asset('images/anuncios-01.png') }}" class="disponible"></div>
+									<div class="contCatIndex"><img src="{{ asset('images/anuncios-02.png') }}" class="disponible"></div>
 							</div>
 							<div class="item">
-									<div class="contCatIndex"><img src="{{ asset('images/anuncios-03.png') }}"></div>
+									<div class="contCatIndex"><img src="{{ asset('images/anuncios-03.png') }}" class="disponible"></div>
 
-									<div class="contCatIndex"><img src="{{ asset('images/anuncios-04.png') }}"></div>
+									<div class="contCatIndex"><img src="{{ asset('images/anuncios-04.png') }}" class="disponible"></div>
 							</div>
 							<div class="item">
-									<div class="contCatIndex"><img src="{{ asset('images/anuncios-01.png') }}"></div>
-									<div class="contCatIndex"><img src="{{ asset('images/anuncios-02.png') }}"></div>
+									<div class="contCatIndex"><img src="{{ asset('images/anuncios-01.png') }}" class="disponible"></div>
+									<div class="contCatIndex"><img src="{{ asset('images/anuncios-02.png') }}" class="disponible"></div>
 							</div>
 							<div class="item">
-									<div class="contCatIndex"><img src="{{ asset('images/anuncios-03.png') }}"></div>
+									<div class="contCatIndex"><img src="{{ asset('images/anuncios-03.png') }}" class="disponible"></div>
 
-									<div class="contCatIndex"><img src="{{ asset('images/anuncios-04.png') }}"></div>
+									<div class="contCatIndex"><img src="{{ asset('images/anuncios-04.png') }}" class="disponible"></div>
 							</div>
 							@elseif(count($habitual)%2 != 0)
-								<div class="contCatIndex"><img src="{{ asset('images/anuncios-04.png') }}"></div>
+								<div class="contCatIndex"><img src="{{ asset('images/anuncios-04.png') }}" class="disponible"></div>
 							</div>
 							@endif
 						</div>
@@ -236,38 +236,38 @@
 							@endforeach
 							@if(count($casual)<1)
 							<div class="item">
-									<img src="{{ asset('images/anuncios-01.png') }}">
+									<img src="{{ asset('images/anuncios-01.png') }}" class="disponible">
 							</div>
 							<div class="item">
-									<img src="{{ asset('images/anuncios-02.png') }}">
+									<img src="{{ asset('images/anuncios-02.png') }}" class="disponible">
 							</div>
 							<div class="item">
-									<img src="{{ asset('images/anuncios-03.png') }}">
+									<img src="{{ asset('images/anuncios-03.png') }}" class="disponible">
 							</div>
 							<div class="item">
-									<img src="{{ asset('images/anuncios-04.png') }}">
+									<img src="{{ asset('images/anuncios-04.png') }}" class="disponible">
 							</div>
 							@elseif(count($casual)>=1 && count($casual)<2)
 							<div class="item">
-									<img src="{{ asset('images/anuncios-02.png') }}">
+									<img src="{{ asset('images/anuncios-02.png') }}" class="disponible">
 							</div>
 							<div class="item">
-									<img src="{{ asset('images/anuncios-03.png') }}">
+									<img src="{{ asset('images/anuncios-03.png') }}" class="disponible">
 							</div>
 							<div class="item">
-									<img src="{{ asset('images/anuncios-04.png') }}">
+									<img src="{{ asset('images/anuncios-04.png') }}" class="disponible">
 							</div>
 							@elseif(count($casual)>=2 && count($casual)<3)
 							<div class="item">
-									<img src="{{ asset('images/anuncios-03.png') }}">
+									<img src="{{ asset('images/anuncios-03.png') }}" class="disponible">
 							</div>
 							<div class="item">
-									<img src="{{ asset('images/anuncios-04.png') }}">
+									<img src="{{ asset('images/anuncios-04.png') }}" class="disponible">
 							</div>
 							@else
 							
 							<div class="item">
-									<img src="{{ asset('images/anuncios-04.png') }}">
+									<img src="{{ asset('images/anuncios-04.png') }}" class="disponible">
 							</div>
 							@endif
 						</div>

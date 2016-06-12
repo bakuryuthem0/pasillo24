@@ -8,8 +8,15 @@
 	<div class="row">
 		
 		<div class="col-xs-12 father" style="padding-right: 0px;">
-			<h1 class="pull-left">{{ $username }}</h1>
-			<div class="contTypePub">
+			<div class="col-xs-6"><h1 class="pull-left pub-title">{{ $username }}</h1></div>
+			<div class="col-xs-6 text-right no-padding">
+				@if($publication->tipo == "Lider")
+					<img src="{{ asset('images/lider-01.png') }}" class="typePub pull-right">
+				@elseif($publication->tipo == "Habitual")
+					<img src="{{ asset('images/habitual-01.png') }}" class="typePub pull-right">
+				@elseif($publication->tipo == "Casual")
+					<img src="{{ asset('images/casual-01.png') }}" class="typePub pull-right">
+				@endif
 				@if($publication->reputation>=15 && $publication->reputation<60)
 					<div id="bronce" class="trofeos">
 
@@ -35,19 +42,12 @@
 
 					</div>
 				@endif
-				@if($publication->tipo == "Lider")
-					<img src="{{ asset('images/lider-01.png') }}" class="typePub">
-				@elseif($publication->tipo == "Habitual")
-					<img src="{{ asset('images/habitual-01.png') }}" class="typePub">
-				@elseif($publication->tipo == "Casual")
-					<img src="{{ asset('images/casual-01.png') }}" class="typePub">
-				@endif
 				
 			</div>
 		</div>
 		@if($publication->tipo == "Lider")
-		<div class="col-xs-12 no-padding" style="">
-			<div class="col-xs-6 pagMini">
+		<div class="col-xs-12 no-padding">
+			<div class="col-md-6 pagMini hidden-xs hidden-sm">
 				<div class="list-group">
 					<a href="#" class="list-group-item active">
 						<h4 class="list-group-item-heading ">{{ $publication->titulo }}</h4>
@@ -126,8 +126,148 @@
 							@endif
 						@endif
 						@if(!Auth::check())
-							<button class="btn btn-default btn-transparent btn-fav nosepuedeClick" data-container="body" data-toggle="popover" data-placement="right" data-content="Agregar a favoritos." data-trigger="hover"><i class="fa fa-heart-o"></i></button>
-							<p class="bg-info textoPromedio noSePuede" style="padding:1em;margin-top:2em;"><strong>Para poder agregar a favoritos se debe iniciar sesion en el portal.</strong></p>
+							<button class="btn btn-default btn-transparent btn-fav nosepuedeClick mustLog" data-container="body" data-toggle="popover" data-placement="right" data-content="Agregar a favoritos." data-trigger="hover" data-target=".log-to-fav">
+								<i class="fa fa-heart-o"></i>
+							</button>
+							<p class="bg-info textoPromedio noSePuede hidden log-to-fav" style="padding:1em;margin-top:2em;"><strong>Para poder agregar a favoritos se debe iniciar sesion en el portal.</strong></p>
+						@else
+							@if(Auth::check() && Auth::id() != $publication->user_id && Auth::user()['role'] != 'Administrador' && Auth::user()['role'] != 'Gestor')
+								@if(isset($publication->fav_user_id) && $publication->fav_user_id == Auth::id())
+									<button class="btn btn-default btn-transparent btn-remove-fav" 
+									value="{{ URL::to('usuario/publicaciones/remover-favorito/'.$publication->fav_id) }}" 
+									data-container="body" data-toggle="popover" 
+									data-placement="right" 
+									data-content="Remover de favoritos." 
+									data-trigger="hover"><i class="fa fa-heart"></i></button>
+								@else
+									<button class="btn btn-default btn-transparent btn-fav" 
+									value="{{ URL::to('usuario/publicaciones/agregar-favorito/'.$id) }}" 
+									data-container="body" data-toggle="popover" 
+									data-placement="right" 
+									data-content="Agregar a favoritos." 
+									data-trigger="hover"><i class="fa fa-heart-o"></i></button>
+								@endif
+							@endif
+							<img src="{{ asset('images/loading.gif') }}" class="miniLoader hidden">
+							<div class="alert responseDanger">
+								<p class="textoPromedio"></p>
+							</div>
+						@endif
+						<div>
+							<a href="https://twitter.com/share" class="twitter-share-button" data-via="pasillo_24" data-hashtags="pasillo_24" data-dnt="true">Tweet</a>
+					<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+							<div class="fb-share-button" 
+								data-href="{{ Request::url() }}" 
+								data-layout="button_count">
+							</div>
+						</div>
+					</div>
+					</a>
+				</div>
+				
+			</div>
+			<div class="col-xs-12 col-md-6 pagMini pika_stage_lider_container no-padding" >
+				
+					<ul class="minis pika pika_stage_lider">
+						@if(!empty($publication->img_1))
+						<li>
+							<img src="{{ asset('images/pubImages/'.$publication->img_1) }}" class="imgMini" data-fancybox-group="gallery" data-value="img_1">
+						</li>
+						@endif
+						@if(!empty($publication->img_2))
+						<li>
+							<img src="{{ asset('images/pubImages/'.$publication->img_2) }}" class="imgMini" data-fancybox-group="gallery" data-value="img_2">
+						</li>
+						@endif
+						@if(!empty($publication->img_3))
+						<li>
+							<img src="{{ asset('images/pubImages/'.$publication->img_3) }}" class="imgMini" data-fancybox-group="gallery" data-value="img_3">
+						</li>
+						@endif
+					</ul>
+
+			</div>
+			<div class="col-xs-12 pagMini visible-xs visible-sm">
+				<div class="list-group">
+					<a href="#" class="list-group-item active">
+						<h4 class="list-group-item-heading ">{{ $publication->titulo }}</h4>
+
+						<p class="textoPromedio">Creado por: <label>
+										@if(!empty($publication->name_pub))
+											<td>{{ $publication->name_pub }}</td>
+										@else
+											<td>{{ $publication->name.' '.$publication->lastname }}</td>
+										@endif</label></p>
+					</a>
+					<div class="col-xs-12 no-padding">
+						@if(Auth::check())
+						<div class="table-responsive">
+							<table class="table table-striped table-hover textoPromedio">
+								<tbody>
+									<tr>
+										<th>Nombre y apellido</th>
+										@if(!empty($publication->name_pub))
+											<td>{{ $publication->name_pub.' '.$publication->lastname_pub }}</td>
+										@else
+											<td>{{ $publication->name.' '.$publication->lastname }}</td>
+										@endif
+									</tr>
+									<tr>
+										<th>Email</th>
+										@if(!empty($publication->email_pub))
+											<td>{{ $publication->email_pub }}</td>
+										@else
+											<td>{{ $publication->email }}</td>
+										@endif
+									</tr>
+									<tr>
+										<th>
+											Telefono
+										</th>
+										@if(!empty($publication->phone_pub))
+											<td>{{ $publication->phone_pub }}</td>
+										@else
+											<td>{{ $publication->phone }}</td>
+										@endif
+									</tr>
+									<tr>
+										<th>
+											Pagina web
+										</th>
+										@if(!empty($publication->pag_web_hab))
+											<td>{{ $publication->pag_web_hab }}</td>
+										@else
+											<td>{{ $publication->pag_web }}</td>
+										@endif
+									</tr>
+									@if(!is_null($publication->bussiness_type))
+									<tr>
+										<th>
+											Tipo de negocio
+										</th>
+										<td>
+											{{ ucfirst($publication->bussiness_type) }}
+										</td>
+									</tr>
+									@endif
+								</tbody>
+							</table>
+						</div>
+						@else
+
+							<p class="bg-info textoPromedio" style="padding:1em;margin-top:2em;"><strong>Para poder ver la información del usuario se debe iniciar sesión en el portal.</strong></p>
+						@endif
+						<a href="{{ URL::to('inicio') }}" class="btn btn-warning" style="margin:2em 0.5em;">Volver</a>
+						@if(!empty($publication->pag_web))
+							<a target="_blank" href="{{ $publication->pag_web }}" class="btn btn-primary" style="margin:2em 0.5em;">Ir a la página</a>
+						@else
+							@if(!empty($publication->pag_web_hab))
+								<a target="_blank" href="{{ $publication->pag_web_web }}" class="btn btn-primary" style="margin:2em 0.5em;">Ir a la página</a>
+							@endif
+						@endif
+						@if(!Auth::check())
+							<button class="btn btn-default btn-transparent btn-fav nosepuedeClick mustLog" data-container="body" data-toggle="popover" data-placement="top" data-content="Agregar a favoritos." data-trigger="hover" data-target=".log-to-fav"><i class="fa fa-heart-o"></i></button>
+							<p class="bg-info textoPromedio noSePuede hidden log-to-fav" style="padding:1em;margin-top:2em;"><strong>Para poder agregar a favoritos se debe iniciar sesion en el portal.</strong></p>
 						@else
 							@if(Auth::check() && Auth::id() != $publication->user_id && Auth::user()['role'] != 'Administrador' && Auth::user()['role'] != 'Gestor')
 								@if(isset($publication->fav_user_id) && $publication->fav_user_id == Auth::id())
@@ -164,28 +304,6 @@
 				</div>
 				
 			</div>
-			<div class="col-xs-6 pagMini pika_stage_lider_container" >
-				
-					<ul class="col-xs-12 minis pika pika_stage_lider">
-							@if(!empty($publication->img_1))
-							<li>
-								<img src="{{ asset('images/pubImages/'.$publication->img_1) }}" class="imgMini" data-fancybox-group="gallery" data-value="img_1">
-							</li>
-							@endif
-							@if(!empty($publication->img_2))
-							<li>
-								<img src="{{ asset('images/pubImages/'.$publication->img_2) }}" class="imgMini" data-fancybox-group="gallery" data-value="img_2">
-							</li>
-							@endif
-							@if(!empty($publication->img_3))
-							<li>
-								<img src="{{ asset('images/pubImages/'.$publication->img_3) }}" class="imgMini" data-fancybox-group="gallery" data-value="img_3">
-							</li>
-							@endif
-						</ul>
-
-			</div>
-			
 		</div>
 		@elseif($publication->tipo == "Habitual")
 			<div class="col-xs-12" style="padding-left:0px;padding-right:0px;table-cell;float: none;vertical-align: middle;">
@@ -490,16 +608,16 @@
 	@if(count($otrasPub) > 0)
 	<div class="col-xs-12">
 		<h2>Otras publicaciones de: {{ $username }}</h2>
-		<div class="owl-carousel1">
+			<div class="owl-carousel1 owl-carousel-busq">
 			@foreach($otrasPub as $o)
-			<div class="item contCatIndex">
+			<div class="item contCatIndex contPubNoLider">
 				<a href="{{ URL::to('publicacion/lider/'.base64_encode($o->id)) }}">
 					<img src="{{ asset('images/pubImages/'.$o->img_1) }}" class="imgPubCarousel">
 				</a>
 				<div class="dataIndex textoPromedio">
-					<div class="col-xs-6" style="margin-top:0.5em;">{{ $o->titulo }}</div>
+					<div class="col-xs-12 col-md-6">{{ $o->titulo }}</div>
 					@if($o->precio)
-					<div class="col-xs-6" style="margin-top:0.5em;">
+					<div class="col-xs-12 col-md-6" style="margin-top:0.5em;">
 					 <label>Precio: </label>{{ $o->precio.' '.ucfirst(strtolower($o->moneda)).'.' }}
 					</div>
 					@endif
@@ -526,8 +644,11 @@
 						<p class="textoMedio comment-date" style="float:right;"></p>
 					</div>
 					<div class="col-xs-12">
-						<textarea id="inputComentario" class="inputComentario textoPromedio" name="inputComentario" placeholder="Escriba su pregunta"></textarea>
-						<button id="enviarComentario" name="enviarComentario" class="btn btn-success" value="{{ $id }}">Enviar</button><img src="{{ asset('images/loading.gif') }}" class="miniLoader">
+						<textarea id="inputComentario" class="inputComentario textoPromedio form-control heightTransition" name="inputComentario" placeholder="Escriba su pregunta"></textarea>
+						<div class="formulario">
+							<button id="enviarComentario" name="enviarComentario" class="btn btn-success hidden" value="{{ $id }}">Enviar</button>
+							<img src="{{ asset('images/loading.gif') }}" class="miniLoader hidden">
+						</div>
 					</div>
 				</div>
 				@else
@@ -607,14 +728,9 @@
 
 <!-- Add Button helper (this is optional) -->
 {{ HTML::script("js/fancybox/helpers/jquery.fancybox-buttons.js?v=1.0.5") }}
-	<script type="text/javascript">
-		jQuery(document).ready(function($) {
-			loadMap();
-		});
-	</script>
 <script type="text/javascript">
 	$(document).ready(function (){
-	loadMap();
+		//loadMap();
 		
 		$(".pika").PikaChoose(
 		{

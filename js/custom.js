@@ -133,7 +133,11 @@ function loadMap() {
 
 	};
 }
+function hideMustLog (el) {
+	$(el).addClass('hidden');
+}
 jQuery(document).ready(function($) {
+	var url = $('.baseUrl').val();
 	$(window).on('resize', function(event) {
 		resizeCategoryContainer()
 		
@@ -252,5 +256,69 @@ jQuery(document).ready(function($) {
 		}
 	});
 	var activeSystemClass = $('.list-group-item.active');
+	$('.btn-filtralo').on('click', function(event) {
+		$(this).attr('disabled',true);
+		var proceed = 0;
+		if ($('.filterDep').val() != "" && $('.filterDep').val() != -1) {
+			proceed = 1;
+			$('.form-filter').append('<input type="hidden" name="filter" value="'+$('.filterDep').val()+'">')
+		};
+		if ($('.filterRel').val() != "" && $('.filterRel').val() != -1) {
+			proceed = 1;
+			$('.form-filter').append('<input type="hidden" name="rel" value="'+$('.filterRel').val()+'">')
+		};
+		if ($('.filterBuss').val() != "" && $('.filterBuss').val() != -1) {
+			proceed = 1;
+			$('.form-filter').append('<input type="hidden" name="buss" value="'+$('.filterBuss').val()+'">')
+		};
+		if ($('.min').val() != "") {
+			proceed = 1;
+			$('.form-filter').append('<input type="hidden" name="min" value="'+$('.min').val()+'">')
+		};
+		if ($('.max').val() != "") {
+			proceed = 1;
+			$('.form-filter').append('<input type="hidden" name="max" value="'+$('.max').val()+'">')
+		};
+		if ($('.min').val() != "" || $('.max').val() != "") {
+			proceed = 1;
+			$('.form-filter').append('<input type="hidden" name="currency" value="'+$('.currency').val()+'">')
+		};
+		if ($('.filterCond').val() != "" && $('.filterCond').val() != -1) {
+			proceed = 1;
+			$('.form-filter').append('<input type="hidden" name="cond" value="'+$('.filterCond').val()+'">')
+		};
+		if ($('.to-filter').hasClass('busq')) {
+			$('.form-filter').append('<input type="hidden" name="busq" value="'+$('.to-filter').val()+'">')
+		}else
+		{
+			$('.form-filter').append('<input type="hidden" name="cat" value="'+$('.to-filter').val()+'">')
 
+		}
+		if (proceed == 1) {
+			$('.form-filter').submit();
+			
+		}else
+		{
+			if ($('.to-filter').hasClass('busq')) {
+				window.location.replace(url+'/inicio/buscar?busq='+$('.to-filter').val());			
+			}else
+			{
+				window.location.replace(url+'/publicaciones/categorias/'+$('.to-filter').val());
+			}
+		}
+	});
+	$('.mustLog').on('click', function(event) {
+		var btn = $(this);
+		var target = btn.data('target');
+		$(target).removeClass('hidden')
+		setTimeout(function(){hideMustLog(target)}, 3000);
+	});
+	$('.inputComentario').on('focus',function(event) {
+		$(this).addClass('textareaFocused');
+		$('#enviarComentario').removeClass('hidden');
+	});
+	$('.inputComentario').on('blur',function(event) {
+		$(this).removeClass('textareaFocused');
+		$('#enviarComentario').addClass('hidden');
+	});
 });

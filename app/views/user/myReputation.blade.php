@@ -273,8 +273,8 @@
 				</div>
 				<div class="modal-footer " style="text-align:center;">
 					<div class="col-xs-12">
-						<p class="col-sm-12 col-md-4 bg-primary textoPromedio pull-left" >Niveles de reputación</p>
-						<p class="col-sm-12 col-md-4 bg-primary textoPromedio pull-right" ><i class="fa fa-plus-circle" style="color:white;"></i> Reputación positiva</p>
+						<p class="col-xs-12 col-sm-4 bg-primary pull-left" >Niveles de reputación</p>
+						<p class="col-xs-12 col-sm-4 bg-primary pull-right" ><i class="fa fa-plus-circle" style="color:white;"></i> Reputación positiva</p>
 					</div>
 					
 					<div clas="clearfix"></div>
