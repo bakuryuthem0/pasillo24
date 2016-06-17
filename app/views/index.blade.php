@@ -116,7 +116,7 @@
 									</a>
 								</div>
 								<div class="col-xs-12 texto-desc">
-
+									<h3>{{ $pubLider->title }}</h3>
 								</div>
 								<div class="col-xs-12 btn-group no-padding">
 									<a href="{{ URL::to('publicacion/lider/'.base64_encode($pubLider->id)) }}" class="btn btn-warning">Ver publicación</a>
@@ -176,6 +176,7 @@
 											</a>
 								 		</div>
 								 		<div class="col-xs-12 texto-desc">
+											<h3>{{ $pubHabitual->title }}</h3>
 								 			{{ ucfirst(strtolower(strip_tags($pubHabitual->descripcion))) }}
 								 		</div>
 								 		<div class="col-xs-12 btn-group no-padding">
@@ -226,6 +227,8 @@
 										</a>
 							 		</div>
 							 		<div class="col-xs-12 texto-desc">
+										<h3>{{ $pubCasual->title }}</h3>
+							 			
 							 			{{ ucfirst(strtolower(strip_tags($pubCasual->descripcion))) }}
 							 		</div>
 							 		<div class="col-xs-12 btn-group no-padding">

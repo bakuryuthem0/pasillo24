@@ -427,9 +427,9 @@
 				<p class="textoPromedio">¿Seguro desea eliminar esta publicación?, esta acción es irreversible</p>
 			</div>
 			<div class="modal-footer">
-				<img src="{{ asset('images/loading.gif') }}" class="miniLoader">
-				<button type="button" class="btn btn-danger btnElimPublicacion">Eliminar</button>
-				<button type="button" class="btn btn-success btn-dimiss hidden" data-dismiss="modal">Aceptar</button>
+				<img src="{{ asset('images/loading.gif') }}" class="miniLoader hidden">
+				<button type="button" class="btn btn-danger btnElimPublicacion btn-modal-elim">Eliminar</button>
+				<button type="button" class="btn btn-success btn-dimiss btn-modal-elim" data-dismiss="modal">Cerrar</button>
 			</div>
 		</div><!-- /.modal-content -->
 	</div><!-- /.modal-dialog -->

@@ -110,7 +110,7 @@ Route::group(array('before' =>'auth'),function()
 	//favoritos
 	Route::get('usuario/mis-favoritos','UserController@getMyFav');
 	Route::get('usuario/publicaciones/agregar-favorito/{id}','UserController@addFav');
-	Route::get('usuario/publicaciones/remover-favorito/{id}','UserController@removeFav');
+	Route::get('usuario/publicaciones/remover-favorito','UserController@removeFav');
 	
 	//perfil
 	Route::get('usuario/perfil','UserController@getProfile');

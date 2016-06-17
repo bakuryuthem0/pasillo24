@@ -11,11 +11,11 @@
 					<table class="table table-striped table-hover vertical-middle textoPromedio">
 						<thead>
 							<tr>
+								<th class="text-center">Imagen</th>
 								<th class="text-center">Título</th>
 								<th class="text-center">Precio</th>
 								<th class="text-center">Departamento</th>
 								<th class="text-center">Descripción</th>
-								<th class="text-center">Imagen</th>
 								<th class="text-center">Ir a la publicación</th>
 								<th class="text-center">Remover de favoritos</th>
 							</tr>
@@ -23,6 +23,9 @@
 						<tbody>
 						@foreach($fav as $f)
 							<tr>
+								<td class="text-center">
+									<img src="{{ asset('images/pubImages/'.$f->img_1) }}" class="imgFav">
+								</td>
 								<td class="text-center">{{ $f->titulo }}</td>
 								<td class="text-center">
 									@if($f->precio == 0)
@@ -49,24 +52,25 @@
 										@endif
 									@endif
 								</td>
-								<td class="text-center">
-									<img src="{{ asset('images/pubImages/'.$f->img_1) }}" class="imgFav">
-								</td>
 								
 								<td class="text-center">
-									<a class="btn btn-primary" href="{{ URL::to('publicacion/'.strtolower($f->tipo).'/'.base64_encode($f->id)) }}">ir</a>
+									<a class="btn btn-primary btn-xs " href="{{ URL::to('publicacion/'.strtolower($f->tipo).'/'.base64_encode($f->id)) }}">ir</a>
 								</td>
 								<td class="text-center">
-									<button class="btn btn-danger btn-fav-remove" value="{{ $f->fav_id }}" data-toggle="modal" data-target="#removeFav">Remover</button>
+									<button class="btn btn-danger  btn-xs btn-fav-remove" value="{{ $f->fav_id }}" data-toggle="modal" data-target="#removeFav">Remover</button>
 								</td>
 							</tr>
 						@endforeach
 						</tbody>
 					</table>
+				</div>
+
+				<div class="blog-pagination">
+
 					<nav role="navigation">
 		          <?php  $presenter = new Illuminate\Pagination\BootstrapPresenter($fav); ?>
 		          @if ($fav->getLastPage() > 1)
-		          <ul class="cd-pagination no-space">
+		         <ul class="pagination cd-pagination no-space">
 		            <?php
 		              $beforeAndAfter = 3;
 		           
@@ -98,7 +102,7 @@
 		              //Si es la primera página mostramos el enlace desactivado
 		              if ($currentPage <= 1)
 		              {
-		                echo '<li class="disabled"><span class="textoMedio">Primera</span></li>';
+		                echo '<li class="disabled"><a href="#!" class="textoMedio">Primera</a></li>';
 		              }
 		              //en otro caso obtenemos la url y mostramos en forma de link
 		              else
@@ -117,7 +121,7 @@
 		              //Para ir a la anterior
 		              if(!empty($filter)){
 			            if (($currentPage-1) < $start) {
-			            	echo '<li class="disable"><span>&lt; Atras</span></li>' ;	
+			            	echo '<li class="disable"><a href="#!">&lt; Atras</a></li>' ;	
 			            }else
 			            {
 		           			if(isset($filterPrice)){
@@ -131,7 +135,7 @@
 		              }else
 		              {
 		              	if (($currentPage-1) < $start) {
-			              	echo '<li class="disable"><span>&lt; Atras</span></li>' ;	
+			              	echo '<li class="disable"><a href="#!">&lt; Atras</a></li>' ;	
 			              }else
 			              {
 			              	if(isset($filterPrice))
@@ -148,7 +152,7 @@
 		              for($i = $start; $i<=$end;$i++)
 		              {
 		              	if ($currentPage == $i) {
-		              		echo '<li class="disabled"><span>'.$i.'</span></li>';
+		              		echo '<li class="disabled"><a href="#!">'.$i.'</a></li>';
 		              	}else
 		              	{
 		              		if(!empty($filter)){
@@ -177,7 +181,7 @@
 		              //Para ir a la siguiente
 		              if (!empty($filter)) {
 			              if (($currentPage+1) > $end) {
-			              	echo '<li class="disable"><span>Adelante &gt;</span></li>' ;
+			              	echo '<li class="disable"><a href="#!">Adelante &gt;</a></li>' ;
 			              }else
 			              {
 			              		if(isset($filterPrice)){
@@ -192,7 +196,7 @@
 		              }else
 		              {
 		              	if (($currentPage+1) > $end) {
-			              	echo '<li class="disable"><span>Adelante &gt;</span></li>' ;
+			              	echo '<li class="disable"><a href="#!">Adelante &gt;</a></li>' ;
 			              }else
 			              {
 			              		if(isset($filterPrice))
@@ -209,7 +213,7 @@
 		              ////Si es la última página mostramos desactivado
 		              if ($currentPage >= $lastPage)
 		              {
-		                echo '<li class="disabled"><span class="textoMedio">Última</span></li>';
+		                echo '<li class="disabled"><a href="#!" class="textoMedio">Última</a></li>';
 		              }
 		              //en otro caso obtenemos la url y mostramos en forma de link
 		              else
@@ -226,9 +230,8 @@
 		              ?>
 		            @endif
 		          </ul>
-		        </nav> <!-- cd-pagination-wrapper -->
-				</div>
-				
+		        </nav> <!-- cd-pagination-wrapper -->				
+		    </div>
 		</div>
 	</div>
 </div>
@@ -246,9 +249,9 @@
 					</div>
 				</div>
 				<div class="modal-footer">
-						<img src="{{ asset('images/loading.gif') }}" class="miniLoader">
-						<button class="btn btn-danger btn-fav-remove-modal">Remover</button>
-						<button type="button" class="btn btn-success btn-fav-close-modal hidden" data-dismiss="modal">Aceptar</button>
+						<img src="{{ asset('images/loading.gif') }}" class="miniLoader hidden">
+						<button class="btn btn-danger btn-fav-remove-modal btn-modal-elim">Remover</button>
+						<button type="button" class="btn btn-success btn-close-modal btn-modal-elim" data-dismiss="modal">Cerrar</button>
 				</div>
 		</div>
 	</div>

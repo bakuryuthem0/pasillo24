@@ -81,7 +81,20 @@ function success(position) {
 	    $('.contLoaderBig').removeClass('active');
 	});
 }
-
+function verificarComentario(url)
+{
+	$.ajax({
+		url: url+'/verificar-comentarios',
+		type: 'GET',
+		success:function(response)
+		{
+			if(response != 0)
+			{
+				$('.subComentario').html(response)
+			}
+		}
+	})
+}
 function showError(error)
 {
 	$('.contLoaderBig').removeClass('active');
@@ -136,13 +149,101 @@ function loadMap() {
 function hideMustLog (el) {
 	$(el).addClass('hidden');
 }
+function favFunction (btn) {
+	var url = btn.val();
+	$.ajax({
+		url: url,
+		type: 'GET',
+		dataType: 'json',
+		beforeSend:function()
+		{
+			$('.loader-fav').removeClass('hidden');
+			btn.attr('disabled',true);
+		},
+		success:function(response)
+		{
+			$('.loader-fav').addClass('hidden');
+			btn.attr('disabled',false);
+			$('.responseDanger').addClass('alert-'+response.type).addClass('active');
+			$('.responseDanger').children('p').html(response.msg);
+			if (response.type == 'success') {
+				btn.attr('data-content',response.popover);
+				btn.val(response.url);
+				if (response.action == 'add') {
+					btn.children('i').removeClass('fa-heart-o').fadeOut('fast',function(){
+						btn.children('i').addClass('fa-heart').fadeIn('fast');
+					});
+					btn.removeClass('btn-fav').addClass('btn-remove-fav');
+					btn = $('.btn-remove-fav');
+				}else
+				{
+					btn.children('i').removeClass('fa-heart').fadeOut('fast',function(){
+						btn.children('i').addClass('fa-heart-o').fadeIn('fast');
+					});
+					btn.removeClass('btn-remove-fav').addClass('btn-fav');
+					btn = $('.btn-fav');
+				}
+			};
+			setTimeout(removeResponseAjax,5000)
+		},
+		error:function()
+		{
+			btn.attr('disabled',false);
+			btn.next('.miniLoader').removeClass('active');
+			$('.responseDanger').addClass('alert-danger').addClass('active');
+			$('.responseDanger').children('p').html('Ups, el servidor no responde.');
+			setTimeout(removeResponseAjax,5000)
+		}
+	});
+}
+function removeResponseAjax () {
+	$('.responseDanger').removeClass('alert-danger');
+	$('.responseDanger').removeClass('alert-success');
+	$('.responseDanger').removeClass('active');
+}
+function ajaxElim (base,dataPost,btn) {
+	var url = base;
+	$.ajax({
+		url: url,
+		type: 'GET',
+		dataType: 'json',
+		data: dataPost,
+		beforeSend:function()
+		{
+			btn.addClass('disabled').attr('disabled', true).prev('.miniLoader').removeClass('hidden');
+			$('.btn-close-modal').addClass('disabled').attr('disabled', true);
+			$('.close').addClass('hidden');
+		},
+		success:function(response)
+		{
+			btn.removeClass('disabled').attr('disabled', false).prev('.miniLoader').addClass('hidden');
+			$('.btn-close-modal').removeClass('disabled').attr('disabled', false);
+			$('.close').removeClass('hidden');
+			$('.responseDanger').addClass('alert-'+response.type).addClass('active').children('p').html(response.msg);
+			if (response.type == 'success') {
+				$('.to-elim').parent().parent().remove();
+			}
+			setTimeout(removeResponseAjax,5000);
+		},
+		error:function()
+		{
+			btn.removeClass('disabled').attr('disabled', false).prev('.miniLoader').addClass('hidden');
+			$('.btn-fav-close-modal').attr('disabled', false).prev('.miniLoader');
+			$('.responseDanger').addClass('alert-danger').addClass('active').children('p').html('Ups, el servidor no responde.');
+			setTimeout(removeResponseAjax,5000);
+		}
+	});
+}
 jQuery(document).ready(function($) {
 	var url = $('.baseUrl').val();
 	$(window).on('resize', function(event) {
-		resizeCategoryContainer()
-		
+		resizeCategoryContainer();
 	});
-	resizeCategoryContainer()
+	resizeCategoryContainer();
+	setTimeout(function(){ verificarComentario(url); }, 1);
+	setInterval(function(url) {
+		verificarComentario(url);
+	},120000);
 	/*------------------ Modificar Perfil --------------*/
 
 	$('.btn-mdf').on('click',function(event) {
@@ -317,8 +418,147 @@ jQuery(document).ready(function($) {
 		$(this).addClass('textareaFocused');
 		$('#enviarComentario').removeClass('hidden');
 	});
-	$('.inputComentario').on('blur',function(event) {
+	$('#enviarComentario').on('click', function(event) {
+		var btn = $(this);
+		var data = {
+			'id' : btn.val(),
+			'comment': $('#inputComentario').val()
+		}	    
+		var proceed = 1;
+		if ($('#inputComentario').val() == "") {
+			proceed = 0;
+			$('#enviarComentario').removeClass('disabled')
+		};
+	    if (proceed == 1) {
+	        $.ajax({
+	          url: url+'/publicacion/comentario',
+	          type: 'GET',
+	          dataType: 'json',
+	          data: data,
+	          beforeSend:function() {
+				btn.addClass('disabled').attr('disabled', true).next('.miniLoader').removeClass('hidden');
+	            $('#inputComentario').addClass('disabled').attr('disabled', true);
+	          },
+	          success:function(response)
+	          {
+	            btn.removeClass('disabled').attr('disabled', false).next('.miniLoader').addClass('hidden');
+	            $('#inputComentario').removeClass('disabled').attr('disabled', false);
+
+	            if (response.type == 'success') {
+	              var clon = $('.new-comment').clone();
+	              $('.new-comment').children('.comment-text').html('<i class="fa fa-comment"></i> '+data['comment']);
+	              $('.new-comment').children('.comment-date').html(response.date);
+	              $('.new-comment').removeClass('new-comment').after(clon);
+	              $('#inputComentario').val('');
+	              $('.textareaFocused').removeClass('textareaFocused');
+	              btn.addClass('hidden');
+	            }
+	          }
+	        })
+	        
+      	};
+	});
+	/*$('.inputComentario').on('blur',function(event) {
 		$(this).removeClass('textareaFocused');
 		$('#enviarComentario').addClass('hidden');
+	});*/
+	$('.btn-fav').on('click', function(event) {
+		var btn = $(this);
+		if (typeof btn.val() != "undefined" || btn.val() != "") {
+			favFunction(btn);
+		}
+	});
+	$('.btn-remove-fav').on('click', function(event) {
+		var btn = $(this);
+		if (typeof btn.val() != "undefined" || btn.val() != "") {
+			favFunction(btn);
+		}
+	});
+	$('#enviarComentario').on('click',function(event) {
+		removeResponsetype();
+		var btn = $(this);
+		btn.addClass('disabled')
+		 var data = {
+			'id' : $(this).val(),
+			'comment': $('#inputComentario').val()
+		}	    
+		var proceed = 1;
+		if ($('#inputComentario').val() == "") {
+			proceed = 0;
+			$('#enviarComentario').removeClass('disabled')
+		};
+	    if (proceed == 1) {
+	        $.ajax({
+	          url: 'http://pasillo24.com/publicacion/comentario',
+	          type: 'GET',
+	          dataType: 'json',
+	          data: data,
+	          beforeSend:function() {
+	            $('.miniLoader').addClass('active');
+	            $('#inputComentario').addClass('disabled')
+	          },
+	          success:function(response)
+	          {
+	            $('.miniLoader').removeClass('active');
+	            $('#inputComentario').removeClass('disabled')
+	            btn.removeClass('disabled');
+	            if (response.type == 'success') {
+	              var clon = $('.new-comment').clone();
+	              $('.new-comment').children('.comment-text').html('<i class="fa fa-comment"></i> '+data['comment'])
+	              $('.new-comment').children('.comment-date').html(response.date)
+	              $('.new-comment').removeClass('new-comment').after(clon);
+	              $('#inputComentario').val('')
+	              alert(response.msg);
+	            }
+	          }
+	        })
+	        
+      	};
+
+	});
+	$('.envForgot').on('click', function(event) {
+		var btn = $(this);
+		if ($('.emailForgot').val() != "") {
+			$.ajax({
+				url: url+'/chequear/email',
+				type: 'POST',
+				dataType: 'json',
+				data: { 'email': $('.emailForgot').val()},
+				beforeSend:function()
+				{
+					btn.addClass('disabled').attr('disabled', true).prev('.miniLoader').removeClass('hidden');
+				},
+				success:function(response){
+					btn.removeClass('disabled').attr('disabled', false).prev('.miniLoader').addClass('hidden');
+					$('.responseDanger').addClass('alert-'+response.type).addClass('active').children('p').html(response.msg);
+					if (response.type == 'success') {
+						$('.emailForgot').val('')
+					};
+					setTimeout(removeResponseAjax, 3000);
+					
+				},error:function()
+				{
+					btn.removeClass('disabled').attr('disabled', false).prev('.miniLoader').addClass('hidden');
+					$('.responseDanger').addClass('alert-danger').addClass('active').children('p').html('Ups, hubo un error.');
+					console.log('error');
+				}
+			})
+		}
+	});
+	$('.btn-fav-remove').on('click', function(event) {
+		$(this).addClass('to-elim');
+		$('.btn-fav-remove-modal').val($(this).val());
+	});
+	$('.modal').on('hide.bs.modal', function(event) {
+		$('.to-elim').removeClass('to-elim');
+		$('.btn-modal-elim').attr('disabled',false).removeClass('hidden');	
+		removeResponseAjax();
+	});
+	$('.btn-fav-remove-modal').on('click', function(event) {
+		var btn = $(this);
+		var dataPost = {
+			pub_id : btn.val()
+		}
+		ajaxElim (url+'/usuario/publicaciones/remover-favorito',dataPost,btn)
 	});
 });

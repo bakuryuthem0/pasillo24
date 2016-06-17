@@ -7,8 +7,8 @@
 <div class="container contenedorUnico">
 	<div class="row">
 		
-		<div class="col-xs-12 father" style="padding-right: 0px;">
-			<div class="col-xs-6"><h1 class="pull-left pub-title">{{ $username }}</h1></div>
+		<div class="col-xs-12 no-padding">
+			<div class="col-xs-6 no-padding"><h1 class="pull-left pub-title">{{ $username }}</h1></div>
 			<div class="col-xs-6 text-right no-padding">
 				@if($publication->tipo == "Lider")
 					<img src="{{ asset('images/lider-01.png') }}" class="typePub pull-right">
@@ -47,7 +47,7 @@
 		</div>
 		@if($publication->tipo == "Lider")
 		<div class="col-xs-12 no-padding">
-			<div class="col-md-6 pagMini hidden-xs hidden-sm">
+			<div class="col-md-6 pagMini hidden-xs hidden-sm no-padding-left">
 				<div class="list-group">
 					<a href="#" class="list-group-item active">
 						<h4 class="list-group-item-heading ">{{ $publication->titulo }}</h4>
@@ -117,7 +117,7 @@
 
 							<p class="bg-info textoPromedio" style="padding:1em;margin-top:2em;"><strong>Para poder ver la información del usuario se debe iniciar sesión en el portal.</strong></p>
 						@endif
-						<a href="{{ URL::to('inicio') }}" class="btn btn-warning" style="margin:2em 0.5em;">Volver</a>
+						<a href="{{ URL::to('inicio') }}" class="btn btn-warning">Volver</a>
 						@if(!empty($publication->pag_web))
 							<a target="_blank" href="{{ $publication->pag_web }}" class="btn btn-primary" style="margin:2em 0.5em;">Ir a la página</a>
 						@else
@@ -148,8 +148,8 @@
 									data-trigger="hover"><i class="fa fa-heart-o"></i></button>
 								@endif
 							@endif
-							<img src="{{ asset('images/loading.gif') }}" class="miniLoader hidden">
-							<div class="alert responseDanger">
+							<img src="{{ asset('images/loading.gif') }}" class="miniLoader hidden loader-fav">
+							<div class="alert responseDanger responseFav">
 								<p class="textoPromedio"></p>
 							</div>
 						@endif
@@ -179,15 +179,10 @@
 							<img src="{{ asset('images/pubImages/'.$publication->img_2) }}" class="imgMini" data-fancybox-group="gallery" data-value="img_2">
 						</li>
 						@endif
-						@if(!empty($publication->img_3))
-						<li>
-							<img src="{{ asset('images/pubImages/'.$publication->img_3) }}" class="imgMini" data-fancybox-group="gallery" data-value="img_3">
-						</li>
-						@endif
 					</ul>
 
 			</div>
-			<div class="col-xs-12 pagMini visible-xs visible-sm">
+			<div class="col-xs-12 pagMini visible-xs visible-sm formulario no-padding">
 				<div class="list-group">
 					<a href="#" class="list-group-item active">
 						<h4 class="list-group-item-heading ">{{ $publication->titulo }}</h4>
@@ -255,9 +250,9 @@
 						</div>
 						@else
 
-							<p class="bg-info textoPromedio" style="padding:1em;margin-top:2em;"><strong>Para poder ver la información del usuario se debe iniciar sesión en el portal.</strong></p>
+						<p class="bg-info textoPromedio" style="padding:1em;margin-top:2em;"><strong>Para poder ver la información del usuario se debe iniciar sesión en el portal.</strong></p>
 						@endif
-						<a href="{{ URL::to('inicio') }}" class="btn btn-warning" style="margin:2em 0.5em;">Volver</a>
+						<a href="{{ URL::to('inicio') }}" class="btn btn-warning">Volver</a>
 						@if(!empty($publication->pag_web))
 							<a target="_blank" href="{{ $publication->pag_web }}" class="btn btn-primary" style="margin:2em 0.5em;">Ir a la página</a>
 						@else
@@ -274,20 +269,20 @@
 									<button class="btn btn-default btn-transparent btn-remove-fav" 
 									value="{{ URL::to('usuario/publicaciones/remover-favorito/'.$publication->fav_id) }}" 
 									data-container="body" data-toggle="popover" 
-									data-placement="right" 
+									data-placement="top" 
 									data-content="Remover de favoritos." 
 									data-trigger="hover"><i class="fa fa-heart"></i></button>
 								@else
 									<button class="btn btn-default btn-transparent btn-fav" 
 									value="{{ URL::to('usuario/publicaciones/agregar-favorito/'.$id) }}" 
 									data-container="body" data-toggle="popover" 
-									data-placement="right" 
+									data-placement="top" 
 									data-content="Agregar a favoritos." 
 									data-trigger="hover"><i class="fa fa-heart-o"></i></button>
 								@endif
 							@endif
-							<img src="{{ asset('images/loading.gif') }}" class="miniLoader">
-							<div class="alert responseDanger">
+							<img src="{{ asset('images/loading.gif') }}" class="miniLoader hidden loader-fav">
+							<div class="alert responseDanger responseFav">
 								<p class="textoPromedio"></p>
 							</div>
 						@endif
@@ -306,9 +301,9 @@
 			</div>
 		</div>
 		@elseif($publication->tipo == "Habitual")
-			<div class="col-xs-12" style="padding-left:0px;padding-right:0px;table-cell;float: none;vertical-align: middle;">
-				<div class="col-xs-6 imagesCont" style="padding-left:0px;">
-					<ul class="col-xs-12 minis pika">
+			<div class="col-xs-12 no-padding">
+				<div class="col-xs-12 col-md-6 pagMini pika_stage_lider_container no-padding-left" >
+					<ul class="minis pika pika_stage_lider">
 						@if(!empty($publication->img_1))
 						<li>
 							<img src="{{ asset('images/pubImages/'.$publication->img_1) }}" class="imgMini" data-fancybox-group="gallery" data-value="img_1">
@@ -350,11 +345,11 @@
 						</li>
 						@endif
 					</ul>
-<div class="clearfix"></div>
+					<div class="clearfix"></div>
 				</div>
-				<div class="col-xs-6 contMovil contAnaranjado" style="min-height:450px;display: table-cell">
+				<div class="col-xs-12 col-md-6 contAnaranjado">
 					<div class="col-xs-12">
-						<legend class="precioPub" style="font-size: 4em;">{{ $publication->titulo }}</legend>
+						<legend class="precioPub title-pub">{{ ucfirst($publication->titulo) }}</legend>
 					</div>
 					<div class="col-xs-6 caracteristicasPub">
 						<h4>Precio</h4><label class="textoPromedio">@if($publication->precio == "") Sin especificar @else {{ $publication->precio.' '.$publication->moneda }} @endif</label>
@@ -435,25 +430,37 @@
 
 					</div>
 					@endif
-						<div class="col-xs-12" style="padding:0px;">
+						<div class="col-xs-12">
 							@if(Auth::check() && Auth::id() != $publication->user_id && Auth::user()['role'] != 'Administrador' && Auth::user()['role'] != 'Gestor')
 								<a href="#" class="btn btn-primary" data-toggle="modal" data-target="#modalComprar">Contactar</a>
 								@if(isset($publication->fav_user_id) && $publication->fav_user_id == Auth::id())
-									<button class="btn btn-default btn-transparent btn-remove-fav" 
+									<button class="btn btn-default btn-transparent btn-remove-fav hidden-xs hidden-sm" 
 									value="{{ URL::to('usuario/publicaciones/remover-favorito/'.$publication->fav_id) }}" 
 									data-container="body" data-toggle="popover" 
-									data-placement="right" 
+									data-placement="top" 
+									data-content="Remover de favoritos." 
+									data-trigger="hover"><i class="fa fa-heart"></i></button>
+									<button class="btn btn-default btn-transparent btn-remove-fav visible-xs visible-sm" 
+									value="{{ URL::to('usuario/publicaciones/remover-favorito/'.$publication->fav_id) }}" 
+									data-container="body" data-toggle="popover" 
+									data-placement="top" 
 									data-content="Remover de favoritos." 
 									data-trigger="hover"><i class="fa fa-heart"></i></button>
 								@else
-									<button class="btn btn-default btn-transparent btn-fav" 
+									<button class="btn btn-default btn-transparent btn-fav hidden-xs hidden-sm" 
 									value="{{ URL::to('usuario/publicaciones/agregar-favorito/'.$id) }}" 
 									data-container="body" data-toggle="popover" 
-									data-placement="right" 
+									data-placement="top" 
+									data-content="Agregar a favoritos." 
+									data-trigger="hover"><i class="fa fa-heart-o"></i></button>
+									<button class="btn btn-default btn-transparent btn-fav visible-xs visible-sm" 
+									value="{{ URL::to('usuario/publicaciones/agregar-favorito/'.$id) }}" 
+									data-container="body" data-toggle="popover" 
+									data-placement="top" 
 									data-content="Agregar a favoritos." 
 									data-trigger="hover"><i class="fa fa-heart-o"></i></button>
 								@endif
-								<img src="{{ asset('images/loading.gif') }}" class="miniLoader">
+								<img src="{{ asset('images/loading.gif') }}" class="miniLoader hidden loader-fav">
 								<div class="alert responseDanger">
 									<p class="textoPromedio"></p>
 								</div>
@@ -473,7 +480,7 @@
 							@endif
 					
 						</div>
-						<div class="col-xs-12 no-padding">
+						<div class="col-xs-12 ">
 							<a href="https://twitter.com/share" class="twitter-share-button" data-via="pasillo_24" data-hashtags="pasillo_24" data-dnt="true">Tweet</a>
 					<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
 							<div class="fb-share-button" 
@@ -491,8 +498,9 @@
 			</div>
 			
 		@elseif($publication->tipo == "Casual")
-			<div class="col-xs-6 imagesCont">
-				<ul class="col-xs-12 minis pika">
+			<div class="col-xs-12 no-padding">
+				<div class="col-xs-12 col-md-6 pagMini pika_stage_lider_container no-padding-left" >
+					<ul class="minis pika pika_stage_lider">
 					@if(!empty($publication->img_1))
 					<li>
 						<img src="{{ asset('images/pubImages/'.$publication->img_1) }}" class="imgMini" data-fancybox-group="gallery" data-value="img_1">
@@ -505,88 +513,88 @@
 					@endif
 					
 
-				</ul>
+					</ul>
 				
-			</div>
-			<div class="col-xs-6 contAnaranjado contMovil">
-				<div class="col-xs-12">
-					<legend class="precioPub"><h2>{{ ucfirst($publication->titulo) }}</h2></legend>
 				</div>
-				<div class="col-xs-12 col-sm-6">
-					<h4>Categoria </h4><label class="textoPromedio">{{ $publication->cat }}</label>
-
-				</div>
-				<div class="col-xs-12 col-sm-6">
-					<h4>Precio </h4><label class="textoPromedio">{{ $publication->precio.' '.$publication->moneda }}</label>
-
-				</div>
-				<div class="col-xs-12 col-sm-6">
-					<h4>Departamento </h4><label class="textoPromedio">{{ $publication->nombre }}</label>
-
-				</div>
-				@if(!is_null($publication->bussiness_type))
-
-				<div class="col-xs-12 col-sm-6">
-					<h4>Tipo de negocio</h4><label class="textoPromedio">{{ ucfirst($publication->bussiness_type)
-					 }}</label>
-				</div>
-				@endif
-				@if(!is_null($publication->condicion))
-
-				<div class="col-xs-12 col-sm-6">
-					<h4>Condición</h4><label class="textoPromedio">{{ ucfirst($publication->condicion)
-					 }}</label>
-				</div>
-				@endif
-				<div class="col-xs-12">
-					@if(Auth::check() && Auth::id() != $publication->user_id && Auth::user()['role'] != 'Administrador' && Auth::user()['role'] != 'Gestor')
-					<div class="col-xs-12" style="padding-left: 0px;">
-						<button class="btn btn-primary" data-toggle="modal" data-target="#modalComprar">Contactar</button>
-						@if(isset($publication->fav_user_id) && $publication->fav_user_id == Auth::id())
-							<button class="btn btn-default btn-transparent btn-remove-fav" 
-							value="{{ URL::to('usuario/publicaciones/remover-favorito/'.$publication->fav_id) }}" 
-							data-container="body" data-toggle="popover" 
-							data-placement="right" 
-							data-content="Remover de favoritos." 
-							data-trigger="hover"><i class="fa fa-heart"></i></button>
-						@else
-							<button class="btn btn-default btn-transparent btn-fav" 
-							value="{{ URL::to('usuario/publicaciones/agregar-favorito/'.$id) }}" 
-							data-container="body" data-toggle="popover" 
-							data-placement="right" 
-							data-content="Agregar a favoritos." 
-							data-trigger="hover"><i class="fa fa-heart-o"></i></button>
-						@endif
-						<img src="{{ asset('images/loading.gif') }}" class="miniLoader">
-						<div class="alert responseDanger">
-							<p class="textoPromedio"></p>
-						</div>
+				<div class="col-xs-12 col-md-6 contAnaranjado contMovil">
+					<div class="col-xs-12">
+						<legend class="precioPub"><h2>{{ ucfirst($publication->titulo) }}</h2></legend>
 					</div>
-						
-					@endif
-					@if(!Auth::check())
-					<div class="col-xs-12" style="padding-left: 0px;">
-						<button class="btn btn-primary nosepuedeClick">Contactar</button>
-						<button class="btn btn-default btn-transparent btn-fav nosepuedeClick" data-container="body" data-toggle="popover" data-placement="right" data-content="Agregar a favoritos." data-trigger="hover"><i class="fa fa-heart-o"></i></button>
-						<p class="bg-info textoPromedio noSePuede" style="padding:1em;margin-top:2em;"><strong>Para poder contactar con el usuario o agregar a favoritos se debe iniciar sesion en el portal.</strong></p>
+					<div class="col-xs-12 col-sm-6">
+						<h4>Categoria </h4><label class="textoPromedio">{{ $publication->cat }}</label>
+
+					</div>
+					<div class="col-xs-12 col-sm-6">
+						<h4>Precio </h4><label class="textoPromedio">{{ $publication->precio.' '.$publication->moneda }}</label>
+
+					</div>
+					<div class="col-xs-12 col-sm-6">
+						<h4>Departamento </h4><label class="textoPromedio">{{ $publication->nombre }}</label>
+
+					</div>
+					@if(!is_null($publication->bussiness_type))
+
+					<div class="col-xs-12 col-sm-6">
+						<h4>Tipo de negocio</h4><label class="textoPromedio">{{ ucfirst($publication->bussiness_type)
+						 }}</label>
 					</div>
 					@endif
-				</div>
-				<div class="col-xs-12">
-							<a href="https://twitter.com/share" class="twitter-share-button" data-via="pasillo_24" data-hashtags="pasillo_24" data-dnt="true">Tweet</a>
-					<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-							<div class="fb-share-button" 
-								data-href="{{ Request::url() }}" 
-								data-layout="button_count">
+					@if(!is_null($publication->condicion))
+
+					<div class="col-xs-12 col-sm-6">
+						<h4>Condición</h4><label class="textoPromedio">{{ ucfirst($publication->condicion)
+						 }}</label>
+					</div>
+					@endif
+					<div class="col-xs-12">
+						@if(Auth::check() && Auth::id() != $publication->user_id && Auth::user()['role'] != 'Administrador' && Auth::user()['role'] != 'Gestor')
+						<div class="col-xs-12" style="padding-left: 0px;">
+							<button class="btn btn-primary" data-toggle="modal" data-target="#modalComprar">Contactar</button>
+							@if(isset($publication->fav_user_id) && $publication->fav_user_id == Auth::id())
+								<button class="btn btn-default btn-transparent btn-remove-fav" 
+								value="{{ URL::to('usuario/publicaciones/remover-favorito/'.$publication->fav_id) }}" 
+								data-container="body" data-toggle="popover" 
+								data-placement="right" 
+								data-content="Remover de favoritos." 
+								data-trigger="hover"><i class="fa fa-heart"></i></button>
+							@else
+								<button class="btn btn-default btn-transparent btn-fav" 
+								value="{{ URL::to('usuario/publicaciones/agregar-favorito/'.$id) }}" 
+								data-container="body" data-toggle="popover" 
+								data-placement="right" 
+								data-content="Agregar a favoritos." 
+								data-trigger="hover"><i class="fa fa-heart-o"></i></button>
+							@endif
+							<img src="{{ asset('images/loading.gif') }}" class="miniLoader">
+							<div class="alert responseDanger">
+								<p class="textoPromedio"></p>
 							</div>
 						</div>
-			</div>
-
-			<div class="col-xs-12 textoPromedio descProd contAnaranjado">
-				<div class="col-xs-12 comentarioBox">
-					<p>{{ $publication->descripcion }}</p>
+							
+						@endif
+						@if(!Auth::check())
+						<div class="col-xs-12" style="padding-left: 0px;">
+							<button class="btn btn-primary nosepuedeClick">Contactar</button>
+							<button class="btn btn-default btn-transparent btn-fav nosepuedeClick" data-container="body" data-toggle="popover" data-placement="right" data-content="Agregar a favoritos." data-trigger="hover"><i class="fa fa-heart-o"></i></button>
+							<p class="bg-info textoPromedio noSePuede" style="padding:1em;margin-top:2em;"><strong>Para poder contactar con el usuario o agregar a favoritos se debe iniciar sesion en el portal.</strong></p>
+						</div>
+						@endif
+					</div>
+					<div class="col-xs-12">
+								<a href="https://twitter.com/share" class="twitter-share-button" data-via="pasillo_24" data-hashtags="pasillo_24" data-dnt="true">Tweet</a>
+						<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+								<div class="fb-share-button" 
+									data-href="{{ Request::url() }}" 
+									data-layout="button_count">
+								</div>
+					</div>
 				</div>
-			</div>
+
+				<div class="col-xs-12 textoPromedio descProd contAnaranjado">
+					<div class="col-xs-12 comentarioBox">
+						<p>{{ $publication->descripcion }}</p>
+					</div>
+				</div>
 		@endif
 	</div>
 	@if(isset($publication->longitude) && isset($publication->latitude))
@@ -614,7 +622,7 @@
 				<a href="{{ URL::to('publicacion/lider/'.base64_encode($o->id)) }}">
 					<img src="{{ asset('images/pubImages/'.$o->img_1) }}" class="imgPubCarousel">
 				</a>
-				<div class="dataIndex textoPromedio">
+				<div class="dataIndex textoPromedio dataOtherPubs">
 					<div class="col-xs-12 col-md-6">{{ $o->titulo }}</div>
 					@if($o->precio)
 					<div class="col-xs-12 col-md-6" style="margin-top:0.5em;">
@@ -633,8 +641,11 @@
 
 	<hr>
 	<legend>Comentarios</legend>
+	<div class="alert responseComment responseDanger">
+		<p></p>
+	</div>
 	<div class="row">
-		<div class="container comentarioBox">
+		<div class="comentarioBox">
 			
 			@if(empty($comentarios) || is_null($comentarios) || count($comentarios)<1)
 				@if(Auth::check())
@@ -643,18 +654,18 @@
 						<p class="textoPromedio comment-text"></p>
 						<p class="textoMedio comment-date" style="float:right;"></p>
 					</div>
-					<div class="col-xs-12">
+					<div class="col-xs-12 no-padding">
 						<textarea id="inputComentario" class="inputComentario textoPromedio form-control heightTransition" name="inputComentario" placeholder="Escriba su pregunta"></textarea>
 						<div class="formulario">
 							<button id="enviarComentario" name="enviarComentario" class="btn btn-success hidden" value="{{ $id }}">Enviar</button>
-							<img src="{{ asset('images/loading.gif') }}" class="miniLoader hidden">
+							<img src="{{ asset('images/loading.gif') }}" class="miniLoader hidden loader-comment">
 						</div>
 					</div>
 				</div>
 				@else
 					<p class="textoPromedio">Inicie sesión para poder agregar un comentario</p>
 				@endif
-				<div class="col-xs-12">
+				<div class="col-xs-12 formulario no-padding">
 					<p class="textoPromedio">No hay comentarios</p>
 				</div>
 			@else
@@ -671,17 +682,18 @@
 						@endif
 					@endforeach
 				</div>
-				<div class="col-xs-8 respuesta">
-				</div>
 				@endforeach
 				@if(Auth::check())
 					<div class="col-xs-12 comentario new-comment">
 						<p class="textoPromedio comment-text"></p>
-						<p class="textoMedio comment-date" style="float:right;"></p>
+						<p class="textoMedio comment-date pull-right"></p>
 					</div>
 					<div class="col-xs-12">
-						<textarea id="inputComentario" class="inputComentario textoPromedio" name="inputComentario" placeholder="Escriba su pregunta"></textarea>
-						<button id="enviarComentario" name="enviarComentario" class="btn btn-success" value="{{ $id }}">Enviar</button><img src="{{ asset('images/loading.gif') }}" class="miniLoader">
+						<textarea id="inputComentario" class="inputComentario textoPromedio form-control" name="inputComentario" placeholder="Escriba su pregunta"></textarea>
+						<div class="formulario">
+							<button id="enviarComentario" name="enviarComentario" class="btn btn-success hidden" value="{{ $id }}">Enviar</button>
+							<img src="{{ asset('images/loading.gif') }}" class="miniLoader hidden loader-comment">
+						</div>
 					</div>
 				@endif
 			@endif
@@ -736,8 +748,8 @@
 		{
 			autoPlay:false,
 			buildFinished:function () {
-                                $('.pika-textnav').children('.previous').html('Anterior')
-                                $('.pika-textnav').children('.next').html('Siguiente')
+                $('.pika-textnav').children('.previous').html('Anterior')
+                $('.pika-textnav').children('.next').html('Siguiente')
 				$('.pika-stage').data('fancybox-group','gallery').fancybox(
 				{
 					afterClose:function() {

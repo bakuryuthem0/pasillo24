@@ -45,15 +45,17 @@
 				<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
 				<h3>Recuperar Contraseña</h3>
 			</div>
-				<div class="modal-footer " style="text-align:center;">
+				<div class="modal-body">
 					<div class="alert responseDanger">
 						<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+						<p></p>
 					</div>
-					<form methos="POST" action="{{ URL::to('recuperar/password') }}">
-						<p class="textoPromedio">Introduzca el email con el cual creó su cuenta</p>
-						<input class="form-control emailForgot" name="email" placeholder="Email">
-						<button class="btn btn-success envForgot" style="margin-top:2em;">Enviar</button>	
-					</form>
+					<p class="textoPromedio">Introduzca el email con el cual creó su cuenta</p>
+					<input class="form-control emailForgot" name="email" placeholder="Email">
+				</div>
+				<div class="modal-footer">
+						<img src="{{ URL::to('images/loading.gif') }}" class="miniLoader hidden">
+						<button class="btn btn-success envForgot" >Enviar</button>	
 				</div>
 		</div>
 	</div>
