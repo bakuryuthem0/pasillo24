@@ -1382,10 +1382,10 @@ class PublicationController extends BaseController {
 			->leftJoin('departamento','publicaciones.departamento','=','departamento.id')
 			->leftJoin('categoria','categoria.id','=','publicaciones.categoria')
 			->leftJoin('subcategoria','subcategoria.id','=','publicaciones.typeCat')
-			->join('modelo','modelo.id','=','publicaciones.modelo_id')
+			->leftJoin('modelo','modelo.id','=','publicaciones.modelo_id')
 			->join('usuario','usuario.id','=','publicaciones.user_id')
 			->where('publicaciones.id','=',$id)
-			->get(array(
+			->first(array(
 					'locations.latitude',
 					'locations.longitude',
 					'marcas.nombre as marca',
@@ -1403,7 +1403,7 @@ class PublicationController extends BaseController {
 				->join('categoria','categoria.id','=','publicaciones.categoria')
 				->join('subcategoria','subcategoria.id','=','publicaciones.typeCat')
 				->where('publicaciones.id','=',$id)
-				->get(array(
+				->first(array(
 						'locations.latitude',
 						'locations.longitude',
 						'subcategoria.desc as subCat',
@@ -1417,7 +1417,7 @@ class PublicationController extends BaseController {
 				->join('departamento','publicaciones.departamento','=','departamento.id')
 				->join('categoria','categoria.id','=','publicaciones.categoria')
 				->where('publicaciones.id','=',$id)
-				->get(array(
+				->first(array(
 						'locations.latitude',
 						'locations.longitude',
 						'departamento.nombre as dep',

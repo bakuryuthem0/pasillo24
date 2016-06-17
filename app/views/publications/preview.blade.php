@@ -113,44 +113,44 @@
 						</div>
 						@if(!empty($publication->cilindraje))
 						<div class="col-xs-6 caracteristicasPub">
-							<h3>Cilindraje</h3><label class="textoPromedio">{{ $publication->cilindraje }} </label>
+							<h3>Cilindraje</h3><label class="textoPromedio">@if(strlen($publication->cilindraje) == 0) Sin especificar @else {{ $publication->cilindraje }} @endif</label>
 						</div>
 						@endif
 
 						@if(!empty($publication->transmicion))
 						<div class="col-xs-6 caracteristicasPub">
-							<h3>Transmición</h3><label class="textoPromedio"> {{ $publication->transmicion }} </label>
+							<h3>Transmición</h3><label class="textoPromedio">@if(strlen($publication->transmicion) == 0) Sin especificar @else {{ $publication->transmicion }} @endif</label>
 						</div>
 						@endif
 
 						@if(empty($publication->traccion))
 						<div class="col-xs-6 caracteristicasPub">
-							<h3>Tracción</h3><label class="textoPromedio">{{ $publication->traccion }}</label>
+							<h3>Tracción</h3><label class="textoPromedio">@if(strlen($publication->traccion) == 0) Sin especificar @else {{ $publication->traccion }} @endif</label>
 						</div>
 						@endif
 
 						@if(!empty($publication->combustible))
 						<div class="col-xs-6 caracteristicasPub">
-							<h3>Documentación</h3><label class="textoPromedio">{{ $publication->combustible }}</label>
+							<h3>Documentación</h3><label class="textoPromedio">@if(strlen($publication->combustible) == 0) Sin especificar @else {{ $publication->combustible }} @endif</label>
 						</div>
 						@endif
 					@elseif($publication->categoria == 20)
 						<div class="col-xs-6 caracteristicasPub">
-							<h3>Extensión</h3><label class="textoPromedio">{{ $publication->extension }} mt<sup>2</sup></label>
+							<h3>Extensión</h3><label class="textoPromedio">@if(strlen($publication->extension) == 0) Sin especificar @else {{ $publication->extension }} @endif mt<sup>2</sup></label>
 						</div>
 					@endif	
 					<div class="col-xs-6 caracteristicasPub">
 						<h3>Tipo de operación</h3>
 						<label class="textoPromedio">
-							{{ $publication->transaccion }}
+							@if(strlen($publication->transaccion) == 0) Sin especificar @else {{ $publication->transaccion }} @endif
 						</label>
 
 					</div>
 					@if(!is_null($publication->bussiness_type))
 
 					<div class="col-xs-6 caracteristicasPub">
-						<h4>Tipo de negocio</h4><label class="textoPromedio">{{ ucfirst($publication->bussiness_type)
-						 }}</label>
+						<h4>Tipo de negocio</h4><label class="textoPromedio">@if(strlen($publication->bussiness_type) == 0) Sin especificar @else {{ ucfirst($publication->bussiness_type)
+						 }} @endif</label>
 
 					</div>
 					@endif
