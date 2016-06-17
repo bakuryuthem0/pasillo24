@@ -146,6 +146,22 @@
 						</label>
 
 					</div>
+					@if(!is_null($publication->bussiness_type))
+
+					<div class="col-xs-6 caracteristicasPub">
+						<h4>Tipo de negocio</h4><label class="textoPromedio">{{ ucfirst($publication->bussiness_type)
+						 }}</label>
+
+					</div>
+					@endif
+					@if(!is_null($publication->condicion))
+
+					<div class="col-xs-6 caracteristicasPub">
+						<h4>Condición</h4><label class="textoPromedio">{{ ucfirst($publication->condicion)
+						 }}</label>
+
+					</div>
+					@endif
 				</div>
 			</div>
 			<div class="col-xs-12 textoPromedio descProd contAnaranjado">

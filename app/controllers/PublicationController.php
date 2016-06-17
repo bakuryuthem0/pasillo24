@@ -974,7 +974,6 @@ class PublicationController extends BaseController {
 			'title' 		=> 'required|min:4',
 			'input'			=> 'required|min:4',
 			'moneda'		=> 'required',
-			'precio'		=> 'required_if:tipoTransac,venta,alquiler,Aticretico,otro',
 			'moneda'		=> 'required',
 			'img1'			=> 'required|image',
 			'tipoTransac'	=> 'required',
@@ -989,7 +988,6 @@ class PublicationController extends BaseController {
 			'numeric'	=> ':attribute debe ser numerico'
 		);
 		$customAttributes = array(
-			'precio'	 	=> 'El campo precio',
 
 			'departamento'  => 'El campo departamento',
 			'title'		 	=> 'El campo titulo',
@@ -1058,7 +1056,9 @@ class PublicationController extends BaseController {
 		$pub->departamento  = $input['departamento'];
 		$pub->ciudad 		= $input['ciudad'];
 		$pub->descripcion	= $input['input'];
-		$pub->precio 		= $input['precio'];
+		if (!is_null($input['precio']) && !empty($input['precio'])) {
+			$pub->precio 		= $input['precio'];
+		}
 		$pub->monto 		= 40;
 		$pub->status  		= 'Pendiente';
 		$pub->moneda 		= $input['moneda'];
