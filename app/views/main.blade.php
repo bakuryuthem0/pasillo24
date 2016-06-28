@@ -25,7 +25,7 @@
         <link href="{{ asset('css/font-awesome.min.css') }}" rel="stylesheet">
 
 		{{ HTML::style('css/bootstrap-theme.min.css')}}
-		{{ HTML::style('css/custom.css?v=1.9') }}
+		{{ HTML::style('css/custom.css?v=2.0') }}
 		{{ HTML::style('css/jquery.cleditor.css') }}
 		{{ HTML::style('css/owl.carousel.css') }}
 		{{ HTML::style('css/owl.theme.default.css') }}
@@ -509,7 +509,7 @@
 	
 	{{ HTML::script('js/jquery.min.js') }}
 	{{ HTML::script('js/bootstrap.min.js') }}
-	{{ HTML::script('js/custom.js?v=1.8')}}
+	{{ HTML::script('js/custom.js?v=2.0')}}
 	
 	{{ HTML::script('js/ckeditor.js') }}
 	{{ HTML::script('js/jquery.ckeditor.js') }}
