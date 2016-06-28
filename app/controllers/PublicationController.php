@@ -19,17 +19,9 @@ class PublicationController extends BaseController {
             $img1->move("images/pubImages/".Auth::user()['username'],$miImg);
 
             $img 	= Image::make('images/pubImages/'.Auth::user()['username'].'/'.$miImg);
-
-            $blank = Image::make('images/blank.jpg');
-             if ($img->width() > $img->height()) {
-	        	$img->widen($size);
-	        }else
-	        {
-	        	$img->heighten($size);
-	        }
-	        $mark = Image::make('images/watermark.png')->widen($watermark);
-	        $blank->insert($img,'center');
-	        $blank->insert($mark,'center')
+	        $mark = Image::make('images/watermark.png')->widen(400);
+            
+	        $img->insert($mark,'center')
            	->interlace()
             ->save('images/pubImages/'.Auth::user()['username'].'/'.$miImg);
 		}else
@@ -38,16 +30,8 @@ class PublicationController extends BaseController {
 
 			$img = Image::make('images/pubImages/'.Auth::user()['username'].'/'.$img1->getClientOriginalName());
             
-            $blank = Image::make('images/blank.jpg');
-             if ($img->width() > $img->height()) {
-	        	$img->widen($size);
-	        }else
-	        {
-	        	$img->heighten($size);
-	        }
 	        $mark = Image::make('images/watermark.png')->widen($watermark);
-	        $blank->insert($img,'center');
-	        $blank->insert($mark,'center')
+	        $img->insert($mark,'center')
            	->interlace()
             ->save('images/pubImages/'.Auth::user()['username'].'/'.$img1->getClientOriginalName());
 
@@ -71,21 +55,10 @@ class PublicationController extends BaseController {
             //guardamos la imagen con otro nombre ej foto(1).jpg || foto(2).jpg etc
             $file->move("images/pubImages/".Auth::user()['username'],$miImg);
             $img = Image::make('images/pubImages/'.Auth::user()['username'].'/'.$miImg);
-            $blank = Image::make('images/blank.jpg');
-	             if ($img->width() > $img->height()) {
-		        	$img->widen(1604);
-		        }else
-		        {
-		        	$img->heighten(804);
-		        }
-		        if ($img->height() > 804) {
-		        	$img->heighten(804);
-		        }
-		        $mark = Image::make('images/watermark.png')->widen(400);
-		        $blank->insert($img,'center');
-		        $blank->insert($mark,'center')
-	           	->interlace()
-	            ->save('images/pubImages/'.Auth::user()['username'].'/'.$miImg);
+	        $mark = Image::make('images/watermark.png')->widen(400);
+	        $img->insert($mark,'center')
+           	->interlace()
+            ->save('images/pubImages/'.Auth::user()['username'].'/'.$miImg);
             if($miImg != $file->getClientOriginalName()){
 				return Auth::user()['username'].'/'.$miImg;
             }
@@ -93,22 +66,11 @@ class PublicationController extends BaseController {
 		{
 			$file->move("images/pubImages/".Auth::user()['username'],$file->getClientOriginalName());
 			$img = Image::make('images/pubImages/'.Auth::user()['username'].'/'.$file->getClientOriginalName());
-	           $blank = Image::make('images/blank.jpg');
-	             if ($img->width() > $img->height()) {
-		        	$img->widen(1604);
-		        }else
-		        {
-		        	$img->heighten(804);
-		        }
-		        if ($img->height() > 804) {
-		        	$img->heighten(804);
-		        }
-		        $mark = Image::make('images/watermark.png')->widen(400);
-		        $blank->insert($img,'center');
-		        $blank->insert($mark,'center')
-	           	->interlace()
-	            ->save("images/pubImages/".Auth::user()['username'].'/'.$file->getClientOriginalName());
-	            return Auth::user()['username'].'/'.$file->getClientOriginalName();
+	        $mark = Image::make('images/watermark.png')->widen(400);
+	        $img->insert($mark,'center')
+           	->interlace()
+            ->save("images/pubImages/".Auth::user()['username'].'/'.$file->getClientOriginalName());
+            return Auth::user()['username'].'/'.$file->getClientOriginalName();
 		}
 	}
 	
@@ -1366,7 +1328,7 @@ class PublicationController extends BaseController {
 			$url = "usuario/publicacion/modificar/casual/".$id;
 		}
 		$categorias = Categorias::all();
-		$subCat = SubCat::all();
+		$subCat = SubCat::where('categoria_id','=',$pub->categoria)->get();
 		$departamento = Department::all();
 		if ($pub->categoria == 34) {
 			$marcas = Marcas::all();

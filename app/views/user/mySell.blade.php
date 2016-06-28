@@ -5,7 +5,7 @@
 <div class="container contenedorUnico">
 	<div class="row">
 		<div class="col-xs-12">
-			<div class="col-xs-12 col-md-6">
+			<div class="col-xs-12 col-md-8 center-block contAnaranjado">
 				<legend>Sistema de reputación de pasillo24.com</legend>
 				
 				<p class=textoPromedio>Una vez que hayas realizado la venta, podrás valorar al comprador según tus experiencias, pasadas las 48 horas.</p>
@@ -27,7 +27,7 @@
 								
 								<td>
 									@if($compra->fechVal <= date('Y-m-d',time()))
-										<button class="btn btn-primary sendPubValue btn-xs" data-toggle="modal" data-target="#modalComprar" value={{ $compra->id }}>Valorar</button>
+										<button class="btn btn-primary valorar btn-xs" data-toggle="modal" data-target="#modalComprar" value={{ $compra->id }}>Valorar</button>
 									@else
 										<i class="fa fa-clock-o btn-xs" style="font-size:2em;margin-top:0px;color:orange;"></i>
 									@endif
@@ -50,16 +50,16 @@
 			</div>
 				<div class="modal-body">
 					<p class="textoPromedio">Elija su opcion.</p>
-					<div class="alert responseDanger" style="text-align:center;">
-					<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-				</div>
+					<div class="alert responseDanger">
+						<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+						<p></p>
+					</div>
 				</div>
 				<div class="modal-footer">
-					
-						<img src="{{ asset('images/loading.gif') }}" class="miniLoader">
-						<button class="btn btn-success sendValueType" data-url="{{ URL::to('usuario/valorar-comprador') }}" value="pos" >Positivo</button>
-						<button class="btn btn-danger sendValueType" data-url="{{ URL::to('usuario/valorar-comprador') }}" value="neg">Negativo</button>
-						<button class="btn btn-success btn-dimiss hidden" data-dismiss="modal">Aceptar</button>
+						<img src="{{ asset('images/loading.gif') }}" class="miniLoader hidden">
+						<button class="btn btn-success sendValueType btn-modal-elim" data-url="{{ URL::to('usuario/valorar-comprador') }}" data-value="pos">Positivo</button>
+						<button class="btn btn-danger sendValueType btn-modal-elim" data-url="{{ URL::to('usuario/valorar-comprador') }}" data-value="neg">Negativo</button>
+						<button class="btn btn-default btn-dimiss btn-close-modal btn-modal-elim" data-dismiss="modal">Cerrar</button>
 				</div>
 		</div>
 	</div>

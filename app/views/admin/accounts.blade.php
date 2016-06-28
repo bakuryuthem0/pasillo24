@@ -79,9 +79,9 @@
       	</div>
       </div>
       <div class="modal-footer">
-      	<img src="{{ asset('images/loading.gif') }}" class="miniLoader">
-        <button type="button" class="btn btn-danger eliminar-cuenta" >Eliminar</button>
-        <button type="button" class="btn btn-success btn-dimiss hidden" data-dismiss="modal">Aceptar</button>
+      	<img src="{{ asset('images/loading.gif') }}" class="miniLoader hidden">
+        <button type="button" class="btn btn-danger eliminar-cuenta btn-modal-elim" >Eliminar</button>
+        <button type="button" class="btn btn-default btn-dimiss btn-close-modal btn-modal-elim" data-dismiss="modal">Cerrar</button>
 
       </div>
     </div>

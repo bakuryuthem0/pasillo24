@@ -12,7 +12,7 @@
 			</div>
 			@endif
 			<form method="post" action="{{ URL::to('usuario/publicacion/habitual/pago/procesar') }}">
-			<div class="col-xs-6 contAnaranjado contCien">
+			<div class="col-xs-12 col-md-6 pull-left contAnaranjado contCien">
 				<h3>Incremente su publicidad</h3>
 				<p class="bg-info textoPromedio" style="padding:0.5em;">Si desea incrementar la publicidad de su anuncio, especifique ubicación tiempo y periodo.</p>
 				<h5>Menú principal</h5>
@@ -46,7 +46,7 @@
 					</div>
 				</div>
 			</div>
-			<div class="col-xs-5 contCien contAnaranjado" style="margin-left:1em;margin-top: 1em;">
+			<div class="col-xs-12 col-md-5 pull-right contCien contAnaranjado">
 					<h3 id="totalTexto">El total a pagar será de: {{ $pub->monto }}Bs</h3>
 					<button id="enviarPago" class="btn btn-success" style="margin-top:2em;" value="{{ $id }}" name="enviarId">Continuar</button>
 			</div>

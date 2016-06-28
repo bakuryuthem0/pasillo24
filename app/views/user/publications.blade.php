@@ -100,7 +100,7 @@
 							</td>
 							<td>
 								
-									<a href="{{ URL::to('usuario/publicacion/modificar/'.$publication->id) }}" class="btn btn-success btn-xs" name="modificar" >Modificar</a>
+									<a target="_blank" href="{{ URL::to('usuario/publicacion/modificar/'.$publication->id) }}" class="btn btn-success btn-xs" name="modificar" >Modificar</a>
 								
 							</td>
 							<td class="textoMedio">
@@ -244,7 +244,7 @@
 							</td>
 							
 							<td>
-								<a href="{{ URL::to('usuario/publicacion/modificar/'.$publication->id) }}" class="btn btn-success btn-xs" name="modificar" >Modificar</a>
+								<a target="_blank" href="{{ URL::to('usuario/publicacion/modificar/'.$publication->id) }}" class="btn btn-success btn-xs" name="modificar" >Modificar</a>
 							</td>
 							<td class="textoMedio">
 								@if($publication->fechFin < date('Y-m-d') && $publication->fechFin != "0000-00-00" && $publication->status != 'Procesando')
@@ -429,7 +429,7 @@
 			<div class="modal-footer">
 				<img src="{{ asset('images/loading.gif') }}" class="miniLoader hidden">
 				<button type="button" class="btn btn-danger btnElimPublicacion btn-modal-elim">Eliminar</button>
-				<button type="button" class="btn btn-success btn-dimiss btn-modal-elim" data-dismiss="modal">Cerrar</button>
+				<button type="button" class="btn btn-default btn-dimiss btn-close-modal btn-modal-elim" data-dismiss="modal">Cerrar</button>
 			</div>
 		</div><!-- /.modal-content -->
 	</div><!-- /.modal-dialog -->

@@ -23,7 +23,7 @@
 						@foreach($recividos as $comentario)
 						<tr class="textoPromedio">
 							<td>{{ $comentario->titulo }}</td>
-							<td>{{ $comentario->comentario }}</td>
+							<td>{{ substr(strip_tags($comentario->comentario),0,100) }}...</td>
 							<td>{{ date('d-m-Y',strtotime($comentario->created_at)) }}</td>
 							@if($comentario->deleted == 1)
 							<td><div class="alert alert-danger">
@@ -62,7 +62,7 @@
 						@foreach($hechos as $h)
 						<tr class="textoPromedio">
 							<td>{{ $h->titulo }}</td>
-							<td>{{ $h->comentario }}</td>
+							<td>{{ substr(strip_tags($h->comentario),0,100) }}...</td>
 							<td>{{ date('d-m-Y',strtotime($h->created_at)) }}</td>
 							@if($h->deleted == 1)
 							<td></td>
@@ -102,14 +102,15 @@
 					<p class="textoPromedio">Introduzca su respuesta</p>
 					<div class="alert responseDanger">
 						<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+						<p></p>
 					</div>
 					<textarea name="respuesta" class="form-control textoRespuesta" placeholder="Enviar respuesta"></textarea>
 				</div>
 				<div class="modal-footer " style="text-align:right;">
 					
-					<img src="{{ asset('images/loading.gif') }}" class="miniLoader">
-					<button class="btn btn-success enviarRespuesta" data-pub-id="" value="">Enviar</button>
-					<button class="btn btn-success btn-dimiss hidden" data-dismiss="modal">Aceptar</button>
+					<img src="{{ asset('images/loading.gif') }}" class="miniLoader hidden">
+					<button class="btn btn-success enviarRespuesta btn-modal-elim" data-pub-id="" value="">Enviar</button>
+					<button class="btn btn-default btn-dimiss btn-close-modal btn-modal-elim" data-dismiss="modal">Cerrar</button>
 				</div>
 		</div>
 	</div>
@@ -142,12 +143,13 @@
 				<p class="textoPromedio">¿Seguro desea borrar el comentario?</p>
 				<div class="alert responseDanger">
 					<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+					<p></p>
 				</div>
 			</div>
 			<div class="modal-footer">
-				<img src="{{ asset('images/loading.gif') }}" class="miniLoader">
-				<button type="button" class="btn btn-danger btnElimCommentSend">Borrar</button>
-				<button class="btn btn-success btn-dimiss hidden" data-dismiss="modal">Aceptar</button>
+				<img src="{{ asset('images/loading.gif') }}" class="miniLoader hidden">
+				<button type="button" class="btn btn-danger btnElimCommentSend btn-modal-elim">Borrar</button>
+				<button class="btn btn-default btn-dimiss btn-close-modal btn-modal-elim" data-dismiss="modal">Cerrar</button>
 			</div>
 		</div>
 	</div>

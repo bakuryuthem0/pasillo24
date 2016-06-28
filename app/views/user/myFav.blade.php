@@ -57,7 +57,7 @@
 									<a class="btn btn-primary btn-xs " href="{{ URL::to('publicacion/'.strtolower($f->tipo).'/'.base64_encode($f->id)) }}">ir</a>
 								</td>
 								<td class="text-center">
-									<button class="btn btn-danger  btn-xs btn-fav-remove" value="{{ $f->fav_id }}" data-toggle="modal" data-target="#removeFav">Remover</button>
+									<button class="btn btn-danger  btn-xs btn-fav-remove" value="{{ URL::to('usuario/publicaciones/remover-favorito/'.$f->fav_id) }}" data-toggle="modal" data-target="#removeFav">Remover</button>
 								</td>
 							</tr>
 						@endforeach
@@ -251,7 +251,7 @@
 				<div class="modal-footer">
 						<img src="{{ asset('images/loading.gif') }}" class="miniLoader hidden">
 						<button class="btn btn-danger btn-fav-remove-modal btn-modal-elim">Remover</button>
-						<button type="button" class="btn btn-success btn-close-modal btn-modal-elim" data-dismiss="modal">Cerrar</button>
+						<button type="button" class="btn btn-default btn-close-modal btn-modal-elim" data-dismiss="modal">Cerrar</button>
 				</div>
 		</div>
 	</div>

@@ -40,7 +40,7 @@ function cambiarFecha()
 				}else
 				{
 					$('.response-date').html(data.fecha).removeClass('hidden');
-					$('.response-msg').html('El total a pagar sera de '+data.costo+' Bs.').parent().removeClass('hidden');
+					$('.response-msg').html('<label>El total a pagar sera de:</label> <p class="precioPub">'+data.costo+' Bs.</p>').parent().removeClass('hidden');
 				}
 			},
 			error:function()
@@ -81,10 +81,10 @@ function success(position) {
 	    $('.contLoaderBig').removeClass('active');
 	});
 }
-function verificarComentario(url)
+function verificarComentario(base)
 {
 	$.ajax({
-		url: url+'/verificar-comentarios',
+		url: base+'/verificar-comentarios',
 		type: 'GET',
 		success:function(response)
 		{
@@ -201,38 +201,96 @@ function removeResponseAjax () {
 	$('.responseDanger').removeClass('alert-success');
 	$('.responseDanger').removeClass('active');
 }
-function ajaxElim (base,dataPost,btn) {
+function loadOptions (url,method,toRemove, toAdd, data) {
+	$.ajax({
+		url: url,
+		type: method,
+		data: data,
+		beforeSend:function()
+		{
+			$('.'+toRemove).remove();
+		},
+		success:function(response){
+			for (var i = 0 ; i < response.length; i++) {
+				if (typeof response[i].desc == 'undefined') {
+					$(toAdd).append('<option class="'+toRemove+'" value="'+response[i].id+'">'+response[i].nombre+'</option>');
+
+				}else
+				{
+					$(toAdd).append('<option class="'+toRemove+'" value="'+response[i].id+'">'+response[i].desc+'</option>');
+				}
+			}
+		}
+	});
+}
+function ajaxElim (base,dataPost,btn, method) {
 	var url = base;
 	$.ajax({
 		url: url,
-		type: 'GET',
+		type: method,
 		dataType: 'json',
 		data: dataPost,
 		beforeSend:function()
 		{
-			btn.addClass('disabled').attr('disabled', true).prev('.miniLoader').removeClass('hidden');
+			btn.prevAll('.miniLoader').removeClass('hidden');
+			$('.btn-modal-elim').addClass('disabled').attr('disabled', true);
 			$('.btn-close-modal').addClass('disabled').attr('disabled', true);
 			$('.close').addClass('hidden');
+			if (btn.hasClass('send-elim')) {
+				$('.motivo').addClass('disabled').attr('disabled', true);
+			};
 		},
 		success:function(response)
 		{
-			btn.removeClass('disabled').attr('disabled', false).prev('.miniLoader').addClass('hidden');
+			btn.prevAll('.miniLoader').addClass('hidden');
+			$('.btn-modal-elim').removeClass('disabled').attr('disabled', false);
 			$('.btn-close-modal').removeClass('disabled').attr('disabled', false);
 			$('.close').removeClass('hidden');
 			$('.responseDanger').addClass('alert-'+response.type).addClass('active').children('p').html(response.msg);
+			if (btn.hasClass('send-elim')) {
+				$('.motivo').removeClass('disabled').attr('disabled', false);
+			};
 			if (response.type == 'success') {
+				$('.btn-modal-elim').not('.btn-close-modal').addClass('hidden');
 				$('.to-elim').parent().parent().remove();
+				if (btn.hasClass('send-elim')) {
+					$('.motivo').val('');
+				};
 			}
 			setTimeout(removeResponseAjax,5000);
 		},
 		error:function()
 		{
-			btn.removeClass('disabled').attr('disabled', false).prev('.miniLoader').addClass('hidden');
-			$('.btn-fav-close-modal').attr('disabled', false).prev('.miniLoader');
+			btn.prevAll('.miniLoader').addClass('hidden');
+			$('.btn-modal-elim').removeClass('disabled').attr('disabled', false);
+			$('.btn-close-modal').removeClass('disabled').attr('disabled', false);
 			$('.responseDanger').addClass('alert-danger').addClass('active').children('p').html('Ups, el servidor no responde.');
 			setTimeout(removeResponseAjax,5000);
 		}
 	});
+}
+function periodo(este,aquel,duration,duration2)
+{
+	valor = este;
+	if (valor != "" && duration != "") {
+		valor = (parseInt(duration)*parseInt(valor))+40;
+		if ($(aquel).val() != "" && duration2 != "") {
+			valor += parseInt(parseInt(duration2)*parseInt($(aquel).val()));
+			$('#enviarPago').before('<h3 id="totalTexto">El total a pagar sera de: '+valor+'bs</p>');	
+		}else{
+			$('#enviarPago').before('<h3 id="totalTexto">El total a pagar sera de: '+valor+'bs</p>');
+		}
+	}else
+	{
+		if ($(aquel).val() != "" && duration2 != "") {
+			console.log(valor+' '+typeof valor)
+			valor = parseInt(parseInt(duration2)*parseInt($(aquel).val()))+40;
+			$('#enviarPago').before('<h3 id="totalTexto">El total a pagar es de: '+valor+'bs</p>');	
+		}else
+		{
+			$('#enviarPago').before('<h3 id="totalTexto">El total a pagar es de: 40bs</p>');	
+		}
+	}
 }
 jQuery(document).ready(function($) {
 	var url = $('.baseUrl').val();
@@ -240,8 +298,10 @@ jQuery(document).ready(function($) {
 		resizeCategoryContainer();
 	});
 	resizeCategoryContainer();
-	setTimeout(function(){ verificarComentario(url); }, 1);
-	setInterval(function(url) {
+	setTimeout(function(){ 
+		verificarComentario(url); 
+	}, 1);
+	setInterval(function() {
 		verificarComentario(url);
 	},120000);
 	/*------------------ Modificar Perfil --------------*/
@@ -545,20 +605,382 @@ jQuery(document).ready(function($) {
 			})
 		}
 	});
-	$('.btn-fav-remove').on('click', function(event) {
-		$(this).addClass('to-elim');
-		$('.btn-fav-remove-modal').val($(this).val());
+	
+	$('#category').on('change',function(event) {
+		var id = $(this).val();
+		var data = { 'id': id};
+		if (id != "") {
+			loadOptions(url+'/usuario/sub-categoria','GET', 'optiongroup', '#subCat',data)
+		};
 	});
+	$('#veiMarca').change(function(){
+		var id = $(this).val();
+		var data = {'id': id};
+		if (id != "") {
+			loadOptions(url+'/publicacion/model','GET', 'optionModel', '#veiModel',data)
+		};
+	})
 	$('.modal').on('hide.bs.modal', function(event) {
 		$('.to-elim').removeClass('to-elim');
 		$('.btn-modal-elim').attr('disabled',false).removeClass('hidden');	
 		removeResponseAjax();
 	});
+	$('.btn-fav-remove').on('click', function(event) {
+		$(this).addClass('to-elim');
+		$('.btn-fav-remove-modal').val($(this).val());
+	});
 	$('.btn-fav-remove-modal').on('click', function(event) {
 		var btn = $(this);
-		var dataPost = {
-			pub_id : btn.val()
-		}
-		ajaxElim (url+'/usuario/publicaciones/remover-favorito',dataPost,btn)
+		var dataPost = {}
+		ajaxElim (btn.val(),dataPost,btn,'GET');
 	});
+	$('.valorar').on('click', function(event) {
+		var btn = $(this);
+		btn.addClass('to-elim');
+		$('.sendValueType').val(btn.val());
+	});
+	$('.sendValueType').on('click', function(event) {
+		var btn = $(this);
+		var dataPost = {
+			id : btn.val(),
+			tipo   : btn.data('value'),
+		}
+		ajaxElim (btn.data('url'),dataPost,btn,'POST');
+	});
+	$('.sendPubValue').on('click', function(event) {
+		var btn = $(this);
+		var dataPost = {
+			pub_id : btn.val(),
+		}
+		ajaxElim (btn.data('url'),dataPost,btn,'GET');
+	});
+	$('.btnEliminarPub').on('click', function(event) {
+		$(this).addClass('to-elim');
+		$('.btnElimPublicacion').val($(this).val());
+	});
+	$('.btnElimPublicacion').on('click', function(event) {
+		var btn = $(this);
+		var dataPost = {
+			id : btn.val()
+		}
+		ajaxElim (url+'/usuario/publicaciones/mis-publicaciones/eliminar/publicacion',dataPost,btn,'POST')
+	});
+	$('.elimComentario').on('click', function(event) {
+		var btn = $(this);
+		$(this).addClass('to-elim');
+		$('.btnElimCommentSend').val($(this).val()).attr('data-url',btn.data('url'));
+	});
+	$('.btnElimCommentSend').on('click', function(event) {
+		var btn = $(this);
+		var dataPost = {
+			id : btn.val()
+		}
+		ajaxElim(btn.data('url'),dataPost,btn,'POST')
+	});
+	$('.btn-reject').on('click', function(event) {
+		var btn = $(this);
+		$(this).addClass('to-elim');
+		$('.send-elim').val($(this).val()).attr('data-url',btn.data('url'));
+	});
+	$('.btn-elim-pub').on('click', function(event) {
+		var btn = $(this);
+		$(this).addClass('to-elim');
+		$('.send-elim').val($(this).val()).attr('data-url',btn.data('url'));
+	});
+	$('.send-elim').on('click', function(event) {
+		var btn = $(this);
+		var dataPost = {
+			id : btn.val(),
+			motivo : $('.motivo').val(),
+		}
+		ajaxElim(btn.data('url'),dataPost,btn,'POST');
+	});
+	$('.btnAprovar').on('click', function(event) {
+		var btn = $(this);
+		$(this).addClass('to-elim');
+		$('.send-aprov').val($(this).val());
+	});
+	$('.send-aprov').on('click', function(event) {
+		var btn = $(this);
+		var dataPost = {
+			id : btn.val(),
+		}
+		ajaxElim(url+'/administrador/pagos/confirmar',dataPost,btn,'POST');
+	});
+	$('.btn-elim-cat').on('click', function(event) {
+		var btn = $(this);
+		btn.addClass('to-elim');
+		$('.eliminar-categoria').val(btn.val());
+	});
+	$('.eliminar-categoria').on('click', function(event) {
+		var btn = $(this);
+		var dataPost = {
+			id : btn.val(),
+		}
+		ajaxElim(url+'/administrador/categorias/eliminar',dataPost,btn,'POST');
+	});
+	$('.btn-elim-subcat').on('click', function(event) {
+		var btn = $(this);
+		btn.addClass('to-elim');
+		$('.eliminar-subcategoria').val(btn.val());
+	});
+	$('.eliminar-subcategoria').on('click', function(event) {
+		var btn = $(this);
+		var dataPost = {
+			id : btn.val(),
+		}
+		ajaxElim(url+'/administrador/subcategorias/eliminar',dataPost,btn,'POST');
+	});
+	$('.btn-elim-user').on('click', function(event) {
+		var btn = $(this);
+		btn.addClass('to-elim');
+		$('.elim-user').val(btn.val());
+	});
+	$('.elim-user').on('click', function(event) {
+		var btn = $(this);
+		var dataPost = {
+			id : btn.val(),
+		}
+		ajaxElim(url+'/administrador/eliminar-usuario/enviar',dataPost,btn,'POST');
+	});
+	$('.btn-elim-account').on('click', function(event) {
+		var btn = $(this);
+		btn.addClass('to-elim');
+		$('.eliminar-cuenta').val(btn.val());
+	});
+	$('.eliminar-cuenta').on('click', function(event) {
+		var btn = $(this);
+		var dataPost = {
+			id : btn.val(),
+		}
+		ajaxElim(url+'/administrador/editar-cuenta/eliminar',dataPost,btn,'POST');
+	});
+	$('.btn-responder').click(function(event) {
+		var btn = $(this);
+		btn.addClass('to-elim');
+		$('.enviarRespuesta').val(btn.val()).attr('data-pub-id',btn.data('pub-id'));
+	});
+	$('.change-response-text').on('click', function(event) {
+		var txt = $(this).data('txt');
+		$('.response-text').html(txt);
+	});
+	$('.enviarRespuesta').on('click',function(event) {
+		var btn = $(this);
+		dataPost = {
+			'id'		:btn.val(),
+			'respuesta'	:$('.textoRespuesta').val(),
+			'pub_id'	:btn.data('pub-id')
+		};
+		$.ajax({
+			url: url+'/usuario/publicaciones/comentarios/respuesta',
+			type: 'POST',
+			dataType: 'json',
+			data: dataPost,
+			beforeSend:function()
+			{
+				btn.addClass('disabled').attr('disabled', true).prev('.miniLoader').removeClass('hidden');
+				$('.btn-close-modal').addClass('disabled').attr('disabled', true);
+				$('.close').addClass('hidden');
+				$('.textoRespuesta').addClass('disabled').attr('disabled', true);
+			},
+			success:function(response)
+			{
+				btn.removeClass('disabled').attr('disabled', false).prev('.miniLoader').addClass('hidden');
+				$('.btn-close-modal').removeClass('disabled').attr('disabled', false);
+				$('.textoRespuesta').removeClass('disabled').attr('disabled', false);
+				$('.close').removeClass('hidden');
+				$('.responseDanger').addClass('alert-'+response.type).addClass('active').children('p').html(response.msg);
+				if (response.type == 'success') {
+					$('.textoRespuesta').val('');
+					btn.addClass('hidden');
+					$('.to-elim').parent().parent().remove();
+				}
+				setTimeout(removeResponseAjax,5000);
+			},
+			error:function()
+			{
+				btn.removeClass('disabled').attr('disabled', false).prev('.miniLoader').addClass('hidden');
+				$('.btn-close-modal').removeClass('disabled').attr('disabled', false);
+				$('.textoRespuesta').removeClass('disabled').attr('disabled', false);
+				$('.responseDanger').addClass('alert-danger').addClass('active').children('p').html('Ups, el servidor no responde.');
+				setTimeout(removeResponseAjax,5000);
+			}
+		});
+	});
+	$('.btnChange').click(function(event) {
+		var btn = $(this);
+		$('.minis').addClass('miniSortable');
+
+		$('.btn-no').removeClass('hidden');
+		btn.addClass('hidden');
+		
+		$( ".minis" ).sortable({
+	      revert: true
+	    });
+
+	    $( ".minis" ).disableSelection();
+	});
+	$('.btnChangeEnviar').click(function(event) {
+		var lista = $('.imgMini');
+		var btn = $(this);
+		var arr   = [];
+		lista.each(function(i, el) {
+			arr[i] = $(el).attr('data-value');
+		});
+		var id = $(this).val();
+		$.ajax({
+			url: url+'/publicacion/habitual/previsualizar/cambiar/posiciones',
+			type: 'POST',
+			dataType: 'json',
+			data: {'arr': arr,'id':id},
+			beforeSend:function () {
+				btn.prevAll('.miniLoader').removeClass('hidden');
+				$('.btn-no').addClass('disabled').attr('disabled', true);
+			},
+			success:function (response) {
+				btn.prevAll('.miniLoader').addClass('hidden');
+				$('.btn-no').removeClass('disabled').attr('disabled', false);
+				$('.minis').sortable("destroy");
+				$('.miniSortable').removeClass('miniSortable');
+				
+				$('.responseDanger').addClass('alert-'+response.type).addClass('active').children('p').html(response.msg);
+				setTimeout(removeResponseAjax,6000);
+				
+			}
+		})
+		
+	});
+	$('.btnChangeCancel').click(function(event) {
+		$('.minis').sortable("destroy");
+		$('.miniSortable').removeClass('miniSortable');
+		$('.btn-no').addClass('hidden');
+		$('.btnChange').removeClass('hidden');
+	});
+
+	$('#principalDuration').keyup(function(event) {
+		if ($('#principalPeriodo').val() != "") {
+			$('#totalTexto').remove();
+			var valor = $('#principalPeriodo').val();
+			var duration = $('#principalDuration').val();
+			var duration2 = $('#categoriaDuration').val()
+			periodo(valor,'#categoriaPeriodo',duration,duration2);
+		}
+	});
+
+	$('#principalPeriodo').change(function(event) {
+		if ($('#principalDuration').val() != "") {
+			$('#totalTexto').remove();
+			var valor = $(this).val();
+			var duration = $('#principalDuration').val();
+			var duration2 = $('#categoriaDuration').val()
+			periodo(valor,'#categoriaPeriodo',duration,duration2);
+		}
+		
+		
+	});
+	$('#categoriaDuration').keyup(function(event) {
+		if ($('#categoriaPeriodo').val() != "") {
+			$('#totalTexto').remove();
+			var valor = $('#categoriaPeriodo').val();
+			var duration = $('#categoriaDuration').val();
+			var duration2 = $('#principalDuration').val();
+			periodo(valor,'#principalPeriodo',duration,duration2);
+		}
+	});
+	$('#categoriaPeriodo').change(function(event) {
+		if ($('#categoriaDuration').val() != "") {
+			$('#totalTexto').remove();
+			var valor = $(this).val();
+			var duration = $('#categoriaDuration').val();
+			var duration2 = $('#principalDuration').val()
+			periodo(valor,'#principalPeriodo',duration,duration2);
+		}
+	});
+	if ($('.casual-form').length > 0) {
+		var rand1 = Math.round(Math.random()*100);
+		var rand2 = Math.round(Math.random()*100);
+		$('.formula').html('Cuanto es: '+rand1+'+'+rand2).append('<input type="hidden" name="x" value="'+rand1+'">').append('<input type="hidden" name="y" value="'+rand2+'">')
+		$('.resultado').html(' '+(rand1+rand2));
+		
+	}
+	$('.verTrans').on('click', function(event) {
+		var btn = $(this);
+		var json = jQuery.parseJSON(btn.next('.valores').val());
+		var num 	= json.num;
+		var bank 	= json.bank;
+		var bank2 	= json.bankEx;
+		var fech 	= json.fech;
+		$('.numModal').html(num);
+		$('.bankModal').html(bank);
+		if (typeof bank2 == "null" || typeof bank2 == "undefined") {
+			$('.bankExlModal').html(bank2);
+		}else
+		{
+			$('.bankExlModal').html('Sin especificar.');
+		}
+		$('.fechModal').html(fech);
+	});
+	$('.ver').on('click',function(event) {
+		var btn = $(this);
+		var json = jQuery.parseJSON(btn.next('.valores').val());
+		console.log(json)
+
+		var username = json.username;
+		var name 	 = json.name;
+		var email 	 = json.email;
+		var phone 	 = json.phone;
+		var pagWeb   = json.pagWeb;
+		var carnet   = json.carnet;
+		var nit 	 = json.nit;
+
+		$('.usernameModal').html(username);
+		$('.nameModal').html(name);
+		$('.emailModal').html(email);
+		$('.phoneModal').html(phone);
+		$('.pagWebModal').html(pagWeb);
+		$('.carnetModal').html(carnet);
+		$('.nitModal').html(nit);
+	});
+	//something is entered in search form
+    $('#buscar-usuario').keyup( function() {
+       var that = this;
+        // affect all table rows on in systems table
+        var tableBody = $('.table-list-search tbody');
+        var tableRowsClass = $('.table-list-search tbody tr');
+        $('.search-sf').remove();
+        tableRowsClass.each( function(i, val) {
+        
+            //Lower text for case insensitive
+            var rowText = $(val).text().toLowerCase();
+            var inputText = $(that).val().toLowerCase();
+            if(inputText != '')
+            {
+                $('.search-query-sf').remove();
+                tableBody.prepend('<tr class="search-query-sf"><td colspan="100"><strong>Buscando por: "'
+                    + $(that).val()
+                    + '"</strong></td></tr>');
+            }
+            else
+            {
+                $('.search-query-sf').remove();
+            }
+
+            if( rowText.indexOf( inputText ) == -1 )
+            {
+                //hide rows
+                tableRowsClass.eq(i).hide();
+                
+            }
+            else
+            {
+                $('.search-sf').remove();
+                tableRowsClass.eq(i).show();
+            }
+        });
+        //all tr elements are hidden
+        if(tableRowsClass.children(':visible').length == 0)
+        {
+            tableBody.append('<tr class="search-sf"><td class="text-muted" colspan="100">No se encontraron resultados.</td></tr>');
+        }
+    });
 });

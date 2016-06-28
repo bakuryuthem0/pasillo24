@@ -945,9 +945,8 @@ class UserController extends BaseController {
 		}
 		return Response::json($response);
 	}
-	public function removeFav()
+	public function removeFav($id)
 	{
-		$id = Input::get('pub_id');
 		$fav = Favorito::find($id);
 		$pub = $fav->pub_id;
 		$fav->delete();

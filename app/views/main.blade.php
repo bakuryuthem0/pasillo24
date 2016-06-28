@@ -57,7 +57,7 @@
             <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
         <![endif]-->
         <div class="contLoading">
-	       	<i class="fa fa-spinner fa-pulse fa-5x"></i>
+	       	<div class="spinner-container"><i class="fa fa-spinner fa-pulse fa-5x"></i></div>
         </div>
         <input type="hidden" value="{{ URL::to('/') }}" class="baseUrl">
 		 <header>

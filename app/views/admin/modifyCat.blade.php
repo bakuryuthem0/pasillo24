@@ -46,7 +46,7 @@
 						 @endforeach
 					@endif
 				</div>
-				<div class="col-xs-12">
+				<div class="col-xs-12 formulario">
 					<input type="hidden" name="id" value="{{ $id }}">
 					<input type="submit" name="enviarNewUser" class="btn btn-success enviarNewAdmin">
 				</div>

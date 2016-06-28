@@ -87,8 +87,6 @@ Route::group(array('before' => 'check_app_auth'),function()
 	Route::get('app/remover-favorito/{id}','AjaxController@removeFav');
 	Route::get('app/ver-favorito','AjaxController@getMyFav');
 
-
-
 	Route::get('app/usuario-datos','AjaxController@getUserData');
 });
 //rutas globales
@@ -110,7 +108,7 @@ Route::group(array('before' =>'auth'),function()
 	//favoritos
 	Route::get('usuario/mis-favoritos','UserController@getMyFav');
 	Route::get('usuario/publicaciones/agregar-favorito/{id}','UserController@addFav');
-	Route::get('usuario/publicaciones/remover-favorito','UserController@removeFav');
+	Route::get('usuario/publicaciones/remover-favorito/{id}','UserController@removeFav');
 	
 	//perfil
 	Route::get('usuario/perfil','UserController@getProfile');

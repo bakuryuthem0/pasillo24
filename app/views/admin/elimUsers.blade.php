@@ -71,7 +71,7 @@
 									{{ $user->role }}
 								</td>
 								<td style="width:42px;">
-									<button style="width: 100%;" class="btn btn-danger btn-xs btn-elim" value="{{ $user->id }}" data-toggle="modal" data-target="#modalElimUser"><span class="fa fa-close"></span> Eliminar</button>
+									<button style="width: 100%;" class="btn btn-danger btn-xs btn-elim-user" value="{{ $user->id }}" data-toggle="modal" data-target="#modalElimUser"><span class="fa fa-close"></span> Eliminar</button>
 								</td>
 							@endif
 						</tr>
@@ -101,9 +101,9 @@
       	</div>
       </div>
       <div class="modal-footer">
-      	<img src="{{ asset('images/loading.gif') }}" class="miniLoader">
-        <button type="button" class="btn btn-danger" id="eliminarUsuarioModal">Eliminar</button>
-        <button type="button" class="btn btn-success btn-dimiss hidden" data-dismiss="modal">Aceptar</button>
+      	<img src="{{ asset('images/loading.gif') }}" class="miniLoader hidden">
+        <button type="button" class="btn btn-danger btn-modal-elim elim-user" >Eliminar</button>
+        <button type="button" class="btn btn-default btn-dimiss btn-close-modal btn-modal-elim" data-dismiss="modal">Cerrar</button>
       </div>
     </div>
   </div>

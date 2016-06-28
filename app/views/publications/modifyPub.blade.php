@@ -187,12 +187,10 @@
 					<select class="form-control" name="subCat" id="subCat">
 						<option value="">Seleccione la sub-categoría</option>
 						@foreach($subCat as $sub)
-							@if($sub->categoria_id == $publicaciones->categoria)
-								@if($sub->id == $publicaciones->typeCat)
-									<option class="optiongroup" value="{{ $sub->id }}" selected>{{ $sub->desc }}</option>
-								@else
-									<option class="optiongroup" value="{{ $sub->id }}">{{ $sub->desc }}</option>
-								@endif
+							@if($sub->id == $publicaciones->typeCat)
+								<option class="optiongroup" value="{{ $sub->id }}" selected>{{ $sub->desc }}</option>
+							@else
+								<option class="optiongroup" value="{{ $sub->id }}">{{ $sub->desc }}</option>
 							@endif
 						@endforeach
 					</select>
@@ -318,9 +316,9 @@
 							<option value="">Seleccione un modelo</option>
 							@foreach($modelos as $modelo)
 								@if($publicaciones->modelo_id == $modelo->id)
-								<option class="optionModel" value="{{ $modelo->id }}" selected>{{ $modelo->nombre }}</option>
+									<option class="optionModel" value="{{ $modelo->id }}" selected>{{ $modelo->nombre }}</option>
 								@else
-								<option class="optionModel" value="{{ $modelo->id }}">{{ $modelo->nombre }}</option>
+									<option class="optionModel" value="{{ $modelo->id }}">{{ $modelo->nombre }}</option>
 								@endif
 							@endforeach
 						</select>
@@ -618,7 +616,7 @@
 						</div>
 						@endif
 					</div>
-					<div class="col-xs-12">
+					<div class="col-xs-12 formulario">
 						<button type="button" class="btn btn-primary addNewimage">
 							Agregar imagen
 						</button>
@@ -644,7 +642,7 @@
 					{{ Form::text('pagina',$publicaciones->pag_web_hab,array('class' => 'form-control', 'placeholder' => 'Sitio web')) }}
 				</div>
 
-				<div class="col-xs-12">
+				<div class="col-xs-12 formulario">
 					<button  value="{{ $publicaciones->id }}" name="enviarPub" class="btn btn-success">Enviar</button>
 					<input type="reset" value="Borrar" name="borrar" class="btn btn-warning">
 					<a href="{{ URL::to('usuario/publicaciones/mis-publicaciones/lider') }}" class="btn btn-danger cancel">Cancelar</a>

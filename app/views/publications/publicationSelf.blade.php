@@ -136,14 +136,14 @@
 									<button class="btn btn-default btn-transparent btn-remove-fav" 
 									value="{{ URL::to('usuario/publicaciones/remover-favorito/'.$publication->fav_id) }}" 
 									data-container="body" data-toggle="popover" 
-									data-placement="right" 
+									data-placement="top" 
 									data-content="Remover de favoritos." 
 									data-trigger="hover"><i class="fa fa-heart"></i></button>
 								@else
 									<button class="btn btn-default btn-transparent btn-fav" 
 									value="{{ URL::to('usuario/publicaciones/agregar-favorito/'.$id) }}" 
 									data-container="body" data-toggle="popover" 
-									data-placement="right" 
+									data-placement="top" 
 									data-content="Agregar a favoritos." 
 									data-trigger="hover"><i class="fa fa-heart-o"></i></button>
 								@endif
@@ -155,14 +155,13 @@
 						@endif
 						<div>
 							<a href="https://twitter.com/share" class="twitter-share-button" data-via="pasillo_24" data-hashtags="pasillo_24" data-dnt="true">Tweet</a>
-					<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+							<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
 							<div class="fb-share-button" 
 								data-href="{{ Request::url() }}" 
 								data-layout="button_count">
 							</div>
 						</div>
 					</div>
-					</a>
 				</div>
 				
 			</div>
@@ -554,18 +553,18 @@
 								<button class="btn btn-default btn-transparent btn-remove-fav" 
 								value="{{ URL::to('usuario/publicaciones/remover-favorito/'.$publication->fav_id) }}" 
 								data-container="body" data-toggle="popover" 
-								data-placement="right" 
+								data-placement="top" 
 								data-content="Remover de favoritos." 
 								data-trigger="hover"><i class="fa fa-heart"></i></button>
 							@else
 								<button class="btn btn-default btn-transparent btn-fav" 
 								value="{{ URL::to('usuario/publicaciones/agregar-favorito/'.$id) }}" 
 								data-container="body" data-toggle="popover" 
-								data-placement="right" 
+								data-placement="top" 
 								data-content="Agregar a favoritos." 
 								data-trigger="hover"><i class="fa fa-heart-o"></i></button>
 							@endif
-							<img src="{{ asset('images/loading.gif') }}" class="miniLoader">
+							<img src="{{ asset('images/loading.gif') }}" class="miniLoader hidden loader-fav">
 							<div class="alert responseDanger">
 								<p class="textoPromedio"></p>
 							</div>
@@ -595,6 +594,7 @@
 						<p>{{ $publication->descripcion }}</p>
 					</div>
 				</div>
+			</div>
 		@endif
 	</div>
 	@if(isset($publication->longitude) && isset($publication->latitude))
@@ -616,7 +616,7 @@
 	@if(count($otrasPub) > 0)
 	<div class="col-xs-12">
 		<h2>Otras publicaciones de: {{ $username }}</h2>
-			<div class="owl-carousel1 owl-carousel-busq">
+			<div class="owl-carousel1 owl-carousel-busq owl-carousel-most-user">
 			@foreach($otrasPub as $o)
 			<div class="item contCatIndex contPubNoLider">
 				<a href="{{ URL::to('publicacion/lider/'.base64_encode($o->id)) }}">
@@ -775,7 +775,7 @@
 		        0:{
 		            items:1
 		        },
-		        800:{
+		        768:{
 		            items:2
 		        },
 		        1200:{
