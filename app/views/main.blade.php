@@ -491,10 +491,19 @@
                     </div>
                 </nav>
                 @else
-                    <ul class="mainMenu nav navbar-nav menuFront">
-                        <li><a href="{{ URL::to('mision-y-vision') }}" class="btn log hidden-xs"><strong>¿Qué es pasillo24.com?</strong></a></li>
-                        <li><a href="{{ URL::to('inicio') }}" class="btn log"><strong>Ingresar</strong></a></li>
-                    </ul>
+                <nav class="navbar">
+                    <div class="wrapper">
+                        <div class="nav-container">
+                            <div class="logo">
+                                <img src="{{ asset('images/logo.png') }}">
+                            </div>
+                            <ul class="nav navbar-nav pull-right">
+                                <li><a href="{{ URL::to('mision-y-vision') }}" class="btn log hidden-xs" style="color:#fff;"><strong>¿Qué es pasillo24.com?</strong></a></li>
+                                <li><a href="{{ URL::to('inicio') }}" class="btn log" style="color:#fff;"><strong>Ingresar</strong></a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </nav>
                 @endif
             </header>
             @yield('content')
