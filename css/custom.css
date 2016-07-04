@@ -361,7 +361,7 @@ footer p, footer a
     position: relative;
     margin-bottom: 1em;
 }
-.contCatIndex .texto-desc,.contCatIndex .texto-desc-lider
+.contCatIndex .texto-desc,.contCatIndex .texto-desc-title
 {
     margin-bottom: 1em;
 }
@@ -370,9 +370,13 @@ footer p, footer a
 	height: 200px;
 	overflow: hidden;
 }
-.contCatIndex .texto-desc-lider
+.contCatIndex .texto-desc-title
 {
 	height: 100px;
+}
+.contCatIndex .texto-desc-title h3
+{
+	font-size: 21px;
 }
 .contCatIndex .image img
 {

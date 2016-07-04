@@ -115,8 +115,8 @@
 										<img src="{{ asset('images/pubImages/'.$pubLider->img_1) }}" class="imgPubCarousel">
 									</a>
 								</div>
-								<div class="col-xs-12 texto-desc-lider">
-									<h3>{{ $pubLider->titulo }}</h3>
+								<div class="col-xs-12 texto-desc-title">
+									<h3>{{ ucfirst(strtolower($pubLider->titulo)) }}</h3>
 								</div>
 								<div class="col-xs-12 btn-group no-padding">
 									<a href="{{ URL::to('publicacion/lider/'.$pubLider->id) }}" class="btn btn-warning">Ver publicación</a>
@@ -175,8 +175,10 @@
 												<img src="{{ asset('images/pubImages/'.$pubHabitual->img_1) }}" class="imgPubCarousel">
 											</a>
 								 		</div>
+								 		<div class="col-xs-12 texto-desc-title">
+											<h3>{{ ucfirst(strtolower($pubHabitual->titulo)) }}</h3>
+								 		</div>
 								 		<div class="col-xs-12 texto-desc">
-											<h3>{{ $pubHabitual->titulo }}</h3>
 								 			{{ substr(ucfirst(strtolower(strip_tags($pubHabitual->descripcion))),0,300) }}...
 								 		</div>
 								 		<div class="col-xs-12 btn-group no-padding">
@@ -226,9 +228,10 @@
 											<img src="{{ asset('images/pubImages/'.$pubCasual->img_1) }}" class="imgPubCarousel">
 										</a>
 							 		</div>
+							 		<div class="col-xs-12 texto-desc-title">
+										<h3>{{ ucfirst(strtolower($pubCasual->titulo)) }}</h3>
+							 		</div>
 							 		<div class="col-xs-12 texto-desc">
-										<h3>{{ $pubCasual->titulo }}</h3>
-							 			
 							 			{{ substr(ucfirst(strtolower(strip_tags($pubCasual->descripcion))),0,200) }}...
 							 		</div>
 							 		<div class="col-xs-12 btn-group no-padding">
