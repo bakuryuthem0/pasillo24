@@ -2732,8 +2732,8 @@ class AjaxController extends BaseController{
 	}
 	public function getCategory()
 	{
-		$cat = Categorias::where('tipo','=',1)->where('deleted','=',0)->get(array('id','desc'));
-		$ser = Categorias::where('tipo','=',2)->where('deleted','=',0)->get(array('id','desc'));
+		$cat = Categorias::where('tipo','=',1)->where('deleted','=',0)->get(array('id','nombre as desc'));
+		$ser = Categorias::where('tipo','=',2)->where('deleted','=',0)->get(array('id','nombre as desc'));
 		return Response::json(array(
 			'type' => 'success',
 			'categorias' => $cat,
