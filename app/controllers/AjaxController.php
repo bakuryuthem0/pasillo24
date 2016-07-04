@@ -2043,26 +2043,11 @@ class AjaxController extends BaseController{
 	{
 		$id = Input::get('id');
 		$compras = Compras::join('publicaciones','publicaciones.id','=','compras.pub_id')
-		->join('usuario','usuario.id','=','publicaciones.user_id')
+		->leftJoin('usuario','usuario.id','=','publicaciones.user_id')
+		->leftJoin('departamento','departamento.id','=','publicaciones.departamento')
 		->where('compras.user_id','=',$id)
 		->where('compras.valor_vend','=',0)
-		->get(array(
-			'compras.id',
-			'compras.fechVal',
-			'publicaciones.titulo',
-			'publicaciones.id as pub_id',
-			'publicaciones.name as pName',
-			'publicaciones.phone as pPhone',
-			'publicaciones.email as pEmail',
-			'publicaciones.pag_web_hab as pPag_web',
-			'usuario.email',
-			'usuario.id as user_id',
-			'usuario.lastname',
-			'usuario.name',
-			'usuario.pag_web',
-			'usuario.phone',
-			'usuario.username',
-		));
+		->get($this->toReturn);
 
 		return Response::json(array(
 			'compras' 	=>$compras,
@@ -2073,19 +2058,11 @@ class AjaxController extends BaseController{
 	{
 		$id = Input::get('id');
 		$compras = Compras::join('publicaciones','publicaciones.id','=','compras.pub_id')
-		->join('usuario','usuario.id','=','compras.user_id')
+		->leftJoin('usuario','usuario.id','=','compras.user_id')
+		->leftJoin('departamento','departamento.id','=','publicaciones.departamento')
 		->where('publicaciones.user_id','=',$id)
 		->where('compras.valor_comp','=',0)
-		->get(array(
-			'compras.id',
-			'compras.valor_vend',
-			'compras.valor_comp',
-			'compras.fechVal',
-			'publicaciones.titulo',
-			'usuario.id as user_id',
-			'usuario.name',
-			'usuario.lastname',
-		));
+		->get($this->toReturn);
 		$hoy = date('Y-m-d');
 		return Response::json(array(
 			'compras' 	=> $compras,
