@@ -9,12 +9,12 @@
 			<div class="owl-carousel1 owl-carousel-busq">
 				@foreach($lider as $pubLider)
 				<div class="item contCatIndex contPubLiderBusq">
-					<a href="{{ URL::to('publicacion/lider/'.base64_encode($pubLider->id)) }}">
+					<a href="{{ URL::to('publicacion/lider/'.$pubLider->id) }}">
 						<img src="{{ asset('images/pubImages/'.$pubLider->img_1) }}" class="imgPubCarousel">
 					</a>
 					<div class="dataIndex textoPromedio">
 						<div class="col-xs-12" style="padding-top:0px;margin-top:0px;">{{ $pubLider->titulo }}</div>
-						<div class="col-xs-12"><a href="{{ URL::to('publicacion/lider/'.base64_encode($pubLider->id)) }}" style="color:white;"><i class="fa fa-hand-o-right"></i> Ver publicación</a>
+						<div class="col-xs-12"><a href="{{ URL::to('publicacion/lider/'.$pubLider->id) }}" style="color:white;"><i class="fa fa-hand-o-right"></i> Ver publicación</a>
 						</div>
 					</div>
 				</div>
@@ -142,7 +142,7 @@
 				@foreach($publicaciones as $pub)
 				<div class="col-xs-12 contCat formulario">
 					<div class="col-xs-12 col-md-4 contCatPub">
-						<a href="{{ URL::to('publicacion/habitual/'.base64_encode($pub->id)) }}">
+						<a href="{{ URL::to('publicacion/habitual/'.$pub->id) }}">
 							<img src="{{ asset('images/pubImages/'.$pub->img_1) }}" style="width:100%;">
 						</a>
 					</div>
@@ -187,7 +187,7 @@
 							</label>
 						</div>
 						<div class="col-xs-12 no-padding">
-							<a href="{{ URL::to('publicacion/habitual/'.base64_encode($pub->id)) }}" class="btn btn-primary btn-full">
+							<a href="{{ URL::to('publicacion/habitual/'.$pub->id) }}" class="btn btn-primary btn-full">
 								<i class="fa fa-hand-o-right">
 								</i> Ver publicación
 							</a>

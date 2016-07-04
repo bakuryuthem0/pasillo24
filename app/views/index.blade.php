@@ -111,7 +111,7 @@
 							@foreach($lider as $pubLider)
 							<div class="item contCatIndex">
 								<div class="col-xs-12 image">
-									<a href="{{ URL::to('publicacion/lider/'.base64_encode($pubLider->id)) }}">
+									<a href="{{ URL::to('publicacion/lider/'.$pubLider->id) }}">
 										<img src="{{ asset('images/pubImages/'.$pubLider->img_1) }}" class="imgPubCarousel">
 									</a>
 								</div>
@@ -119,7 +119,7 @@
 									<h3>{{ $pubLider->title }}</h3>
 								</div>
 								<div class="col-xs-12 btn-group no-padding">
-									<a href="{{ URL::to('publicacion/lider/'.base64_encode($pubLider->id)) }}" class="btn btn-warning">Ver publicación</a>
+									<a href="{{ URL::to('publicacion/lider/'.$pubLider->id) }}" class="btn btn-warning">Ver publicación</a>
 								</div>
 							</div>
 							@endforeach
@@ -171,7 +171,7 @@
 								@endif
 									<div class="col-xs-12 contCatIndex separator no-padding">
 								 		<div class="col-xs-12 image">
-											<a href="{{ URL::to('publicacion/habitual/'.base64_encode($pubHabitual->id)) }}">
+											<a href="{{ URL::to('publicacion/habitual/'.$pubHabitual->id) }}">
 												<img src="{{ asset('images/pubImages/'.$pubHabitual->img_1) }}" class="imgPubCarousel">
 											</a>
 								 		</div>
@@ -180,7 +180,7 @@
 								 			{{ ucfirst(strtolower(strip_tags($pubHabitual->descripcion))) }}
 								 		</div>
 								 		<div class="col-xs-12 btn-group no-padding">
-								 			<a href="{{ URL::to('publicacion/habitual/'.base64_encode($pubHabitual->id)) }}" class="btn btn-warning">Ver publicación</a>
+								 			<a href="{{ URL::to('publicacion/habitual/'.$pubHabitual->id) }}" class="btn btn-warning">Ver publicación</a>
 								 		</div>
 									</div>
 								@if(($x+1)%2 == 0)
@@ -222,7 +222,7 @@
 							<div class="item">
 								<div class="col-xs-12 contCatIndex separator no-padding">
 							 		<div class="col-xs-12 image">
-										<a href="{{ URL::to('publicacion/habitual/'.base64_encode($pubCasual->id)) }}">
+										<a href="{{ URL::to('publicacion/habitual/'.$pubCasual->id) }}">
 											<img src="{{ asset('images/pubImages/'.$pubCasual->img_1) }}" class="imgPubCarousel">
 										</a>
 							 		</div>
@@ -232,7 +232,7 @@
 							 			{{ ucfirst(strtolower(strip_tags($pubCasual->descripcion))) }}
 							 		</div>
 							 		<div class="col-xs-12 btn-group no-padding">
-							 			<a href="{{ URL::to('publicacion/habitual/'.base64_encode($pubCasual->id)) }}" class="btn btn-warning">Ver publicación</a>
+							 			<a href="{{ URL::to('publicacion/habitual/'.$pubCasual->id) }}" class="btn btn-warning">Ver publicación</a>
 							 		</div>
 								</div>
 							</div>

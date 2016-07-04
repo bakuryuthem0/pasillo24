@@ -54,7 +54,7 @@
 								</td>
 								
 								<td class="text-center">
-									<a class="btn btn-primary btn-xs " href="{{ URL::to('publicacion/'.strtolower($f->tipo).'/'.base64_encode($f->id)) }}">ir</a>
+									<a class="btn btn-primary btn-xs " href="{{ URL::to('publicacion/'.strtolower($f->tipo).'/'.$f->id) }}">ir</a>
 								</td>
 								<td class="text-center">
 									<button class="btn btn-danger  btn-xs btn-fav-remove" value="{{ URL::to('usuario/publicaciones/remover-favorito/'.$f->fav_id) }}" data-toggle="modal" data-target="#removeFav">Remover</button>

@@ -154,7 +154,6 @@ class PublicationController extends BaseController {
 	}
 	public function getPublication($id)
 	{
-		$id = base64_decode($id);
 		$pub = Publicaciones::find($id);
 		$user = User::find($pub->user_id);
 		if ($pub->user_id != 21) {
