@@ -370,6 +370,10 @@ footer p, footer a
 	height: 200px;
 	overflow: hidden;
 }
+.contCatIndex .texto-desc-lider
+{
+	height: 100px;
+}
 .contCatIndex .image img
 {
 	width: auto !important;

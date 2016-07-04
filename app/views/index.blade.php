@@ -116,7 +116,7 @@
 									</a>
 								</div>
 								<div class="col-xs-12 texto-desc-lider">
-									<h3>{{ $pubLider->title }}</h3>
+									<h3>{{ $pubLider->titulo }}</h3>
 								</div>
 								<div class="col-xs-12 btn-group no-padding">
 									<a href="{{ URL::to('publicacion/lider/'.$pubLider->id) }}" class="btn btn-warning">Ver publicación</a>
@@ -176,8 +176,8 @@
 											</a>
 								 		</div>
 								 		<div class="col-xs-12 texto-desc">
-											<h3>{{ $pubHabitual->title }}</h3>
-								 			{{ substr(ucfirst(strtolower(strip_tags($pubHabitual->descripcion))),0,300) }}
+											<h3>{{ $pubHabitual->titulo }}</h3>
+								 			{{ substr(ucfirst(strtolower(strip_tags($pubHabitual->descripcion))),0,300) }}...
 								 		</div>
 								 		<div class="col-xs-12 btn-group no-padding">
 								 			<a href="{{ URL::to('publicacion/habitual/'.$pubHabitual->id) }}" class="btn btn-warning">Ver publicación</a>
@@ -227,9 +227,9 @@
 										</a>
 							 		</div>
 							 		<div class="col-xs-12 texto-desc">
-										<h3>{{ $pubCasual->title }}</h3>
+										<h3>{{ $pubCasual->titulo }}</h3>
 							 			
-							 			{{ substr(ucfirst(strtolower(strip_tags($pubCasual->descripcion))),0,200) }}
+							 			{{ substr(ucfirst(strtolower(strip_tags($pubCasual->descripcion))),0,200) }}...
 							 		</div>
 							 		<div class="col-xs-12 btn-group no-padding">
 							 			<a href="{{ URL::to('publicacion/habitual/'.$pubCasual->id) }}" class="btn btn-warning">Ver publicación</a>
