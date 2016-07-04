@@ -361,9 +361,14 @@ footer p, footer a
     position: relative;
     margin-bottom: 1em;
 }
-.contCatIndex .texto-desc
+.contCatIndex .texto-desc,.contCatIndex .texto-desc-lider
 {
     margin-bottom: 1em;
+}
+.contCatIndex .texto-desc
+{
+	height: 200px;
+	overflow: hidden;
 }
 .contCatIndex .image img
 {
