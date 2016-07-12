@@ -2796,11 +2796,10 @@ class AjaxController extends BaseController{
 			'timeToLive' 	=> 3000,
 		);
 		$doGcm = new Gcm;
-		$response = $doGcm->send_notification($regId,$data);
+		$response = $doGcm->send_notification($data,$regId);
 		return Response::json(array(
 			'type' => 'success', 
 			'msg' => 'Respuesta push',
-
 		));
 		
 	}
