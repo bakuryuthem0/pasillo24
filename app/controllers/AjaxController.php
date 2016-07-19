@@ -1115,6 +1115,20 @@ class AjaxController extends BaseController{
 			'busq' 			=> $id,
 		));
 	}
+	public function getLider()
+	{
+		$lider = Publicaciones::join('usuario','usuario.id','=','publicaciones.user_id')
+			->leftJoin('departamento','publicaciones.departamento','=','departamento.id')
+			->where('publicaciones.status','=','Aprobado')
+			->where('publicaciones.tipo','=','Lider')
+			->where('publicaciones.fechFin','>=',date('Y-m-d',time()))
+			->where('publicaciones.deleted','=',0)
+			->orderBy('publicaciones.fechFin','desc')->get($this->toReturn);
+		return Response::json(array(
+			'type' => 'success',
+			'data' => $lider, 
+		));
+	}
 	/*---------------------------Subir Imagenes----------------------------------------*/
 	/*                                                                                 */
 	/*                                                                                 */
