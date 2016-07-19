@@ -2794,7 +2794,7 @@ class AjaxController extends BaseController{
 	public function getUserData()
 	{
 		$id = Input::get('id');
-		$user = User::find($id);
+		$user = User::where('id','=',$id)->with('favoritos')->first();
 		return Response::json(array(
 			'type' => 'success',
 			'data' => $user,
