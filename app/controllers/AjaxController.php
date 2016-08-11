@@ -1312,6 +1312,7 @@ class AjaxController extends BaseController{
 			if(isset($input['pag_web']) && !empty($input['pag_web'])){
 				$publication->pag_web_hab = $input['pag_web'];
 			}
+			$publication->departamento = $input['dep'];
 			$publication->monto     = $monto;
 			$user = User::find($id);
 			if (Input::hasFile('img_1')) {
@@ -2714,9 +2715,12 @@ class AjaxController extends BaseController{
 		$input = Input::all();
 		$fecha = explode('-', $input['fecha']);
 		if (count($fecha)<3) {
-			return Response::json(array('code' => 0));
+			return Response::json(array('type' => 'danger', 'msg' => 'El formato de la fecha debe ser dd-mm-yyyy'));
 		}else
 		{
+			if ($fecha < date('d-m-Y')) {
+				return Response::json(array('type' => 'danger', 'msg' => 'La fecha debe ser anterior a hoy.'));
+			}
 			if ($input['per'] == 'd') {
 				$prec = Precios::find(1);
 				$times = 86400;
@@ -2727,19 +2731,15 @@ class AjaxController extends BaseController{
 				$prec = Precios::find(3);
 				$times = 2629744;
 			}
-			$timestamp = strtotime($input['fecha'])+$times;
-			$fech = date('d-m-Y',$timestamp);
-			if ($fecha < date('d-m-Y')) {
-				return Response::json(array('code' => 1));
-			}
-			
 			if ($input['dur'] < 1) {
+				$timestamp = strtotime($input['fecha'])+$times;
 				$costo = $prec->precio;
 			}else
 			{
+				$timestamp = strtotime($input['fecha'])+$times*$input['dur'];
 				$costo = $prec->precio*$input['dur'];
-
 			}
+			$fech = date('d-m-Y',$timestamp);
 			return Response::json(array('fecha' => $fech,'costo' => $costo));
 			
 		}
