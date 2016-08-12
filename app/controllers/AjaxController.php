@@ -429,6 +429,7 @@ class AjaxController extends BaseController{
 		$title ="Inicio | pasillo24.com";
 		if (!is_null($id)) {
 			$lider = Publicaciones::join('usuario','usuario.id','=','publicaciones.user_id')
+			->leftJoin('departamento','publicaciones.departamento','=','departamento.id')
 			->where('publicaciones.status','=','Aprobado')
 			->where('publicaciones.ubicacion','=','Principal')
 			->where('publicaciones.tipo','=','Lider')
@@ -437,6 +438,7 @@ class AjaxController extends BaseController{
 			->where('publicaciones.deleted','=',0)
 			->orderBy('publicaciones.fechFin','desc')->get($this->toReturn);
 			$habitual = Publicaciones::join('usuario','usuario.id','=','publicaciones.user_id')
+			->leftJoin('departamento','publicaciones.departamento','=','departamento.id')
 			->where(function($query) use($id){
 				/*Busco las habituales*/
 				$query->where('publicaciones.tipo','=','Habitual')
@@ -467,6 +469,7 @@ class AjaxController extends BaseController{
 			->orderBy('publicaciones.fechFin','desc')->get($this->toReturn);
 			
 			$casual = Publicaciones::join('usuario','usuario.id','=','publicaciones.user_id')
+			->leftJoin('departamento','publicaciones.departamento','=','departamento.id')
 			->where('publicaciones.tipo','=','Casual')
 			->where('publicaciones.fechFin','>=',date('Y-m-d',time()))
 			->where('publicaciones.status','=','Aprobado')
@@ -476,6 +479,7 @@ class AjaxController extends BaseController{
 		}else
 		{
 			$lider = Publicaciones::join('usuario','usuario.id','=','publicaciones.user_id')
+			->leftJoin('departamento','publicaciones.departamento','=','departamento.id')
 			->where('publicaciones.status','=','Aprobado')
 			->where('publicaciones.ubicacion','=','Principal')
 			->where('publicaciones.tipo','=','Lider')
@@ -484,6 +488,7 @@ class AjaxController extends BaseController{
 			->where('publicaciones.deleted','=',0)
 			->orderBy('publicaciones.fechFin','desc')->get($this->toReturn);
 			$habitual = Publicaciones::join('usuario','usuario.id','=','publicaciones.user_id')
+			->leftJoin('departamento','publicaciones.departamento','=','departamento.id')
 			->where(function($query){
 				/*Busco las habituales*/
 				$query->where('publicaciones.tipo','=','Habitual')
@@ -511,13 +516,14 @@ class AjaxController extends BaseController{
 			})
 			->orderBy('publicaciones.fechFin','desc')->get($this->toReturn);
 			$casual = Publicaciones::join('usuario','usuario.id','=','publicaciones.user_id')
+			->leftJoin('departamento','publicaciones.departamento','=','departamento.id')
 			->where('publicaciones.tipo','=','Casual')
 			->where('publicaciones.fechFin','>=',date('Y-m-d',time()))
 			->where('publicaciones.status','=','Aprobado')
 			->where('publicaciones.deleted','=',0)
 			->get($this->toReturn);
 		}
-
+		/*
 		$categories = Categorias::where('deleted','=',0)->where('tipo','=',1)->orderBy('nombre')->get();
 		$otros = new StdClass;
 		foreach ($categories as $c) {
@@ -545,17 +551,17 @@ class AjaxController extends BaseController{
 			$otros2->nombre = 'Otros';
 		}
 		$departamentos  = Department::get();
-        $publi 			= Publicidad::get();
+        $publi 			= Publicidad::get();*/
 		if (!is_null($id)) {
         	return Response::json(array(
         		'pubLider' 		=> $lider,
         		'pubHabitual' 	=> $habitual,
         		'pubCasual' 	=> $casual,	
-        		'categorias' 	=> $categories,
-        		'servicios'     => $servicios,
-        		'departamentos' => $departamentos,
-        		'publi' 		=> $publi,
-        		'depFilter' 	=> $dep->id
+        		//'categorias' 	=> $categories,
+        		//'servicios'     => $servicios,
+        		//'departamentos' => $departamentos,
+        		//'publi' 		=> $publi,
+        		//'depFilter' 	=> $dep->id
           	));
         }else
         {
@@ -563,10 +569,10 @@ class AjaxController extends BaseController{
         		'pubLider' 		=> $lider,
         		'pubHabitual' 	=> $habitual,
         		'pubCasual' 	=> $casual,	
-        		'categorias' 	=> $categories,
-        		'servicios'     => $servicios,
-        		'departamentos' => $departamentos,
-        		'publi' 		=> $publi,
+        		//'categorias' 	=> $categories,
+        		//'servicios'     => $servicios,
+        		//'departamentos' => $departamentos,
+        		//'publi' 		=> $publi,
           	));
         }
 	}
