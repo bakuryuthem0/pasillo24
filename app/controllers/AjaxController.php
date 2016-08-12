@@ -859,8 +859,8 @@ class AjaxController extends BaseController{
 				$auxLider =  $auxLider->where('publicaciones.bussiness_type','=',strtolower($buss));
 				$auxRes   =  $auxRes->where('publicaciones.bussiness_type','=',strtolower($buss));
 			}	
-			$lider = $auxLider->get($this->toReturn);
-			$res = $auxRes->get($this->toReturn);
+			$lider = $auxLider->get(array_merge($this->toReturn));
+			$res = $auxRes->get(array_merge($this->toReturn,array('publicaciones.fechFin','publicaciones.fechFinNormal')));
 			$categorias = Categorias::where('id','=',$busq)->pluck('desc');
 			if (!is_null($categorias)) {
 				$busq = $categorias;
@@ -997,7 +997,7 @@ class AjaxController extends BaseController{
 				$auxRes   =  $auxRes->where('publicaciones.bussiness_type','=',strtolower($buss));
 			}
 			$lider = $auxLider->get($this->toReturn);
-			$res = $auxRes->get($this->toReturn);
+			$res = $auxRes->get(array_merge($this->toReturn,array('publicaciones.fechFin','publicaciones.fechFinNormal')));
 
 			$categorias = Categorias::where('id','=',$id)->pluck('id');
 			if (!is_null($categorias)) {
