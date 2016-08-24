@@ -58,8 +58,10 @@
 				<div class="modal-footer">
 						<img src="{{ asset('images/loading.gif') }}" class="miniLoader hidden">
 						<button class="btn btn-success sendValueType btn-modal-elim" data-url="{{ URL::to('usuario/valorar-comprador') }}" data-value="pos">Positivo</button>
+						<button class="btn btn-default sendValueType btn-modal-elim" data-url="{{ URL::to('usuario/valorar-comprador') }}" data-value="neutro">Neutro</button>
 						<button class="btn btn-danger sendValueType btn-modal-elim" data-url="{{ URL::to('usuario/valorar-comprador') }}" data-value="neg">Negativo</button>
-						<button class="btn btn-default btn-dimiss btn-close-modal btn-modal-elim" data-dismiss="modal">Cerrar</button>
+						<button class="btn btn-primary btn-dimiss btn-close-modal btn-modal-elim" data-dismiss="modal">Cerrar</button>
+						
 				</div>
 		</div>
 	</div>

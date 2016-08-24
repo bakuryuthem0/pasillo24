@@ -1614,7 +1614,7 @@ class PublicationController extends BaseController {
 	{
 		if (Request::ajax()) {
 			$id = Input::get('id');
-			$subCat = SubCat::where('categoria_id','=',$id)->get();
+			$subCat = SubCat::where('categoria_id','=',$id)->orderBy('nombre')->get();
 			return $subCat;
 		}
 	}

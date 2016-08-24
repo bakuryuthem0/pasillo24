@@ -27,21 +27,29 @@
 								<td>{{ $compra->name.' '.$compra->lastname }}</td>
 							@endif
 							<td class="" style="text-align:center;">
-								@if($compra->valor_vend == 0)
+								@if($compra->valorado_vend == 0)
 									Sin valorar
-								@elseif($compra->valor_vend == 1)
-									<i class="fa fa-plus-circle textoPromedio" style="color:green;"></i>
-								@elseif($compra->valor_vend == -1)
-									<i class="fa fa-minus-circle textoPromedio" style="color:red;"></i>
+								@else
+									@if($compra->valor_vend == 1)
+										<i class="fa fa-plus-circle textoPromedio" style="color:green;"></i>
+									@elseif($compra->valor_vend == -1)
+										<i class="fa fa-minus-circle textoPromedio" style="color:red;"></i>
+									@elseif($compra->valor_vend == 0)
+										<i class="fa fa-dot-circle-o textoPromedio" style="color:#f0c910;" aria-hidden="true"></i>
+									@endif
 								@endif
 							</td>
 							<td style="text-align:center;">
-								@if($compra->valor_comp == 0)
+								@if($compra->valorado_comp == 0)
 									Sin valorar
-								@elseif($compra->valor_comp == 1)
-									<i class="fa fa-plus-circle textoPromedio" style="color:green;"></i>
-								@elseif($compra->valor_comp == -1)
-									<i class="fa fa-minus-circle textoPromedio" style="color:red;"></i>
+								@else
+									@if($compra->valor_comp == 1)
+										<i class="fa fa-plus-circle textoPromedio" style="color:green;"></i>
+									@elseif($compra->valor_comp == -1)
+										<i class="fa fa-minus-circle textoPromedio" style="color:red;"></i>
+									@elseif($compra->valor_comp == 0)
+										<i class="fa fa-dot-circle-o textoPromedio" style="color:#f0c910;" aria-hidden="true"></i>
+									@endif
 								@endif
 							</td>
 						</tr>
@@ -138,21 +146,29 @@
 						
 							<td>{{ $venta->name.' '.$venta->lastname }}</td>
 							<td class="" style="text-align:center;">
-								@if($venta->valor_vend == 0)
+								@if($venta->valorado_vend == 0)
 									Sin valorar
-								@elseif($venta->valor_vend == 1)
-									<i class="fa fa-plus-circle textoPromedio" style="color:green;"></i>
-								@elseif($venta->valor_vend == -1)
-									<i class="fa fa-minus-circle textoPromedio" style="color:red;"></i>
+								@else
+									@if($venta->valor_vend == 1)
+										<i class="fa fa-plus-circle textoPromedio" style="color:green;"></i>
+									@elseif($venta->valor_vend == -1)
+										<i class="fa fa-minus-circle textoPromedio" style="color:red;"></i>
+									@elseif($venta->valor_vend == 0)
+										<i class="fa fa-dot-circle-o textoPromedio" style="color:#f0c910;" aria-hidden="true"></i>
+									@endif
 								@endif
 							</td>
 							<td style="text-align:center;">
-								@if($venta->valor_comp == 0)
+								@if($venta->valorado_comp == 0)
 									Sin valorar
-								@elseif($venta->valor_comp == 1)
-									<i class="fa fa-plus-circle textoPromedio" style="color:green;"></i>
-								@elseif($venta->valor_comp == -1)
-									<i class="fa fa-minus-circle textoPromedio" style="color:red;"></i>
+								@else
+									@if($venta->valor_comp == 1)
+										<i class="fa fa-plus-circle textoPromedio" style="color:green;"></i>
+									@elseif($venta->valor_comp == -1)
+										<i class="fa fa-minus-circle textoPromedio" style="color:red;"></i>
+									@elseif($venta->valor_comp == 0)
+										<i class="fa fa-dot-circle-o textoPromedio" style="color:#f0c910;" aria-hidden="true"></i>
+									@endif
 								@endif
 							</td>
 						</tr>
@@ -264,7 +280,7 @@
 						</li>
 						<li>En caso de existir denuncias múltiples por parte de la comunidad hacia un usuario determinado se bloqueara la  cuenta hasta aclarar los hechos.
 						</li>
-						<li>Los usuarios podrán calificar usando <button class="btn btn-success">Positivo</button>  para dar un valoración positiva y una  <button class="btn btn-danger">Negativo</button> para valoración negativa.</li>
+						<li>Los usuarios podrán calificar usando <button class="btn btn-success btn-xs">Positivo <i class="fa fa-plus-circle"></i></button>  para dar un valoración positiva, una  <button class="btn btn-danger btn-xs">Negativo <i class="fa fa-minus-circle"></i></button> para valoración negativa y una <button class="btn btn-default btn-xs">Neutro <i class="fa fa-dot-circle-o textoPromedio" style="color:#f0c910;" aria-hidden="true"></i></button> para dar un voto neutro.</li>
 
 						<li>Una valoración negativa anula a una positiva.</li>
 						<li>Evite utilizar vocabulario inadecuado, recuerde que los Bolivianos nos caracterizamos por la amabilidad ante todo.</li>

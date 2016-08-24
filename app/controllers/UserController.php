@@ -662,7 +662,7 @@ class UserController extends BaseController {
 		$compras = Compras::join('publicaciones','publicaciones.id','=','compras.pub_id')
 		->join('usuario','usuario.id','=','publicaciones.user_id')
 		->where('compras.user_id','=',Auth::id())
-		->where('compras.valor_vend','=',0)
+		->where('compras.valorado_vend','=',0)
 		->get(array(
 			'compras.id',
 			'compras.fechVal',
@@ -689,7 +689,7 @@ class UserController extends BaseController {
 		$compras = Compras::join('publicaciones','publicaciones.id','=','compras.pub_id')
 		->join('usuario','usuario.id','=','compras.user_id')
 		->where('publicaciones.user_id','=',Auth::id())
-		->where('compras.valor_comp','=',0)
+		->where('compras.valorado_comp','=',0)
 		->get(array(
 			'compras.id',
 			'compras.valor_vend',
@@ -717,7 +717,7 @@ class UserController extends BaseController {
 			}
 
 			$valor = 0;
-			if($tipo != "pos" && $tipo != 'neg')
+			if($tipo != "pos" && $tipo != 'neg' && $tipo != "neutro")
 			{
 				return Response::json(array('type' => 'danger','msg' => 'Error al valorar la publicación'));	
 			}else
@@ -726,21 +726,26 @@ class UserController extends BaseController {
 					$valor = 1;
 				}elseif ($tipo == 'neg') {
 					$valor = -1;
+				}elseif($tipo == 'neutro')
+				{
+					$valor = 0;
 				}
 			}
 			$comp = Compras::find($id);
 			$pub = Publicaciones::find($comp->pub_id);
 			$user = User::find($pub->user_id);
-			$user->reputation = $user->reputation + $valor;
+			$user->reputation 	 = $user->reputation + $valor;
+
 			if (!$user->save()) {
-				return Response::json(array('type' => 'danger','msg' => 'Error al valorar la publicación'));	
+				return Response::json(array('type' => 'danger','msg' => 'Error al valorar al vendedor.'));	
 			}
 			$comp->valor_vend = $valor;
+			$comp->valorado_vend = 1;
 			if ($comp->save()) {
-				return Response::json(array('type' => 'success','msg' => 'Publicación valorada correctamente.'));
+				return Response::json(array('type' => 'success','msg' => 'Vendedor valorado correctamente.'));
 			}else
 			{
-				return Response::json(array('type' => 'danger','msg' => 'Error al valorar la publicación'));
+				return Response::json(array('type' => 'danger','msg' => 'Error al valorar al vendedor.'));
 			}
 		}
 	}
@@ -751,29 +756,33 @@ class UserController extends BaseController {
 			$tipo = Input::get('tipo');
 
 			$valor = 0;
-			if($tipo != "pos" && $tipo != 'neg')
+			if($tipo != "pos" && $tipo != 'neg' && $tipo != 'neutro')
 			{
-				return Response::json(array('type' => 'danger','msg' => 'Error al valorar la publicación'));	
+				return Response::json(array('type' => 'danger','msg' => 'Error al valorar al comprador.'));	
 			}else
 			{
 				if ($tipo == 'pos') {
 					$valor = 1;
 				}elseif ($tipo == 'neg') {
 					$valor = -1;
+				}elseif($tipo == 'neutro')
+				{
+					$valor = 0;
 				}
 			}
 			$comp = Compras::find($id);
 			$user = User::find($comp->user_id);
 			$user->reputation = $user->reputation + $valor;
 			if (!$user->save()) {
-				return Response::json(array('type' => 'danger','msg' => 'Error al valorar la publicación'));	
+				return Response::json(array('type' => 'danger','msg' => 'Error al valorar al comprador.'));	
 			}
-			$comp->valor_comp = $valor;
+			$comp->valor_comp 	 = $valor;
+			$comp->valorado_comp = 1;
 			if ($comp->save()) {
-				return Response::json(array('type' => 'success','msg' => 'Publicación valorada correctamente.'));
+				return Response::json(array('type' => 'success','msg' => 'Comprador valorado correctamente.'));
 			}else
 			{
-				return Response::json(array('type' => 'danger','msg' => 'Error al valorar la publicación'));
+				return Response::json(array('type' => 'danger','msg' => 'Error al valorar al comprador.'));
 			}
 		}
 	}
@@ -787,6 +796,8 @@ class UserController extends BaseController {
 			'compras.id',
 			'compras.valor_vend',
 			'compras.valor_comp',
+			'compras.valorado_vend',
+			'compras.valorado_comp',
 			'publicaciones.titulo',
 			'publicaciones.id as pub_id',
 			'publicaciones.name as name_pub',
@@ -800,6 +811,8 @@ class UserController extends BaseController {
 			'compras.id',
 			'compras.valor_vend',
 			'compras.valor_comp',
+			'compras.valorado_vend',
+			'compras.valorado_comp',
 			'publicaciones.titulo',
 			'usuario.id as user_id',
 			'usuario.name',
