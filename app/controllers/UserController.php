@@ -492,7 +492,7 @@ class UserController extends BaseController {
 	public function getModelo()
 	{
 		$id = Input::get('id');
-		$modelos = Modelo::where('marca_id','=',$id)->get();
+		$modelos = Modelo::where('marca_id','=',$id)->orderBy('nombre')->get();
 		return $modelos;
 	}
 	
