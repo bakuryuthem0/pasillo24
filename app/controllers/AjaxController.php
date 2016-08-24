@@ -1215,6 +1215,7 @@ class AjaxController extends BaseController{
 			'fechIni'   => 'required|after:'.date('d-m-Y'),
 			'id'   		=> 'required',
 			'negocioType' => 'required',
+			'dep'		  => 'required|exists:departamento,id',
 			'img_1'		=> 'required|image',
 		);
 		$msg = array(
@@ -1233,7 +1234,8 @@ class AjaxController extends BaseController{
 			'fechIni'   => 'El campo fecha de inicio',
 			'id'		=> 'Id del usuario',
 			'negocioType'=> 'El campo tipo de negocio',
-			'img_1'		=> 'Imagen principal'
+			'img_1'		=> 'Imagen principal',
+			'dep'		=> 'El campo departamento'
 
 		);
 		if ($input['ubication'] == 'Categoria'){
@@ -1375,13 +1377,13 @@ class AjaxController extends BaseController{
 
 			'departamento'	=> 'required',
 			'ciudad'		=> 'required',
+			'cat_id'		=> 'required',
 			'subCat'	    => 'required',
 			'title' 		=> 'required|min:4',
 			'input'			=> 'required|min:4',
 			'moneda'		=> 'required',
 			'precio'		=> 'required_if:tipoTransac,venta,alquiler,Aticretico,otro',
-			'moneda'		=> 'required',
-			//'img1'			=> 'required|image',
+			'img1'			=> 'required|image',
 			'tipoTransac'	=> 'required',
 			'negocioType'   => 'required',
 		);
@@ -1389,7 +1391,7 @@ class AjaxController extends BaseController{
 			'required' 	=> ':attribute es obligatorio',
 			'required_if' => ':attribute es obligatorio',
 			'min'		=> ':attribute debe ser mas largo',
-			//'image'		=> ':attribute debe ser una imagen',
+			'image'		=> ':attribute debe ser una imagen',
 			'numeric'	=> ':attribute debe ser numerico',
 			'image'		=> 'El archivo :attribute debe ser una imagen',
 		);
@@ -1399,11 +1401,11 @@ class AjaxController extends BaseController{
 			'departamento'  => 'El campo departamento',
 			'title'		 	=> 'El campo titulo',
 			'input' 	 	=> 'El campo descripcion',
-			//'img1'		 	=> 'El campo imagen de portada',
+			'img1'		 	=> 'El campo imagen de portada',
 			'moneda'		=> 'El campo moneda',
 			'tipoTransac'	=> 'El campo tipo de operación',
 			'subCat'		=> 'El campo sub-categoria',
-			'img_1'			=> 'Imagen principal',
+			'cat_id'		=> 'La categoria',
 
 		);
 		$aux = Input::get('cat_id');
@@ -1493,6 +1495,7 @@ class AjaxController extends BaseController{
 			$pub->anio 			= $input['anio'];
 			$pub->precio 		= $input['precio'];
 			$pub->kilometraje	= $input['kilo'];
+			$pub->documentos = $input['doc'];
 			if (isset($input['cilin']) && !empty($input['cilin'])) {
 				$pub->cilindraje = $input['cilin'];
 			}
@@ -1501,9 +1504,6 @@ class AjaxController extends BaseController{
 			}
 			if (isset($input['comb']) && !empty($input['comb'])) {
 				$pub->combustible = $input['comb'];
-			}
-			if (isset($input['doc']) && !empty($input['doc'])) {
-				$pub->documentos = $input['doc'];
 			}
 			if (isset($input['trac']) && !empty($input['trac'])) {
 				$pub->traccion = $input['trac'];
@@ -1835,7 +1835,7 @@ class AjaxController extends BaseController{
 			'departamento' 	=> 'required',
 			'categoria'		=> 'required',
 			'titulo'		=> 'required',
-			'negocioType' => 'required',
+			'negocioType' 	=> 'required',
 			'img_1'			=> 'required|image',
 		);
 		$messages = array(
