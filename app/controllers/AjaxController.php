@@ -1208,15 +1208,15 @@ class AjaxController extends BaseController{
 		define('CONST_SERVER_TIMEZONE', 'UTC');
 		date_default_timezone_set('America/La_Paz');
 		$rules = array(
-			'ubication' => 'required',
-			'namePub'   => 'required|min:4',
-			'duration'  => 'required|min:0',
-			'time'      => 'required|in:d,s,m,a',
-			'fechIni'   => 'required|after:'.date('d-m-Y'),
-			'id'   		=> 'required',
+			'ubication'  => 'required',
+			'namePub'    => 'required|min:4',
+			'duration'   => 'required|min:0',
+			'time'       => 'required|in:d,s,m,a',
+			'fechIni'    => 'required|after:'.date('d-m-Y'),
+			'id'   		 => 'required',
 			'negocioType' => 'required',
 			'dep'		  => 'required|exists:departamento,id',
-			'img_1'		=> 'required|image',
+			//'img_1'		 => 'required|image',
 		);
 		$msg = array(
 			'required' => ':attribute es obligatorio',
@@ -1340,7 +1340,7 @@ class AjaxController extends BaseController{
 						$loc = new Location;
 						$loc->latitude  = Input::get('latitud');
 						$loc->longitude = Input::get('longitud');
-						$loc->pub_id    = $pub->id;
+						$loc->pub_id    = $publication->id;
 						$loc->save();
 					}
 				}
@@ -1514,35 +1514,35 @@ class AjaxController extends BaseController{
 		}
 		if (Input::hasFile('img_1')) {
 			$file1 = Input::file('img_1');
-			$publication->img_1 = $this->upload_image($user->username,$file1);
+			$pub->img_1 = $this->upload_image($user->username,$file1);
 		}
 		if (Input::hasFile('img_2')) {
 			$file2 = Input::file('img_2');
-			$publication->img_2 = $this->upload_image($user->username,$file2);
+			$pub->img_2 = $this->upload_image($user->username,$file2);
 		}
 		if (Input::hasFile('img_3')) {
 			$file3 = Input::file('img_3');
-			$publication->img_3 = $this->upload_image($user->username,$file3);
+			$pub->img_3 = $this->upload_image($user->username,$file3);
 		}
 		if (Input::hasFile('img_4')) {
 			$file4 = Input::file('img_4');
-			$publication->img_4 = $this->upload_image($user->username,$file4);
+			$pub->img_4 = $this->upload_image($user->username,$file4);
 		}
 		if (Input::hasFile('img_5')) {
 			$file5 = Input::file('img_5');
-			$publication->img_5 = $this->upload_image($user->username,$file5);
+			$pub->img_5 = $this->upload_image($user->username,$file5);
 		}
 		if (Input::hasFile('img_6')) {
 			$file6 = Input::file('img_6');
-			$publication->img_6 = $this->upload_image($user->username,$file6);
+			$pub->img_6 = $this->upload_image($user->username,$file6);
 		}
 		if (Input::hasFile('img_7')) {
 			$file7 = Input::file('img_7');
-			$publication->img_7 = $this->upload_image($user->username,$file7);
+			$pub->img_7 = $this->upload_image($user->username,$file7);
 		}
 		if (Input::hasFile('img_8')) {
 			$file8 = Input::file('img_8');
-			$publication->img_8 = $this->upload_image($user->username,$file8);
+			$pub->img_8 = $this->upload_image($user->username,$file8);
 		}
 		if($pub->save())
 		{
