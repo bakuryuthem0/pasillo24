@@ -2707,7 +2707,7 @@ class AjaxController extends BaseController{
 			if (empty($pub->email)) {
 				$userdata = array_merge($userdata,array('email' => $user->email));
 			}
-			if (empty($pub->pag_web_hab) || $pub->pag_web == "http://") {
+			if (empty($pub->pag_web_hab) && $pub->pag_web == "http://") {
 				$userdata = array_merge($userdata,array('pag_web' => $user->pag_web));
 			}
 			return Response::json(array(
@@ -2768,8 +2768,29 @@ class AjaxController extends BaseController{
 	}
 	public function getCategory()
 	{
-		$cat = Categorias::where('tipo','=',1)->where('deleted','=',0)->get(array('id','nombre as desc'));
-		$ser = Categorias::where('tipo','=',2)->where('deleted','=',0)->get(array('id','nombre as desc'));
+		$aux = Categorias::where('tipo','=',1)->where('deleted','=',0)->where(function($query){
+			$query->where('nombre','!=','otros')->orWhere('nombre','!=','Otros');
+		})->orderBy('desc')->get(array('id','nombre as desc'));
+		$cat = array();
+		foreach ($aux as $i => $c) {
+			$cat[$i] = $c;
+		}
+		$aux2 = Categorias::where('tipo','=',2)->where('deleted','=',0)->where(function($query){
+			$query->where('nombre','!=','otros')->orWhere('nombre','!=','Otros');
+		})->orderBy('desc')->get(array('id','nombre as desc'));
+		$ser = array();
+		foreach ($aux2 as $i => $s) {
+			$ser[$i] = $s;
+		}
+		$otros = Categorias::where('tipo','=',1)->where('deleted','=',0)->where(function($query){
+			$query->where('nombre','=','otros')->orWhere('nombre','=','Otros');
+		})->first(array('id','nombre as desc'));
+		$cat = array_merge($cat,array($otros));
+		$otros2 = Categorias::where('tipo','=',2)->where('deleted','=',0)->where(function($query){
+			$query->where('nombre','=','otros')->orWhere('nombre','=','Otros');
+		})->first(array('id','nombre as desc'));
+		$ser = array_merge($ser,array($otros2));
+
 		return Response::json(array(
 			'type' => 'success',
 			'categorias' => $cat,
