@@ -2696,10 +2696,26 @@ class AjaxController extends BaseController{
 				'msgcnt'  		=> null,
 				'timeToLive' 	=> 3000,
 			);
+			$userdata = array();
+			if (empty($pub->name) || empty($pub->lastname)) {
+				$userdata = array_merge($userdata,array('name' => $user->name));
+				$userdata = array_merge($userdata,array('lastname' => $user->lastname));
+			}
+			if (empty($pub->phone)) {
+				$userdata = array_merge($userdata,array('phone' => $user->phone));
+			}
+			if (empty($pub->email)) {
+				$userdata = array_merge($userdata,array('email' => $user->email));
+			}
+			if (empty($pub->pag_web_hab) || $pub->pag_web == "http://") {
+				$userdata = array_merge($userdata,array('pag_web' => $user->pag_web));
+			}
 			return Response::json(array(
 				'type' => 'success',
 				'msg'  => 'Se ha generado una compra',
 				'compra_id' => $comp->id,
+				'pub' => $pub,
+				'userdata' => $userdata
 			));
 		}
 	}
