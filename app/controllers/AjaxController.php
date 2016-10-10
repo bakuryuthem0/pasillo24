@@ -2120,6 +2120,19 @@ class AjaxController extends BaseController{
 		}
 		$comp->valor_vend = $valor;
 		if ($comp->save()) {
+			$msg = 'El usuario '.Auth::user()->name.' '+Auth::user()->lastname.' lo ha valorado';
+			$user = User::with('gcmdevices')->find($publication->user_id);
+			foreach($user->gcmdevices as $gcm) {
+				$regId = $gcm->gcm_regid;
+				$data = array(
+					'message' 		=> $msg,
+					'title'   		=> 'Te han valorado como vendedor',
+					'msgcnt'  		=> null,
+					'timeToLive' 	=> 3000,
+				);
+				$doGcm = new Gcm;
+				$response = $doGcm->send_notification($data,$regId);
+			}
 			return Response::json(array('type' => 'success','msg' => 'Publicación valorada correctamente.'));
 		}else
 		{
@@ -2152,6 +2165,19 @@ class AjaxController extends BaseController{
 		}
 		$comp->valor_comp = $valor;
 		if ($comp->save()) {
+			$msg = 'El usuario '.Auth::user()->name.' '+Auth::user()->lastname.' lo ha valorado';
+			$user = User::with('gcmdevices')->find($publication->user_id);
+			foreach($user->gcmdevices as $gcm) {
+				$regId = $gcm->gcm_regid;
+				$data = array(
+					'message' 		=> $msg,
+					'title'   		=> 'Te han valorado como comprador',
+					'msgcnt'  		=> null,
+					'timeToLive' 	=> 3000,
+				);
+				$doGcm = new Gcm;
+				$response = $doGcm->send_notification($data,$regId);
+			}
 			return Response::json(array('type' => 'success','msg' => 'Publicación valorada correctamente.'));
 		}else
 		{
@@ -2455,24 +2481,20 @@ class AjaxController extends BaseController{
 		$comentarios->updated_at = date('Y-m-d',time());
 		$comentarios->created_at = date('Y-m-d',time());
 		$comentarios->save();
-		$msg = "Han comentado tu publicacion: ".$publication->titulo;
-		$user = User::find($publication->user_id);
-		$data = array(
-			'message' 		=> $msg,
-			'title'   		=> $msg,
-			'msgcnt'  		=> null,
-			'timeToLive' 	=> 3000,
-		);
-		$gcm = GcmDevices::where('user_id','=',$user->id)->orderBy('id','DESC')->get(array('gcm_regid'));
-		$regId = array();
-		$i = 0;
-		foreach($gcm as $g)
-		{
-			$regId[$i] = $g['gcm_regid'];
-			$i++;
+		
+		$msg = 'El usuario '.Auth::user()->name.' '+Auth::user()->lastname.' ha comentado tu publicación '.$publication->titulo;
+		$user = User::with('gcmdevices')->find($publication->user_id);
+		foreach($user->gcmdevices as $gcm) {
+			$regId = $gcm->gcm_regid;
+			$data = array(
+				'message' 		=> $msg,
+				'title'   		=> 'Han comentado tu publicación',
+				'msgcnt'  		=> null,
+				'timeToLive' 	=> 3000,
+			);
+			$doGcm = new Gcm;
+			$response = $doGcm->send_notification($data,$regId);
 		}
-		$doGcm = new Gcm;
-		$response = $doGcm->send_notification($regId,$data);
 		return Response::json(array(
 			'type' => 'success', 
 			'msg' => 'Comentario Guardado Sactisfactoriamente',
@@ -2507,6 +2529,8 @@ class AjaxController extends BaseController{
 		if ($com->deleted == 1) {
 			$com->deleted = 0;
 		}
+
+
 		$resp = new Respuestas;
 		$resp->comentario_id = $input['comment_id'];
 		$resp->respuesta 	 = $input['respuesta'];
@@ -2525,6 +2549,22 @@ class AjaxController extends BaseController{
 			$message->to($to_Email)->from('pasillo24.com@pasillo24.com')->subject($subject);
 		});
 		if ($resp->save()) {
+			
+			$publication = Publicaciones::find($input['pub_id']);
+			$msg = 'El usuario '.Auth::user()->name.' '+Auth::user()->lastname.' ha respondido tu comentario en la publicación '.$publication->titulo;
+			$user = User::with('gcmdevices')->find($publication->user_id);
+			foreach($user->gcmdevices as $gcm) {
+				$regId = $gcm->gcm_regid;
+				$data = array(
+					'message' 		=> $msg,
+					'title'   		=> 'Han comentado tu publicación',
+					'msgcnt'  		=> null,
+					'timeToLive' 	=> 3000,
+				);
+				$doGcm = new Gcm;
+				$response = $doGcm->send_notification($data,$regId);
+			}
+
 			$com->respondido = 1;
 			$com->save();
 			return Response::json(array(
@@ -2688,14 +2728,19 @@ class AjaxController extends BaseController{
 		$comp->fechVal 	  = date('Y-m-d',time()+172800);
 		if ($comp->save()) {
 			$pub = Publicaciones::find($pub_id);
-			$user = User::find($pub->user_id);
-			$msg = "Han respondido tu comentario: ".$pub->titulo;
-			$data = array(
-				'message' 		=> $msg,
-				'title'   		=> $msg,
-				'msgcnt'  		=> null,
-				'timeToLive' 	=> 3000,
-			);
+			$user = User::with('gcmdevices')->find($pub->user_id);
+			$msg = 'El usuario '.Auth::user()->name.' '+Auth::user()->lastname.' lo ha contactado para compra';
+			foreach($user->gcmdevices as $gcm) {
+				$regId = $gcm->gcm_regid;
+				$data = array(
+					'message' 		=> $msg,
+					'title'   		=> 'Te han contactado',
+					'msgcnt'  		=> null,
+					'timeToLive' 	=> 3000,
+				);
+				$doGcm = new Gcm;
+				$response = $doGcm->send_notification($data,$regId);
+			}
 			$userdata = array();
 			if (empty($pub->name) || empty($pub->lastname)) {
 				$userdata = array_merge($userdata,array('name' => $user->name));
