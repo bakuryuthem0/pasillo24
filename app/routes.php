@@ -180,6 +180,9 @@ Route::group(array('before' =>'auth'),function()
 	Route::post('usuario/comentarios/recividos/eliminar','UserController@postElimCommentrecividos');
 	Route::post('usuario/comentarios/hechos/eliminar','UserController@postElimComment');
 	Route::post('modificar/publicacion/eliminar/imagen','PublicationController@postElimImage');
+
+	Route::post('usuario/mi-reputacion/borrar-compra','UserController@removeComp');
+	Route::post('usuario/mi-reputacion/borrar-venta','UserController@removeVend');
 	//rutas del admin
 	Route::group(array('before' => 'role_check'), function()
 	{

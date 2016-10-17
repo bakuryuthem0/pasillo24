@@ -178,7 +178,7 @@
 								 		<div class="col-xs-12 texto-desc-title">
 											<h3>{{ ucfirst(strtolower($pubHabitual->titulo)) }}</h3>
 								 		</div>
-								 		<div class="col-xs-12 texto-desc">
+								 		<div class="col-xs-12 texto-desc text-justify">
 								 			{{ substr(ucfirst(strtolower(strip_tags($pubHabitual->descripcion))),0,300) }}...
 								 		</div>
 								 		<div class="col-xs-12 btn-group no-padding">
@@ -191,27 +191,9 @@
 								<?php $x++;?>
 							
 							@endforeach
-							@if(count($habitual)<8)
+							@if(count($habitual)%2 != 0)
 							<div class="item">
 									<div class="contCatIndex"><img src="{{ asset('images/anuncios-01.png') }}" class="disponible"></div>
-									<div class="contCatIndex"><img src="{{ asset('images/anuncios-02.png') }}" class="disponible"></div>
-							</div>
-							<div class="item">
-									<div class="contCatIndex"><img src="{{ asset('images/anuncios-03.png') }}" class="disponible"></div>
-
-									<div class="contCatIndex"><img src="{{ asset('images/anuncios-04.png') }}" class="disponible"></div>
-							</div>
-							<div class="item">
-									<div class="contCatIndex"><img src="{{ asset('images/anuncios-01.png') }}" class="disponible"></div>
-									<div class="contCatIndex"><img src="{{ asset('images/anuncios-02.png') }}" class="disponible"></div>
-							</div>
-							<div class="item">
-									<div class="contCatIndex"><img src="{{ asset('images/anuncios-03.png') }}" class="disponible"></div>
-
-									<div class="contCatIndex"><img src="{{ asset('images/anuncios-04.png') }}" class="disponible"></div>
-							</div>
-							@elseif(count($habitual)%2 != 0)
-								<div class="contCatIndex"><img src="{{ asset('images/anuncios-04.png') }}" class="disponible"></div>
 							</div>
 							@endif
 						</div>

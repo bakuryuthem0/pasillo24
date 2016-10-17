@@ -27,10 +27,15 @@
 								
 								<td>
 									@if($compra->fechVal <= date('Y-m-d',time()))
-										<button class="btn btn-primary valorar btn-xs" data-toggle="modal" data-target="#modalComprar" value={{ $compra->id }}>Valorar</button>
+										<button class="btn btn-primary valorar btn-xs" data-toggle="modal" data-target="#modalComprar" value="{{ $compra->id }}">Valorar</button>
 									@else
 										<i class="fa fa-clock-o btn-xs" style="font-size:2em;margin-top:0px;color:orange;"></i>
 									@endif
+	                            </td>
+	                            <td>
+	                            	@if(date('Y-m-d',(strtotime($compra->fechVal)+259200)) <= date('Y-m-d',time()))
+	                            	<button class="btn btn-danger btn-xs btn-remove" value="{{ $compra->id }}" data-url="{{ URL::to('usuario/mi-reputacion/borrar-venta') }}" data-toggle="modal" href="#removeRep">Quitar</button>
+	                            	@endif
 	                            </td>
 							</tr>
 						@endforeach
@@ -67,5 +72,81 @@
 	</div>
 </div>
 
+<div class="modal fade" id="removeRep">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+				<h4 class="modal-title">Quitar</h4>
+			</div>
+			<div class="modal-body">
+				<div class="alert responseDanger">
+					<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+					<p></p>
+				</div>
+				¿Seguro desea remover este elemento de su lista?, esta acción es irreversible
+			</div>
+			<div class="modal-footer">
+				<img src="{{ asset('images/loading.gif') }}" class="miniLoader hidden">
+				<button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+				<button type="button" class="btn btn-danger btn-remove-modal">Remover</button>
+			</div>
+		</div>
+	</div>
+</div>
+@stop
 
+@section('postscript')
+<script type="text/javascript">
+	function removeResponse()
+	{
+		$('.responseDanger').removeClass('alert-success');
+		$('.responseDanger').removeClass('alert-danger');
+		$('.responseDanger').removeClass('active');
+	}
+	jQuery(document).ready(function($) {
+		$('.modal').on('hide.bs.modal', function(event) {
+			$('.to-elim').removeClass('to-elim');
+		});
+		$('.btn-remove').on('click', function(event) {
+			var btn = $(this);
+			var url = btn.data('url');
+			btn.addClass('to-elim');
+			$('.btn-remove-modal').val(btn.val()).attr('data-url',url);
+		});
+		$('.btn-remove-modal').on('click', function(event) {
+			var btn = $(this);
+			var url = btn.data('url');
+			var dataPost = { id: btn.val() };
+			$.ajax({
+				url: url,
+				type: 'POST',
+				dataType: 'json',
+				data: dataPost,
+				beforeSend:function()
+				{
+					btn.addClass('disabled').attr('disabled',true);
+					btn.prevAll('.miniLoader').removeClass('hidden');
+				},
+				success:function(response)
+				{
+					btn.removeClass('disabled').attr('disabled',false);
+					btn.prevAll('.miniLoader').addClass('hidden');
+					$('.responseDanger').addClass('active').addClass('alert-'+response.type).children('p').html(response.msg);
+					if (response.type == 'success') {
+						$('.to-elim').parents('tr').remove();
+					};
+					setTimeout(removeResponse, 4000);
+				},
+				error:function()
+				{
+					btn.removeClass('disabled').attr('disabled',false);
+					btn.prevAll('.miniLoader').addClass('hidden');
+					$('.responseDanger').addClass('active').addClass('alert-danger').children('p').html('Error 500, por favor intente nuevamente.');
+					setTimeout(removeResponse, 4000);
+				}
+			});			
+		});
+	});
+</script>
 @stop

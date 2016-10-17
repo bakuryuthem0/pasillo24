@@ -792,6 +792,7 @@ class UserController extends BaseController {
 		$compras = Compras::join('publicaciones','publicaciones.id','=','compras.pub_id')
 		->join('usuario','usuario.id','=','publicaciones.user_id')
 		->where('compras.user_id','=',Auth::id())
+		->where('was_erased_comp','=',0)
 		->paginate(10,array(
 			'compras.id',
 			'compras.valor_vend',
@@ -807,6 +808,7 @@ class UserController extends BaseController {
 		$ventas = Compras::join('publicaciones','publicaciones.id','=','compras.pub_id')
 		->join('usuario','usuario.id','=','compras.user_id')
 		->where('publicaciones.user_id','=',Auth::id())
+		->where('was_erased_vend','=',0)
 		->paginate(10,array(
 			'compras.id',
 			'compras.valor_vend',
@@ -1205,5 +1207,27 @@ class UserController extends BaseController {
 		
 		Session::flash('success', 'Su publicación se actualizo sactisfactoriamente.');
 		return Redirect::to('usuario/publicaciones/pago/'.$pub->id);
+	}
+	public function removeComp()
+	{
+		$id = Input::get('id');
+		$action = Compras::find($id);
+		$action->was_erased_comp = 1;
+		$action->save();
+		return Response::json(array(
+			'type' => 'success',
+			'msg'  => 'El elemento seleccionado fue eliminado sactisfactoriamente.',
+		));
+	}
+	public function removeVend()
+	{
+		$id = Input::get('id');
+		$action = Compras::find($id);
+		$action->was_erased_vend = 1;
+		$action->save();
+		return Response::json(array(
+			'type' => 'success',
+			'msg'  => 'El elemento seleccionado fue eliminado sactisfactoriamente.',
+		));
 	}
 }
