@@ -90,14 +90,14 @@
 			</div>
 		</div>
 		<div class="pub row">
-			<div class="col-xs-12 pubs">
+			<div class="col-xs-12 pubs no-padding">
 				<img src="{{ asset('images/publicidad/cate.gif') }}">
 			</div>
 			<div>
-				<div class="col-xs-12 pubs col-sm-6 pubLeft" >
+				<div class="col-xs-12 pubs col-sm-6 no-padding-to-left pubLeft" >
 					<img src="{{ asset('images/publicidad/pub1.gif') }}">
 				</div>
-				<div class="col-xs-12 pubs col-sm-6 pubRight" >
+				<div class="col-xs-12 pubs col-sm-6 no-padding-to-right pubRight" >
 					<img src="{{ asset('images/publicidad/pub2.gif') }}">
 				</div>
 			</div>
@@ -105,63 +105,55 @@
 	</div>
 	<div class=""> 
 			<div class="row">
-				<div class="col-xs-12 publication">
+				<div class="col-xs-12 publication no-padding">
 					<h3>Anuncios LÍDER de Empresas y Particulares con sitio web.</h3>
 						<div class="owl-carousel1">
 							@foreach($lider as $pubLider)
 							<div class="item contCatIndex">
-								<div class="col-xs-12 image">
-									<a href="{{ URL::to('publicacion/lider/'.$pubLider->id) }}">
-										<img src="{{ asset('images/pubImages/'.$pubLider->img_1) }}" class="imgPubCarousel">
-									</a>
-								</div>
-								<div class="col-xs-12 texto-desc-title">
-									<h3>{{ ucfirst(strtolower($pubLider->titulo)) }}</h3>
-								</div>
-								<div class="col-xs-12 btn-group no-padding">
-									<a href="{{ URL::to('publicacion/lider/'.$pubLider->id) }}" class="btn btn-warning">Ver publicación</a>
+								<div class="col-xs-12 separator no-padding">
+
+									<div class="col-xs-12 image">
+										<a href="{{ URL::to('publicacion/lider/'.$pubLider->id) }}">
+											<img src="{{ asset('images/pubImages/'.$pubLider->img_1) }}" class="imgPubCarousel">
+										</a>
+									</div>
+									<div class="col-xs-12 texto-desc-title">
+										<h4>{{ ucfirst(strtolower($pubLider->titulo)) }}</h4>
+									</div>
+									<div class="col-xs-12 btn-group no-padding">
+										<a href="{{ URL::to('publicacion/lider/'.$pubLider->id) }}" class="btn btn-warning">Ver publicación</a>
+									</div>
 								</div>
 							</div>
 							@endforeach
-							@if(count($lider)<1)
-							<div class="item">
-									<img src="{{ asset('images/anuncios-01.png') }}" class="disponible">
-							</div>
-							<div class="item">
-									<img src="{{ asset('images/anuncios-02.png') }}" class="disponible">
-							</div>
-							<div class="item">
-									<img src="{{ asset('images/anuncios-03.png') }}" class="disponible">
-							</div>
-							<div class="item">
-									<img src="{{ asset('images/anuncios-04.png') }}" class="disponible">
-							</div>
-							@elseif(count($lider)>=1 && count($lider)<2)
-							<div class="item">
-									<img src="{{ asset('images/anuncios-02.png') }}" class="disponible">
-							</div>
-							<div class="item">
-									<img src="{{ asset('images/anuncios-03.png') }}" class="disponible">
-							</div>
-							<div class="item">
-									<img src="{{ asset('images/anuncios-04.png') }}" class="disponible">
-							</div>
-							@elseif(count($lider)>=2 && count($lider)<3)
-							<div class="item">
-									<img src="{{ asset('images/anuncios-03.png') }}" class="disponible">
-							</div>
-							<div class="item">
-									<img src="{{ asset('images/anuncios-04.png') }}" class="disponible">
-							</div>
+							@if(count($lider)<5)
+								@for($j = 1; $j <= 5-count($lider); $j++)
+									<div class="item">
+										<div class="col-xs-12 separator disponible-item lider-pub no-padding">
+									 		<div class="col-xs-12 image no-padding bg-0{{ $j }}">
+												<img src="{{ asset('images/logo.png') }}" class="logo">
+									 		</div>
+									 		<div class="col-xs-12 texto-disponible">
+									 			<h3 class="text-center text-white"><strong>Disponible</strong></h3>
+									 		</div>
+										</div>
+									</div>
+								@endfor
 							@else
-							
 							<div class="item">
-									<img src="{{ asset('images/anuncios-04.png') }}" class="disponible">
+								<div class="col-xs-12 separator disponible-item lider-pub no-padding">
+							 		<div class="col-xs-12 image no-padding bg-01">
+										<img src="{{ asset('images/logo.png') }}" class="logo">
+							 		</div>
+							 		<div class="col-xs-12 texto-disponible">
+							 			<h3 class="text-center text-white"><strong>Disponible</strong></h3>
+							 		</div>
+								</div>
 							</div>
 							@endif
 						</div>
 				</div>
-				<div class="col-xs-12 publication">
+				<div class="col-xs-12 publication no-padding">
 					<h3>Anuncios LÍDER de Empresas y Particulares sin sitio web</h3>
 						<div class="owl-carousel2">
 							<?php $x = 0;?>
@@ -176,10 +168,10 @@
 											</a>
 								 		</div>
 								 		<div class="col-xs-12 texto-desc-title">
-											<h3>{{ ucfirst(strtolower($pubHabitual->titulo)) }}</h3>
+											<h4>{{ ucfirst(strtolower($pubHabitual->titulo)) }}</h4>
 								 		</div>
 								 		<div class="col-xs-12 texto-desc text-justify">
-								 			{{ substr(ucfirst(strtolower(strip_tags($pubHabitual->descripcion))),0,300) }}...
+								 			{{ substr(ucfirst(strtolower(strip_tags($pubHabitual->descripcion))),0,100) }}...
 								 		</div>
 								 		<div class="col-xs-12 btn-group no-padding">
 								 			<a href="{{ URL::to('publicacion/habitual/'.$pubHabitual->id) }}" class="btn btn-warning">Ver publicación</a>
@@ -193,13 +185,39 @@
 							@endforeach
 							@if(count($habitual)%2 != 0)
 							<div class="item">
-									<div class="contCatIndex"><img src="{{ asset('images/anuncios-01.png') }}" class="disponible"></div>
+								<div class="col-xs-12 separator disponible-item no-padding">
+							 		<div class="col-xs-12 image no-padding bg-01">
+										<img src="{{ asset('images/logo.png') }}" class="logo">
+							 		</div>
+							 		<div class="col-xs-12 texto-disponible">
+							 			<h3 class="text-center text-white"><strong>Disponible</strong></h3>
+							 		</div>
+								</div>
 							</div>
+							@else
+								<div class="item">
+									<div class="col-xs-12 contCatIndex separator disponible-item no-padding">
+										<div class="col-xs-12 image no-padding bg-01">
+											<img src="{{ asset('images/logo.png') }}" class="logo">
+								 		</div>
+								 		<div class="col-xs-12 texto-disponible">
+								 			<h3 class="text-center text-white"><strong>Disponible</strong></h3>
+								 		</div>
+									</div>
+									<div class="col-xs-12 contCatIndex separator disponible-item no-padding">
+										<div class="col-xs-12 image no-padding bg-01">
+											<img src="{{ asset('images/logo.png') }}" class="logo">
+								 		</div>
+								 		<div class="col-xs-12 texto-disponible">
+								 			<h3 class="text-center text-white"><strong>Disponible</strong></h3>
+								 		</div>
+									</div>
+								</div>
 							@endif
 						</div>
 							
 				</div>
-				<div class="col-xs-12 publication">
+				<div class="col-xs-12 publication no-padding">
 					<h3>Últimos anuncios CASUALES</h3>
 						<div class="owl-carousel3">
 							@foreach($casual as $pubCasual)
@@ -211,10 +229,10 @@
 										</a>
 							 		</div>
 							 		<div class="col-xs-12 texto-desc-title">
-										<h3>{{ ucfirst(strtolower($pubCasual->titulo)) }}</h3>
+										<h4>{{ ucfirst(strtolower($pubCasual->titulo)) }}</h4>
 							 		</div>
 							 		<div class="col-xs-12 texto-desc">
-							 			{{ substr(ucfirst(strtolower(strip_tags($pubCasual->descripcion))),0,200) }}...
+							 			{{ substr(ucfirst(strtolower(strip_tags($pubCasual->descripcion))),0,100) }}...
 							 		</div>
 							 		<div class="col-xs-12 btn-group no-padding">
 							 			<a href="{{ URL::to('publicacion/habitual/'.$pubCasual->id) }}" class="btn btn-warning">Ver publicación</a>
@@ -222,40 +240,29 @@
 								</div>
 							</div>
 							@endforeach
-							@if(count($casual)<1)
-							<div class="item">
-									<img src="{{ asset('images/anuncios-01.png') }}" class="disponible">
-							</div>
-							<div class="item">
-									<img src="{{ asset('images/anuncios-02.png') }}" class="disponible">
-							</div>
-							<div class="item">
-									<img src="{{ asset('images/anuncios-03.png') }}" class="disponible">
-							</div>
-							<div class="item">
-									<img src="{{ asset('images/anuncios-04.png') }}" class="disponible">
-							</div>
-							@elseif(count($casual)>=1 && count($casual)<2)
-							<div class="item">
-									<img src="{{ asset('images/anuncios-02.png') }}" class="disponible">
-							</div>
-							<div class="item">
-									<img src="{{ asset('images/anuncios-03.png') }}" class="disponible">
-							</div>
-							<div class="item">
-									<img src="{{ asset('images/anuncios-04.png') }}" class="disponible">
-							</div>
-							@elseif(count($casual)>=2 && count($casual)<3)
-							<div class="item">
-									<img src="{{ asset('images/anuncios-03.png') }}" class="disponible">
-							</div>
-							<div class="item">
-									<img src="{{ asset('images/anuncios-04.png') }}" class="disponible">
-							</div>
+							@if(count($casual)<5)
+								@for($j = 1; $j <= 5-count($casual); $j++)
+									<div class="item">
+										<div class="col-xs-12 separator disponible-item no-padding">
+									 		<div class="col-xs-12 image no-padding bg-0{{ $j }}">
+												<img src="{{ asset('images/logo.png') }}" class="logo">
+									 		</div>
+									 		<div class="col-xs-12 texto-disponible">
+							 					<h3 class="text-center text-white"><strong>Disponible</strong></h3>
+									 		</div>
+										</div>
+									</div>
+								@endfor
 							@else
-							
 							<div class="item">
-									<img src="{{ asset('images/anuncios-04.png') }}" class="disponible">
+								<div class="col-xs-12 separator disponible-item no-padding">
+							 		<div class="col-xs-12 image no-padding bg-01">
+										<img src="{{ asset('images/logo.png') }}" class="logo">
+							 		</div>
+							 		<div class="col-xs-12 texto-disponible">
+							 			<h3 class="text-center text-white"><strong>Disponible</strong></h3>
+							 		</div>
+								</div>
 							</div>
 							@endif
 						</div>
@@ -272,7 +279,7 @@
       $(document).ready(function(){
       	$('.owl-carousel1').owlCarousel({
 		    loop:true,
-		    margin:30,
+		    margin:10,
 		    nav:true,
 		    navText: [ 'Anterior', 'Siguiente' ],
 		    itemsScaleUp:true,
@@ -285,23 +292,23 @@
       		itemsDesktopSmall : [979,2],
 		    responsive:{
 		        0:{
-		            items:1
+		            items:2
 		        },
 	        	650:{
-		            items:2
+		            items:3
 		        },
 		        850:
 		        {
-		        	items: 2
+		        	items: 4
 		        },
 		        1200:{
-		            items:4
+		            items:5
 		        }
 		    }
 		})
 		  $('.owl-carousel2').owlCarousel({
 		    loop:true,
-		    margin:30,
+		    margin:10,
 		    nav:true,
 		    navText: [ 'Anterior', 'Siguiente' ],
 		    itemsScaleUp:true,
@@ -314,23 +321,23 @@
       		itemsDesktopSmall : [979,2],
 		    responsive:{
 		        0:{
-		            items:1
+		            items:2
 		        },
 		        650:{
-		            items:2
+		            items:3
 		        },
 		        850:
 		        {
-		        	items: 2
+		        	items: 4
 		        },
 		        1200:{
-		            items:4
+		            items:5
 		        }
 		    }
 		})
 		  $('.owl-carousel3').owlCarousel({
 		    loop:true,
-		    margin:30,
+		    margin:10,
 		    nav:true,
 		    navText: [ 'Anterior', 'Siguiente' ],
 		    itemsScaleUp:true,
@@ -343,17 +350,17 @@
       		itemsDesktopSmall : [979,2],
 		    responsive:{
 		        0:{
-		            items:1
+		            items:2
 		        },
 		        650:{
-		            items:2
+		            items:3
 		        },
 		        850:
 		        {
-		        	items: 2
+		        	items: 4
 		        },
 		        1200:{
-		            items:4
+		            items:5
 		        }
 		    }
 		})
