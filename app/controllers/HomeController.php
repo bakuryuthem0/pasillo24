@@ -30,7 +30,7 @@ class HomeController extends BaseController {
 
 				)
 			);
-			$habitual = Publicaciones::where(function($query) use($id){
+			$habitual = Publicaciones::with('deparments')->where(function($query) use($id){
 				/*Busco las habituales*/
 				$query->where('tipo','=','Habitual')
 				->where(function($query){
@@ -58,7 +58,7 @@ class HomeController extends BaseController {
 
 			})
 			->orderBy('fechFin','desc')->get();
-			$casual = Publicaciones::where('tipo','=','Casual')
+			$casual = Publicaciones::with('deparments')->where('tipo','=','Casual')
 			->where('fechFin','>=',date('Y-m-d',time()))
 			->where('status','=','Aprobado')
 			->where('departamento','=',$id)
@@ -73,7 +73,7 @@ class HomeController extends BaseController {
 			->where('fechFin','>=',date('Y-m-d',time()))
 			->where('deleted','=',0)
 			->orderBy('fechFin','desc')->get();
-			$habitual = Publicaciones::where(function($query){
+			$habitual = Publicaciones::with('deparments')->where(function($query){
 				/*Busco las habituales*/
 				$query->where('tipo','=','Habitual')
 				->where(function($query){
@@ -100,7 +100,7 @@ class HomeController extends BaseController {
 			->where('deleted','=',0)
 			->orderBy('fechFin','desc')->get();
 
-			$casual = Publicaciones::where('tipo','=','Casual')
+			$casual = Publicaciones::with('deparments')->where('tipo','=','Casual')
 			->where('fechFin','>=',date('Y-m-d',time()))
 			->where('status','=','Aprobado')
 			->where('deleted','=',0)
@@ -134,7 +134,7 @@ class HomeController extends BaseController {
 			$otros2->nombre = 'Otros';
 		}
 		$departamentos = Department::get();
-                $publi = Publicidad::get();
+        $publi = Publicidad::get();
 		if (!is_null($id)) {
         	return View::make('index')
 		->with('title',$title)

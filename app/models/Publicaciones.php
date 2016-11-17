@@ -15,5 +15,9 @@ class Publicaciones extends Eloquent {
 	 *
 	 * @var array
 	 */
+	public function deparments()
+	{
+		return $this->belongsTo('Department','departamento');
+	}
 
 }

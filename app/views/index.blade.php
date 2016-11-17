@@ -173,6 +173,17 @@
 								 		<div class="col-xs-12 texto-desc text-justify">
 								 			{{ substr(ucfirst(strtolower(strip_tags($pubHabitual->descripcion))),0,100) }}...
 								 		</div>
+							 			<div class="pull-left texto-caract">
+							 				<div class="col-xs-12 no-padding">
+									 			<p>Departamento: {{ $pubHabitual->deparments->nombre }}</p>
+								 			</div>
+								 			<div class="col-xs-12 no-padding">
+								 				<p>Precio:  {{ $pubHabitual->precio.' '.ucfirst(strtolower($pubHabitual->moneda)) }}
+								 				</p>
+								 				<br>
+												
+								 			</div>
+								 		</div>
 								 		<div class="col-xs-12 btn-group no-padding">
 								 			<a href="{{ URL::to('publicacion/habitual/'.$pubHabitual->id) }}" class="btn btn-warning">Ver publicación</a>
 								 		</div>
@@ -234,6 +245,17 @@
 							 		<div class="col-xs-12 texto-desc">
 							 			{{ substr(ucfirst(strtolower(strip_tags($pubCasual->descripcion))),0,100) }}...
 							 		</div>
+							 		<div class="pull-left texto-caract">
+						 				<div class="col-xs-12 no-padding">
+								 			<p>Departamento: {{ $pubHabitual->deparments->nombre }}</p>
+							 			</div>
+							 			<div class="col-xs-12 no-padding">
+							 				<p>Precio:  {{ $pubHabitual->precio.' '.ucfirst(strtolower($pubHabitual->moneda)) }}
+							 				</p>
+							 				<br>
+											
+							 			</div>
+							 		</div>
 							 		<div class="col-xs-12 btn-group no-padding">
 							 			<a href="{{ URL::to('publicacion/habitual/'.$pubCasual->id) }}" class="btn btn-warning">Ver publicación</a>
 							 		</div>
@@ -292,17 +314,17 @@
       		itemsDesktopSmall : [979,2],
 		    responsive:{
 		        0:{
-		            items:2
+		            items:3
 		        },
 	        	650:{
-		            items:3
+		            items:4
 		        },
 		        850:
 		        {
-		        	items: 4
+		        	items: 5
 		        },
 		        1200:{
-		            items:5
+		            items:6
 		        }
 		    }
 		})
@@ -321,17 +343,17 @@
       		itemsDesktopSmall : [979,2],
 		    responsive:{
 		        0:{
-		            items:2
+		            items:3
 		        },
 		        650:{
-		            items:3
+		            items:4
 		        },
 		        850:
 		        {
-		        	items: 4
+		        	items: 5
 		        },
 		        1200:{
-		            items:5
+		            items:6
 		        }
 		    }
 		})
@@ -350,17 +372,17 @@
       		itemsDesktopSmall : [979,2],
 		    responsive:{
 		        0:{
-		            items:2
+		            items:3
 		        },
 		        650:{
-		            items:3
+		            items:4
 		        },
 		        850:
 		        {
-		        	items: 4
+		        	items: 5
 		        },
 		        1200:{
-		            items:5
+		            items:6
 		        }
 		    }
 		})
