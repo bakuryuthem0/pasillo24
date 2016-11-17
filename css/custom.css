@@ -371,13 +371,13 @@ footer p, footer a
 }
 .contCatIndex .texto-desc
 {
-	height: 100px;
+	height: 65px;
 	overflow: hidden;
     font-weight: 600;
 }
 .contCatIndex .texto-desc-title
 {
-	height: 75px;
+	height: 50px;
 }
 .contCatIndex .texto-desc-title h3
 {

@@ -171,7 +171,7 @@
 											<h4>{{ ucfirst(strtolower($pubHabitual->titulo)) }}</h4>
 								 		</div>
 								 		<div class="col-xs-12 texto-desc text-justify">
-								 			{{ substr(ucfirst(strtolower(strip_tags($pubHabitual->descripcion))),0,100) }}...
+								 			{{ substr(ucfirst(strtolower(strip_tags($pubHabitual->descripcion))),0,75) }}...
 								 		</div>
 							 			<div class="pull-left texto-caract">
 							 				<div class="col-xs-12 no-padding">
@@ -243,7 +243,7 @@
 										<h4>{{ ucfirst(strtolower($pubCasual->titulo)) }}</h4>
 							 		</div>
 							 		<div class="col-xs-12 texto-desc">
-							 			{{ substr(ucfirst(strtolower(strip_tags($pubCasual->descripcion))),0,100) }}...
+							 			{{ substr(ucfirst(strtolower(strip_tags($pubCasual->descripcion))),0,75) }}...
 							 		</div>
 							 		<div class="pull-left texto-caract">
 						 				<div class="col-xs-12 no-padding">
