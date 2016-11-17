@@ -314,7 +314,7 @@
       		itemsDesktopSmall : [979,2],
 		    responsive:{
 		        0:{
-		            items:3
+		            items:2
 		        },
 	        	650:{
 		            items:4
@@ -343,7 +343,7 @@
       		itemsDesktopSmall : [979,2],
 		    responsive:{
 		        0:{
-		            items:3
+		            items:2
 		        },
 		        650:{
 		            items:4
@@ -372,7 +372,7 @@
       		itemsDesktopSmall : [979,2],
 		    responsive:{
 		        0:{
-		            items:3
+		            items:2
 		        },
 		        650:{
 		            items:4

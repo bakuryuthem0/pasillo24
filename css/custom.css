@@ -357,6 +357,7 @@ footer p, footer a
 .contCatIndex .texto-caract
 {
 	height: 75px;
+	border-top: 1px solid #ddd;
 }
 .contCatIndex .image
 {
@@ -374,6 +375,7 @@ footer p, footer a
 	height: 65px;
 	overflow: hidden;
     font-weight: 600;
+	border-top: 1px solid #ddd;
 }
 .contCatIndex .texto-desc-title
 {
