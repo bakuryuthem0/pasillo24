@@ -354,9 +354,13 @@ footer p, footer a
 {
 	padding: 5px;
 }
+.contCatIndex .texto-caract
+{
+	height: 75px;
+}
 .contCatIndex .image
 {
-	height: 250px;
+	height: 175px;
     overflow: hidden;
     position: relative;
     margin-bottom: 1em;
@@ -369,6 +373,7 @@ footer p, footer a
 {
 	height: 100px;
 	overflow: hidden;
+    font-weight: 600;
 }
 .contCatIndex .texto-desc-title
 {
@@ -610,6 +615,11 @@ select.currency
 {
 	padding: 5px;
 	border: 1px solid #c7c7c7;
+}
+.owl-carousel .owl-item .item .separator h4
+{
+	font-weight: bold;
+	font-size: 16px;
 }
 #bronce
 {
