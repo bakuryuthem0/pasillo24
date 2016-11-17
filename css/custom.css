@@ -597,11 +597,11 @@ select.currency
 		        transform: translateY(-100px);
 	}
 }
-.owl-carousel-busq 	> .owl-controls > .owl-dots > .owl-dot
+.publication .owl-theme .owl-dots .owl-dot
 {
 	display: none;
 }
-.owl-carousel-busq 	> .owl-controls > .owl-dots > .owl-dot:nth-child(-n+6)
+.publication .owl-theme .owl-dots .owl-dot:nth-child(-n+6)
 {
 	display: inline-block;
 }
