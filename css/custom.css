@@ -377,6 +377,12 @@ footer p, footer a
     font-weight: 600;
 	border-top: 1px solid #ddd;
 }
+@media(max-device-width: 420px){
+	.contCatIndex .texto-desc
+	{
+		overflow: hidden;
+	}
+}
 .contCatIndex .texto-desc-title
 {
 	height: 75px;
@@ -622,6 +628,13 @@ select.currency
 {
 	font-weight: bold;
 	font-size: 16px;
+}
+@media(max-device-width: 420px){
+	.owl-carousel .owl-item .item .separator h4
+	{
+		font-size: 12px;
+		text-align: center;
+	}
 }
 #bronce
 {
