@@ -632,8 +632,9 @@ select.currency
 @media(max-device-width: 420px){
 	.owl-carousel .owl-item .item .separator h4
 	{
-		font-size: 12px;
-		text-align: center;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
 	}
 }
 #bronce
