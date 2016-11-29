@@ -658,7 +658,6 @@ class AjaxController extends BaseController{
 			
 		}elseif($pub->tipo == "Habitual")
 		{
-			echo 'Habitual';
 			if ($publication->categoria == 34) {
 				$publication = DB::table('publicaciones')
 				->leftJoin('locations','locations.pub_id','=','publicaciones.id')
@@ -700,7 +699,6 @@ class AjaxController extends BaseController{
 			
 		}elseif($pub->tipo == 'Casual')
 		{
-			echo 'Casual';
 			$publication = Publicaciones::leftJoin('locations','locations.pub_id','=','publicaciones.id')
 			->join('categoria','categoria.id','=','publicaciones.categoria')
 			->join('usuario','usuario.id','=','publicaciones.user_id')
@@ -724,10 +722,6 @@ class AjaxController extends BaseController{
 				'departamento.nombre'
 			));
 		}
-		die();
-		return Response::json(array(
-			'data' => $publication
-		));
 		$comentarios = DB::table('comentario')
 		->join('usuario','usuario.id','=','comentario.user_id')
 		->where('comentario.pub_id','=',$id)
