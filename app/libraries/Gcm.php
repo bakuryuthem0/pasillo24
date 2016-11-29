@@ -3,7 +3,7 @@ class Gcm {
     function __construct() {     
     } 
     /*Google Developer Console Server API*/
-    const API_ACCESS_KEY = "AIzaSyCw9TaGNBjhUgtR4j770xL84VR7k0MSj4U";
+    const API_ACCESS_KEY = "AIzaSyBsqZ6IGfpgwdXXn8Qte_Cuggs3Fgsl5iw";
 
     public function send_notification($msg, $ids) 
     { 

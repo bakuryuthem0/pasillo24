@@ -1861,50 +1861,48 @@ class AjaxController extends BaseController{
 				'msg'  => 'Error al validar los datos',
 				'data' => $validator->getMessageBag()->toArray()
 			));
-		}else
-		{
-			$pub = new Publicaciones;
-			$pub->user_id 	  = $id;
-			$pub->tipo 		  = 'Casual';
-			$pub->titulo      = $input['titulo'];
-			$pub->departamento= $input['departamento'];
-			$pub->categoria   = $input['categoria'];
-			$pub->ubicacion   = 'Principal';
-			$pub->precio 	  = $input['precio'];
-			$pub->moneda 	  = $input['moneda'];
-			$pub->descripcion = $input['input'];
-			$pub->fechIni 	  = date('Y-m-d',time());
-			$pub->fechFin	  = date('Y-m-d',time()+604800);
-			$pub->fechRepub	  = date('Y-m-d',time()+2543400);
-			$pub->bussiness_type = $input['negocioType'];
-			$pub->status 	  = 'Procesando';
-			$user = User::find($id);
-			if (Input::hasFile('img_1')) {
-				$file1 = Input::file('img_1');
-				$pub->img_1 = $this->upload_image($user->username,$file1);
-			}
-			if (Input::hasFile('img_2')) {
-				$file2 = Input::file('img_2');
-				$pub->img_2 = $this->upload_image($user->username,$file2);
-			}
-			$pub->save();
-			if (Input::has('longitud') && Input::has('latitud')) {
-				$lon = Input::get('longitud');
-				$lat = Input::get('latitud');
-				if (!empty($lon) && !empty($lat)) {
-					$loc = new Location;
-					$loc->latitude  = Input::get('latitud');
-					$loc->longitude = Input::get('longitud');
-					$loc->pub_id    = $pub->id;
-					$loc->save();
-				}
-			}
-			return Response::json(array(
-				'type' => 'success',
-				'msg'  => 'publicación creada satisfactoriamente.',
-				'pub_id' => $pub->id,
-			));
 		}
+		$pub = new Publicaciones;
+		$pub->user_id 	  = $id;
+		$pub->tipo 		  = 'Casual';
+		$pub->titulo      = $input['titulo'];
+		$pub->departamento= $input['departamento'];
+		$pub->categoria   = $input['categoria'];
+		$pub->ubicacion   = 'Principal';
+		$pub->precio 	  = $input['precio'];
+		$pub->moneda 	  = $input['moneda'];
+		$pub->descripcion = $input['input'];
+		$pub->fechIni 	  = date('Y-m-d',time());
+		$pub->fechFin	  = date('Y-m-d',time()+604800);
+		$pub->fechRepub	  = date('Y-m-d',time()+2543400);
+		$pub->bussiness_type = $input['negocioType'];
+		$pub->status 	  = 'Procesando';
+		$user = User::find($id);
+		if (Input::hasFile('img_1')) {
+			$file1 = Input::file('img_1');
+			$pub->img_1 = $this->upload_image($user->username,$file1);
+		}
+		if (Input::hasFile('img_2')) {
+			$file2 = Input::file('img_2');
+			$pub->img_2 = $this->upload_image($user->username,$file2);
+		}
+		$pub->save();
+		if (Input::has('longitud') && Input::has('latitud')) {
+			$lon = Input::get('longitud');
+			$lat = Input::get('latitud');
+			if (!empty($lon) && !empty($lat)) {
+				$loc = new Location;
+				$loc->latitude  = Input::get('latitud');
+				$loc->longitude = Input::get('longitud');
+				$loc->pub_id    = $pub->id;
+				$loc->save();
+			}
+		}
+		return Response::json(array(
+			'type' => 'success',
+			'msg'  => 'publicación creada satisfactoriamente.',
+			'pub_id' => $pub->id,
+		));
 	}
 	
 	/*---------------------------Pago total--------------------------------------------*/
@@ -2121,15 +2119,16 @@ class AjaxController extends BaseController{
 		$comp->valor_vend = $valor;
 		if ($comp->save()) {
 			$msg = 'El usuario '.Auth::user()->name.' '+Auth::user()->lastname.' lo ha valorado';
+			$publication = Publicaciones::find($comp->pub_id);
 			$user = User::with('gcmdevices')->find($publication->user_id);
 			foreach($user->gcmdevices as $gcm) {
 				$regId = $gcm->gcm_regid;
-				$data = array(
-					'message' 		=> $msg,
-					'title'   		=> 'Te han valorado como vendedor',
-					'msgcnt'  		=> null,
-					'timeToLive' 	=> 3000,
-				);
+				$data = [
+					"type"		=> "rating",
+					"pub_id"	=> $comp->pub_id,
+					"message"	=> $msg,
+					"title"		=> "Te han valorado como vendedor",
+				];
 				$doGcm = new Gcm;
 				$response = $doGcm->send_notification($data,$regId);
 			}
@@ -2166,14 +2165,14 @@ class AjaxController extends BaseController{
 		$comp->valor_comp = $valor;
 		if ($comp->save()) {
 			$msg = 'El usuario '.Auth::user()->name.' '+Auth::user()->lastname.' lo ha valorado';
-			$user = User::with('gcmdevices')->find($publication->user_id);
+			$user = User::with('gcmdevices')->find($comp->user_id);
 			foreach($user->gcmdevices as $gcm) {
 				$regId = $gcm->gcm_regid;
 				$data = array(
-					'message' 		=> $msg,
-					'title'   		=> 'Te han valorado como comprador',
-					'msgcnt'  		=> null,
-					'timeToLive' 	=> 3000,
+					"type"		=> "rating",
+					"pub_id"	=> $comp->pub_id,
+					"message"	=> $msg,
+					"title"		=> "Te han valorado como vendedor",
 				);
 				$doGcm = new Gcm;
 				$response = $doGcm->send_notification($data,$regId);
@@ -2487,10 +2486,10 @@ class AjaxController extends BaseController{
 		foreach($user->gcmdevices as $gcm) {
 			$regId = $gcm->gcm_regid;
 			$data = array(
-				'message' 		=> $msg,
-				'title'   		=> 'Han comentado tu publicación',
-				'msgcnt'  		=> null,
-				'timeToLive' 	=> 3000,
+				"type"		=> "comment",
+				"pub_id"	=> $pub_id,
+				"message"	=> $msg,
+				"title"		=> "Han comentado tu publicación"
 			);
 			$doGcm = new Gcm;
 			$response = $doGcm->send_notification($data,$regId);
@@ -2556,10 +2555,10 @@ class AjaxController extends BaseController{
 			foreach($user->gcmdevices as $gcm) {
 				$regId = $gcm->gcm_regid;
 				$data = array(
-					'message' 		=> $msg,
-					'title'   		=> 'Han comentado tu publicación',
-					'msgcnt'  		=> null,
-					'timeToLive' 	=> 3000,
+					"type"		=> "comment",
+					"pub_id"	=> $publication->id,
+					"message"	=> $msg,
+					"title"		=> "Han respondido tu comentario"
 				);
 				$doGcm = new Gcm;
 				$response = $doGcm->send_notification($data,$regId);
@@ -2733,10 +2732,10 @@ class AjaxController extends BaseController{
 			foreach($user->gcmdevices as $gcm) {
 				$regId = $gcm->gcm_regid;
 				$data = array(
-					'message' 		=> $msg,
-					'title'   		=> 'Te han contactado',
-					'msgcnt'  		=> null,
-					'timeToLive' 	=> 3000,
+					"type"		=> "contact",
+					"pub_id"	=> $comp->pub_id,
+					"message"	=> $msg,
+					"title"		=> "Te han contactado"
 				);
 				$doGcm = new Gcm;
 				$response = $doGcm->send_notification($data,$regId);
