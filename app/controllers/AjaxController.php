@@ -655,7 +655,7 @@ class AjaxController extends BaseController{
 				'usuario.phone',
 				'usuario.reputation'
 			));
-			
+
 		}elseif($pub->tipo == "Habitual")
 		{
 			if ($publication->categoria == 34) {
@@ -1203,7 +1203,7 @@ class AjaxController extends BaseController{
 		define('CONST_SERVER_TIMEZONE', 'UTC');
 		date_default_timezone_set('America/La_Paz');
 		$rules = array(
-			'ubication'  => 'required',
+			'ubication'  => 'required|in:Principal,Categoria',
 			'namePub'    => 'required|min:4',
 			'duration'   => 'required|min:0',
 			'time'       => 'required|in:d,s,m,a',
