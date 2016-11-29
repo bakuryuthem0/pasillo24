@@ -579,22 +579,22 @@ class AjaxController extends BaseController{
 	public function publicationSelf()
 	{
 		$id = Input::get('pub_id');
-		$publication = Publicaciones::find($id);
-		if ($publication->tipo == 'Lider') {
+		$pub = Publicaciones::find($id);
+		if ($pub->tipo == 'Lider') {
 			$url = URL::to('publicacion/lider/'.base64_encode($id));
 			
-		}elseif($publication->tipo == "Habitual")
+		}elseif($pub->tipo == "Habitual")
 		{
 			$url = URL::to('publicacion/habitual/'.base64_encode($id));
 
-		}elseif($publication->tipo == "Casual")
+		}elseif($pub->tipo == "Casual")
 		{
 			$url = URL::to('publicacion/casual/'.base64_encode($id));
 			
 		}
-		$user = User::find($publication->user_id);
-		if ($publication->user_id != 21) {
-			$otrasPub = Publicaciones::where('user_id','=',$publication->user_id)
+		$user = User::find($pub->user_id);
+		if ($pub->user_id != 21) {
+			$otrasPub = Publicaciones::where('user_id','=',$pub->user_id)
 			->where('id','!=',$id)
 			->where('status','=','Aprobado')
 			->where(function($query)
@@ -628,7 +628,8 @@ class AjaxController extends BaseController{
 		{
 			$otrasPub = array();
 		}
-		if ($publication->tipo == "Lider") {
+		if ($pub->tipo == "Lider") 
+		{
 			$publication = Publicaciones::leftJoin('locations','locations.pub_id','=','publicaciones.id')
 			->join('usuario','usuario.id','=','publicaciones.user_id')
 			->where('publicaciones.id','=',$id)
@@ -655,8 +656,9 @@ class AjaxController extends BaseController{
 				'usuario.reputation'
 			));
 			
-		}elseif($publication->tipo == "Habitual")
+		}elseif($pub->tipo == "Habitual")
 		{
+			echo 'Habitual';
 			if ($publication->categoria == 34) {
 				$publication = DB::table('publicaciones')
 				->leftJoin('locations','locations.pub_id','=','publicaciones.id')
@@ -696,10 +698,9 @@ class AjaxController extends BaseController{
 				));
 			}		
 			
-			
-
-		}elseif($publication->tipo == 'Casual')
+		}elseif($pub->tipo == 'Casual')
 		{
+			echo 'Casual';
 			$publication = Publicaciones::leftJoin('locations','locations.pub_id','=','publicaciones.id')
 			->join('categoria','categoria.id','=','publicaciones.categoria')
 			->join('usuario','usuario.id','=','publicaciones.user_id')
@@ -723,11 +724,14 @@ class AjaxController extends BaseController{
 				'departamento.nombre'
 			));
 		}
+		die();
+		return Response::json(array(
+			'data' => $publication
+		));
 		$comentarios = DB::table('comentario')
 		->join('usuario','usuario.id','=','comentario.user_id')
 		->where('comentario.pub_id','=',$id)
 		->get(array('comentario.id','comentario.comentario','comentario.created_at','usuario.username'));
-
 		$resp = Respuestas::where('pub_id','=',$publication->id)->get();
 		return Response::json(array(
 			'publication' 	=> $publication,/*Toda la info esta pub*/
