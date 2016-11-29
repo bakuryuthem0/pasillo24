@@ -628,8 +628,6 @@ class AjaxController extends BaseController{
 		{
 			$otrasPub = array();
 		}
-		var_dump($otrasPub);
-		die();
 		if ($publication->tipo == "Lider") {
 			$publication = Publicaciones::leftJoin('locations','locations.pub_id','=','publicaciones.id')
 			->join('usuario','usuario.id','=','publicaciones.user_id')
