@@ -2473,7 +2473,7 @@ class AjaxController extends BaseController{
 	public function postComment(){
 		$id = Input::get('id');
 		$pub_id = Input::get('pub_id');
-		if (Input::has('pub_id')) {
+		if (!Input::has('pub_id')) {
 			return Response::json(array(
 				'type' => 'danger', 
 				'msg' => 'No se encontro el id de la publicación.',
