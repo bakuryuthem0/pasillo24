@@ -658,7 +658,7 @@ class AjaxController extends BaseController{
 
 		}elseif($pub->tipo == "Habitual")
 		{
-			if ($publication->categoria == 34) {
+			if ($pub->categoria == 34) {
 				$publication = DB::table('publicaciones')
 				->leftJoin('locations','locations.pub_id','=','publicaciones.id')
 				->join('marcas','marcas.id','=','publicaciones.marca_id')
@@ -1816,13 +1816,24 @@ class AjaxController extends BaseController{
 	{
 		$id = Input::get('id');
 		$input = Input::all();
+		/*$pub = Publicaciones::where('user_id','=',$id)
+		->where('tipo','=','Casual')
+		->where('fechRepub','>',date('Y-m-d',time()))
+		->orderBy('fechRepub','desc')
+		->first();
+		if (count($pub)>0 && $id != 21) {
+			
+			return Response::json(array(
+				'type' => 'error', 
+				'msg'  => 'Usted ha consumido el máximo de publicaciones casuales. Inténtelo nuevamente cuando su última publicación casual expire.'
+			));
+		}*/
 		if (strlen(strip_tags($input['input']))>400) {
 			return Response::json(array(
 				'type' => 'danger',
 				'msg'  => 'La descripción debe tener maximo 400 caracteres',
 			));
 		}
-		
 		$rules = array(
 			'input' 		=> 'required',
 			'precio'		=> 'required|numeric',
@@ -2881,22 +2892,5 @@ class AjaxController extends BaseController{
 			'type' => 'success',
 			'data' => $user,
 		));
-	}
-	public function testAjax()
-	{
-		$regId = Input::get('regid');
-		$data = array(
-			'message' 		=> 'hola msg push',
-			'title'   		=> 'titulo msg push',
-			'msgcnt'  		=> null,
-			'timeToLive' 	=> 3000,
-		);
-		$doGcm = new Gcm;
-		$response = $doGcm->send_notification($data,$regId);
-		return Response::json(array(
-			'type' => 'success', 
-			'msg' => 'Respuesta push',
-		));
-		
 	}
 }
