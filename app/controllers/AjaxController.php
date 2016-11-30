@@ -2473,21 +2473,29 @@ class AjaxController extends BaseController{
 	public function postComment(){
 		$id = Input::get('id');
 		$pub_id = Input::get('pub_id');
+		if (Input::has('pub_id')) {
+			return Response::json(array(
+				'type' => 'danger', 
+				'msg' => 'No se encontro el id de la publicación.',
+			));
+		}
 		$comentario = Input::get('comment');
 		if (strlen($comentario)<4) {
-			return 'El comentario es muy corto';
+			return Response::json(array(
+				'type' => 'danger', 
+				'msg' => 'El comentario es muy corto',
+			));
 		}
 		$publication = Publicaciones::find($pub_id);
 		$comentarios = new Comentarios;
-		
 		$comentarios->user_id 	 = $id;
 		$comentarios->pub_id  	 = $pub_id;
 		$comentarios->comentario = $comentario;
 		$comentarios->updated_at = date('Y-m-d',time());
 		$comentarios->created_at = date('Y-m-d',time());
 		$comentarios->save();
-		
-		$msg = 'El usuario '.Auth::user()->name.' '+Auth::user()->lastname.' ha comentado tu publicación '.$publication->titulo;
+		$commenter = User::find($id);
+		$msg = 'El usuario '.$commenter->name.' '+$commenter->lastname.' ha comentado tu publicación '.$publication->titulo;
 		$user = User::with('gcmdevices')->find($publication->user_id);
 		foreach($user->gcmdevices as $gcm) {
 			$regId = $gcm->gcm_regid;
