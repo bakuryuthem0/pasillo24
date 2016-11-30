@@ -30,6 +30,6 @@ class User extends Eloquent implements UserInterface, RemindableInterface {
 	}
 	function gcmdevices()
 	{
-		return $this->hasMany('GcmDevics','user_id');
+		return $this->hasMany('GcmDevices','user_id');
 	}
 }
