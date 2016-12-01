@@ -80,7 +80,7 @@ class AjaxController extends BaseController{
 			{
 				/*Se toma el id del movil y se busca en la base de datos*/
 				$regId = Input::get('regId');
-				$aux = GcmDevices::find($regId);
+				$aux = GcmDevices::where('gcm_regid','=',$regId)->first();
 				if (is_null($aux) || empty($aux)) {
 					$new   = new GcmDevices;
 					$new->gcm_regid = $regId;
@@ -2900,5 +2900,9 @@ class AjaxController extends BaseController{
 			'type' => 'success',
 			'data' => $user,
 		));
+	}
+	public function getTest()
+	{
+		
 	}
 }
