@@ -68,6 +68,26 @@ class AjaxController extends BaseController{
 	}
 	public function getLoginApp()
 	{
+		$data = Input::all();
+		$rules = array(
+			'username' 	=> 'required|exists:users,username',
+			'password' 	=> 'required',
+			'gcm_token' => 'required',
+		);
+		$msg  = array();
+		$attr = array(
+			'username' 	=> 'nombre de usuario',
+			'password' 	=> 'contraseña',
+			'gcm_token'	=> 'token gcm',
+		);
+		$validator = Validator::make($data, $rules, $msg, $attr);
+		if ($validator->fails()) {
+			return Response::json(array(
+				'type' => 'danger',
+				'msg'  => 'Error al validar los datos',
+				'data' => $validator->getMessageBag()	
+			));
+		}
 		/*Se reciven los datos del usuario*/
 
 	    $username = Input::get("username"); 
