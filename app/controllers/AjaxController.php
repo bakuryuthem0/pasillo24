@@ -68,27 +68,6 @@ class AjaxController extends BaseController{
 	}
 	public function getLoginApp()
 	{
-		$data = Input::all();
-		$rules = array(
-			'username' 	=> 'required|exists:users,username',
-			'password' 	=> 'required',
-			'gcm_token' => 'required',
-		);
-		$msg  = array();
-		$attr = array(
-			'username' 	=> 'nombre de usuario',
-			'password' 	=> 'contraseña',
-			'gcm_token'	=> 'token gcm',
-		);
-		$validator = Validator::make($data, $rules, $msg, $attr);
-		if ($validator->fails()) {
-			return Response::json(array(
-				'type' => 'danger',
-				'msg'  => 'Error al validar los datos',
-				'data' => $validator->getMessageBag()	
-			));
-		}
-		/*Se reciven los datos del usuario*/
 
 	    $username = Input::get("username"); 
 	    $password = Input::get("password");
@@ -100,8 +79,8 @@ class AjaxController extends BaseController{
 			{
 				/*Se toma el id del movil y se busca en la base de datos*/
 				$regId = Input::get('gcm_token');
-				$aux = GcmDevices::where('gcm_regid','=',$regId)->first();
-				if (is_null($aux) || empty($aux)) {
+				$aux = GcmDevices::where('gcm_regid','=',$regId)->where('id','=',$user->id)->count();
+				if (is_null($aux) || empty($aux) || $aux < 1) {
 					$new   = new GcmDevices;
 					$new->gcm_regid = $regId;
 					$new->user_id   = $user->id;
@@ -2923,6 +2902,17 @@ class AjaxController extends BaseController{
 	}
 	public function getTest()
 	{
-		
+		$regId = Input::get('regId');
+		$data = [
+			"type"		=> "rating",
+			"message"	=> 'holis',
+			"title"		=> "Te han valorado como vendedor",
+		];
+		$doGcm = new Gcm;
+		$response = $doGcm->send_notification($data,$regId);
+		return Response::json(array(
+			'type' => 'success',
+			'msg'	=> 'se envio'
+		));
 	}
 }
