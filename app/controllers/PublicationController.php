@@ -413,23 +413,18 @@ class PublicationController extends BaseController {
 			$comentarios->created_at = date('Y-m-d',time());
 			$comentarios->save();
 			$msg = "Han comentado tu publicacion: ".$publication->titulo;
-			$user = User::find($publication->user_id);
 			$data = array(
-				'message' 		=> $msg,
-				'title'   		=> $msg,
-				'msgcnt'  		=> null,
-				'timeToLive' 	=> 3000,
+				"type"		=> "comment",
+				"pub_id"	=> $comentarios->pub_id,
+				"message"	=> $msg,
+				"title"		=> "Han comentado tu publicación",
 			);
-			$gcm = GcmDevices::where('user_id','=',$user->id)->orderBy('id','DESC')->get(array('gcm_regid'));
-			$regId = array();
-			$i = 0;
-			foreach($gcm as $g)
-			{
-				$regId[$i] = $g['gcm_regid'];
-				$i++;
+			$user = User::with('gcmdevices')->find($publication->user_id);
+			foreach($user->gcmdevices as $gcm) {
+				$regId = $gcm->gcm_regid;
+				$doGcm = new Gcm;
+				$response = $doGcm->send_notification($data,$regId);
 			}
-			$doGcm = new Gcm;
-			$response = $doGcm->send_notification($regId,$data);
 			return Response::json(array('type' => 'success', 'msg' => 'Comentario Guardado Sactisfactoriamente','date' => date('d-m-Y',strtotime($comentarios->created_at))));
 		}
 		
@@ -664,26 +659,21 @@ class PublicationController extends BaseController {
 			$message->to($to_Email)->from('pasillo24.com@pasillo24.com')->subject($subject);
 		});
 		if ($resp->save()) {
-			
 			$com->respondido = 1;
 			$com->save();
 			$msg = "Han respondido tu comentario: ".$com->comentario;
 			$data = array(
-				'message' 		=> $msg,
-				'title'   		=> $msg,
-				'msgcnt'  		=> null,
-				'timeToLive' 	=> 3000,
+				"type"		=> "comment",
+				"pub_id"	=> $comentarios->pub_id,
+				"message"	=> $msg,
+				"title"		=> "Han respondido tu comentario",
 			);
-			/*$gcm = GcmDevices::where('usuario','=',$user->username)->orderBy('id','DESC')->get(array('gcm_regid'));
-			$regId = array();
-			$i = 0;
-			foreach($gcm as $g)
-			{
-				$regId[$i] = $g['gcm_regid'];
-				$i++;
+			$user = User::with('gcmdevices')->find($com->user_id);
+			foreach($user->gcmdevices as $gcm) {
+				$regId = $gcm->gcm_regid;
+				$doGcm = new Gcm;
+				$response = $doGcm->send_notification($data,$regId);
 			}
-			$doGcm = new Gcm;
-			$response = $doGcm->send_notification($regId,$data);*/
 			return Response::json(array('type' => 'success','msg' => 'Respuesta guardada satisfactoriamente'));
 		}else
 		{
@@ -1228,23 +1218,19 @@ class PublicationController extends BaseController {
 		if ($comp->save()) {
 			$pub = Publicaciones::find($id);
 			$user = User::find($pub->user_id);
-			$msg = "Han respondido tu comentario: ".$pub->titulo;
+			$msg = "Te han contactado por la publicación: ".$pub->titulo;
 			$data = array(
-				'message' 		=> $msg,
-				'title'   		=> $msg,
-				'msgcnt'  		=> null,
-				'timeToLive' 	=> 3000,
+				"type"		=> "contact",
+				"pub_id"	=> $comp->pub_id,
+				"message"	=> $msg,
+				"title"		=> "Te han contactado",
 			);
-			/*$gcm = GcmDevices::where('usuario','=',$user->username)->orderBy('id','DESC')->get(array('gcm_regid'));
-			$regId = array();
-			$i = 0;
-			foreach($gcm as $g)
-			{
-				$regId[$i] = $g['gcm_regid'];
-				$i++;
+			$user = User::with('gcmdevices')->find($comp->user_id);
+			foreach($user->gcmdevices as $gcm) {
+				$regId = $gcm->gcm_regid;
+				$doGcm = new Gcm;
+				$response = $doGcm->send_notification($data,$regId);
 			}
-			$doGcm = new Gcm;
-			$response = $doGcm->send_notification($regId,$data);*/
 			return Redirect::to('usuario/mis-compras');
 		}
 	}
@@ -1783,5 +1769,25 @@ public function postElimPub()
 			return Response::json(array('type' => 'danger'));
 		}
 		
+	}
+	public function getLocations()
+	{
+		if (Request::ajax()) {
+			$pub_id 	= Input::id();
+			$pub = Publicaciones::with('location')->find($pub_id);
+			$origLat = $pub->location->latitude;
+			$origLon = $pub->location->longitude;
+			$haversine  = "3956*2*ASIN(SQRT(POWER(SIN(($origLat - latitude)*pi()/180/2),2)+COS($origLat*pi()/180 )*COS(latitude*pi()/180)*POWER(SIN(($origLon-longitude)*pi()/180/2),2)))";
+			$dist 	= 10; 
+			$sql = "SELECT id, pub_id, latitude, longitude, ($haversine) as distance FROM locations 
+			WHERE longitude BETWEEN $origLon - $dist/COS(radians($origLat))*69 AND $origLon+$dist/COS(radians($origLat))*69
+			AND latitude BETWEEN $origLat-($dist/69) AND  $origLat+($dist/69) HAVING distance < $dist ORDER BY distance LIMIT 5";
+			$aux = DB::select($sql);
+			return $aux;
+		}
+		return Response::json(array(
+			'type'  => 'danger',
+			'msg'	=> 'Acceso restringido'
+		));
 	}
 }

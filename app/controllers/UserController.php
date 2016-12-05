@@ -724,11 +724,14 @@ class UserController extends BaseController {
 			{
 				if ($tipo == 'pos') {
 					$valor = 1;
+					$msg = "Te han valorado positivamente.";
 				}elseif ($tipo == 'neg') {
 					$valor = -1;
+					$msg = "Te han valorado negativamente.";
 				}elseif($tipo == 'neutro')
 				{
 					$valor = 0;
+					$msg = "Te han valorado neutralmente.";
 				}
 			}
 			$comp = Compras::find($id);
@@ -741,6 +744,18 @@ class UserController extends BaseController {
 			}
 			$comp->valor_vend = $valor;
 			$comp->valorado_vend = 1;
+			$data = array(
+				"type"		=> "rating",
+				"pub_id"	=> $comp->pub_id,
+				"message"	=> $msg,
+				"title"		=> "Te han valorado",
+			);
+			$user = User::with('gcmdevices')->find($pub->user_id);
+			foreach($user->gcmdevices as $gcm) {
+				$regId = $gcm->gcm_regid;
+				$doGcm = new Gcm;
+				$response = $doGcm->send_notification($data,$regId);
+			}
 			if ($comp->save()) {
 				return Response::json(array('type' => 'success','msg' => 'Vendedor valorado correctamente.'));
 			}else
@@ -763,11 +778,14 @@ class UserController extends BaseController {
 			{
 				if ($tipo == 'pos') {
 					$valor = 1;
+					$msg = "Te han valorado positivamente.";
 				}elseif ($tipo == 'neg') {
 					$valor = -1;
+					$msg = "Te han valorado negativamente.";
 				}elseif($tipo == 'neutro')
 				{
 					$valor = 0;
+					$msg = "Te han valorado neutralmente.";
 				}
 			}
 			$comp = Compras::find($id);
@@ -778,6 +796,18 @@ class UserController extends BaseController {
 			}
 			$comp->valor_comp 	 = $valor;
 			$comp->valorado_comp = 1;
+			$data = array(
+				"type"		=> "rating",
+				"pub_id"	=> $comp->pub_id,
+				"message"	=> $msg,
+				"title"		=> "Te han valorado",
+			);
+			$user = User::with('gcmdevices')->find($comp->user_id);
+			foreach($user->gcmdevices as $gcm) {
+				$regId = $gcm->gcm_regid;
+				$doGcm = new Gcm;
+				$response = $doGcm->send_notification($data,$regId);
+			}
 			if ($comp->save()) {
 				return Response::json(array('type' => 'success','msg' => 'Comprador valorado correctamente.'));
 			}else

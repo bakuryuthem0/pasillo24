@@ -53,7 +53,7 @@ class AjaxController extends BaseController{
 	/*---------------------------Login-------------------------------------------------*/
 	public function getGcm()
 	{
-		$regId = Input::get('regId');
+		$regId = Input::get('gcm_token');
 		$id = Input::get('id');
 		$aux = GcmDevices::where('gcm_regid','=',$regId)->where('user_id','=',$id)->first();
 		if (is_null($aux) || empty($aux)) {
@@ -79,7 +79,7 @@ class AjaxController extends BaseController{
 			if (Hash::check($password, $user->password)) 
 			{
 				/*Se toma el id del movil y se busca en la base de datos*/
-				$regId = Input::get('regId');
+				$regId = Input::get('gcm_token');
 				$aux = GcmDevices::where('gcm_regid','=',$regId)->first();
 				if (is_null($aux) || empty($aux)) {
 					$new   = new GcmDevices;

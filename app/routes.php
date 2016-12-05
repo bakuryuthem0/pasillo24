@@ -10,7 +10,7 @@
 | and give it the Closure to execute when that URI is requested.
 |
 */
-Route::get('test','AjaxController@testAjax');
+Route::get('test','AjaxController@getTest');
 Route::get('/', 'HomeController@showFront');
 Route::get('inicio','HomeController@showIndex');
 Route::get('inicio/departamentos/{id}','HomeController@showIndex');
@@ -31,12 +31,15 @@ Route::get('inicio/buscar', 'HomeController@getSearch');
 Route::get('publicaciones/categorias/{id}','PublicationController@getPublicationCategory');
 Route::get('publicaciones/departamentos/{id}','PublicationController@getPublicationDepartment');
 //vista de una publicacion lider
-	Route::get('publicacion/lider/{id}','PublicationController@getPublication');
+Route::get('publicacion/lider/{id}','PublicationController@getPublication');
 //vista de la publicacion habitual
-	Route::get('publicacion/habitual/{id}','PublicationController@getPublication');
+Route::get('publicacion/habitual/{id}','PublicationController@getPublication');
 
 	//Route::get('publicacion/habitual/{id}','PublicationController@getPublication');
 Route::get('publicacion/casual/{id}', 'PublicationController@getPublication');
+
+Route::get('publicacion/obtener-cercanos/{id}','PublicationController@getLocations');
+
 
 Route::post('chequear/email','AuthController@postEmailCheck');
 Route::get('inicio/terminos-y-condiciones', 'HomeController@getTermsAndConditions');
@@ -44,6 +47,7 @@ Route::get('inicio/terminos-y-condiciones', 'HomeController@getTermsAndCondition
 //app
 Route::get('app/inicio','AjaxController@showIndex');
 Route::get('app/publicacion','AjaxController@publicationSelf');
+
 
 Route::get('app/lider','AjaxController@getLider');
 

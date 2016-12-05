@@ -19,5 +19,8 @@ class Publicaciones extends Eloquent {
 	{
 		return $this->belongsTo('Department','departamento');
 	}
-
+	public function location()
+	{
+		return $this->hasOne('Location','pub_id');
+	}
 }
