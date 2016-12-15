@@ -1377,7 +1377,7 @@ class AjaxController extends BaseController{
 			'input'			=> 'required|min:4',
 			'moneda'		=> 'required',
 			'precio'		=> 'required_if:tipoTransac,venta,alquiler,Aticretico,otro',
-			'img1'			=> 'required|image',
+			'img1'			=> 'required|image|max:3000',
 			'tipoTransac'	=> 'required',
 			'negocioType'   => 'required',
 		);
@@ -1841,7 +1841,7 @@ class AjaxController extends BaseController{
 			'categoria'		=> 'required',
 			'titulo'		=> 'required',
 			'negocioType' 	=> 'required',
-			'img_1'			=> 'required|image',
+			'img_1'			=> 'required|image|max:3000',
 		);
 		$messages = array(
 			'required' => ':attribute es requerido',
@@ -1909,7 +1909,175 @@ class AjaxController extends BaseController{
 			'pub_id' => $pub->id,
 		));
 	}
-	
+	/*----------------------------Reactivar--------------------------------------------*/
+	/*                                                                                 */
+	/*                                                                                 */
+	/*                                                                                 */
+	/*                                                                                 */
+	/*                                                                                 */
+	/*                                                                                 */
+	/*                                                                                 */
+	/*                                                                                 */
+	/*                                                                                 */
+	/*----------------------------Reactivar--------------------------------------------*/
+	public function postReactivate($id)
+	{
+		$pub = Publicaciones::find($id);
+		if($pub->tipo == 'Lider')
+		{
+			$data = Input::all();
+			$rules = array(
+				'duration' => 'required|in:d,s,m',
+				'time'     => 'required|integer|min:1',
+				'ubication'=> 'required|in:Principal,Categoria',
+				'cat'	   => 'required_if:ubication,Categoria',
+				'fechIni'  => 'required|date|after:'.date('d-m-Y',time()).'|date_format:d-m-Y',
+			);
+			$msg = array();
+			$attr = array(
+				'duration' => 'duración',
+				'time'	   => 'período',
+				'fechIni'  => 'fecha de inicio',
+			);
+			$validator = Validator::make($data, $rules, $msg, $attr);
+			if ($validator->fails()) {
+				return Response::json(array(
+					'type' => 'danger',
+					'msg'  => 'Error, datos invalidos',
+					'data' => $validator->getMessageBag()
+				));
+			}
+			/* Validar duracion y montos */
+			$dur = $data['duration'];
+			if ($data['time'] == 'd') {
+				
+				$time = 86400;
+				$monto = Precios::where('pub_type_id','=',1)->where('desc','=','dia')->pluck('precio');
+			}elseif($data['time'] == 's')
+			{
+				$time = 604800;
+				$monto = Precios::where('pub_type_id','=',1)->where('desc','=','semana')->pluck('precio');
+			}elseif($data['time'] == 'm')
+			{
+				$time = 2629744;
+				$monto = Precios::where('pub_type_id','=',1)->where('desc','=','mes')->pluck('precio');
+			}
+			$monto = $monto*$dur;
+			/* Segundo validador de fecha */
+			$fecha = explode('-', $data['fechIni']);
+			$timestamp = strtotime($data['fechIni'])+($time*$data['duration']);
+			$fechaFin = date('d-m-Y',$timestamp);
+
+			$timestamp = $data['duration']*$time;
+			$date  = date('d-m-Y');
+			$timestamp = strtotime($data['fechIni'])+$timestamp;
+			$fechFin = date('Y-m-d',$timestamp);
+			$pub = Publicaciones::find($id);
+			$pub->ubicacion = $data['ubication'];
+			if ($data['ubication'] == 'Categoria') {
+				$pub->categoria = $data['cat'];
+			}
+			$pub->monto = $monto;
+			$pub->fechIni   = date('Y-m-d',strtotime($data['fechIni']));
+			$pub->fechFin   = $fechFin;
+			$pub->status    = 'Pendiente';
+			$pub->save();
+		}else
+		{
+			$input = Input::all();
+			$precio = Precios::all();
+			$solo = $precio[0];
+
+			if (!empty($input['durationPrin']) && !empty($input['periodoPrin']) && !empty($input['durationCat']) && !empty($input['periodoCat'])) {
+
+				if ($input['periodoPrin'] == $precio[0]->precio) {
+					$pub->duracion	= ($input['durationPrin']*86400);
+					$pub->monto = ($input['durationPrin']*$precio[0]->precio)+$pub->monto;
+				}elseif($input['periodoPrin'] == $precio[1]->precio)
+				{
+					$pub->duracion	= ($input['durationPrin']*604800);
+					$pub->monto 	= ($input['durationPrin']*$precio[1]->precio)+$pub->monto;
+				}elseif($input['periodoPrin'] == $precio[2]->precio)
+				{
+					$pub->duracion	= ($input['durationPrin']*2629744);
+					$pub->monto 	= ($input['durationPrin']*$precio[2]->precio)+$pub->monto;
+				}
+
+				if ($input['periodoCat'] == $precio[3]->precio) {
+					$pub->duracionNormal	= ($input['durationCat']*86400)+6048000;
+					$pub->monto 	= ($input['durationCat']*$precio[3]->precio)+$pub->monto;
+				}elseif($input['periodoCat'] == $precio[4]->precio)
+				{
+					$pub->duracionNormal	= ($input['durationCat']*604800)+6048000;
+					$pub->monto 	= ($input['durationCat']*$precio[4]->precio)+$pub->monto;
+				}elseif($input['periodoCat'] == $precio[5]->precio)
+				{
+					$pub->duracionNormal	= ($input['durationCat']*2629744)+6048000;
+					$pub->monto 	= ($input['durationCat']*$precio[5]->precio)+$pub->monto;
+				}
+				$pub->ubicacion = "Ambos";
+
+			}elseif(!empty($input['durationPrin']) && !empty($input['periodoPrin']))
+			{
+				if ($input['periodoPrin'] == $precio[0]->precio) {
+
+					$pub->duracion	= ($input['durationPrin']*86400);
+					$pub->monto = ($input['durationPrin']*$precio[0]->precio)+$pub->monto;
+
+				}elseif($input['periodoPrin'] == $precio[1]->precio)
+				{
+
+					$pub->duracion	= ($input['durationPrin']*604800);
+					$pub->monto 	= ($input['durationPrin']*$precio[1]->precio)+$pub->monto;
+
+				}elseif($input['periodoPrin'] == $precio[2]->precio)
+				{
+
+					$pub->duracion	= ($input['durationPrin']*2629744);
+					$pub->monto 	= ($input['durationPrin']*$precio[2]->precio)+$pub->monto;
+
+				}
+				$pub->ubicacion = 'Principal';
+			}elseif(!empty($input['durationCat']) && !empty($input['periodoCat']))
+			{
+				if ($input['periodoCat'] == $precio[3]->precio) {
+
+					$pub->duracionNormal	= ($input['durationCat']*86400)+6048000;
+					$pub->monto 	= ($input['durationCat']*$precio[3]->precio)+$pub->monto;
+
+				}elseif($input['periodoCat'] == $precio[4]->precio)
+				{
+
+					$pub->duracionNormal	= ($input['durationCat']*604800)+6048000;
+					$pub->monto 	= ($input['durationCat']*$precio[4]->precio)+$pub->monto;
+
+				}elseif($input['periodoCat'] == $precio[5]->precio)
+				{
+
+					$pub->duracionNormal	= ($input['durationCat']*2629744)+6048000;
+					$pub->monto 	= ($input['durationCat']*$precio[5]->precio)+$pub->monto;
+
+				}
+				$pub->ubicacion = 'Categoria';
+
+			}else
+			{
+				$pub->duracionNormal = 6048000;
+				$pub->ubicacion = 'Categoria';
+			}
+					
+			$pub->save();
+		}
+		$obj = new StdClass;
+		$obj->pub_id = $pub->id;
+		$obj->monto  = $pub->monto;
+
+		return Response::json(array(
+			'type'  => 'success',
+			'msg'	=> 'Datos enviados sactisfactoriamente',
+			'data'  => $obj
+		));
+	}
 	/*---------------------------Pago total--------------------------------------------*/
 	/*                                                                                 */
 	/*                                                                                 */
@@ -1933,7 +2101,7 @@ class AjaxController extends BaseController{
 		$input 	= Input::all();
 		$rules 	= array(
 			'transNumber' => 'required',
-			'fecha'		  => 'required',
+			'fecha'		  => 'required|date|date_format:yyyy-mm-dd',
 			'banco'		  => 'required'
 		);
 		$messages = array(
@@ -2914,5 +3082,10 @@ class AjaxController extends BaseController{
 			'type' => 'success',
 			'msg'	=> 'se envio'
 		));
+	}
+	public function getPrice()
+	{
+		$price = Precios::get();
+		return $price;
 	}
 }

@@ -125,7 +125,7 @@
 					<div class="col-sm-12 col-md-6 bg-info formulario hidden">
 						<p class="response-msg"></p>
 					</div>
-					<div class="col-xs-12"><input type="submit" class="btn btn-success" value="Enviar"></div>
+					<div class="col-xs-12 formulario"><input type="submit" class="btn btn-success" value="Enviar"></div>
 				</form>
 				@else
 					@if(Session::has('error'))

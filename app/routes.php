@@ -75,6 +75,7 @@ Route::group(array('before' => 'check_app_auth'),function()
 	Route::get('app/usuario/publicacion/habitual/{id}/previsualizar','AjaxController@getHabitualPreview');
 	Route::post('app/usuario/publicacion/habitual/incremento','AjaxController@postHabitualAdd');
 	Route::post('app/usuario/publicacion/casual/enviar','AjaxController@postCasual');
+	Route::post('app/usuario/publicaciones/reactivar/{id}','AjaxController@postReactivate');
 	Route::post('app/usuario/publicaciones/pago/enviar','AjaxController@postPublicationPayment');
 
 	Route::post('app/usuario/publicaciones/mis-publicaciones/{type}','AjaxController@getMyPublicationsType');
@@ -95,6 +96,8 @@ Route::group(array('before' => 'check_app_auth'),function()
 	Route::get('app/ver-favorito','AjaxController@getMyFav');
 
 	Route::get('app/usuario-datos','AjaxController@getUserData');
+
+	Route::get('app/precios','AjaxController@getPrice');
 });
 //rutas globales
 Route::get('app/categorias','AjaxController@getCategory');
