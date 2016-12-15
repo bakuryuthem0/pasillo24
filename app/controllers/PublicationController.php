@@ -847,7 +847,7 @@ class PublicationController extends BaseController {
 			'moneda'		=> 'required',
 			'precio'		=> 'required_if:tipoTransac,venta,alquiler,Aticretico,otro',
 			'moneda'		=> 'required',
-			'img1'			=> 'required|image',
+			'img1'			=> 'required|image|max:3000',
 			'tipoTransac'	=> 'required',
 			'negocioType'   => 'required',
 
@@ -865,7 +865,7 @@ class PublicationController extends BaseController {
 			'departamento'  => 'El campo departamento',
 			'title'		 	=> 'El campo titulo',
 			'input' 	 	=> 'El campo descripcion',
-			'img1'		 	=> 'El campo imagen de portada',
+			'img1'		 	=> 'El campo imagen principal',
 			'moneda'		=> 'El campo moneda',
 			'tipoTransac'	=> 'El campo tipo de operación',
 			'negocioType'   => 'El campo clase de negocio',
