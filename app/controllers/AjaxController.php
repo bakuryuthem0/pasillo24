@@ -704,7 +704,7 @@ class AjaxController extends BaseController{
 			->join('departamento','departamento.id','=','publicaciones.departamento')
 			->where('publicaciones.id','=',$id)
 			->where('publicaciones.tipo','=','Casual')
-			->get(array(
+			->first(array(
 				'locations.longitude',
 				'locations.latitude',
 				'usuario.id as user_id',
