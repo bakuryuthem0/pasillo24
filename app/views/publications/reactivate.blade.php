@@ -35,7 +35,7 @@
 						@endif
 					</div>
 
-					<div class="col-xs-12 col-md-6 contCatLider inputLider @if($pub->ubicacion == 'Categoria') showit @endif">
+					<div class="col-xs-12 col-md-6 contCatLider inputLider formulario @if($pub->ubicacion == 'Categoria') showit @endif">
 						<label for="cat" class="textoPromedio">(*) Categoría</label>
 						<select name="cat" id="category" class="form-control">
 							<option value="">Seleccione la categoría</option>
@@ -99,7 +99,7 @@
 						 @endforeach
 					@endif
 					</div>
-					<div class="col-xs-12 col-md-3 inputLider formulario sinPadding">
+					<div class="col-xs-12 col-md-6 inputLider formulario sinPadding">
 						<label for="duration" class="textoPromedio">(*) Período:</label>
 						{{ Form::select('time',array(
 						'' => 'Seleccione el período',
@@ -116,14 +116,14 @@
 						 @endforeach
 					@endif
 					</div>
-					<div class="col-xs-12 col-md-3 contPrecioShow" style="margin-top:2.5em;">
-					</div>
-					<div class="col-xs-12" id="durError"></div>
-					<div class="col-xs-12">
+					<div class="col-xs-12 col-md-6 formulario">
 						<label for="fechaFin" class="textoPromedio">Fecha de Cierre</label>
 						<div class="fechaFin col-xs-12" class="textoPromedio">
 							<img src="{{ asset('images/loading.gif') }}" class="miniLoader hidden">
 						</div>
+					</div>
+					<div class="col-sm-12 col-md-6 bg-info formulario hidden">
+						<p class="response-msg"></p>
 					</div>
 					<div class="col-xs-12"><input type="submit" class="btn btn-success" value="Enviar"></div>
 				</form>
