@@ -73,7 +73,7 @@
 							 @endforeach
 						@endif
 					</div>
-					<div class="col-xs-12 col-md-3 inputLider">
+					<div class="col-xs-12 col-md-3 inputLider formulario">
 						<label for="fechIni" class="textoPromedio">(*) Fecha de inicio</label>
 						<input type="text" class="form-control" id="fechIni" name="fechIni" placeholder="DD-MM-AAAA" required>
 						@if ($errors->has('fechIni'))
@@ -85,7 +85,7 @@
 							 @endforeach
 						@endif
 					</div>
-					<div class="col-xs-12 col-md-3 inputLider sinPadding">
+					<div class="col-xs-12 col-md-3 inputLider formulario sinPadding">
 						<label for="duration" class="textoPromedio">(*) Duración:</label>
 						{{ Form::text('duration',
 						 $pub->duracion,
@@ -99,7 +99,7 @@
 						 @endforeach
 					@endif
 					</div>
-					<div class="col-xs-12 col-md-3 inputLider sinPadding" style="margin-top:1em;">
+					<div class="col-xs-12 col-md-3 inputLider formulario sinPadding">
 						<label for="duration" class="textoPromedio">(*) Período:</label>
 						{{ Form::select('time',array(
 						'' => 'Seleccione el período',
@@ -122,7 +122,7 @@
 					<div class="col-xs-12">
 						<label for="fechaFin" class="textoPromedio">Fecha de Cierre</label>
 						<div class="fechaFin col-xs-12" class="textoPromedio">
-							<img src="{{ asset('images/loading.gif') }}" class="loading">
+							<img src="{{ asset('images/loading.gif') }}" class="miniLoader hidden">
 						</div>
 					</div>
 					<div class="col-xs-12"><input type="submit" class="btn btn-success" value="Enviar"></div>
