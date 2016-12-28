@@ -1542,6 +1542,9 @@ class PublicationController extends BaseController {
 			if (!empty($input['ciudad'])) {
 				$pub->ciudad = $input['ciudad'];
 			}
+			if (!empty($input['negocioType'])) {
+				$pub->bussiness_type = $input['negocioType'];
+			}
 			if ($pub->categoria == 34) {
 				if (!empty($input['marca'])) {
 					$pub->marca_id = $input['marca'];

@@ -40,6 +40,42 @@ class AjaxController extends BaseController{
 		'usuario.votes',
 		'departamento.nombre as dep_desc' 
 	);
+	public function upload_images($file, $user)
+	{
+		$filename = $file->getClientOriginalName();
+		if (file_exists('images/pubImages/'.$user->username.'/'.$filename)) {
+			//guardamos la imagen en public/imgs con el nombre original
+            $i = 0;//indice para el while
+            //separamos el nombre de la img y la extensión
+            $info = explode(".",$filename);
+            //asignamos de nuevo el nombre de la imagen completo
+            $miImg = $filename;
+            //mientras el archivo exista iteramos y aumentamos i
+            while(file_exists('images/pubImages/'.$user->username.'/'. $miImg)){
+                $i++;
+                $miImg = $info[0]."(".$i.")".".".$info[1];              
+            }
+            //guardamos la imagen con otro nombre ej foto(1).jpg || foto(2).jpg etc
+            $file->move("images/pubImages/".$user->username,$miImg);
+            $img = Image::make('images/pubImages/'.$user->username.'/'.$miImg);
+	        $mark = Image::make('images/watermark.png')->widen(400);
+	        $img->insert($mark,'center')
+           	->interlace()
+            ->save('images/pubImages/'.$user->username.'/'.$miImg);
+            if($miImg != $filename){
+				return $user->username.'/'.$miImg;
+            }
+		}else
+		{
+			$file->move("images/pubImages/".$user->username,$filename);
+			$img = Image::make('images/pubImages/'.$user->username.'/'.$filename);
+	        $mark = Image::make('images/watermark.png')->widen(400);
+	        $img->insert($mark,'center')
+           	->interlace()
+            ->save("images/pubImages/".$user->username.'/'.$filename);
+            return $user->username.'/'.$filename;
+		}
+	}
 	/*---------------------------Login-------------------------------------------------*/
 	/*                                                                                 */
 	/*                                                                                 */
@@ -2332,15 +2368,21 @@ class AjaxController extends BaseController{
 		}
 
 		$valor = 0;
-		if($tipo != "pos" && $tipo != 'neg')
+		if($tipo != "pos" && $tipo != 'neg' && $tipo != 'neutro')
 		{
 			return Response::json(array('type' => 'danger','msg' => 'Error al valorar la publicación'));	
 		}else
 		{
 			if ($tipo == 'pos') {
 				$valor = 1;
+				$valMsg = "te han valorado positivamente.";
 			}elseif ($tipo == 'neg') {
 				$valor = -1;
+				$valMsg = "te han valorado negativamente.";
+			}elseif($tipo == 'neutro')
+			{
+				$valor = 0;
+				$valMsg = "te han valorado neutralmente.";
 			}
 		}
 		$comp = Compras::find($compra_id);
@@ -2351,7 +2393,7 @@ class AjaxController extends BaseController{
 		}
 		$comp->valor_vend = $valor;
 		if ($comp->save()) {
-			$msg = 'El usuario '.Auth::user()->name.' '+Auth::user()->lastname.' lo ha valorado';
+			$msg = 'El usuario '.$user->name.' '+$user->lastname.' '.$valMsg;
 			$publication = Publicaciones::find($comp->pub_id);
 			$user = User::with('gcmdevices')->find($publication->user_id);
 			foreach($user->gcmdevices as $gcm) {
@@ -2378,15 +2420,21 @@ class AjaxController extends BaseController{
 		$tipo = Input::get('tipo');
 
 		$valor = 0;
-		if($tipo != "pos" && $tipo != 'neg')
+		if($tipo != "pos" && $tipo != 'neg' && $tipo != 'neutro')
 		{
 			return Response::json(array('type' => 'danger','msg' => 'Error al valorar la publicación'));	
 		}else
 		{
 			if ($tipo == 'pos') {
 				$valor = 1;
+				$valMsg = "te han valorado positivamente.";
 			}elseif ($tipo == 'neg') {
 				$valor = -1;
+				$valMsg = "te han valorado negativamente.";
+			}elseif($tipo == 'neutro')
+			{
+				$valor = 0;
+				$valMsg = "te han valorado neutralmente.";
 			}
 		}
 		$comp = Compras::find($venta_id);
@@ -2397,7 +2445,7 @@ class AjaxController extends BaseController{
 		}
 		$comp->valor_comp = $valor;
 		if ($comp->save()) {
-			$msg = 'El usuario '.Auth::user()->name.' '+Auth::user()->lastname.' lo ha valorado';
+			$msg = 'El usuario '.$user->name.' '+$user->lastname.' '.$valMsg;
 			$user = User::with('gcmdevices')->find($comp->user_id);
 			foreach($user->gcmdevices as $gcm) {
 				$regId = $gcm->gcm_regid;
@@ -2567,253 +2615,235 @@ class AjaxController extends BaseController{
 	/*                                                                                 */
 	/*                                                                                 */
 	/*---------------------------Modificar pub ----------------------------------------*/
-	public function postModifyPub()
+	public function postModifyPub($type)
 	{
-		$input = Input::all();
+		$data = Input::all();
+		$id = $data['pub_id'];
 		$pub = Publicaciones::find($id);
+		if (is_null($pub)) {
+			return Response::json(array(
+				'type' => 'danger',
+				'msg'  => 'Error, no se encontro la publicación'
+			));
+		}
 		if ($pub->tipo == 'Lider') {
+			$rules = array(
+				'title' 	=> 'required|min:4|max:100',
+				'cat'		=> 'exists:categoria,id',
+				'url'		=> 'url',
+				'img1'		=> 'image|max:3000',
+				'img2'		=> 'image|max:3000', 
+				'name'		=> 'min:4|max:50',
+				'phone' 	=> 'min:7|max:15',
+				'email'		=> 'email',
+				'pag_web'	=> 'url'
+			);
+			$msg = array();
+			$attr = array(
+				'title' 	=> 'titulo',
+				'cat'		=> 'categoría',
+				'url'		=> 'URL',
+				'img1'		=> 'imagen principal',
+				'img2'		=> 'imagen secundaria',
+				'name'		=> 'nombre',
+				'phone'		=> 'telefono',
+				'email'		=> 'email',
+				'pag_web' 	=> 'pagina web'
+			);
+			$validator = Validator::make($data, $rules, $msg, $attr);
+			if ($validator->fails()) {
+				return Response::json(array(
+					'type' => 'danger',
+					'msg'  => 'Error, datos invalidos',
+					'data' => $validator->getMessageBag()
+				));
+			}
 			if ($pub->ubicacion != "Principal") {
 				$pub->categoria = $input['cat'];
 			}
-			if (!empty($input['img1']) ) {
+			if (Input::hasFile('img1')) {
 				$img1 = Input::file('img1');
-				$rules = array('img1' => 'image');
-				$validator = Validator::make(array('img1' => $img1), $rules);
-				if ($validator->fails()) {
-					return Response::json(array(
-						'type' => 'danger',
-						'msg'  => 'Error, el archivo '.$img1->getClientOriginalName().' debe ser una imagen en formato: jpg, png o gif'
-					));
-				}else
-				{
-					$pub->img_1 = $this->upload_images($img1);
-					
-				}
+				$user = User::find($pub->user_id);
+				$pub->img_1 = $this->upload_images($img1,$user);
 			}
-			if (!empty($input['img2']) ) {
+			if (Input::hasFile('img2')) {
 				$img2 = Input::file('img2');
-				$rules = array('img2' => 'image');
-				$validator = Validator::make(array('img2' => $img2), $rules);
-				if ($validator->fails()) {
-					return Response::json(array(
-						'type' => 'danger',
-						'msg'  => 'Error, el archivo '.$img1->getClientOriginalName().' debe ser una imagen en formato: jpg, png o gif'
-					));
-				}else
-				{
-					$pub->img_2 = $this->upload_images($img2);
-					
-				}
-
+				$user = User::find($pub->user_id);
+				$pub->img_2 = $this->upload_images($img2,$user);
 			}
-			if ($input['pagina'] != $pub->pag_web && !empty($input['pagina'])) {
-				$pub->pag_web = $input['pagina'];
+			if ($data['title'] != $pub->pag_web && !empty($data['title'])) {
+				$pub->titulo = $data['title'];
 			}
-			if ($input['nomb'] != $pub->name && !empty($input['nomb'])) {
-				$pub->name = $input['nomb'];
+			if ($data['url'] != $pub->pag_web && !empty($data['url'])) {
+				$pub->pag_web = $data['url'];
 			}
-			if ($input['phone'] != $pub->phone && !empty($input['phone'])) {
-				$pub->phone = $input['phone'];
+			if ($data['name'] != $pub->name && !empty($data['name'])) {
+				$pub->name = $data['name'];
 			}
-			if ($input['email'] != $pub->email && !empty($input['email'])) {
-				$pub->email = $input['email'];
+			if ($data['phone'] != $pub->phone && !empty($data['phone'])) {
+				$pub->phone = $data['phone'];
 			}
-			if ($input['pag_web'] != $pub->pag_web_hab && !empty($input['pag_web'])) {
-				$pub->pag_web_hab = $input['pag_web'];
+			if ($data['email'] != $pub->email && !empty($data['email'])) {
+				$pub->email = $data['email'];
 			}
-			if (!empty($input['namePub'])) {
-				$pub->titulo = $input['namePub'];
+			if ($data['pag_web'] != $pub->pag_web_hab && !empty($data['pag_web'])) {
+				$pub->pag_web_hab = $data['pag_web'];
+			}
+			if (!empty($data['namePub'])) {
+				$pub->titulo = $data['namePub'];
 			}
 			
 		}elseif($pub->tipo == 'Habitual')
 		{
-			if (!empty($input['cat'])) {
-				$pub->categoria = $input['cat'];
+			$rules = array(
+				'title' 		=> 'required|min:4|max:100',
+				'cat'			=> 'required|exists:categoria,id',
+				'subcat'		=> 'exists:subcategoria,id',
+				'price'			=> 'required|numeric|integer|min:1',
+				'currency'		=> 'required|in:Usd,Bs',
+				'department'	=> 'required|exists:departamento,id',
+				'city'			=> 'required|max:50',
+				'brand'			=> 'required_if:cat,34|exists:marcas,id',
+				'models'		=> 'required_if:cat,34|exists:modelo,id',
+				'year'			=> 'required_if:cat,34|numeric|min:1885|max:'.date('Y'),
+				'document'		=> 'required_if:cat,34|max:100',
+				'kilo'			=> 'required_if:cat,34|min:0|max:999999',
+				'tipoTransac'	=> 'required|in:venta,alquiler,Aticretico,otro',
+				'description'	=> 'required',
+				'negocioType'   => 'required|in:fiscal,virtual,independiente,otro',
+				'img1'			=> 'image|max:3000',
+				'img2'			=> 'image|max:3000', 
+				'img3'			=> 'image|max:3000', 
+				'img4'			=> 'image|max:3000', 
+				'img5'			=> 'image|max:3000', 
+				'img6'			=> 'image|max:3000', 
+				'img7'			=> 'image|max:3000', 
+				'img8'			=> 'image|max:3000', 
+				'name'			=> 'min:4|max:50',
+				'phone' 		=> 'min:7|max:15',
+				'email'			=> 'email',
+				'pag_web'		=> 'url'
+			);
+			$msg = array();
+			$attr = array(
+				'title' 		=> 'titulo',
+				'cat'			=> 'categoría',
+				'subcat'		=> 'sub-categoria',
+				'price'			=> 'precio',
+				'currency'		=> 'moneda',
+				'department'	=> 'departamento',
+				'city'			=> 'ciudad',
+				'brand'			=> 'marca',
+				'models'		=> 'modelo',
+				'year'			=> 'año',
+				'document'		=> 'documentos',
+				'kilo'			=> 'kilometraje',
+				'tipoTransac' 	=> 'tipo de transacción',
+				'description' 	=> 'descripción',
+				'img1'			=> 'imagen principal',
+				'img2'			=> 'imagen adicional 1', 
+				'img3'			=> 'imagen adicional 2', 
+				'img4'			=> 'imagen adicional 3', 
+				'img5'			=> 'imagen adicional 4', 
+				'img6'			=> 'imagen adicional 5', 
+				'img7'			=> 'imagen adicional 6', 
+				'img8'			=> 'imagen adicional 7', 
+				'name'			=> 'nombre',
+				'phone'			=> 'telefono',
+				'email'			=> 'email',
+				'pag_web' 		=> 'pagina web'
+			);
+			$validator = Validator::make($data, $rules, $msg, $attr);
+			if ($validator->fails()) {
+				return Response::json(array(
+					'type' => 'danger',
+					'msg'  => 'Error, datos invalidos',
+					'data' => $validator->getMessageBag()
+				));
 			}
-			if (isset($input['img1']) && !empty($input['img1']) ) {
+			$pub->titulo 		= $data['title'];
+			$pub->categoria 	= $data['cat'];
+			$pub->typeCat		= $data['subcat'];
+			$pub->precio 		= $data['price'];
+			$pub->moneda 		= strtolower($data['currency']);
+			$pub->departamento 	= $data['department'];
+			$pub->ciudad 		= $data['city'];
+			
+			$pub->transaccion 	= $data['tipoTransac'];
+			$pub->descripcion 	= $data['description'];
+			$user = User::find($pub->user_id);
+			if (Input::hasFile('img1')) {
 				$img1 = Input::file('img1');
-				$rules = array('img1' => 'image');
-				$validator = Validator::make(array('img1' => $img1), $rules);
-				if ($validator->fails()) {
-					Session::flash('danger','Error, el archivo '.$img1->getClientOriginalName().' debe ser una imagen en formato: jpg, png o gif');
-					return Redirect::back();
-				}else
-				{
-					$pub->img_1 = $this->upload_images($img1);
-					
-				}
-				
+				$pub->img_1 = $this->upload_images($img1, $user);
 			}
-			if (isset($input['img2']) && !empty($input['img2']) ) {
+			if (Input::hasFile('img2')) {
 				$img2 = Input::file('img2');
-				$rules = array('img2' => 'image');
-				$validator = Validator::make(array('img2' => $img2), $rules);
-				if ($validator->fails()) {
-					Session::flash('danger','Error, el archivo '.$img2->getClientOriginalName().' debe ser una imagen en formato: jpg, png o gif');
-					return Redirect::back();
-				}else
-				{
-					$pub->img_2 = $this->upload_images($img2);
-					
-				}
-			
+				$pub->img_2 = $this->upload_images($img2, $user);
 			}
-			if (isset($input['img3']) && !empty($input['img3']) ) {
+			if (Input::hasFile('img3')) {
 				$img3 = Input::file('img3');
-				$rules = array('img3' => 'image');
-				$validator = Validator::make(array('img3' => $img3), $rules);
-				if ($validator->fails()) {
-					Session::flash('danger','Error, el archivo '.$img3->getClientOriginalName().' debe ser una imagen en formato: jpg, png o gif');
-					return Redirect::back();
-				}else
-				{
-					$pub->img_3 = $this->upload_images($img3);
-					
-				}
-			
+				$pub->img_3 = $this->upload_images($img3, $user);
 			}
-			if (isset($input['img4']) && !empty($input['img4']) ) {
+			if (Input::hasFile('img4')) {
 				$img4 = Input::file('img4');
-				$rules = array('img4' => 'image');
-				$validator = Validator::make(array('img4' => $img4), $rules);
-				if ($validator->fails()) {
-					Session::flash('danger','Error, el archivo '.$img4->getClientOriginalName().' debe ser una imagen en formato: jpg, png o gif');
-					return Redirect::back();
-				}else
-				{
-					$pub->img_4 = $this->upload_images($img4);
-					
-				}
-			
+				$pub->img_4 = $this->upload_images($img4, $user);
 			}
-			if (isset($input['img5']) && !empty($input['img5']) ) {
+			if (Input::hasFile('img5')) {
 				$img5 = Input::file('img5');
-				$rules = array('img5' => 'image');
-				$validator = Validator::make(array('img5' => $img5), $rules);
-				if ($validator->fails()) {
-					Session::flash('danger','Error, el archivo '.$img5->getClientOriginalName().' debe ser una imagen en formato: jpg, png o gif');
-					return Redirect::back();
-				}else
-				{
-					$pub->img_5 = $this->upload_images($img5);
-					
-				}
-			
+				$pub->img_5 = $this->upload_images($img5, $user);
 			}
-			if (isset($input['img6']) && !empty($input['img6']) ) {
+			if (Input::hasFile('img6')) {
 				$img6 = Input::file('img6');
-				$rules = array('img6' => 'image');
-				$validator = Validator::make(array('img6' => $img6), $rules);
-				if ($validator->fails()) {
-					Session::flash('danger','Error, el archivo '.$img6->getClientOriginalName().' debe ser una imagen en formato: jpg, png o gif');
-					return Redirect::back();
-				}else
-				{
-					$pub->img_6 = $this->upload_images($img6);
-					
-				}
-			
+				$pub->img_6 = $this->upload_images($img6, $user);
 			}
-			if (isset($input['img7']) && !empty($input['img7']) ) {
+			if (Input::hasFile('img7')) {
 				$img7 = Input::file('img7');
-				$rules = array('img7' => 'image');
-				$validator = Validator::make(array('img7' => $img7), $rules);
-				if ($validator->fails()) {
-					Session::flash('danger','Error, el archivo '.$img7->getClientOriginalName().' debe ser una imagen en formato: jpg, png o gif');
-					return Redirect::back();
-				}else
-				{
-					$pub->img_7 = $this->upload_images($img7);
-					
-				}
-			
+				$pub->img_7 = $this->upload_images($img7, $user);
 			}
-			if (isset($input['img8']) && !empty($input['img8']) ) {
+			if (Input::hasFile('img8')) {
 				$img8 = Input::file('img8');
-				$rules = array('img8' => 'image');
-				$validator = Validator::make(array('img8' => $img8), $rules);
-				if ($validator->fails()) {
-					Session::flash('danger','Error, el archivo '.$img8->getClientOriginalName().' debe ser una imagen en formato: jpg, png o gif');
-					return Redirect::back();
-				}else
-				{
-					$pub->img_8 = $this->upload_images($img8);
-					
-				}
-			
+				$pub->img_8 = $this->upload_images($img8, $user);
 			}
-			if (!empty($input['pagina'])) {
-				$pub->pag_web = $input['pagina'];
+			if (Input::has('pagina')) {
+				$pub->pag_web = $data['pagina'];
 			}
-			if (!empty($input['nomb'])) {
-				$pub->name = $input['nomb'];
+			if (Input::has('name')) {
+				$pub->name = $data['name'];
 			}
-			if (!empty($input['phone'])) {
-				$pub->phone = $input['phone'];
+			if (Input::has('phone')) {
+				$pub->phone = $data['phone'];
 			}
-			if (!empty($input['email'])) {
-				$pub->email = $input['email'];
+			if (Input::has('email')) {
+				$pub->email = $data['email'];
 			}
-			if (!empty($input['pagina'])) {
-				$pub->pag_web_hab = $input['pagina'];
-			}
-			if (!empty($input['subCat'])) {
-				$pub->typeCat = $input['subCat'];
-			}
-			if (!empty($input['title'])) {
-				$pub->titulo = $input['title'];
-			}
-			if (!empty($input['precio'])) {
-				$pub->precio = $input['precio'];
-			}
-			if (!empty($input['moneda'])) {
-				$pub->moneda = $input['moneda'];
-			}
-			if (!empty($input['departamento'])) {
-				$pub->departamento = $input['departamento'];
-			}
-			if (!empty($input['ciudad'])) {
-				$pub->ciudad = $input['ciudad'];
+			if (Input::has('pagina')) {
+				$pub->pag_web_hab = $data['pagina'];
 			}
 			if ($pub->categoria == 34) {
-				if (!empty($input['marca'])) {
-					$pub->marca_id = $input['marca'];
-				}
-				if (!empty($input['modelo'])) {
-					$pub->modelo_id = $input['modelo'];
-				}
-				if (!empty($input['anio'])) {
-					$pub->anio = $input['anio'];
-				}
-				if (!empty($input['doc'])) {
-					$pub->documentos = $input['doc'];
-				}
-				if (!empty($input['kilo'])) {
-					$pub->kilometraje = $input['kilo'];
-				}
-				if (!empty($input['cilin'])) {
+				$pub->marca_id 		= $data['brand'];
+				$pub->modelo_id 	= $data['models'];
+				$pub->anio 			= $data['year'];
+				$pub->documentos 	= $data['document'];
+				$pub->kilometraje 	= $data['kilo'];
+				if (Input::has('cilin')) {
 					$pub->cilindraje = $input['cilin'];
 				}
-				if (!empty($input['trans'])) {
+				if (Input::has('trans')) {
 					$pub->transmision = $input['trans'];
 				}
-				if (!empty($input['comb'])) {
+				if (Input::has('comb')) {
 					$pub->combustible = $input['comb'];
 				}
-				if (!empty($input['trac'])) {
+				if (Input::has('trac')) {
 					$pub->traccion = $input['trac'];
 				}
-				
 			}elseif($pub->categoria == 20)
 			{
-				if (!empty($input['ext'])) {
+				if (Input::has('ext')) {
 					$pub->extension = $input['ext'];
 				}
 			}
 			
-			if (!empty($input['tipoTransac'])) {
-				$pub->transaccion = $input['tipoTransac'];
-			}
 			if (!empty($input['input'])) {
 				$pub->descripcion = $input['input'];
 			}
@@ -2821,11 +2851,17 @@ class AjaxController extends BaseController{
 		
 		if($pub->save())
 		{
-			Session::flash('success', 'Publicación modificada satisfactoriamente.');
+			return Response::json(array(
+				'type' => 'success', 
+				'msg'  => 'Publicación modificada satisfactoriamente.'
+			));
 			return Redirect::back();
 		}else
 		{
-			Session::flash('danger', 'Error al modificar el usuario.');
+			return Response::json(array(
+				'type' => 'danger', 
+				'msg'  => 'Error al modificar el usuario.'
+			));
 			return Redirect::back();
 		}
 	}

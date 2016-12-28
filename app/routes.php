@@ -81,7 +81,7 @@ Route::group(array('before' => 'check_app_auth'),function()
 	Route::post('app/usuario/publicaciones/eliminar','AjaxController@postElimPub');
 
 	Route::post('app/usuario/publicaciones/mis-publicaciones/{type}','AjaxController@getMyPublicationsType');
-	Route::post('app/usuario/publicaciones/mis-publicaciones/modificar','AjaxController@postModifyPub');
+	Route::post('app/usuario/publicaciones/mis-publicaciones/{type}/modificar','AjaxController@postModifyPub');
 
 	Route::get('app/usuario/mis-compras','AjaxController@getMyCart');
 	Route::get('app/usuario/mis-ventas','AjaxController@getMySell');
