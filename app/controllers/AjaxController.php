@@ -2364,13 +2364,13 @@ class AjaxController extends BaseController{
 		$tipo = Input::get('tipo');
 		$pub = Compras::find($compra_id);
 		if (is_null($pub) || empty($pub)) {
-			return Response::json(array('type' => 'danger','msg' => 'Error al valorar la publicación'));	
+			return Response::json(array('type' => 'danger','msg' => 'Error al valorar la publicación, no se encontro la venta'));	
 		}
 
 		$valor = 0;
 		if($tipo != "pos" && $tipo != 'neg' && $tipo != 'neutro')
 		{
-			return Response::json(array('type' => 'danger','msg' => 'Error al valorar la publicación'));	
+			return Response::json(array('type' => 'danger','msg' => 'Error al valorar la publicación, valor invalido'));	
 		}else
 		{
 			if ($tipo == 'pos') {
@@ -2386,7 +2386,7 @@ class AjaxController extends BaseController{
 			}
 		}
 		$comp = Compras::find($compra_id);
-		$user = User::find($id);
+		$user = User::where('id','=',$id)->first();
 		$user->reputation = $user->reputation + $valor;
 		if (!$user->save()) {
 			return Response::json(array('type' => 'danger','msg' => 'Error al valorar la publicación'));	
@@ -2418,11 +2418,13 @@ class AjaxController extends BaseController{
 		$id = Input::get('id');
 		$venta_id   = Input::get('venta_id');
 		$tipo = Input::get('tipo');
-
+		if (is_null($pub) || empty($pub)) {
+			return Response::json(array('type' => 'danger','msg' => 'Error al valorar la publicación, no se encontro la compra'));	
+		}
 		$valor = 0;
 		if($tipo != "pos" && $tipo != 'neg' && $tipo != 'neutro')
 		{
-			return Response::json(array('type' => 'danger','msg' => 'Error al valorar la publicación'));	
+			return Response::json(array('type' => 'danger','msg' => 'Error al valorar la publicación, valor invalido'));	
 		}else
 		{
 			if ($tipo == 'pos') {
@@ -2658,8 +2660,8 @@ class AjaxController extends BaseController{
 					'data' => $validator->getMessageBag()
 				));
 			}
-			if ($pub->ubicacion != "Principal") {
-				$pub->categoria = $input['cat'];
+			if ($pub->ubicacion != "Principal" && isset($data['cat'])) {
+				$pub->categoria = $data['cat'];
 			}
 			if (Input::hasFile('img1')) {
 				$img1 = Input::file('img1');
