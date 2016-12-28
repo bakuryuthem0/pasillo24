@@ -78,6 +78,8 @@ Route::group(array('before' => 'check_app_auth'),function()
 	Route::post('app/usuario/publicaciones/reactivar/{id}','AjaxController@postReactivate');
 	Route::post('app/usuario/publicaciones/pago/enviar','AjaxController@postPublicationPayment');
 
+	Route::post('app/usuario/publicaciones/eliminar','AjaxController@postElimPub');
+
 	Route::post('app/usuario/publicaciones/mis-publicaciones/{type}','AjaxController@getMyPublicationsType');
 	Route::post('app/usuario/publicaciones/mis-publicaciones/modificar','AjaxController@postModifyPub');
 

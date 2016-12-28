@@ -1922,6 +1922,13 @@ class AjaxController extends BaseController{
 	/*----------------------------Reactivar--------------------------------------------*/
 	public function postReactivate($id)
 	{
+		if(is_null($id))
+		{
+			return Response::json(array(
+				'type' => 'danger',
+				'msg'  => 'Id de la publicación no encontrado'
+			));
+		}
 		$pub = Publicaciones::find($id);
 		if($pub->tipo == 'Lider')
 		{
@@ -1948,21 +1955,22 @@ class AjaxController extends BaseController{
 				));
 			}
 			/* Validar duracion y montos */
-			$dur = $data['duration'];
-			if ($data['time'] == 'd') {
+			$dur = $data['time'];
+			$monto = 0;
+			if ($data['duration'] == 'd') {
 				
 				$time = 86400;
-				$monto = Precios::where('pub_type_id','=',1)->where('desc','=','dia')->pluck('precio');
-			}elseif($data['time'] == 's')
+				$prices = Precios::find(1);
+			}elseif($data['duration'] == 's')
 			{
 				$time = 604800;
-				$monto = Precios::where('pub_type_id','=',1)->where('desc','=','semana')->pluck('precio');
-			}elseif($data['time'] == 'm')
+				$prices = Precios::find(2);
+			}elseif($data['duration'] == 'm')
 			{
 				$time = 2629744;
-				$monto = Precios::where('pub_type_id','=',1)->where('desc','=','mes')->pluck('precio');
+				$prices = Precios::find(3);
 			}
-			$monto = $monto*$dur;
+			$monto = $prices->precio*$dur;
 			/* Segundo validador de fecha */
 			$fecha = explode('-', $data['fechIni']);
 			$timestamp = strtotime($data['fechIni'])+($time*$data['duration']);
@@ -2076,6 +2084,58 @@ class AjaxController extends BaseController{
 			'type'  => 'success',
 			'msg'	=> 'Datos enviados sactisfactoriamente',
 			'data'  => $obj
+		));
+	}
+	public function postElimPub()
+	{
+		$id     = Input::get('id');
+		$pub_id = Input::get('pub_id');
+		$pub = Publicaciones::find($pub_id);
+		$titulo = $pub->titulo;
+		$comment = Comentarios::where('pub_id','=',$id)->delete();
+		$resp    = Respuestas::where('pub_id','=',$id)->delete();
+		$user = User::find($id);
+		$subject = "Correo de Aviso";
+		if (!empty($pub->img_1)) {
+			File::delete('images/pubImages/'.$user->id.'/'.$pub->img_1);
+		}
+		if (!empty($pub->img_2)) {
+			File::delete('images/pubImages/'.$user->id.'/'.$pub->img_2);
+		}
+		if (!empty($pub->img_3)) {
+			File::delete('images/pubImages/'.$user->id.'/'.$pub->img_3);
+		}
+		if (!empty($pub->img_4)) {
+			File::delete('images/pubImages/'.$user->id.'/'.$pub->img_4);
+		}
+		if (!empty($pub->img_5)) {
+			File::delete('images/pubImages/'.$user->id.'/'.$pub->img_5);
+		}
+		if (!empty($pub->img_6)) {
+			File::delete('images/pubImages/'.$user->id.'/'.$pub->img_6);
+		}
+		if (!empty($pub->img_7)) {
+			File::delete('images/pubImages/'.$user->id.'/'.$pub->img_7);
+		}
+		if (!empty($pub->img_8)) {
+			File::delete('images/pubImages/'.$user->id.'/'.$pub->img_8);
+		}
+		$pub->delete();
+		$data = array(
+			'subject' => $subject,
+			'publicacion' => $titulo,
+			'motivo'	  => 'Eliminado por el usuario'
+		);
+		$to_Email = $user->email;
+		Mail::send('emails.elimPubUser', $data, function($message) use ($titulo,$to_Email,$subject)
+		{
+			$message->to($to_Email)->from('pasillo24.com@pasillo24.com')->subject($subject);
+		});
+
+
+		return Response::json(array(
+			'type' => 'success',
+			'msg'  => 'Publicación eliminada satisfactoriamente. Hemos enviado un email al correo.'
 		));
 	}
 	/*---------------------------Pago total--------------------------------------------*/
@@ -2509,121 +2569,264 @@ class AjaxController extends BaseController{
 	/*---------------------------Modificar pub ----------------------------------------*/
 	public function postModifyPub()
 	{
-		$id = Input::get('pub_id');
-
 		$input = Input::all();
 		$pub = Publicaciones::find($id);
 		if ($pub->tipo == 'Lider') {
-			if (isset($input['cat']) && $pub->ubicacion != $input['cat'] && !empty($input['cat'])) {
+			if ($pub->ubicacion != "Principal") {
 				$pub->categoria = $input['cat'];
 			}
-			if (isset($input['pagina']) && $input['pagina'] != $pub->pag_web && !empty($input['pagina'])) {
+			if (!empty($input['img1']) ) {
+				$img1 = Input::file('img1');
+				$rules = array('img1' => 'image');
+				$validator = Validator::make(array('img1' => $img1), $rules);
+				if ($validator->fails()) {
+					return Response::json(array(
+						'type' => 'danger',
+						'msg'  => 'Error, el archivo '.$img1->getClientOriginalName().' debe ser una imagen en formato: jpg, png o gif'
+					));
+				}else
+				{
+					$pub->img_1 = $this->upload_images($img1);
+					
+				}
+			}
+			if (!empty($input['img2']) ) {
+				$img2 = Input::file('img2');
+				$rules = array('img2' => 'image');
+				$validator = Validator::make(array('img2' => $img2), $rules);
+				if ($validator->fails()) {
+					return Response::json(array(
+						'type' => 'danger',
+						'msg'  => 'Error, el archivo '.$img1->getClientOriginalName().' debe ser una imagen en formato: jpg, png o gif'
+					));
+				}else
+				{
+					$pub->img_2 = $this->upload_images($img2);
+					
+				}
+
+			}
+			if ($input['pagina'] != $pub->pag_web && !empty($input['pagina'])) {
 				$pub->pag_web = $input['pagina'];
 			}
-			if (isset($input['nomb']) && $input['nomb'] != $pub->name && !empty($input['nomb'])) {
+			if ($input['nomb'] != $pub->name && !empty($input['nomb'])) {
 				$pub->name = $input['nomb'];
 			}
-			if (isset($input['phone']) && $input['phone'] != $pub->phone && !empty($input['phone'])) {
+			if ($input['phone'] != $pub->phone && !empty($input['phone'])) {
 				$pub->phone = $input['phone'];
 			}
-			if (isset($input['email']) && $input['email'] != $pub->email && !empty($input['email'])) {
+			if ($input['email'] != $pub->email && !empty($input['email'])) {
 				$pub->email = $input['email'];
 			}
-			if (isset($input['pag_web']) && $input['pag_web'] != $pub->pag_web_hab && !empty($input['pag_web'])) {
+			if ($input['pag_web'] != $pub->pag_web_hab && !empty($input['pag_web'])) {
 				$pub->pag_web_hab = $input['pag_web'];
 			}
-			if (isset($input['namePub']) && !empty($input['namePub'])) {
+			if (!empty($input['namePub'])) {
 				$pub->titulo = $input['namePub'];
 			}
 			
 		}elseif($pub->tipo == 'Habitual')
 		{
-			if (isset($input['cat']) && !empty($input['cat'])) {
+			if (!empty($input['cat'])) {
 				$pub->categoria = $input['cat'];
 			}
-			if (isset($input['pagina']) && !empty($input['pagina'])) {
+			if (isset($input['img1']) && !empty($input['img1']) ) {
+				$img1 = Input::file('img1');
+				$rules = array('img1' => 'image');
+				$validator = Validator::make(array('img1' => $img1), $rules);
+				if ($validator->fails()) {
+					Session::flash('danger','Error, el archivo '.$img1->getClientOriginalName().' debe ser una imagen en formato: jpg, png o gif');
+					return Redirect::back();
+				}else
+				{
+					$pub->img_1 = $this->upload_images($img1);
+					
+				}
+				
+			}
+			if (isset($input['img2']) && !empty($input['img2']) ) {
+				$img2 = Input::file('img2');
+				$rules = array('img2' => 'image');
+				$validator = Validator::make(array('img2' => $img2), $rules);
+				if ($validator->fails()) {
+					Session::flash('danger','Error, el archivo '.$img2->getClientOriginalName().' debe ser una imagen en formato: jpg, png o gif');
+					return Redirect::back();
+				}else
+				{
+					$pub->img_2 = $this->upload_images($img2);
+					
+				}
+			
+			}
+			if (isset($input['img3']) && !empty($input['img3']) ) {
+				$img3 = Input::file('img3');
+				$rules = array('img3' => 'image');
+				$validator = Validator::make(array('img3' => $img3), $rules);
+				if ($validator->fails()) {
+					Session::flash('danger','Error, el archivo '.$img3->getClientOriginalName().' debe ser una imagen en formato: jpg, png o gif');
+					return Redirect::back();
+				}else
+				{
+					$pub->img_3 = $this->upload_images($img3);
+					
+				}
+			
+			}
+			if (isset($input['img4']) && !empty($input['img4']) ) {
+				$img4 = Input::file('img4');
+				$rules = array('img4' => 'image');
+				$validator = Validator::make(array('img4' => $img4), $rules);
+				if ($validator->fails()) {
+					Session::flash('danger','Error, el archivo '.$img4->getClientOriginalName().' debe ser una imagen en formato: jpg, png o gif');
+					return Redirect::back();
+				}else
+				{
+					$pub->img_4 = $this->upload_images($img4);
+					
+				}
+			
+			}
+			if (isset($input['img5']) && !empty($input['img5']) ) {
+				$img5 = Input::file('img5');
+				$rules = array('img5' => 'image');
+				$validator = Validator::make(array('img5' => $img5), $rules);
+				if ($validator->fails()) {
+					Session::flash('danger','Error, el archivo '.$img5->getClientOriginalName().' debe ser una imagen en formato: jpg, png o gif');
+					return Redirect::back();
+				}else
+				{
+					$pub->img_5 = $this->upload_images($img5);
+					
+				}
+			
+			}
+			if (isset($input['img6']) && !empty($input['img6']) ) {
+				$img6 = Input::file('img6');
+				$rules = array('img6' => 'image');
+				$validator = Validator::make(array('img6' => $img6), $rules);
+				if ($validator->fails()) {
+					Session::flash('danger','Error, el archivo '.$img6->getClientOriginalName().' debe ser una imagen en formato: jpg, png o gif');
+					return Redirect::back();
+				}else
+				{
+					$pub->img_6 = $this->upload_images($img6);
+					
+				}
+			
+			}
+			if (isset($input['img7']) && !empty($input['img7']) ) {
+				$img7 = Input::file('img7');
+				$rules = array('img7' => 'image');
+				$validator = Validator::make(array('img7' => $img7), $rules);
+				if ($validator->fails()) {
+					Session::flash('danger','Error, el archivo '.$img7->getClientOriginalName().' debe ser una imagen en formato: jpg, png o gif');
+					return Redirect::back();
+				}else
+				{
+					$pub->img_7 = $this->upload_images($img7);
+					
+				}
+			
+			}
+			if (isset($input['img8']) && !empty($input['img8']) ) {
+				$img8 = Input::file('img8');
+				$rules = array('img8' => 'image');
+				$validator = Validator::make(array('img8' => $img8), $rules);
+				if ($validator->fails()) {
+					Session::flash('danger','Error, el archivo '.$img8->getClientOriginalName().' debe ser una imagen en formato: jpg, png o gif');
+					return Redirect::back();
+				}else
+				{
+					$pub->img_8 = $this->upload_images($img8);
+					
+				}
+			
+			}
+			if (!empty($input['pagina'])) {
 				$pub->pag_web = $input['pagina'];
 			}
-			if (isset($input['nomb']) && !empty($input['nomb'])) {
+			if (!empty($input['nomb'])) {
 				$pub->name = $input['nomb'];
 			}
-			if (isset($input['phone']) && !empty($input['phone'])) {
+			if (!empty($input['phone'])) {
 				$pub->phone = $input['phone'];
 			}
-			if (isset($input['email']) && !empty($input['email'])) {
+			if (!empty($input['email'])) {
 				$pub->email = $input['email'];
 			}
-			if (isset($input['pagina']) && !empty($input['pagina'])) {
+			if (!empty($input['pagina'])) {
 				$pub->pag_web_hab = $input['pagina'];
 			}
-			if (isset($input['subCat']) && !empty($input['subCat'])) {
+			if (!empty($input['subCat'])) {
 				$pub->typeCat = $input['subCat'];
 			}
-			if (isset($input['title']) && !empty($input['title'])) {
+			if (!empty($input['title'])) {
 				$pub->titulo = $input['title'];
 			}
-			if (isset($input['precio']) && !empty($input['precio'])) {
+			if (!empty($input['precio'])) {
 				$pub->precio = $input['precio'];
 			}
-			if (isset($input['moneda']) && !empty($input['moneda'])) {
+			if (!empty($input['moneda'])) {
 				$pub->moneda = $input['moneda'];
 			}
-			if (isset($input['departamento']) && !empty($input['departamento'])) {
+			if (!empty($input['departamento'])) {
 				$pub->departamento = $input['departamento'];
 			}
-			if (isset($input['ciudad']) && !empty($input['ciudad'])) {
+			if (!empty($input['ciudad'])) {
 				$pub->ciudad = $input['ciudad'];
 			}
 			if ($pub->categoria == 34) {
-				if (isset($input['marca']) && !empty($input['marca'])) {
+				if (!empty($input['marca'])) {
 					$pub->marca_id = $input['marca'];
 				}
-				if (isset($input['modelo']) && !empty($input['modelo'])) {
+				if (!empty($input['modelo'])) {
 					$pub->modelo_id = $input['modelo'];
 				}
-				if (isset($input['anio']) && !empty($input['anio'])) {
+				if (!empty($input['anio'])) {
 					$pub->anio = $input['anio'];
 				}
-				if (isset($input['doc']) && !empty($input['doc'])) {
+				if (!empty($input['doc'])) {
 					$pub->documentos = $input['doc'];
 				}
-				if (isset($input['kilo']) && !empty($input['kilo'])) {
+				if (!empty($input['kilo'])) {
 					$pub->kilometraje = $input['kilo'];
 				}
-				if (isset($input['cilin']) && !empty($input['cilin'])) {
+				if (!empty($input['cilin'])) {
 					$pub->cilindraje = $input['cilin'];
 				}
-				if (isset($input['trans']) && !empty($input['trans'])) {
+				if (!empty($input['trans'])) {
 					$pub->transmision = $input['trans'];
 				}
-				if (isset($input['comb']) && !empty($input['comb'])) {
+				if (!empty($input['comb'])) {
 					$pub->combustible = $input['comb'];
 				}
-				if (isset($input['trac']) && !empty($input['trac'])) {
+				if (!empty($input['trac'])) {
 					$pub->traccion = $input['trac'];
 				}
 				
 			}elseif($pub->categoria == 20)
 			{
-				if (isset($input['ext']) && !empty($input['ext'])) {
+				if (!empty($input['ext'])) {
 					$pub->extension = $input['ext'];
 				}
 			}
 			
-			if (isset($input['tipoTransac']) && !empty($input['tipoTransac'])) {
+			if (!empty($input['tipoTransac'])) {
 				$pub->transaccion = $input['tipoTransac'];
 			}
-			if (isset($input['input']) && !empty($input['input'])) {
+			if (!empty($input['input'])) {
 				$pub->descripcion = $input['input'];
 			}
 		}
 		
 		if($pub->save())
 		{
-			return Response::json(array('type' => 'success','msg' => 'Publicación modificada satisfactoriamente.'));
+			Session::flash('success', 'Publicación modificada satisfactoriamente.');
+			return Redirect::back();
 		}else
 		{
-			return Response::json(array('type' => 'danger','msg' => 'Error al modificar el usuario.'));
+			Session::flash('danger', 'Error al modificar el usuario.');
+			return Redirect::back();
 		}
 	}
 	/*---------------------------Comentarios-------------------------------------------*/

@@ -1604,7 +1604,7 @@ class PublicationController extends BaseController {
 			return $subCat;
 		}
 	}
-public function postElimPub()
+	public function postElimPub()
 	{
 		if (Request::ajax()) {
 			$id = Input::get('id');
