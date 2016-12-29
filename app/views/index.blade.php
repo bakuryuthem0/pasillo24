@@ -196,7 +196,6 @@ display: block;">
 									<img src="{{ asset('images/anuncios-04.png') }}">
 							</div>
 							@else
-							
 							<div class="item">
 									<img src="{{ asset('images/anuncios-04.png') }}">
 							</div>
@@ -232,9 +231,13 @@ display: block;">
 								<?php $x++;?>
 							
 							@endforeach
-							@if(count($habitual)<8)
+							@if(count($habitual)%2 == 0)
 							<div class="item">
-									<div class="contCatIndex"><img src="{{ asset('images/anuncios-01.png') }}"></div>
+								<div class="contCatIndex"><img src="{{ asset('images/anuncios-01.png') }}"></div>
+								<div class="contCatIndex"><img src="{{ asset('images/anuncios-02.png') }}"></div>
+							</div>
+							@else
+								<div class="contCatIndex"><img src="{{ asset('images/anuncios-02.png') }}"></div>
 							</div>
 							@endif
 						</div>
