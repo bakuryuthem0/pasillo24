@@ -2620,14 +2620,14 @@ class AjaxController extends BaseController{
 	public function postModifyPub($type)
 	{
 		$data = Input::all();
-		$id = $data['pub_id'];
-		$pub = Publicaciones::find($id);
-		if (is_null($pub)) {
+		if (!Input::has('pub_id')) {
 			return Response::json(array(
 				'type' => 'danger',
 				'msg'  => 'Error, no se encontro la publicación'
 			));
 		}
+		$id = $data['pub_id'];
+		$pub = Publicaciones::find($id);
 		if ($pub->tipo == 'Lider') {
 			$rules = array(
 				'title' 	=> 'required|min:4|max:100',
