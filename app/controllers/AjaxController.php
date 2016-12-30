@@ -2330,12 +2330,13 @@ class AjaxController extends BaseController{
 	public function getMyCart()
 	{
 		$id = Input::get('id');
-		$compras = Compras::join('publicaciones','publicaciones.id','=','compras.pub_id')
-		->leftJoin('usuario','usuario.id','=','publicaciones.user_id')
-		->leftJoin('departamento','departamento.id','=','publicaciones.departamento')
+		$compras = Compras::with('users')
+		->with(array('publicacion' => function($query){
+			$query->with('deparments');
+		}))
 		->where('compras.user_id','=',$id)
 		->where('compras.valor_vend','=',0)
-		->get($this->toReturn);
+		->get();
 
 		return Response::json(array(
 			'compras' 	=>$compras,
@@ -2345,6 +2346,8 @@ class AjaxController extends BaseController{
 	public function getMySell()
 	{
 		$id = Input::get('id');
+		$compras = Compras::with('users')
+		->with('publicacion')
 		$compras = Compras::join('publicaciones','publicaciones.id','=','compras.pub_id')
 		->leftJoin('usuario','usuario.id','=','compras.user_id')
 		->leftJoin('departamento','departamento.id','=','publicaciones.departamento')
