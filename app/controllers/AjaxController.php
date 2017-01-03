@@ -2346,14 +2346,14 @@ class AjaxController extends BaseController{
 	public function getMySell()
 	{
 		$id = Input::get('id');
-		$compras = Compras::with('users')
-		->with('publicacion')
-		$compras = Compras::join('publicaciones','publicaciones.id','=','compras.pub_id')
-		->leftJoin('usuario','usuario.id','=','compras.user_id')
-		->leftJoin('departamento','departamento.id','=','publicaciones.departamento')
-		->where('publicaciones.user_id','=',$id)
+		$compras = Compras::with(array('publicacion' => function($query){
+			$query->with('deparments')->with('users');
+		}))
+		->whereHas('publicacion',function($query) use($id){
+			$query->where('user_id','=',$id);
+		})
 		->where('compras.valor_comp','=',0)
-		->get($this->toReturn);
+		->get();
 		$hoy = date('Y-m-d');
 		return Response::json(array(
 			'compras' 	=> $compras,
