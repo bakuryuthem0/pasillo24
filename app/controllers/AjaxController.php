@@ -114,16 +114,18 @@ class AjaxController extends BaseController{
 			if (Hash::check($password, $user->password)) 
 			{
 				/*Se toma el id del movil y se busca en la base de datos*/
-				$regId = Input::get('gcm_token');
-				$aux = GcmDevices::where('gcm_regid','=',$regId)->where('id','=',$user->id)->count();
-				if (is_null($aux) || empty($aux) || $aux < 1) {
-					$new   = new GcmDevices;
-					$new->gcm_regid = $regId;
-					$new->user_id   = $user->id;
-					$new->save();
+				if (Input::has('gcm_token')) {
+					$regId = Input::get('gcm_token');
+					$aux = GcmDevices::where('gcm_regid','=',$regId)->where('id','=',$user->id)->count();
+					if (is_null($aux) || empty($aux) || $aux < 1) {
+						$new   = new GcmDevices;
+						$new->gcm_regid = $regId;
+						$new->user_id   = $user->id;
+						$new->save();
+					}
+					/*Si no se encuentra (primera vez que inicia en este movil) se crea un nuevo registro*/
+					/*Se devuelven los datos en forma de json*/
 				}
-				/*Si no se encuentra (primera vez que inicia en este movil) se crea un nuevo registro*/
-				/*Se devuelven los datos en forma de json*/
 				$username = $user->username;
 				$user_id  = $user->id;
 				if (is_null($user->auth_token)) {
@@ -134,7 +136,8 @@ class AjaxController extends BaseController{
 					'type'	   => 'success',
 					'msg'	   => 'Ha iniciado sesión satisfactoriamente',
 					'userdata' => $user,
-					'auth_token' => $user->auth_token);
+					'auth_token' => $user->auth_token
+				);
 				return Response::json($n);
 			}else
 			{

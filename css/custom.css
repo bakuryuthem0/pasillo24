@@ -627,7 +627,7 @@ select.currency
 .owl-carousel .owl-item .item .separator h4
 {
 	font-weight: bold;
-	font-size: 16px;
+	font-size: 14px;
 }
 @media(max-device-width: 420px){
 	.owl-carousel .owl-item .item .separator h4
