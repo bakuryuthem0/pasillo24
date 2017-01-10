@@ -165,41 +165,6 @@ display: block;">
 								</div>
 							</div>
 							@endforeach
-							@if(count($lider)<1)
-							<div class="item">
-									<img src="{{ asset('images/anuncios-01.png') }}">
-							</div>
-							<div class="item">
-									<img src="{{ asset('images/anuncios-02.png') }}">
-							</div>
-							<div class="item">
-									<img src="{{ asset('images/anuncios-03.png') }}">
-							</div>
-							<div class="item">
-									<img src="{{ asset('images/anuncios-04.png') }}">
-							</div>
-							@elseif(count($lider)>=1 && count($lider)<2)
-							<div class="item">
-									<img src="{{ asset('images/anuncios-02.png') }}">
-							</div>
-							<div class="item">
-									<img src="{{ asset('images/anuncios-03.png') }}">
-							</div>
-							<div class="item">
-									<img src="{{ asset('images/anuncios-04.png') }}">
-							</div>
-							@elseif(count($lider)>=2 && count($lider)<3)
-							<div class="item">
-									<img src="{{ asset('images/anuncios-03.png') }}">
-							</div>
-							<div class="item">
-									<img src="{{ asset('images/anuncios-04.png') }}">
-							</div>
-							@else
-							<div class="item">
-									<img src="{{ asset('images/anuncios-04.png') }}">
-							</div>
-							@endif
 						</div>
 				</div>
 				<div class="col-xs-12 publication">
@@ -231,12 +196,7 @@ display: block;">
 								<?php $x++;?>
 							
 							@endforeach
-							@if(count($habitual)%2 == 0)
-							<div class="item">
-								<div class="contCatIndex"><img src="{{ asset('images/anuncios-01.png') }}"></div>
-								<div class="contCatIndex"><img src="{{ asset('images/anuncios-02.png') }}"></div>
-							</div>
-							@else
+							@if(count($habitual)%2 != 0)
 								<div class="contCatIndex"><img src="{{ asset('images/anuncios-02.png') }}"></div>
 							</div>
 							@endif
@@ -259,42 +219,6 @@ display: block;">
 								</div>
 							</div>
 							@endforeach
-							@if(count($casual)<1)
-							<div class="item">
-									<img src="{{ asset('images/anuncios-01.png') }}">
-							</div>
-							<div class="item">
-									<img src="{{ asset('images/anuncios-02.png') }}">
-							</div>
-							<div class="item">
-									<img src="{{ asset('images/anuncios-03.png') }}">
-							</div>
-							<div class="item">
-									<img src="{{ asset('images/anuncios-04.png') }}">
-							</div>
-							@elseif(count($casual)>=1 && count($casual)<2)
-							<div class="item">
-									<img src="{{ asset('images/anuncios-02.png') }}">
-							</div>
-							<div class="item">
-									<img src="{{ asset('images/anuncios-03.png') }}">
-							</div>
-							<div class="item">
-									<img src="{{ asset('images/anuncios-04.png') }}">
-							</div>
-							@elseif(count($casual)>=2 && count($casual)<3)
-							<div class="item">
-									<img src="{{ asset('images/anuncios-03.png') }}">
-							</div>
-							<div class="item">
-									<img src="{{ asset('images/anuncios-04.png') }}">
-							</div>
-							@else
-							
-							<div class="item">
-									<img src="{{ asset('images/anuncios-04.png') }}">
-							</div>
-							@endif
 						</div>
 				</div>
 
