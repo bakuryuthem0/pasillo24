@@ -735,7 +735,6 @@ class AjaxController extends BaseController{
 					'departamento.nombre as dep'
 				));
 			}		
-			return Response::json($publication);
 			
 		}elseif($pub->tipo == 'Casual')
 		{
