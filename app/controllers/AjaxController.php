@@ -618,7 +618,6 @@ class AjaxController extends BaseController{
 	{
 		$id = Input::get('pub_id');
 		$pub = Publicaciones::find($id);
-
 		if ($pub->tipo == 'Lider') {
 			$url = URL::to('publicacion/lider/'.base64_encode($id));
 			
@@ -694,16 +693,16 @@ class AjaxController extends BaseController{
 				'usuario.phone',
 				'usuario.reputation'
 			));
-			
+
 		}elseif($pub->tipo == "Habitual")
 		{
 			if ($pub->categoria == 34) {
 				$publication = DB::table('publicaciones')
 				->leftJoin('locations','locations.pub_id','=','publicaciones.id')
-				->leftJoin('marcas','marcas.id','=','publicaciones.marca_id')
-				->leftJoin('modelo','modelo.id','=','publicaciones.modelo_id')
-				->leftJoin('departamento','departamento.id','=','publicaciones.departamento')
-				->leftJoin('usuario','usuario.id','=','publicaciones.user_id')
+				->join('marcas','marcas.id','=','publicaciones.marca_id')
+				->join('modelo','modelo.id','=','publicaciones.modelo_id')
+				->join('departamento','departamento.id','=','publicaciones.departamento')
+				->join('usuario','usuario.id','=','publicaciones.user_id')
 				->where('publicaciones.id','=',$id)
 				->first(array(
 					'locations.longitude',
@@ -723,8 +722,8 @@ class AjaxController extends BaseController{
 			}else {
 				$publication = DB::table('publicaciones')
 				->leftJoin('locations','locations.pub_id','=','publicaciones.id')
-				->leftJoin('usuario','usuario.id','=','publicaciones.user_id')
-				->leftJoin('departamento','departamento.id','=','publicaciones.departamento')
+				->join('usuario','usuario.id','=','publicaciones.user_id')
+				->join('departamento','departamento.id','=','publicaciones.departamento')
 				->where('publicaciones.id','=',$id)
 				->first(array(
 					'locations.longitude',
@@ -739,9 +738,9 @@ class AjaxController extends BaseController{
 		}elseif($pub->tipo == 'Casual')
 		{
 			$publication = Publicaciones::leftJoin('locations','locations.pub_id','=','publicaciones.id')
-			->leftJoin('categoria','categoria.id','=','publicaciones.categoria')
-			->leftJoin('usuario','usuario.id','=','publicaciones.user_id')
-			->leftJoin('departamento','departamento.id','=','publicaciones.departamento')
+			->join('categoria','categoria.id','=','publicaciones.categoria')
+			->join('usuario','usuario.id','=','publicaciones.user_id')
+			->join('departamento','departamento.id','=','publicaciones.departamento')
 			->where('publicaciones.id','=',$id)
 			->where('publicaciones.tipo','=','Casual')
 			->first(array(
@@ -762,7 +761,7 @@ class AjaxController extends BaseController{
 			));
 		}
 		$comentarios = DB::table('comentario')
-		->leftJoin('usuario','usuario.id','=','comentario.user_id')
+		->join('usuario','usuario.id','=','comentario.user_id')
 		->where('comentario.pub_id','=',$id)
 		->get(array('comentario.id','comentario.comentario','comentario.created_at','usuario.username'));
 		$resp = Respuestas::where('pub_id','=',$id)->get();
@@ -2680,25 +2679,25 @@ class AjaxController extends BaseController{
 				$user = User::find($pub->user_id);
 				$pub->img_2 = $this->upload_images($img2,$user);
 			}
-			if ($data['title'] != $pub->pag_web && !empty($data['title'])) {
+			if (Input::has('title') && $data['title'] != $pub->pag_web) {
 				$pub->titulo = $data['title'];
 			}
-			if ($data['url'] != $pub->pag_web && !empty($data['url'])) {
+			if (Input::has('url') && $data['url'] != $pub->pag_web) {
 				$pub->pag_web = $data['url'];
 			}
-			if ($data['name'] != $pub->name && !empty($data['name'])) {
+			if (Input::has('name') && $data['name'] != $pub->name) {
 				$pub->name = $data['name'];
 			}
-			if ($data['phone'] != $pub->phone && !empty($data['phone'])) {
+			if (Input::has('phone') && $data['phone'] != $pub->phon) {
 				$pub->phone = $data['phone'];
 			}
-			if ($data['email'] != $pub->email && !empty($data['email'])) {
+			if (Input::has('email') && $data['email'] != $pub->emai) {
 				$pub->email = $data['email'];
 			}
-			if ($data['pag_web'] != $pub->pag_web_hab && !empty($data['pag_web'])) {
+			if (Input::has('pag_web') && $data['pag_web'] != $pub->pag_web_hab) {
 				$pub->pag_web_hab = $data['pag_web'];
 			}
-			if (!empty($data['namePub'])) {
+			if (Input::has('namePub')) {
 				$pub->titulo = $data['namePub'];
 			}
 			
