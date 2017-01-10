@@ -2200,7 +2200,7 @@ class AjaxController extends BaseController{
 		$input 	= Input::all();
 		$rules 	= array(
 			'transNumber' => 'required',
-			'fecha'		  => 'required|date|date_format:yyyy-mm-dd',
+			'fecha'		  => 'required|date|date_format:Y-m-d',
 			'banco'		  => 'required'
 		);
 		$messages = array(
