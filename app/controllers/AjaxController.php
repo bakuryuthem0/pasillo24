@@ -2280,6 +2280,7 @@ class AjaxController extends BaseController{
 			->leftJoin('departamento','departamento.id','=','publicaciones.departamento')
 			->where('publicaciones.tipo','=',ucfirst(strtolower($type)))
 			->where('publicaciones.deleted','=',0)
+			->orderBy('publicaciones.id','DESC')
 			->get(array('publicaciones.*','categoria.nombre as categoria','departamento.nombre as dep_desc'));	
 		}elseif (strtolower($type) == "habitual") {
 			$publications = Publicaciones::join('categoria','categoria.id','=','publicaciones.categoria')
@@ -2287,6 +2288,7 @@ class AjaxController extends BaseController{
 			->where('user_id','=',$id)
 			->where('publicaciones.tipo','=','Habitual')
 			->where('publicaciones.deleted','=',0)
+			->orderBy('publicaciones.id','DESC')
 			->get(array('publicaciones.*','categoria.nombre as categoria','departamento.nombre as dep_desc'));	
 		}elseif(strtolower($type) == "casual")
 		{
@@ -2295,6 +2297,7 @@ class AjaxController extends BaseController{
 			->where('publicaciones.user_id','=',$id)
 			->where('publicaciones.tipo','=','Casual')
 			->where('publicaciones.deleted','=',0)
+			->orderBy('publicaciones.id','DESC')
 			->get(array(
 				'publicaciones.*',
 				'categoria.nombre as categoria'
