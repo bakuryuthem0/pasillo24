@@ -618,7 +618,6 @@ class AjaxController extends BaseController{
 	{
 		$id = Input::get('pub_id');
 		$pub = Publicaciones::find($id);
-		return Response::json($pub);
 
 		if ($pub->tipo == 'Lider') {
 			$url = URL::to('publicacion/lider/'.base64_encode($id));
@@ -695,7 +694,8 @@ class AjaxController extends BaseController{
 				'usuario.phone',
 				'usuario.reputation'
 			));
-
+		return Response::json($publication);
+			
 		}elseif($pub->tipo == "Habitual")
 		{
 			if ($pub->categoria == 34) {
