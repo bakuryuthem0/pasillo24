@@ -760,7 +760,7 @@ class AjaxController extends BaseController{
 				'departamento.nombre'
 			));
 		}
-		return Response::json($publication)
+		return Response::json($publication);
 		$comentarios = DB::table('comentario')
 		->join('usuario','usuario.id','=','comentario.user_id')
 		->where('comentario.pub_id','=',$id)
