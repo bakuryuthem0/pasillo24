@@ -694,7 +694,6 @@ class AjaxController extends BaseController{
 				'usuario.phone',
 				'usuario.reputation'
 			));
-		return Response::json($publication);
 			
 		}elseif($pub->tipo == "Habitual")
 		{
@@ -736,6 +735,7 @@ class AjaxController extends BaseController{
 					'departamento.nombre as dep'
 				));
 			}		
+			return Response::json($publication);
 			
 		}elseif($pub->tipo == 'Casual')
 		{
