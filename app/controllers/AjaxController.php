@@ -764,7 +764,7 @@ class AjaxController extends BaseController{
 		->join('usuario','usuario.id','=','comentario.user_id')
 		->where('comentario.pub_id','=',$id)
 		->get(array('comentario.id','comentario.comentario','comentario.created_at','usuario.username'));
-		$resp = Respuestas::where('pub_id','=',$publication->id)->get();
+		$resp = Respuestas::where('pub_id','=',$id)->get();
 		return Response::json(array(
 			'publication' 	=> $publication,/*Toda la info esta pub*/
 			'comentarios' 	=> $comentarios, /*comentarios de esta pub*/
@@ -2196,7 +2196,6 @@ class AjaxController extends BaseController{
 				'msg'  => 'No se encontro el id de la publicación.',
 			));
 		}
-		$pub_id = Input::get('pub_id');
 		$input 	= Input::all();
 		$rules 	= array(
 			'transNumber' => 'required',
@@ -2216,6 +2215,7 @@ class AjaxController extends BaseController{
 				)
 			);
 		}
+		$pub_id = Input::get('pub_id');
 		$pago = new Pagos;
 		$pago->user_id   = $id;
 		$pago->pub_id    = $pub_id;
