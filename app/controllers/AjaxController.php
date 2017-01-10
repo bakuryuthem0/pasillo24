@@ -618,6 +618,8 @@ class AjaxController extends BaseController{
 	{
 		$id = Input::get('pub_id');
 		$pub = Publicaciones::find($id);
+		return Response::json($pub);
+
 		if ($pub->tipo == 'Lider') {
 			$url = URL::to('publicacion/lider/'.base64_encode($id));
 			
@@ -760,7 +762,6 @@ class AjaxController extends BaseController{
 				'departamento.nombre'
 			));
 		}
-		return Response::json($publication);
 		$comentarios = DB::table('comentario')
 		->join('usuario','usuario.id','=','comentario.user_id')
 		->where('comentario.pub_id','=',$id)
