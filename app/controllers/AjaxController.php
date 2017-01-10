@@ -700,10 +700,10 @@ class AjaxController extends BaseController{
 			if ($pub->categoria == 34) {
 				$publication = DB::table('publicaciones')
 				->leftJoin('locations','locations.pub_id','=','publicaciones.id')
-				->join('marcas','marcas.id','=','publicaciones.marca_id')
-				->join('modelo','modelo.id','=','publicaciones.modelo_id')
-				->join('departamento','departamento.id','=','publicaciones.departamento')
-				->join('usuario','usuario.id','=','publicaciones.user_id')
+				->leftJoin('marcas','marcas.id','=','publicaciones.marca_id')
+				->leftJoin('modelo','modelo.id','=','publicaciones.modelo_id')
+				->leftJoin('departamento','departamento.id','=','publicaciones.departamento')
+				->leftJoin('usuario','usuario.id','=','publicaciones.user_id')
 				->where('publicaciones.id','=',$id)
 				->first(array(
 					'locations.longitude',
@@ -723,8 +723,8 @@ class AjaxController extends BaseController{
 			}else {
 				$publication = DB::table('publicaciones')
 				->leftJoin('locations','locations.pub_id','=','publicaciones.id')
-				->join('usuario','usuario.id','=','publicaciones.user_id')
-				->join('departamento','departamento.id','=','publicaciones.departamento')
+				->leftJoin('usuario','usuario.id','=','publicaciones.user_id')
+				->leftJoin('departamento','departamento.id','=','publicaciones.departamento')
 				->where('publicaciones.id','=',$id)
 				->first(array(
 					'locations.longitude',
