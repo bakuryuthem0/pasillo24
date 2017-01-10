@@ -739,9 +739,9 @@ class AjaxController extends BaseController{
 		}elseif($pub->tipo == 'Casual')
 		{
 			$publication = Publicaciones::leftJoin('locations','locations.pub_id','=','publicaciones.id')
-			->join('categoria','categoria.id','=','publicaciones.categoria')
-			->join('usuario','usuario.id','=','publicaciones.user_id')
-			->join('departamento','departamento.id','=','publicaciones.departamento')
+			->leftJoin('categoria','categoria.id','=','publicaciones.categoria')
+			->leftJoin('usuario','usuario.id','=','publicaciones.user_id')
+			->leftJoin('departamento','departamento.id','=','publicaciones.departamento')
 			->where('publicaciones.id','=',$id)
 			->where('publicaciones.tipo','=','Casual')
 			->first(array(
@@ -762,7 +762,7 @@ class AjaxController extends BaseController{
 			));
 		}
 		$comentarios = DB::table('comentario')
-		->join('usuario','usuario.id','=','comentario.user_id')
+		->leftJoin('usuario','usuario.id','=','comentario.user_id')
 		->where('comentario.pub_id','=',$id)
 		->get(array('comentario.id','comentario.comentario','comentario.created_at','usuario.username'));
 		$resp = Respuestas::where('pub_id','=',$id)->get();
