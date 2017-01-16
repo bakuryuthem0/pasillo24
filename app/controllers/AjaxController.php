@@ -2632,11 +2632,17 @@ class AjaxController extends BaseController{
 		if (!Input::has('pub_id')) {
 			return Response::json(array(
 				'type' => 'danger',
-				'msg'  => 'Error, no se encontro la publicación'
+				'msg'  => 'Error, no se encontro el id de la publicación'
 			));
 		}
 		$id = $data['pub_id'];
 		$pub = Publicaciones::find($id);
+		if ($pub->count() < 1) {
+			return Response::json(array(
+				'type' => 'danger',
+				'msg'  => 'Error, no se encontro la publicación'
+			));	
+		}
 		if ($pub->tipo == 'Lider') {
 			$rules = array(
 				'title' 	=> 'required|min:4|max:100',
@@ -2709,8 +2715,8 @@ class AjaxController extends BaseController{
 			$rules = array(
 				'title' 		=> 'required|min:4|max:100',
 				'cat'			=> 'required|exists:categoria,id',
-				'subcat'		=> 'exists:subcategoria,id',
-				'price'			=> 'required|numeric|integer|min:1',
+				'subCat'		=> 'exists:subcategoria,id',
+				'price'			=> 'required|numeric|min:1',
 				'currency'		=> 'required|in:Usd,Bs',
 				'department'	=> 'required|exists:departamento,id',
 				'city'			=> 'required|max:50',
@@ -2739,7 +2745,7 @@ class AjaxController extends BaseController{
 			$attr = array(
 				'title' 		=> 'titulo',
 				'cat'			=> 'categoría',
-				'subcat'		=> 'sub-categoria',
+				'subCat'		=> 'sub-categoria',
 				'price'			=> 'precio',
 				'currency'		=> 'moneda',
 				'department'	=> 'departamento',
@@ -2774,7 +2780,7 @@ class AjaxController extends BaseController{
 			}
 			$pub->titulo 		= $data['title'];
 			$pub->categoria 	= $data['cat'];
-			$pub->typeCat		= $data['subcat'];
+			$pub->typeCat		= $data['subCat'];
 			$pub->precio 		= $data['price'];
 			$pub->moneda 		= strtolower($data['currency']);
 			$pub->departamento 	= $data['department'];
