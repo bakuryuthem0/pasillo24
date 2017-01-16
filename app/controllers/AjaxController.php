@@ -2843,26 +2843,26 @@ class AjaxController extends BaseController{
 				$pub->documentos 	= $data['document'];
 				$pub->kilometraje 	= $data['kilo'];
 				if (Input::has('cilin')) {
-					$pub->cilindraje = $input['cilin'];
+					$pub->cilindraje = $data['cilin'];
 				}
 				if (Input::has('trans')) {
-					$pub->transmision = $input['trans'];
+					$pub->transmision = $data['trans'];
 				}
 				if (Input::has('comb')) {
-					$pub->combustible = $input['comb'];
+					$pub->combustible = $data['comb'];
 				}
 				if (Input::has('trac')) {
-					$pub->traccion = $input['trac'];
+					$pub->traccion = $data['trac'];
 				}
 			}elseif($pub->categoria == 20)
 			{
 				if (Input::has('ext')) {
-					$pub->extension = $input['ext'];
+					$pub->extension = $data['ext'];
 				}
 			}
 			
-			if (!empty($input['input'])) {
-				$pub->descripcion = $input['input'];
+			if (!empty($data['input'])) {
+				$pub->descripcion = $data['input'];
 			}
 		}
 		
