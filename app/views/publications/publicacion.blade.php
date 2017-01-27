@@ -582,7 +582,8 @@
 </div>
 @stop
 @section('postscript')
-
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDsWeMp66ReIVZI4u_J2gteYCyNIKx_MOE&callback=initMap"
+        async defer></script>
 <script>
 	CKEDITOR.disableAutoInline = true;
 	$( document ).ready( function() {
