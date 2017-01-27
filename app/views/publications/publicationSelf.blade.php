@@ -51,7 +51,7 @@
 			<div class="col-md-6 pagMini hidden-xs hidden-sm no-padding-left">
 				<div class="list-group">
 					<a href="#" class="list-group-item active">
-						<h4 class="list-group-item-heading ">{{ $publication->titulo }}</h4>
+						<h4 class="list-group-item-heading publication-title">{{ $publication->titulo }}</h4>
 
 						<p class="textoPromedio">Creado por: <label>
 										@if(!empty($publication->name_pub))
@@ -185,7 +185,7 @@
 			<div class="col-xs-12 pagMini visible-xs visible-sm formulario no-padding">
 				<div class="list-group">
 					<a href="#" class="list-group-item active">
-						<h4 class="list-group-item-heading ">{{ $publication->titulo }}</h4>
+						<h4 class="list-group-item-heading">{{ $publication->titulo }}</h4>
 
 						<p class="textoPromedio">Creado por: <label>
 										@if(!empty($publication->name_pub))
@@ -349,7 +349,7 @@
 				</div>
 				<div class="col-xs-12 col-md-6 contAnaranjado">
 					<div class="col-xs-12">
-						<legend class="precioPub title-pub">{{ ucfirst($publication->titulo) }}</legend>
+						<legend class="precioPub title-pub publication-title">{{ ucfirst($publication->titulo) }}</legend>
 					</div>
 					<div class="col-xs-6 caracteristicasPub">
 						<h4>Precio</h4><label class="textoPromedio">@if($publication->precio == "") Sin especificar @else {{ $publication->precio.' '.$publication->moneda }} @endif</label>
@@ -518,7 +518,7 @@
 				</div>
 				<div class="col-xs-12 col-md-6 contAnaranjado contMovil">
 					<div class="col-xs-12">
-						<legend class="precioPub"><h2>{{ ucfirst($publication->titulo) }}</h2></legend>
+						<legend class="precioPub"><h2 class="publication-title">{{ ucfirst($publication->titulo) }}</h2></legend>
 					</div>
 					<div class="col-xs-12 col-sm-6">
 						<h4>Categoria </h4><label class="textoPromedio">{{ $publication->cat }}</label>
@@ -741,6 +741,29 @@
 
 <!-- Add Button helper (this is optional) -->
 {{ HTML::script("js/fancybox/helpers/jquery.fancybox-buttons.js?v=1.0.5") }}
+<script>
+  function initMap() {
+  	var $latitud = $('.latitud').val(), $longitud = $('.longitud').val()
+    coords = new google.maps.LatLng($latitud,$longitud);
+
+    // Create a map object and specify the DOM element for display.
+    var map = new google.maps.Map(document.getElementById('mapcontainer'), {
+      center: coords,
+      scrollwheel: false,
+      zoom: 15
+    });
+
+    // Create a marker and set its position.
+    var marker = new google.maps.Marker({
+      map: map,
+      position: coords,
+      title: $('.publication-title').html()
+    });
+  }
+
+</script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDsWeMp66ReIVZI4u_J2gteYCyNIKx_MOE&callback=initMap"
+        async defer></script>
 <script type="text/javascript">
 	$(document).ready(function (){
 		//loadMap();

@@ -123,26 +123,26 @@ function loadMap() {
 	var lat = $('.latitud').val();
 	var lon = $('.longitud').val();
 	if (typeof lat != 'undefined' && typeof lon != 'undefined') {
-  	coords = new google.maps.LatLng(lat,lon);
-  	var options = {
-		zoom: 15,
-		center: coords,
-		mapTypeControl: false,
-		navigationControlOptions: {
-			style: google.maps.NavigationControlStyle.SMALL
-		},
-		mapTypeId: google.maps.MapTypeId.ROADMAP
-	};
-	var map = new google.maps.Map(document.getElementById("mapcontainer"), options);
+	  	coords = new google.maps.LatLng(lat,lon);
+	  	var options = {
+			zoom: 15,
+			center: coords,
+			mapTypeControl: false,
+			navigationControlOptions: {
+				style: google.maps.NavigationControlStyle.SMALL
+			},
+			mapTypeId: google.maps.MapTypeId.ROADMAP
+		};
+		var map = new google.maps.Map(document.getElementById("mapcontainer"), options);
 
-	var marker = new google.maps.Marker({
-	  position: coords,
-	  map: map,
-	  title:"You are here!"
-	});
-  	google.maps.event.addListenerOnce(map, 'idle', function(){
-	    $('.contLoaderBig').removeClass('active');
-	});
+		var marker = new google.maps.Marker({
+		  position: coords,
+		  map: map,
+		  title:"You are here!"
+		});
+	  	google.maps.event.addListenerOnce(map, 'idle', function(){
+		    $('.contLoaderBig').removeClass('active');
+		});
 
 	};
 }
