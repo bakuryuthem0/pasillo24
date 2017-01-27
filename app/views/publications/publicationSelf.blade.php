@@ -4,6 +4,7 @@
 {{ HTML::style('js/styles/bottom.css') }}
 {{ HTML::style("css/fancybox/jquery.fancybox.css?v=2.1.5",array('media'=>"screen")) }}
 {{ HTML::style("js/fancybox/helpers/jquery.fancybox-buttons.css?v=1.0.5") }}
+
 <div class="container contenedorUnico">
 	<div class="row">
 		
@@ -786,4 +787,5 @@
 	});
 	$('.btn-fav').popover()
 </script>
+ 
 @stop

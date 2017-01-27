@@ -12,7 +12,7 @@
 			            </div>
 						<img src="{{ asset('images/pubImages/'.$publication->img_1) }}" class="imgPrinc" style="">
 					</div>
-					<div class="col-xs-12 minis no-padding">
+					<div class="col-xs-12 minis preview no-padding">
 						@if(!empty($publication->img_1))
 						<img src="{{ asset('images/pubImages/'.$publication->img_1) }}" class="imgMini" data-value="img_1">
 						@endif
