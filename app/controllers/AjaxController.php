@@ -2503,44 +2503,20 @@ class AjaxController extends BaseController{
 			'usuario.name',
 			'usuario.lastname'
 		));
-		$comprasC = Compras::join('publicaciones','publicaciones.id','=','compras.pub_id')
-		->join('usuario','usuario.id','=','publicaciones.user_id')
-		->where('compras.user_id','=',$id)
-		->get(array(
-			'compras.id',
-			'compras.valor_vend',
-			'compras.valor_comp',
-			'publicaciones.titulo',
-			'publicaciones.id as pub_id',
-			'usuario.name',
-			'usuario.lastname'
-		));
-		$ventasC = Compras::join('publicaciones','publicaciones.id','=','compras.pub_id')
-		->join('usuario','usuario.id','=','compras.user_id')
-		->where('publicaciones.user_id','=',$id)
-		->get(array(
-			'compras.id',
-			'compras.valor_vend',
-			'compras.valor_comp',
-			'publicaciones.titulo',
-			'usuario.id as user_id',
-			'usuario.name',
-			'usuario.lastname'
-		));
 		$comp_pos = 0;
 		$comp_neg = 0;
 		$vent_pos = 0;
 		$vent_neg = 0;
-		foreach ($ventasC as $v) {
-			if ($v->valor_vend>0) {
+		foreach ($ventas as $v) {
+			echo $v->valor_vend.'<br>';
+			if ($v->valor_vend > 0) {
 				$vent_pos++; 
 			}elseif ($v->valor_vend < 0)
 			{
 				$vent_neg++;
 			}
-			
 		}
-		foreach ($comprasC as $c) {
+		foreach ($compras as $c) {
 			if ($c->valor_comp > 0) {
 				$comp_pos++;
 			}elseif($c->valor_comp < 0)
