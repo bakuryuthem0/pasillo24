@@ -2508,7 +2508,6 @@ class AjaxController extends BaseController{
 		$vent_pos = 0;
 		$vent_neg = 0;
 		foreach ($ventas as $v) {
-			echo $v->valor_vend.'<br>';
 			if ($v->valor_vend > 0) {
 				$vent_pos++; 
 			}elseif ($v->valor_vend < 0)
