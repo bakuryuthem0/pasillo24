@@ -53,6 +53,17 @@ function cambiarFecha()
 			}
 		});
 }
+function openInfoWindow(marker) {
+    var markerLatLng = marker.getPosition();
+    infoWindow.setContent([
+        '&lt;b&gt;La posicion del marcador es:&lt;/b&gt;&lt;br/&gt;',
+        markerLatLng.lat(),
+        ', ',
+        markerLatLng.lng(),
+        '&lt;br/&gt;&lt;br/&gt;Arr&amp;aacute;strame y haz click para actualizar la posici&amp;oacute;n.'
+    ].join(''));
+    infoWindow.open(map, marker);
+}
 function success(position) {
 	var coords = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
 	var lat = position.coords.latitude;
@@ -75,11 +86,20 @@ function success(position) {
 	var marker = new google.maps.Marker({
 	  position: coords,
 	  map: map,
+	  draggable: true,
 	  title:"You are here!"
 	});
   	google.maps.event.addListenerOnce(map, 'idle', function(){
 	    $('.contLoaderBig').removeClass('active');
 	});
+	google.maps.event.addListener(marker, 'click', function(){
+        openInfoWindow(marker);
+    });
+    google.maps.event.addListener(marker, 'mouseup', function(evt){
+    	$('.latitud').val(evt.latLng.lat())
+    	$('.longitud').val(evt.latLng.lng())
+	});
+
 }
 function verificarComentario(base)
 {
@@ -107,7 +127,7 @@ function showError(error)
 		$('.mapContainer').html('<p class="textoPromedio">Has bloqueado el acceso a tu posición.</p>')
 	  break;
 	case error.POSITION_UNAVAILABLE:
-		$('.mapContainer').html('<p class="textoPromedio">Imposible obtener información de tu posición.</p>')
+		$('.mapContainer').html('<p class="textoPromedio">Imposible obtener información de tu posición, chequee su conexion a internet y recargue la pagina.</p>')
 
 	  break;
 	case error.TIMEOUT:
@@ -115,36 +135,9 @@ function showError(error)
 	  
 	  break;
 	case error.UNKNOWN_ERROR:
-	  x.innerHTML="An unknown error occurred."
+	  x.innerHTML="Error desconocido, contacte al administrador."
 	  break;
 	}
-}
-function loadMap() {
-	var lat = $('.latitud').val();
-	var lon = $('.longitud').val();
-	if (typeof lat != 'undefined' && typeof lon != 'undefined') {
-	  	coords = new google.maps.LatLng(lat,lon);
-	  	var options = {
-			zoom: 15,
-			center: coords,
-			mapTypeControl: false,
-			navigationControlOptions: {
-				style: google.maps.NavigationControlStyle.SMALL
-			},
-			mapTypeId: google.maps.MapTypeId.ROADMAP
-		};
-		var map = new google.maps.Map(document.getElementById("mapcontainer"), options);
-
-		var marker = new google.maps.Marker({
-		  position: coords,
-		  map: map,
-		  title:"You are here!"
-		});
-	  	google.maps.event.addListenerOnce(map, 'idle', function(){
-		    $('.contLoaderBig').removeClass('active');
-		});
-
-	};
 }
 function hideMustLog (el) {
 	$(el).addClass('hidden');
