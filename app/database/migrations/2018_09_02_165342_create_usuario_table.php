@@ -23,7 +23,7 @@ class CreateUsuarioTable extends Migration {
 		    $table->string('lastname',255);
 		    $table->string('id_carnet',255);
 		    $table->string('nit',255);
-		    $table->integer('state',255);
+		    $table->integer('state');
 		    $table->string('phone',255);
 		    $table->string('postal_code',255);
 		    $table->integer('reputation')->default(0);
