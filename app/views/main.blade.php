@@ -8,7 +8,7 @@
 		<meta charset="UTF-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
 		<title>{{ $title }}</title>
-		<link rel="shortcut icon" href="{{ asset('images/favicon.ico') }}">
+		<link rel="shortcut icon" href="{{ secure_asset('images/favicon.ico') }}">
 		<meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta property="og:url"                content="{{ Request::url() }}" />
@@ -16,22 +16,22 @@
 		<meta property="og:title"              content="{{ $title }}" />
 		<meta property="og:description"        content="Compra, Vende, Publica " />
 		@if(isset($publication->img_1))
-			<meta property="og:image"          content="{{ asset('images/pubImages/'.$publication->img_1) }}" />
+			<meta property="og:image"          content="{{ secure_asset('images/pubImages/'.$publication->img_1) }}" />
 		@else
 			<meta property="og:image"          content="http://preview.pasillo24.com/images/portal.png" />
 		@endif
-		<link rel="stylesheet" type="text/css" href="{{ asset('css/bootstrap.min.css') }}">
-		<link rel="stylesheet" type="text/css" href="{{ asset('//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css') }}">
-        <link href="{{ asset('css/font-awesome.min.css') }}" rel="stylesheet">
+		<link rel="stylesheet" type="text/css" href="{{ secure_asset('css/bootstrap.min.css') }}">
+		<link rel="stylesheet" type="text/css" href="{{ secure_asset('//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css') }}">
+        <link href="{{ secure_asset('css/font-awesome.min.css') }}" rel="stylesheet">
 
-		<link rel="stylesheet" type="text/css" href="{{ asset('css/bootstrap-theme.min.css') }}">
-		<link rel="stylesheet" type="text/css" href="{{ asset('css/custom.css?v=2.0') }}">
-		<link rel="stylesheet" type="text/css" href="{{ asset('css/jquery.cleditor.css') }}">
-		<link rel="stylesheet" type="text/css" href="{{ asset('css/owl.carousel.css') }}">
-		<link rel="stylesheet" type="text/css" href="{{ asset('css/owl.theme.default.css') }}">
-        <link rel="stylesheet" type="text/css" href="{{ asset('css/ui-lightness/jquery-ui-1.9.2.custom.min.css') }}">
-		<script type="text/javascript" src="{{ asset('js/jquery.min.js') }}"></script>
-		<script type="text/javascript" src="{{ asset('js/owl.carousel.min.js') }}"></script>
+		<link rel="stylesheet" type="text/css" href="{{ secure_asset('css/bootstrap-theme.min.css') }}">
+		<link rel="stylesheet" type="text/css" href="{{ secure_asset('css/custom.css?v=2.0') }}">
+		<link rel="stylesheet" type="text/css" href="{{ secure_asset('css/jquery.cleditor.css') }}">
+		<link rel="stylesheet" type="text/css" href="{{ secure_asset('css/owl.carousel.css') }}">
+		<link rel="stylesheet" type="text/css" href="{{ secure_asset('css/owl.theme.default.css') }}">
+        <link rel="stylesheet" type="text/css" href="{{ secure_asset('css/ui-lightness/jquery-ui-1.9.2.custom.min.css') }}">
+		<script type="text/javascript" src="{{ secure_asset('js/jquery.min.js') }}"></script>
+		<script type="text/javascript" src="{{ secure_asset('js/owl.carousel.min.js') }}"></script>
 		<script src='https://www.google.com/recaptcha/api.js'></script>
 	</head>
 	<body>
@@ -65,7 +65,7 @@
                     <div class="wrapper">
                         <div class="nav-container">
                             <div class="logo">
-                                <img src="{{ asset('images/logo.png') }}">
+                                <img src="{{ secure_asset('images/logo.png') }}">
                             </div>
                             <div class="menu visible-md-block visible-lg-block">
                                 <form class="navbar-form navbar-left" role="search" method="GET" action="{{ URL::to('inicio/buscar') }}">
@@ -494,7 +494,7 @@
                     <div class="wrapper">
                         <div class="nav-container">
                             <div class="logo">
-                                <img src="{{ asset('images/logo.png') }}">
+                                <img src="{{ secure_asset('images/logo.png') }}">
                             </div>
                             <ul class="nav navbar-nav pull-right">
                                 <li><a href="{{ URL::to('mision-y-vision') }}" class="btn log hidden-xs" style="color:#fff;"><strong>¿Qué es pasillo24.com?</strong></a></li>
@@ -515,14 +515,14 @@
             </footer>
 	<input type="hidden" value="{{  URL::full() }}" id="urlBase">
 	
-	<script type="text/javascript" src="{{ asset('js/jquery.min.js') }}"></script>
-	<script type="text/javascript" src="{{ asset('js/bootstrap.min.js') }}"></script>
-	<script type="text/javascript" src="{{ asset('js/custom.js?v=2.0') }}"></script>
+	<script type="text/javascript" src="{{ secure_asset('js/jquery.min.js') }}"></script>
+	<script type="text/javascript" src="{{ secure_asset('js/bootstrap.min.js') }}"></script>
+	<script type="text/javascript" src="{{ secure_asset('js/custom.js?v=2.0') }}"></script>
 	
-	<script type="text/javascript" src="{{ asset('js/ckeditor.js') }}"></script>
-	<script type="text/javascript" src="{{ asset('js/jquery.ckeditor.js') }}"></script>
-	<script type="text/javascript" src="{{ asset('js/owl.carousel.min.js') }}"></script>
-	<script type="text/javascript" src="{{ asset('js/jquery-ui-1.9.2.custom.min.js') }}"></script>
+	<script type="text/javascript" src="{{ secure_asset('js/ckeditor.js') }}"></script>
+	<script type="text/javascript" src="{{ secure_asset('js/jquery.ckeditor.js') }}"></script>
+	<script type="text/javascript" src="{{ secure_asset('js/owl.carousel.min.js') }}"></script>
+	<script type="text/javascript" src="{{ secure_asset('js/jquery-ui-1.9.2.custom.min.js') }}"></script>
 
        <script type="text/javascript">
        $(function () {
