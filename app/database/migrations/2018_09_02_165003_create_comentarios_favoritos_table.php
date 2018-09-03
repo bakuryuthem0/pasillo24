@@ -18,7 +18,7 @@ class CreateComentariosFavoritosTable extends Migration {
 		    $table->increments('id');
 		    $table->integer('user_id');
 		    $table->integer('pub_id');
-		    $table->timestamps();
+		    $table->timestamps()->default('0000-00-00');
 		});
 	}
 

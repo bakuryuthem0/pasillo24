@@ -21,7 +21,7 @@ class CreateComentariosGcmPagosTable extends Migration {
 		    $table->integer('banco_id');
 		    $table->string('num_trans',255);
 		    $table->string('banco_ext',255)->nullable();
-		    $table->timestamps();
+		    $table->timestamps()->default('0000-00-00');
 		});
 	}
 

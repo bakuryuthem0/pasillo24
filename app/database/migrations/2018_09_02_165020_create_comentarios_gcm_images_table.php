@@ -18,7 +18,7 @@ class CreateComentariosGcmImagesTable extends Migration {
 		    $table->increments('id');
 		    $table->integer('pub_id');
 		    $table->string('name',255);
-		    $table->timestamps();
+		    $table->timestamps()->default('0000-00-00');
 		});
 	}
 

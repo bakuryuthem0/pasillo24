@@ -64,7 +64,7 @@ class CreateComentariosPublicacionesTable extends Migration {
 		    $table->string('img_8',255);
 		    $table->string('condicion',255);
 		    $table->string('bussiness_type',255);
-		    $table->timestamps();
+		    $table->timestamps()->default('0000-00-00');
 		});
 	}
 
