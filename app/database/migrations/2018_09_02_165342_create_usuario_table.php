@@ -26,7 +26,7 @@ class CreateUsuarioTable extends Migration {
 		    $table->integer('state');
 		    $table->string('pag_web',255);
 		    $table->string('phone',255);
-		    $table->string('postal_code',255);
+		    $table->string('postal_cod',255);
 		    $table->integer('reputation')->default(0);
 		    $table->integer('votes')->default(0);
 		    $table->string('dir',255);

@@ -19,7 +19,7 @@ class UsuarioTableSeeder extends Seeder {
         	'postal_cod' => '2122',
         	'dir' => 'adfdafdaf',
         	'pais' => 'adfafaf', 
-        	'register_code' => 'afdfad', 
+        	'register_cod_active' => 'afdfad', 
         	'user_suspended' => '1', 
         	'role' => 'Administrador'
 
