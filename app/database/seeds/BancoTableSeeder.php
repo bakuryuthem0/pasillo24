@@ -4,7 +4,7 @@ class BancoTableSeeder extends Seeder {
 
     public function run()
     {
-        Banco::create(array(
+        Bancos::create(array(
         	array(
 	        	'id' => '1', 
 	        	'nombre' => 'Banco Nacional de Bolivia'
