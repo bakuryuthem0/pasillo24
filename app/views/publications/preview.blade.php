@@ -4,15 +4,15 @@
 <div class="container contenedorUnico">
 	<div class="row">
 		<div class="col-xs-12 no-padding">
-				<div class="col-xs-6 imagesCont">
+				<div class="col-xs-12 col-md-6 imagesCont no-padding">
 					
-					<div class="col-xs-12 imgProd">
-						<div class="cien">
+					<div class="col-xs-12 imgProd ">
+						<div class="cien hidden-md">
 			              <img src="" class="zoomed">
 			            </div>
 						<img src="{{ asset('images/pubImages/'.$publication->img_1) }}" class="imgPrinc" style="">
 					</div>
-					<div class="col-xs-12 minis">
+					<div class="col-xs-12 minis preview no-padding">
 						@if(!empty($publication->img_1))
 						<img src="{{ asset('images/pubImages/'.$publication->img_1) }}" class="imgMini" data-value="img_1">
 						@endif
@@ -38,16 +38,19 @@
 						<img src="{{ asset('images/pubImages/'.$publication->img_8) }}" class="imgMini" data-value="img_8">
 						@endif
 					</div>
-					<div class="col-xs-12 hidden-xs">
+					<div class="col-xs-12 formulario hidden-sm no-padding" style="margin-bottom:1em;">
 						<div class="alert responseDanger">
 							<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+							<p></p>
 						</div>
+						<img src="{{ asset('images/loading.gif') }}" class="miniLoader hidden">
 						<button class="btn btn-primary btnChange" >Cambiar Orden</button>
-						<button class="btn btn-success btnChangeEnviar btn-no" value="{{ $publication->id }}">Enviar</button>
-						<button class="btn btn-danger btnChangeCancel btn-no">Cancelar</button>
+						<button class="btn btn-success btnChangeEnviar btn-no hidden" value="{{ $publication->id }}">Enviar</button>
+						<button class="btn btn-danger btnChangeCancel btn-no hidden">Cancelar</button>
+
 					</div>
 				</div>
-				<div class="col-xs-6 descriptionPub contAnaranjado">
+				<div class="col-xs-12 col-md-6 descriptionPub contAnaranjado">
 					<div class="col-xs-12">
 						<legend><h2>{{ ucfirst($publication->titulo) }}</h2></legend>
 					</div>
@@ -62,28 +65,28 @@
 						</label> 
 					</div>
 					
-					<div class="col-xs-6 caracteristicasPub">
+					<div class="col-xs-12 col-sm-6 caracteristicasPub">
 						<h3>Departamento</h3>
 						<label class="textoPromedio">
 							{{ $publication->dep }}
 						</label>
 
 					</div>
-					<div class="col-xs-6 caracteristicasPub">
+					<div class="col-xs-12 col-sm-6 caracteristicasPub">
 						<h3>Ciudad</h3>
 						<label class="textoPromedio">
 							{{ $publication->ciudad }}
 						</label>
 
 					</div>
-					<div class="col-xs-6 caracteristicasPub">
+					<div class="col-xs-12 col-sm-6 caracteristicasPub">
 						<h3>Categoría</h3>
 						<label class="textoPromedio">
 							{{ $publication->cat }}
 						</label>
 
 					</div>
-					<div class="col-xs-6 caracteristicasPub">
+					<div class="col-xs-12 col-sm-6 caracteristicasPub">
 						<h3>Sub-categoría</h3>
 						<label class="textoPromedio">
 							{{ $publication->subCat }}
@@ -91,24 +94,24 @@
 
 					</div>
 					@if($publication->categoria == 34)
-						<div class="col-xs-6 caracteristicasPub">
+						<div class="col-xs-12 col-sm-6 caracteristicasPub">
 							<h3>Año</h3>
 							<label class="textoPromedio">
 								{{ $publication->anio }}
 							</label>
 
 						</div>
-						<div class="col-xs-6 caracteristicasPub">
+						<div class="col-xs-12 col-sm-6 caracteristicasPub">
 							<h3>Kilometraje</h3><label class="textoPromedio">@if(strlen($publication->precio) == 0) Sin especificar @else {{ $publication->kilometraje }} @endif</label>
 						</div>
-						<div class="col-xs-6 caracteristicasPub">
+						<div class="col-xs-12 col-sm-6 caracteristicasPub">
 							<h3>Marca</h3><label class="textoPromedio">@if(strlen($publication->precio) == 0) Sin especificar @else {{ $publication->marca }} @endif</label>
 						</div>
-						<div class="col-xs-6 caracteristicasPub">
+						<div class="col-xs-12 col-sm-6 caracteristicasPub">
 							<h3>Modelo</h3><label class="textoPromedio">@if(strlen($publication->precio) == 0) Sin especificar @else {{ $publication->modelo }} @endif</label>
 						</div>
 						
-						<div class="col-xs-6 caracteristicasPub">
+						<div class="col-xs-12 col-sm-6 caracteristicasPub">
 							<h3>Documentación</h3><label class="textoPromedio">@if(strlen($publication->precio) == 0) Sin especificar @else {{ $publication->documentos }} @endif</label>
 						</div>
 						@if(!empty($publication->cilindraje))
@@ -139,7 +142,7 @@
 							<h3>Extensión</h3><label class="textoPromedio">@if(strlen($publication->extension) == 0) Sin especificar @else {{ $publication->extension }} @endif mt<sup>2</sup></label>
 						</div>
 					@endif	
-					<div class="col-xs-6 caracteristicasPub">
+					<div class="col-xs-12 col-sm-6 caracteristicasPub">
 						<h3>Tipo de operación</h3>
 						<label class="textoPromedio">
 							@if(strlen($publication->transaccion) == 0) Sin especificar @else {{ $publication->transaccion }} @endif
@@ -193,6 +196,41 @@
 @stop
 
 @section('postscript')
+<script type="text/javascript">
+
+	jQuery(document).ready(function($) {
+		var imgPrinc = $('.imgPrinc').attr('src');
+		$('.imgPrinc').hover(function(event) {
+			$('.zoomed').attr('src', $(this).attr('src'));
+			$('.zoomed').css({
+				'display':'block',
+				'height' : $(this).css('height')
+			}).stop().animate({'opacity':1}, 250)
+			$(this).stop().animate({'opacity':0}, 250)
+			$(this).mousemove(function(event) {
+				var x = event.pageX - $(this).offset().left;
+				var y = event.pageY - $(this).offset().top;
+
+				$('.zoomed').css({
+					'transform-origin': x+'px '+y+'px'
+				});
+				
+			});
+		}, function(event) {
+			$('.zoomed').stop().animate({'opacity':0}, 250,function()
+			{
+				$(this).css({
+					'display':'none'
+				})
+			})
+			$(this).stop().animate({'opacity':1}, 250)
+		});
+		$('.imgMini').on('click',function() {
+			var imgHover = $(this).attr('src');
+			$('.imgPrinc').attr('src',imgHover);
+		});
+	});
+</script>
 	@if(isset($publication->longitude) && isset($publication->latitude))
 
 		<script type="text/javascript">

@@ -2,44 +2,44 @@
 class Gcm { 
     function __construct() {     
     } 
-    /*--- Enviando notificaciones push ----*/ 
-    public function send_notification($registatoin_ids, $message) { 
-        // variable post http://developer.android.com/google/gcm/http.html#auth 
-        $url = 'https://android.googleapis.com/gcm/send'; 
+    /*Google Developer Console Server API*/
+    const API_ACCESS_KEY = "AIzaSyBsqZ6IGfpgwdXXn8Qte_Cuggs3Fgsl5iw";
 
-        $fields = array( 
-            'registration_ids' => $registatoin_ids, 
-            'data' => $message, 
-        ); 
+    public function send_notification($msg, $ids) 
+    { 
+        if (is_array($ids)) {
+            $registrationIds = $ids;
+        } else {
+            $registrationIds = array($ids);
+        }
 
-        $headers = array( 
-            'Authorization: key=AIzaSyBChFiGP0sqvN_T7izQHUKQYuxBj1Dq5pI', 
-            'Content-Type: application/json' 
-        ); 
-        // abriendo la conexion 
-        $ch = curl_init(); 
+        $fields = array
+        (
+            'registration_ids'  => $registrationIds,
+            'data'              => $msg
+        );
 
-        // Set the url, number of POST vars, POST data 
-        curl_setopt($ch, CURLOPT_URL, $url); 
+        $headers = array
+        (
+            'Authorization: key=' . self::API_ACCESS_KEY,
+            'Content-Type: application/json'
+        );
 
-        curl_setopt($ch, CURLOPT_POST, true); 
-        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers); 
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true); 
+        $ch = curl_init();
+        curl_setopt( $ch,CURLOPT_URL, 'https://android.googleapis.com/gcm/send');
+        curl_setopt( $ch,CURLOPT_POST, true );
+        curl_setopt( $ch,CURLOPT_HTTPHEADER, $headers);
+        curl_setopt( $ch,CURLOPT_RETURNTRANSFER, true);
+        curl_setopt( $ch,CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt( $ch,CURLOPT_POSTFIELDS, json_encode( $fields ) );
+        $result = curl_exec($ch );
+        // Error handling
+        if (curl_errno($ch)) {
+            return false;
+        }
 
-        // Deshabilitamos soporte de certificado SSL temporalmente 
-        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false); 
-
-        curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($fields)); 
-
-        // ejecutamos el post 
-        $result = curl_exec($ch); 
-        if ($result === FALSE) { 
-
-             return 'result es igual a false';
-        } 
-        // Cerramos la conexion 
-        curl_close($ch);
-return 'termino sin errores'; 
-    } 
+        curl_close( $ch );
+        return true;
+    }
 }
 ?>

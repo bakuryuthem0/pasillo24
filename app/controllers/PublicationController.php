@@ -1,7 +1,43 @@
 <?php
 
 class PublicationController extends BaseController {
+	function chequear($publication,$img1,$donde,$size,$watermark)
+	{
+		if (file_exists('images/pubImages/'.Auth::user()['username'].'/'.$img1->getClientOriginalName())) {
+			//guardamos la imagen en public/imgs con el nombre original
+            $i = 0;//indice para el while
+            //separamos el nombre de la img y la extensión
+            $info = explode(".",$img1->getClientOriginalName());
+            //asignamos de nuevo el nombre de la imagen completo
+            $miImg = $img1->getClientOriginalName();
+            //mientras el archivo exista iteramos y aumentamos i
+            while(file_exists('images/pubImages/'.Auth::user()['username'].'/'. $miImg)){
+                $i++;
+                $miImg = $info[0]."(".$i.")".".".$info[1];              
+            }
+            //guardamos la imagen con otro nombre ej foto(1).jpg || foto(2).jpg etc
+            $img1->move("images/pubImages/".Auth::user()['username'],$miImg);
 
+            $img 	= Image::make('images/pubImages/'.Auth::user()['username'].'/'.$miImg);
+	        $mark = Image::make('images/watermark.png')->widen(400);
+            
+	        $img->insert($mark,'center')
+           	->interlace()
+            ->save('images/pubImages/'.Auth::user()['username'].'/'.$miImg);
+		}else
+		{
+			$img1->move("images/pubImages/".Auth::user()['username'],$img1->getClientOriginalName());
+
+			$img = Image::make('images/pubImages/'.Auth::user()['username'].'/'.$img1->getClientOriginalName());
+            
+	        $mark = Image::make('images/watermark.png')->widen($watermark);
+	        $img->insert($mark,'center')
+           	->interlace()
+            ->save('images/pubImages/'.Auth::user()['username'].'/'.$img1->getClientOriginalName());
+
+            
+		}
+	}
 	public function upload_images($file)
 	{
 		if (file_exists('images/pubImages/'.Auth::user()['username'].'/'.$file->getClientOriginalName())) {
@@ -19,21 +55,10 @@ class PublicationController extends BaseController {
             //guardamos la imagen con otro nombre ej foto(1).jpg || foto(2).jpg etc
             $file->move("images/pubImages/".Auth::user()['username'],$miImg);
             $img = Image::make('images/pubImages/'.Auth::user()['username'].'/'.$miImg);
-            $blank = Image::make('images/blank.jpg');
-	             if ($img->width() > $img->height()) {
-		        	$img->widen(1604);
-		        }else
-		        {
-		        	$img->heighten(804);
-		        }
-		        if ($img->height() > 804) {
-		        	$img->heighten(804);
-		        }
-		        $mark = Image::make('images/watermark.png')->widen(400);
-		        $blank->insert($img,'center');
-		        $blank->insert($mark,'center')
-	           	->interlace()
-	            ->save('images/pubImages/'.Auth::user()['username'].'/'.$miImg);
+	        $mark = Image::make('images/watermark.png')->widen(400);
+	        $img->insert($mark,'center')
+           	->interlace()
+            ->save('images/pubImages/'.Auth::user()['username'].'/'.$miImg);
             if($miImg != $file->getClientOriginalName()){
 				return Auth::user()['username'].'/'.$miImg;
             }
@@ -41,22 +66,11 @@ class PublicationController extends BaseController {
 		{
 			$file->move("images/pubImages/".Auth::user()['username'],$file->getClientOriginalName());
 			$img = Image::make('images/pubImages/'.Auth::user()['username'].'/'.$file->getClientOriginalName());
-	           $blank = Image::make('images/blank.jpg');
-	             if ($img->width() > $img->height()) {
-		        	$img->widen(1604);
-		        }else
-		        {
-		        	$img->heighten(804);
-		        }
-		        if ($img->height() > 804) {
-		        	$img->heighten(804);
-		        }
-		        $mark = Image::make('images/watermark.png')->widen(400);
-		        $blank->insert($img,'center');
-		        $blank->insert($mark,'center')
-	           	->interlace()
-	            ->save("images/pubImages/".Auth::user()['username'].'/'.$file->getClientOriginalName());
-	            return Auth::user()['username'].'/'.$file->getClientOriginalName();
+	        $mark = Image::make('images/watermark.png')->widen(400);
+	        $img->insert($mark,'center')
+           	->interlace()
+            ->save("images/pubImages/".Auth::user()['username'].'/'.$file->getClientOriginalName());
+            return Auth::user()['username'].'/'.$file->getClientOriginalName();
 		}
 	}
 	
@@ -140,7 +154,6 @@ class PublicationController extends BaseController {
 	}
 	public function getPublication($id)
 	{
-		$id = base64_decode($id);
 		$pub = Publicaciones::find($id);
 		$user = User::find($pub->user_id);
 		if ($pub->user_id != 21) {
@@ -400,23 +413,18 @@ class PublicationController extends BaseController {
 			$comentarios->created_at = date('Y-m-d',time());
 			$comentarios->save();
 			$msg = "Han comentado tu publicacion: ".$publication->titulo;
-			$user = User::find($publication->user_id);
 			$data = array(
-				'message' 		=> $msg,
-				'title'   		=> $msg,
-				'msgcnt'  		=> null,
-				'timeToLive' 	=> 3000,
+				"type"		=> "comment",
+				"pub_id"	=> $comentarios->pub_id,
+				"message"	=> $msg,
+				"title"		=> "Han comentado tu publicación",
 			);
-			$gcm = GcmDevices::where('user_id','=',$user->id)->orderBy('id','DESC')->get(array('gcm_regid'));
-			$regId = array();
-			$i = 0;
-			foreach($gcm as $g)
-			{
-				$regId[$i] = $g['gcm_regid'];
-				$i++;
+			$user = User::with('gcmdevices')->find($publication->user_id);
+			foreach($user->gcmdevices as $gcm) {
+				$regId = $gcm->gcm_regid;
+				$doGcm = new Gcm;
+				$response = $doGcm->send_notification($data,$regId);
 			}
-			$doGcm = new Gcm;
-			$response = $doGcm->send_notification($regId,$data);
 			return Response::json(array('type' => 'success', 'msg' => 'Comentario Guardado Sactisfactoriamente','date' => date('d-m-Y',strtotime($comentarios->created_at))));
 		}
 		
@@ -651,26 +659,21 @@ class PublicationController extends BaseController {
 			$message->to($to_Email)->from('pasillo24.com@pasillo24.com')->subject($subject);
 		});
 		if ($resp->save()) {
-			
 			$com->respondido = 1;
 			$com->save();
 			$msg = "Han respondido tu comentario: ".$com->comentario;
 			$data = array(
-				'message' 		=> $msg,
-				'title'   		=> $msg,
-				'msgcnt'  		=> null,
-				'timeToLive' 	=> 3000,
+				"type"		=> "comment",
+				"pub_id"	=> $comentarios->pub_id,
+				"message"	=> $msg,
+				"title"		=> "Han respondido tu comentario",
 			);
-			/*$gcm = GcmDevices::where('usuario','=',$user->username)->orderBy('id','DESC')->get(array('gcm_regid'));
-			$regId = array();
-			$i = 0;
-			foreach($gcm as $g)
-			{
-				$regId[$i] = $g['gcm_regid'];
-				$i++;
+			$user = User::with('gcmdevices')->find($com->user_id);
+			foreach($user->gcmdevices as $gcm) {
+				$regId = $gcm->gcm_regid;
+				$doGcm = new Gcm;
+				$response = $doGcm->send_notification($data,$regId);
 			}
-			$doGcm = new Gcm;
-			$response = $doGcm->send_notification($regId,$data);*/
 			return Response::json(array('type' => 'success','msg' => 'Respuesta guardada satisfactoriamente'));
 		}else
 		{
@@ -680,68 +683,6 @@ class PublicationController extends BaseController {
 	}
 	public function postPublicationCasual()
 	{
-		function chequear($publication,$img1,$donde)
-		{
-			if (file_exists('images/pubImages/'.Auth::user()['username'].'/'.$img1->getClientOriginalName())) {
-				//guardamos la imagen en public/imgs con el nombre original
-	            $i = 0;//indice para el while
-	            //separamos el nombre de la img y la extensión
-	            $info = explode(".",$img1->getClientOriginalName());
-	            //asignamos de nuevo el nombre de la imagen completo
-	            $miImg = $img1->getClientOriginalName();
-	            //mientras el archivo exista iteramos y aumentamos i
-	            while(file_exists('images/pubImages/'.Auth::user()['username'].'/'. $miImg)){
-	                $i++;
-	                $miImg = $info[0]."(".$i.")".".".$info[1];              
-	            }
-	            //guardamos la imagen con otro nombre ej foto(1).jpg || foto(2).jpg etc
-	            $img1->move("images/pubImages/".Auth::user()['username'],$miImg);
-	            $img = Image::make('images/pubImages/'.Auth::user()['username'].'/'.$miImg);
-	            $blank = Image::make('images/blank.jpg');
-	              if ($img->width() > $img->height()) {
-		        	$img->widen(1604);
-		        }else
-		        {
-		        	$img->heighten(804);
-		        }
-		        if ($img->height() > 804) {
-		        	$img->heighten(804);
-		        }
-		        $mark = Image::make('images/watermark.png')->widen(400);
-		        $blank->insert($img,'center');
-		        $blank->insert($mark,'center')
-	           	->interlace()
-	            ->save('images/pubImages/'.Auth::user()['username'].'/'.$miImg);
-	            if($miImg != $img1->getClientOriginalName()){
-	            	if($donde == 1)
-	            	{
-		                $publication->img_1 = Auth::user()['username'].'/'.$miImg;
-	            	}elseif($donde == 2)
-	            	{
-	            		$publication->img_2 = Auth::user()['username'].'/'.$miImg;
-	            	}
-	            }
-			}else
-			{
-				$img1->move("images/pubImages/".Auth::user()['username'],$img1->getClientOriginalName());
-				$img = Image::make('images/pubImages/'.Auth::user()['username'].'/'.$img1->getClientOriginalName());
-	            $blank = Image::make('images/blank.jpg');
-	             if ($img->width() > $img->height()) {
-		        	$img->widen(1604);
-		        }else
-		        {
-		        	$img->heighten(804);
-		        }
-		        if ($img->height() > 804) {
-		        	$img->heighten(804);
-		        }
-		        $mark = Image::make('images/watermark.png')->widen(400);
-		        $blank->insert($img,'center');
-		        $blank->insert($mark,'center')
-	           	->interlace()
-	            ->save("images/pubImages/".Auth::user()['username'].'/'.$img1->getClientOriginalName());
-			}
-		}
 		$input = Input::all();
 		if (!Input::hasFile('img1')) {
 			Session::flash('error', 'La imagen de la portada es obligatoria.');
@@ -819,11 +760,10 @@ class PublicationController extends BaseController {
 		{
 			$pub = new Publicaciones;
 			$pub->img_1 = Auth::user()['username'].'/'.$img1->getClientOriginalName();
-			
-			chequear($pub,$img1,1);
+			$this->chequear($pub,$img1,1,2000,500);
 	        if (Input::hasFile('img2')) {
 				$pub->img_2 = Auth::user()['username'].'/'.$img2->getClientOriginalName();
-				chequear($pub,$img2,2);
+				$this->chequear($pub,$img2,2,2000,500);
 			}
 			$pub->user_id = Auth::id();
 			$pub->tipo 		  = 'Casual';
@@ -897,75 +837,6 @@ class PublicationController extends BaseController {
 	}
 	public function postPublicationHabitual()
 	{
-		function chequear($publication,$img1,$donde)
-		{
-			if (file_exists('images/pubImages/'.Auth::user()['username'].'/'.$img1->getClientOriginalName())) {
-				//guardamos la imagen en public/imgs con el nombre original
-	            $i = 0;//indice para el while
-	            //separamos el nombre de la img y la extensión
-	            $info = explode(".",$img1->getClientOriginalName());
-	            //asignamos de nuevo el nombre de la imagen completo
-	            $miImg = $img1->getClientOriginalName();
-	            //mientras el archivo exista iteramos y aumentamos i
-	            while(file_exists('images/pubImages/'.Auth::user()['username'].'/'. $miImg)){
-	                $i++;
-	                $miImg = $info[0]."(".$i.")".".".$info[1];              
-	            }
-	            //guardamos la imagen con otro nombre ej foto(1).jpg || foto(2).jpg etc
-	            $img1->move("images/pubImages/".Auth::user()['username'],$miImg);
-	            $img = Image::make('images/pubImages/'.Auth::user()['username'].'/'.$miImg);
-	            $blank = Image::make('images/blank.jpg');
-	             if ($img->width() > $img->height()) {
-		        	$img->widen(1604);
-		        }else
-		        {
-		        	$img->heighten(804);
-		        }
-		        if ($img->height() > 804) {
-		        	$img->heighten(804);
-		        }
-		        $mark = Image::make('images/watermark.png')->widen(400);
-		        $blank->insert($img,'center');
-		        $blank->insert($mark,'center')
-	           	->interlace()
-	            ->save('images/pubImages/'.Auth::user()['username'].'/'.$miImg);
-	            if($miImg != $img1->getClientOriginalName()){
-	            	if($donde == 1)
-	            	{
-		                $publication->img_1 = Auth::user()['username'].'/'.$miImg;
-	            	}elseif($donde == 2)
-	            	{
-	            		$publication->img_2 = Auth::user()['username'].'/'.$miImg;
-	            	}
-	            }
-			}else
-			{
-				$img1->move("images/pubImages/".Auth::user()['username'],$img1->getClientOriginalName());
-				$img = Image::make('images/pubImages/'.Auth::user()['username'].'/'.$img1->getClientOriginalName());
-	            $blank = Image::make('images/blank.jpg');
-	             if ($img->width() > $img->height()) {
-		        	$img->widen(1604);
-		        }else
-		        {
-		        	$img->heighten(804);
-		        }
-		        if ($img->height() > 804) {
-		        	$img->heighten(804);
-		        }
-		        $mark = Image::make('images/watermark.png')->widen(400);
-		        $blank->insert($img,'center');
-		        $blank->insert($mark,'center')
-	           	->interlace()
-	            ->save("images/pubImages/".Auth::user()['username'].'/'.$img1->getClientOriginalName());
-	            if($donde == 1)
-            	{
-	                $publication->img_1 = Auth::user()['username'].'/'.$img1->getClientOriginalName();
-            	}elseif($donde == 2)
-            	{
-            		$publication->img_2 = Auth::user()['username'].'/'.$img1->getClientOriginalName();
-            	}
-			}
-		}
 		$input = Input::all();
 		$rules = array(
 
@@ -975,7 +846,7 @@ class PublicationController extends BaseController {
 			'input'			=> 'required|min:4',
 			'moneda'		=> 'required',
 			'moneda'		=> 'required',
-			'img1'			=> 'required|image',
+			'img1'			=> 'required|image|max:3000',
 			'tipoTransac'	=> 'required',
 			'negocioType'   => 'required',
 
@@ -992,7 +863,7 @@ class PublicationController extends BaseController {
 			'departamento'  => 'El campo departamento',
 			'title'		 	=> 'El campo titulo',
 			'input' 	 	=> 'El campo descripcion',
-			'img1'		 	=> 'El campo imagen de portada',
+			'img1'		 	=> 'El campo imagen principal',
 			'moneda'		=> 'El campo moneda',
 			'tipoTransac'	=> 'El campo tipo de operación',
 			'negocioType'   => 'El campo clase de negocio',
@@ -1082,7 +953,7 @@ class PublicationController extends BaseController {
 		if (!empty($input['pag_web'])) {
 			$pub->pag_web_hab = $input['pag_web'];
 		}
-		chequear($pub,$img1,1);
+		$this->chequear($pub,$img1,1,2000,500);
 		
 		if ($input['cat_id'] == 34) {
 			$pub->marca_id		= $input['marca'];
@@ -1193,15 +1064,12 @@ class PublicationController extends BaseController {
             $img = Image::make('images/pubImages/'.Auth::user()['username'].'/'.$miImg);
             $blank = Image::make('images/blank.jpg');
 	             if ($img->width() > $img->height()) {
-		        	$img->widen(1604);
+		        	$img->widen(2000);
 		        }else
 		        {
-		        	$img->heighten(804);
+		        	$img->heighten(2000);
 		        }
-		        if ($img->height() > 804) {
-		        	$img->heighten(804);
-		        }
-		        $mark = Image::make('images/watermark.png')->widen(400);
+		        $mark = Image::make('images/watermark.png')->widen(500);
 		        $blank->insert($img,'center');
 		        $blank->insert($mark,'center')
 	           	->interlace()
@@ -1235,15 +1103,13 @@ class PublicationController extends BaseController {
 			$img = Image::make('images/pubImages/'.Auth::user()['username'].'/'.$file->getClientOriginalName());
 	           $blank = Image::make('images/blank.jpg');
 	             if ($img->width() > $img->height()) {
-		        	$img->widen(1604);
+		        	$img->widen(2000);
 		        }else
 		        {
-		        	$img->heighten(804);
+		        	$img->heighten(500);
 		        }
-		        if ($img->height() > 804) {
-		        	$img->heighten(804);
-		        }
-		        $mark = Image::make('images/watermark.png')->widen(400);
+		        
+		        $mark = Image::make('images/watermark.png')->widen(500);
 		        $blank->insert($img,'center');
 		        $blank->insert($mark,'center')
 	           	->interlace()
@@ -1352,23 +1218,19 @@ class PublicationController extends BaseController {
 		if ($comp->save()) {
 			$pub = Publicaciones::find($id);
 			$user = User::find($pub->user_id);
-			$msg = "Han respondido tu comentario: ".$pub->titulo;
+			$msg = "Te han contactado por la publicación: ".$pub->titulo;
 			$data = array(
-				'message' 		=> $msg,
-				'title'   		=> $msg,
-				'msgcnt'  		=> null,
-				'timeToLive' 	=> 3000,
+				"type"		=> "contact",
+				"pub_id"	=> $comp->pub_id,
+				"message"	=> $msg,
+				"title"		=> "Te han contactado",
 			);
-			/*$gcm = GcmDevices::where('usuario','=',$user->username)->orderBy('id','DESC')->get(array('gcm_regid'));
-			$regId = array();
-			$i = 0;
-			foreach($gcm as $g)
-			{
-				$regId[$i] = $g['gcm_regid'];
-				$i++;
+			$user = User::with('gcmdevices')->find($comp->user_id);
+			foreach($user->gcmdevices as $gcm) {
+				$regId = $gcm->gcm_regid;
+				$doGcm = new Gcm;
+				$response = $doGcm->send_notification($data,$regId);
 			}
-			$doGcm = new Gcm;
-			$response = $doGcm->send_notification($regId,$data);*/
 			return Redirect::to('usuario/mis-compras');
 		}
 	}
@@ -1451,7 +1313,7 @@ class PublicationController extends BaseController {
 			$url = "usuario/publicacion/modificar/casual/".$id;
 		}
 		$categorias = Categorias::all();
-		$subCat = SubCat::all();
+		$subCat = SubCat::where('categoria_id','=',$pub->categoria)->get();
 		$departamento = Department::all();
 		if ($pub->categoria == 34) {
 			$marcas = Marcas::all();
@@ -1680,6 +1542,9 @@ class PublicationController extends BaseController {
 			if (!empty($input['ciudad'])) {
 				$pub->ciudad = $input['ciudad'];
 			}
+			if (!empty($input['negocioType'])) {
+				$pub->bussiness_type = $input['negocioType'];
+			}
 			if ($pub->categoria == 34) {
 				if (!empty($input['marca'])) {
 					$pub->marca_id = $input['marca'];
@@ -1738,11 +1603,11 @@ class PublicationController extends BaseController {
 	{
 		if (Request::ajax()) {
 			$id = Input::get('id');
-			$subCat = SubCat::where('categoria_id','=',$id)->get();
+			$subCat = SubCat::where('categoria_id','=',$id)->orderBy('nombre')->get();
 			return $subCat;
 		}
 	}
-public function postElimPub()
+	public function postElimPub()
 	{
 		if (Request::ajax()) {
 			$id = Input::get('id');
@@ -1907,5 +1772,25 @@ public function postElimPub()
 			return Response::json(array('type' => 'danger'));
 		}
 		
+	}
+	public function getLocations()
+	{
+		if (Request::ajax()) {
+			$pub_id 	= Input::id();
+			$pub = Publicaciones::with('location')->find($pub_id);
+			$origLat = $pub->location->latitude;
+			$origLon = $pub->location->longitude;
+			$haversine  = "3956*2*ASIN(SQRT(POWER(SIN(($origLat - latitude)*pi()/180/2),2)+COS($origLat*pi()/180 )*COS(latitude*pi()/180)*POWER(SIN(($origLon-longitude)*pi()/180/2),2)))";
+			$dist 	= 10; 
+			$sql = "SELECT id, pub_id, latitude, longitude, ($haversine) as distance FROM locations 
+			WHERE longitude BETWEEN $origLon - $dist/COS(radians($origLat))*69 AND $origLon+$dist/COS(radians($origLat))*69
+			AND latitude BETWEEN $origLat-($dist/69) AND  $origLat+($dist/69) HAVING distance < $dist ORDER BY distance LIMIT 5";
+			$aux = DB::select($sql);
+			return $aux;
+		}
+		return Response::json(array(
+			'type'  => 'danger',
+			'msg'	=> 'Acceso restringido'
+		));
 	}
 }

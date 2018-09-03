@@ -93,12 +93,16 @@ class AdministratorController extends BaseController {
         });
         $publicacion->motivo = "";
         if ($publicacion->save()) {
-            Session::flash('success', 'Publicación aprobada satisfactoriamente');
-            return Redirect::to('administrador/pagos/'.$url);
+            return Response::json(array(
+                'type' => 'success',
+                'msg'  => 'Publicación aprobada satisfactoriamente',
+            ));
         }else
         {
-            Session::flash('error', 'No se pudo aprobar la publicación');
-            return Redirect::to('administrador/pagos');
+            return Response::json(array(
+                'type' => 'danger',
+                'msg'  => 'No se pudo aprobar la publicación',
+            ));
         }
     }
     public function postPagosCancel()
@@ -528,10 +532,10 @@ class AdministratorController extends BaseController {
             'motivo'      => $motivo,
         );
         $to_Email = $user->email;
-        Mail::send('emails.elimPubUser', $data, function($message) use ($titulo,$to_Email,$subject)
+        /*Mail::send('emails.elimPubUser', $data, function($message) use ($titulo,$to_Email,$subject)
         {
             $message->to($to_Email)->from('pasillo24.com@pasillo24.com')->subject($subject);
-        });
+        });*/
         $pub->deleted = 1;
         $pub->save();
 
@@ -544,10 +548,10 @@ class AdministratorController extends BaseController {
             'creadoPor'=> $admin
         );
         $to_Email = 'gestor@pasillo24.com';
-        Mail::send('emails.elmPub', $data, function($message) use ($titulo,$admin,$to_Email,$subject)
+        /*Mail::send('emails.elmPub', $data, function($message) use ($titulo,$admin,$to_Email,$subject)
         {
             $message->to($to_Email)->from('pasillo24.com@pasillo24.com')->subject($subject);
-        });
+        });*/
         return Response::json(array('type' => 'success','msg' => 'Publicación eliminada satisfactoriamente. Hemos enviado un email al correo.'));
     }
     public function getModifyPub()

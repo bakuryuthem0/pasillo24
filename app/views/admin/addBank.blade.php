@@ -60,7 +60,7 @@
 						 @endforeach
 					@endif
 				</div>
-				<div class="col-xs-12">
+				<div class="col-xs-12 formulario">
 					<button class="btn btn-success">Enviar</button>
 					<input type="reset" class="btn btn-warning" value="Borrar">
 				</div>

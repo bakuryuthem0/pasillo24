@@ -40,6 +40,42 @@ class AjaxController extends BaseController{
 		'usuario.votes',
 		'departamento.nombre as dep_desc' 
 	);
+	public function upload_images($file, $user)
+	{
+		$filename = $file->getClientOriginalName();
+		if (file_exists('images/pubImages/'.$user->username.'/'.$filename)) {
+			//guardamos la imagen en public/imgs con el nombre original
+            $i = 0;//indice para el while
+            //separamos el nombre de la img y la extensión
+            $info = explode(".",$filename);
+            //asignamos de nuevo el nombre de la imagen completo
+            $miImg = $filename;
+            //mientras el archivo exista iteramos y aumentamos i
+            while(file_exists('images/pubImages/'.$user->username.'/'. $miImg)){
+                $i++;
+                $miImg = $info[0]."(".$i.")".".".$info[1];              
+            }
+            //guardamos la imagen con otro nombre ej foto(1).jpg || foto(2).jpg etc
+            $file->move("images/pubImages/".$user->username,$miImg);
+            $img = Image::make('images/pubImages/'.$user->username.'/'.$miImg);
+	        $mark = Image::make('images/watermark.png')->widen(400);
+	        $img->insert($mark,'center')
+           	->interlace()
+            ->save('images/pubImages/'.$user->username.'/'.$miImg);
+            if($miImg != $filename){
+				return $user->username.'/'.$miImg;
+            }
+		}else
+		{
+			$file->move("images/pubImages/".$user->username,$filename);
+			$img = Image::make('images/pubImages/'.$user->username.'/'.$filename);
+	        $mark = Image::make('images/watermark.png')->widen(400);
+	        $img->insert($mark,'center')
+           	->interlace()
+            ->save("images/pubImages/".$user->username.'/'.$filename);
+            return $user->username.'/'.$filename;
+		}
+	}
 	/*---------------------------Login-------------------------------------------------*/
 	/*                                                                                 */
 	/*                                                                                 */
@@ -51,10 +87,23 @@ class AjaxController extends BaseController{
 	/*                                                                                 */
 	/*                                                                                 */
 	/*---------------------------Login-------------------------------------------------*/
-
+	public function getGcm()
+	{
+		$regId = Input::get('gcm_token');
+		$id = Input::get('id');
+		$aux = GcmDevices::where('gcm_regid','=',$regId)->where('user_id','=',$id)->first();
+		if (is_null($aux) || empty($aux)) {
+			$new   = new GcmDevices;
+			$new->gcm_regid = $regId;
+			$new->user_id   = $id;
+			$new->save();
+		}
+		return Response::json(array(
+			'type' => 'success',
+		));
+	}
 	public function getLoginApp()
 	{
-		/*Se reciven los datos del usuario*/
 
 	    $username = Input::get("username"); 
 	    $password = Input::get("password");
@@ -65,16 +114,18 @@ class AjaxController extends BaseController{
 			if (Hash::check($password, $user->password)) 
 			{
 				/*Se toma el id del movil y se busca en la base de datos*/
-				$regId = Input::get('regId');
-				$aux = GcmDevices::find($regId);
-				if (is_null($aux) || empty($aux)) {
-					$new   = new GcmDevices;
-					$new->gcm_regid = $regId;
-					$new->user_id   = $user->id;
-					$new->save();
+				if (Input::has('gcm_token')) {
+					$regId = Input::get('gcm_token');
+					$aux = GcmDevices::where('gcm_regid','=',$regId)->where('id','=',$user->id)->count();
+					if (is_null($aux) || empty($aux) || $aux < 1) {
+						$new   = new GcmDevices;
+						$new->gcm_regid = $regId;
+						$new->user_id   = $user->id;
+						$new->save();
+					}
+					/*Si no se encuentra (primera vez que inicia en este movil) se crea un nuevo registro*/
+					/*Se devuelven los datos en forma de json*/
 				}
-				/*Si no se encuentra (primera vez que inicia en este movil) se crea un nuevo registro*/
-				/*Se devuelven los datos en forma de json*/
 				$username = $user->username;
 				$user_id  = $user->id;
 				if (is_null($user->auth_token)) {
@@ -85,7 +136,8 @@ class AjaxController extends BaseController{
 					'type'	   => 'success',
 					'msg'	   => 'Ha iniciado sesión satisfactoriamente',
 					'userdata' => $user,
-					'auth_token' => $user->auth_token);
+					'auth_token' => $user->auth_token
+				);
 				return Response::json($n);
 			}else
 			{
@@ -415,6 +467,7 @@ class AjaxController extends BaseController{
 		$title ="Inicio | pasillo24.com";
 		if (!is_null($id)) {
 			$lider = Publicaciones::join('usuario','usuario.id','=','publicaciones.user_id')
+			->leftJoin('departamento','publicaciones.departamento','=','departamento.id')
 			->where('publicaciones.status','=','Aprobado')
 			->where('publicaciones.ubicacion','=','Principal')
 			->where('publicaciones.tipo','=','Lider')
@@ -423,6 +476,7 @@ class AjaxController extends BaseController{
 			->where('publicaciones.deleted','=',0)
 			->orderBy('publicaciones.fechFin','desc')->get($this->toReturn);
 			$habitual = Publicaciones::join('usuario','usuario.id','=','publicaciones.user_id')
+			->leftJoin('departamento','publicaciones.departamento','=','departamento.id')
 			->where(function($query) use($id){
 				/*Busco las habituales*/
 				$query->where('publicaciones.tipo','=','Habitual')
@@ -453,6 +507,7 @@ class AjaxController extends BaseController{
 			->orderBy('publicaciones.fechFin','desc')->get($this->toReturn);
 			
 			$casual = Publicaciones::join('usuario','usuario.id','=','publicaciones.user_id')
+			->leftJoin('departamento','publicaciones.departamento','=','departamento.id')
 			->where('publicaciones.tipo','=','Casual')
 			->where('publicaciones.fechFin','>=',date('Y-m-d',time()))
 			->where('publicaciones.status','=','Aprobado')
@@ -462,6 +517,7 @@ class AjaxController extends BaseController{
 		}else
 		{
 			$lider = Publicaciones::join('usuario','usuario.id','=','publicaciones.user_id')
+			->leftJoin('departamento','publicaciones.departamento','=','departamento.id')
 			->where('publicaciones.status','=','Aprobado')
 			->where('publicaciones.ubicacion','=','Principal')
 			->where('publicaciones.tipo','=','Lider')
@@ -470,6 +526,7 @@ class AjaxController extends BaseController{
 			->where('publicaciones.deleted','=',0)
 			->orderBy('publicaciones.fechFin','desc')->get($this->toReturn);
 			$habitual = Publicaciones::join('usuario','usuario.id','=','publicaciones.user_id')
+			->leftJoin('departamento','publicaciones.departamento','=','departamento.id')
 			->where(function($query){
 				/*Busco las habituales*/
 				$query->where('publicaciones.tipo','=','Habitual')
@@ -497,13 +554,14 @@ class AjaxController extends BaseController{
 			})
 			->orderBy('publicaciones.fechFin','desc')->get($this->toReturn);
 			$casual = Publicaciones::join('usuario','usuario.id','=','publicaciones.user_id')
+			->leftJoin('departamento','publicaciones.departamento','=','departamento.id')
 			->where('publicaciones.tipo','=','Casual')
 			->where('publicaciones.fechFin','>=',date('Y-m-d',time()))
 			->where('publicaciones.status','=','Aprobado')
 			->where('publicaciones.deleted','=',0)
 			->get($this->toReturn);
 		}
-
+		/*
 		$categories = Categorias::where('deleted','=',0)->where('tipo','=',1)->orderBy('nombre')->get();
 		$otros = new StdClass;
 		foreach ($categories as $c) {
@@ -531,17 +589,17 @@ class AjaxController extends BaseController{
 			$otros2->nombre = 'Otros';
 		}
 		$departamentos  = Department::get();
-        $publi 			= Publicidad::get();
+        $publi 			= Publicidad::get();*/
 		if (!is_null($id)) {
         	return Response::json(array(
         		'pubLider' 		=> $lider,
         		'pubHabitual' 	=> $habitual,
         		'pubCasual' 	=> $casual,	
-        		'categorias' 	=> $categories,
-        		'servicios'     => $servicios,
-        		'departamentos' => $departamentos,
-        		'publi' 		=> $publi,
-        		'depFilter' 	=> $dep->id
+        		//'categorias' 	=> $categories,
+        		//'servicios'     => $servicios,
+        		//'departamentos' => $departamentos,
+        		//'publi' 		=> $publi,
+        		//'depFilter' 	=> $dep->id
           	));
         }else
         {
@@ -549,10 +607,10 @@ class AjaxController extends BaseController{
         		'pubLider' 		=> $lider,
         		'pubHabitual' 	=> $habitual,
         		'pubCasual' 	=> $casual,	
-        		'categorias' 	=> $categories,
-        		'servicios'     => $servicios,
-        		'departamentos' => $departamentos,
-        		'publi' 		=> $publi,
+        		//'categorias' 	=> $categories,
+        		//'servicios'     => $servicios,
+        		//'departamentos' => $departamentos,
+        		//'publi' 		=> $publi,
           	));
         }
 	}
@@ -560,6 +618,18 @@ class AjaxController extends BaseController{
 	{
 		$id = Input::get('pub_id');
 		$pub = Publicaciones::find($id);
+		if ($pub->tipo == 'Lider') {
+			$url = URL::to('publicacion/lider/'.base64_encode($id));
+			
+		}elseif($pub->tipo == "Habitual")
+		{
+			$url = URL::to('publicacion/habitual/'.base64_encode($id));
+
+		}elseif($pub->tipo == "Casual")
+		{
+			$url = URL::to('publicacion/casual/'.base64_encode($id));
+			
+		}
 		$user = User::find($pub->user_id);
 		if ($pub->user_id != 21) {
 			$otrasPub = Publicaciones::where('user_id','=',$pub->user_id)
@@ -596,11 +666,12 @@ class AjaxController extends BaseController{
 		{
 			$otrasPub = array();
 		}
-		if ($pub->tipo == "Lider") {
-			$pub = Publicaciones::leftJoin('locations','locations.pub_id','=','publicaciones.id')
+		if ($pub->tipo == "Lider") 
+		{
+			$publication = Publicaciones::leftJoin('locations','locations.pub_id','=','publicaciones.id')
 			->join('usuario','usuario.id','=','publicaciones.user_id')
 			->where('publicaciones.id','=',$id)
-			->get(array(
+			->first(array(
 				'locations.longitude',
 				'locations.latitude',
 				'publicaciones.titulo',
@@ -622,19 +693,18 @@ class AjaxController extends BaseController{
 				'usuario.phone',
 				'usuario.reputation'
 			));
-			$publication = $pub[0];
-			
+
 		}elseif($pub->tipo == "Habitual")
 		{
 			if ($pub->categoria == 34) {
-				$pub = DB::table('publicaciones')
+				$publication = DB::table('publicaciones')
 				->leftJoin('locations','locations.pub_id','=','publicaciones.id')
-				->join('marcas','marcas.id','=','publicaciones.marca_id')
-				->join('modelo','modelo.id','=','publicaciones.modelo_id')
-				->join('departamento','departamento.id','=','publicaciones.departamento')
+				->leftJoin('marcas','marcas.id','=','publicaciones.marca_id')
+				->leftJoin('modelo','modelo.id','=','publicaciones.modelo_id')
+				->leftJoin('departamento','departamento.id','=','publicaciones.departamento')
 				->join('usuario','usuario.id','=','publicaciones.user_id')
 				->where('publicaciones.id','=',$id)
-				->get(array(
+				->first(array(
 					'locations.longitude',
 					'locations.latitude',
 					'usuario.id',
@@ -650,12 +720,12 @@ class AjaxController extends BaseController{
 					'publicaciones.*'
 				));
 			}else {
-				$pub = DB::table('publicaciones')
+				$publication = DB::table('publicaciones')
 				->leftJoin('locations','locations.pub_id','=','publicaciones.id')
 				->join('usuario','usuario.id','=','publicaciones.user_id')
 				->join('departamento','departamento.id','=','publicaciones.departamento')
 				->where('publicaciones.id','=',$id)
-				->get(array(
+				->first(array(
 					'locations.longitude',
 					'locations.latitude',
 					'usuario.id as user_id',
@@ -665,18 +735,15 @@ class AjaxController extends BaseController{
 				));
 			}		
 			
-			
-			$publication = $pub[0];
-
 		}elseif($pub->tipo == 'Casual')
 		{
-			$pub = Publicaciones::leftJoin('locations','locations.pub_id','=','publicaciones.id')
+			$publication = Publicaciones::leftJoin('locations','locations.pub_id','=','publicaciones.id')
 			->join('categoria','categoria.id','=','publicaciones.categoria')
 			->join('usuario','usuario.id','=','publicaciones.user_id')
 			->join('departamento','departamento.id','=','publicaciones.departamento')
 			->where('publicaciones.id','=',$id)
 			->where('publicaciones.tipo','=','Casual')
-			->get(array(
+			->first(array(
 				'locations.longitude',
 				'locations.latitude',
 				'usuario.id as user_id',
@@ -692,14 +759,12 @@ class AjaxController extends BaseController{
 				'publicaciones.tipo',
 				'departamento.nombre'
 			));
-			$publication = $pub[0];
 		}
 		$comentarios = DB::table('comentario')
 		->join('usuario','usuario.id','=','comentario.user_id')
 		->where('comentario.pub_id','=',$id)
 		->get(array('comentario.id','comentario.comentario','comentario.created_at','usuario.username'));
-
-		$resp = Respuestas::where('pub_id','=',$publication->id)->get();
+		$resp = Respuestas::where('pub_id','=',$id)->get();
 		return Response::json(array(
 			'publication' 	=> $publication,/*Toda la info esta pub*/
 			'comentarios' 	=> $comentarios, /*comentarios de esta pub*/
@@ -707,6 +772,7 @@ class AjaxController extends BaseController{
 			'respuestas' 	=> $resp, /*respuesta a los comentarios de esta pub*/
 			'otrasPub' 		=> $otrasPub,/*Otras pub de los usuarios*/
 			'username' 		=> $user->username,
+			'url' 			=> $url
 		));
 	}
 	/*---------------------------Busqueda----------------------------------------------*/
@@ -832,8 +898,8 @@ class AjaxController extends BaseController{
 				$auxLider =  $auxLider->where('publicaciones.bussiness_type','=',strtolower($buss));
 				$auxRes   =  $auxRes->where('publicaciones.bussiness_type','=',strtolower($buss));
 			}	
-			$lider = $auxLider->get($this->toReturn);
-			$res = $auxRes->paginate(5,$this->toReturn);
+			$lider = $auxLider->get(array_merge($this->toReturn));
+			$res = $auxRes->get(array_merge($this->toReturn,array('publicaciones.fechFin','publicaciones.fechFinNormal')));
 			$categorias = Categorias::where('id','=',$busq)->pluck('desc');
 			if (!is_null($categorias)) {
 				$busq = $categorias;
@@ -970,7 +1036,7 @@ class AjaxController extends BaseController{
 				$auxRes   =  $auxRes->where('publicaciones.bussiness_type','=',strtolower($buss));
 			}
 			$lider = $auxLider->get($this->toReturn);
-			$res = $auxRes->paginate(5,$this->toReturn);
+			$res = $auxRes->get(array_merge($this->toReturn,array('publicaciones.fechFin','publicaciones.fechFinNormal')));
 
 			$categorias = Categorias::where('id','=',$id)->pluck('id');
 			if (!is_null($categorias)) {
@@ -1088,6 +1154,20 @@ class AjaxController extends BaseController{
 			'busq' 			=> $id,
 		));
 	}
+	public function getLider()
+	{
+		$lider = Publicaciones::join('usuario','usuario.id','=','publicaciones.user_id')
+			->leftJoin('departamento','publicaciones.departamento','=','departamento.id')
+			->where('publicaciones.status','=','Aprobado')
+			->where('publicaciones.tipo','=','Lider')
+			->where('publicaciones.fechFin','>=',date('Y-m-d',time()))
+			->where('publicaciones.deleted','=',0)
+			->orderBy('publicaciones.fechFin','desc')->get($this->toReturn);
+		return Response::json(array(
+			'type' => 'success',
+			'data' => $lider, 
+		));
+	}
 	/*---------------------------Subir Imagenes----------------------------------------*/
 	/*                                                                                 */
 	/*                                                                                 */
@@ -1161,14 +1241,15 @@ class AjaxController extends BaseController{
 		define('CONST_SERVER_TIMEZONE', 'UTC');
 		date_default_timezone_set('America/La_Paz');
 		$rules = array(
-			'ubication' => 'required',
-			'namePub'   => 'required|min:4',
-			'duration'  => 'required|min:0',
-			'time'      => 'required|in:d,s,m,a',
-			'fechIni'   => 'required|after:'.date('d-m-Y'),
-			'id'   		=> 'required',
+			'ubication'  => 'required|in:Principal,Categoria',
+			'namePub'    => 'required|min:4',
+			'duration'   => 'required|min:0',
+			'time'       => 'required|in:d,s,m,a',
+			'fechIni'    => 'required|after:'.date('d-m-Y'),
+			'id'   		 => 'required',
 			'negocioType' => 'required',
-			'img_1'		=> 'required|image',
+			'dep'		  => 'required|exists:departamento,id',
+			//'img_1'		 => 'required|image',
 		);
 		$msg = array(
 			'required' => ':attribute es obligatorio',
@@ -1186,7 +1267,8 @@ class AjaxController extends BaseController{
 			'fechIni'   => 'El campo fecha de inicio',
 			'id'		=> 'Id del usuario',
 			'negocioType'=> 'El campo tipo de negocio',
-			'img_1'		=> 'Imagen principal'
+			'img_1'		=> 'Imagen principal',
+			'dep'		=> 'El campo departamento'
 
 		);
 		if ($input['ubication'] == 'Categoria'){
@@ -1271,6 +1353,7 @@ class AjaxController extends BaseController{
 			if(isset($input['pag_web']) && !empty($input['pag_web'])){
 				$publication->pag_web_hab = $input['pag_web'];
 			}
+			$publication->departamento = $input['dep'];
 			$publication->monto     = $monto;
 			$user = User::find($id);
 			if (Input::hasFile('img_1')) {
@@ -1290,7 +1373,7 @@ class AjaxController extends BaseController{
 						$loc = new Location;
 						$loc->latitude  = Input::get('latitud');
 						$loc->longitude = Input::get('longitud');
-						$loc->pub_id    = $pub->id;
+						$loc->pub_id    = $publication->id;
 						$loc->save();
 					}
 				}
@@ -1327,13 +1410,13 @@ class AjaxController extends BaseController{
 
 			'departamento'	=> 'required',
 			'ciudad'		=> 'required',
+			'cat_id'		=> 'required',
 			'subCat'	    => 'required',
 			'title' 		=> 'required|min:4',
 			'input'			=> 'required|min:4',
 			'moneda'		=> 'required',
 			'precio'		=> 'required_if:tipoTransac,venta,alquiler,Aticretico,otro',
-			'moneda'		=> 'required',
-			//'img1'			=> 'required|image',
+			'img1'			=> 'required|image|max:3000',
 			'tipoTransac'	=> 'required',
 			'negocioType'   => 'required',
 		);
@@ -1341,7 +1424,7 @@ class AjaxController extends BaseController{
 			'required' 	=> ':attribute es obligatorio',
 			'required_if' => ':attribute es obligatorio',
 			'min'		=> ':attribute debe ser mas largo',
-			//'image'		=> ':attribute debe ser una imagen',
+			'image'		=> ':attribute debe ser una imagen',
 			'numeric'	=> ':attribute debe ser numerico',
 			'image'		=> 'El archivo :attribute debe ser una imagen',
 		);
@@ -1351,11 +1434,11 @@ class AjaxController extends BaseController{
 			'departamento'  => 'El campo departamento',
 			'title'		 	=> 'El campo titulo',
 			'input' 	 	=> 'El campo descripcion',
-			//'img1'		 	=> 'El campo imagen de portada',
+			'img1'		 	=> 'El campo imagen de portada',
 			'moneda'		=> 'El campo moneda',
 			'tipoTransac'	=> 'El campo tipo de operación',
 			'subCat'		=> 'El campo sub-categoria',
-			'img_1'			=> 'Imagen principal',
+			'cat_id'		=> 'La categoria',
 
 		);
 		$aux = Input::get('cat_id');
@@ -1445,6 +1528,7 @@ class AjaxController extends BaseController{
 			$pub->anio 			= $input['anio'];
 			$pub->precio 		= $input['precio'];
 			$pub->kilometraje	= $input['kilo'];
+			$pub->documentos = $input['doc'];
 			if (isset($input['cilin']) && !empty($input['cilin'])) {
 				$pub->cilindraje = $input['cilin'];
 			}
@@ -1453,9 +1537,6 @@ class AjaxController extends BaseController{
 			}
 			if (isset($input['comb']) && !empty($input['comb'])) {
 				$pub->combustible = $input['comb'];
-			}
-			if (isset($input['doc']) && !empty($input['doc'])) {
-				$pub->documentos = $input['doc'];
 			}
 			if (isset($input['trac']) && !empty($input['trac'])) {
 				$pub->traccion = $input['trac'];
@@ -1466,35 +1547,35 @@ class AjaxController extends BaseController{
 		}
 		if (Input::hasFile('img_1')) {
 			$file1 = Input::file('img_1');
-			$publication->img_1 = $this->upload_image($user->username,$file1);
+			$pub->img_1 = $this->upload_image($user->username,$file1);
 		}
 		if (Input::hasFile('img_2')) {
 			$file2 = Input::file('img_2');
-			$publication->img_2 = $this->upload_image($user->username,$file2);
+			$pub->img_2 = $this->upload_image($user->username,$file2);
 		}
 		if (Input::hasFile('img_3')) {
 			$file3 = Input::file('img_3');
-			$publication->img_3 = $this->upload_image($user->username,$file3);
+			$pub->img_3 = $this->upload_image($user->username,$file3);
 		}
 		if (Input::hasFile('img_4')) {
 			$file4 = Input::file('img_4');
-			$publication->img_4 = $this->upload_image($user->username,$file4);
+			$pub->img_4 = $this->upload_image($user->username,$file4);
 		}
 		if (Input::hasFile('img_5')) {
 			$file5 = Input::file('img_5');
-			$publication->img_5 = $this->upload_image($user->username,$file5);
+			$pub->img_5 = $this->upload_image($user->username,$file5);
 		}
 		if (Input::hasFile('img_6')) {
 			$file6 = Input::file('img_6');
-			$publication->img_6 = $this->upload_image($user->username,$file6);
+			$pub->img_6 = $this->upload_image($user->username,$file6);
 		}
 		if (Input::hasFile('img_7')) {
 			$file7 = Input::file('img_7');
-			$publication->img_7 = $this->upload_image($user->username,$file7);
+			$pub->img_7 = $this->upload_image($user->username,$file7);
 		}
 		if (Input::hasFile('img_8')) {
 			$file8 = Input::file('img_8');
-			$publication->img_8 = $this->upload_image($user->username,$file8);
+			$pub->img_8 = $this->upload_image($user->username,$file8);
 		}
 		if($pub->save())
 		{
@@ -1773,13 +1854,24 @@ class AjaxController extends BaseController{
 	{
 		$id = Input::get('id');
 		$input = Input::all();
+		/*$pub = Publicaciones::where('user_id','=',$id)
+		->where('tipo','=','Casual')
+		->where('fechRepub','>',date('Y-m-d',time()))
+		->orderBy('fechRepub','desc')
+		->first();
+		if (count($pub)>0 && $id != 21) {
+			
+			return Response::json(array(
+				'type' => 'error', 
+				'msg'  => 'Usted ha consumido el máximo de publicaciones casuales. Inténtelo nuevamente cuando su última publicación casual expire.'
+			));
+		}*/
 		if (strlen(strip_tags($input['input']))>400) {
 			return Response::json(array(
 				'type' => 'danger',
 				'msg'  => 'La descripción debe tener maximo 400 caracteres',
 			));
 		}
-		
 		$rules = array(
 			'input' 		=> 'required',
 			'precio'		=> 'required|numeric',
@@ -1787,8 +1879,8 @@ class AjaxController extends BaseController{
 			'departamento' 	=> 'required',
 			'categoria'		=> 'required',
 			'titulo'		=> 'required',
-			'negocioType' => 'required',
-			'img_1'			=> 'required|image',
+			'negocioType' 	=> 'required',
+			'img_1'			=> 'required|image|max:3000',
 		);
 		$messages = array(
 			'required' => ':attribute es requerido',
@@ -1813,52 +1905,278 @@ class AjaxController extends BaseController{
 				'msg'  => 'Error al validar los datos',
 				'data' => $validator->getMessageBag()->toArray()
 			));
-		}else
+		}
+		$pub = new Publicaciones;
+		$pub->user_id 	  = $id;
+		$pub->tipo 		  = 'Casual';
+		$pub->titulo      = $input['titulo'];
+		$pub->departamento= $input['departamento'];
+		$pub->categoria   = $input['categoria'];
+		$pub->ubicacion   = 'Principal';
+		$pub->precio 	  = $input['precio'];
+		$pub->moneda 	  = $input['moneda'];
+		$pub->descripcion = $input['input'];
+		$pub->fechIni 	  = date('Y-m-d',time());
+		$pub->fechFin	  = date('Y-m-d',time()+604800);
+		$pub->fechRepub	  = date('Y-m-d',time()+2543400);
+		$pub->bussiness_type = $input['negocioType'];
+		$pub->status 	  = 'Procesando';
+		$user = User::find($id);
+		if (Input::hasFile('img_1')) {
+			$file1 = Input::file('img_1');
+			$pub->img_1 = $this->upload_image($user->username,$file1);
+		}
+		if (Input::hasFile('img_2')) {
+			$file2 = Input::file('img_2');
+			$pub->img_2 = $this->upload_image($user->username,$file2);
+		}
+		$pub->save();
+		if (Input::has('longitud') && Input::has('latitud')) {
+			$lon = Input::get('longitud');
+			$lat = Input::get('latitud');
+			if (!empty($lon) && !empty($lat)) {
+				$loc = new Location;
+				$loc->latitude  = Input::get('latitud');
+				$loc->longitude = Input::get('longitud');
+				$loc->pub_id    = $pub->id;
+				$loc->save();
+			}
+		}
+		return Response::json(array(
+			'type' => 'success',
+			'msg'  => 'publicación creada satisfactoriamente.',
+			'pub_id' => $pub->id,
+		));
+	}
+	/*----------------------------Reactivar--------------------------------------------*/
+	/*                                                                                 */
+	/*                                                                                 */
+	/*                                                                                 */
+	/*                                                                                 */
+	/*                                                                                 */
+	/*                                                                                 */
+	/*                                                                                 */
+	/*                                                                                 */
+	/*                                                                                 */
+	/*----------------------------Reactivar--------------------------------------------*/
+	public function postReactivate($id)
+	{
+		if(is_null($id))
 		{
-			$pub = new Publicaciones;
-			$pub->user_id 	  = $id;
-			$pub->tipo 		  = 'Casual';
-			$pub->titulo      = $input['titulo'];
-			$pub->departamento= $input['departamento'];
-			$pub->categoria   = $input['categoria'];
-			$pub->ubicacion   = 'Principal';
-			$pub->precio 	  = $input['precio'];
-			$pub->moneda 	  = $input['moneda'];
-			$pub->descripcion = $input['input'];
-			$pub->fechIni 	  = date('Y-m-d',time());
-			$pub->fechFin	  = date('Y-m-d',time()+604800);
-			$pub->fechRepub	  = date('Y-m-d',time()+2543400);
-			$pub->bussiness_type = $input['negocioType'];
-			$pub->status 	  = 'Procesando';
-			$user = User::find($id);
-			if (Input::hasFile('img_1')) {
-				$file1 = Input::file('img_1');
-				$pub->img_1 = $this->upload_image($user->username,$file1);
-			}
-			if (Input::hasFile('img_2')) {
-				$file2 = Input::file('img_2');
-				$pub->img_2 = $this->upload_image($user->username,$file2);
-			}
-			$pub->save();
-			if (Input::has('longitud') && Input::has('latitud')) {
-				$lon = Input::get('longitud');
-				$lat = Input::get('latitud');
-				if (!empty($lon) && !empty($lat)) {
-					$loc = new Location;
-					$loc->latitude  = Input::get('latitud');
-					$loc->longitude = Input::get('longitud');
-					$loc->pub_id    = $pub->id;
-					$loc->save();
-				}
-			}
 			return Response::json(array(
-				'type' => 'success',
-				'msg'  => 'publicación creada satisfactoriamente.',
-				'pub_id' => $pub->id,
+				'type' => 'danger',
+				'msg'  => 'Id de la publicación no encontrado'
 			));
 		}
+		$pub = Publicaciones::find($id);
+		if($pub->tipo == 'Lider')
+		{
+			$data = Input::all();
+			$rules = array(
+				'duration' => 'required|in:d,s,m',
+				'time'     => 'required|integer|min:1',
+				'ubication'=> 'required|in:Principal,Categoria',
+				'cat'	   => 'required_if:ubication,Categoria',
+				'fechIni'  => 'required|date|after:'.date('d-m-Y',time()).'|date_format:d-m-Y',
+			);
+			$msg = array();
+			$attr = array(
+				'duration' => 'duración',
+				'time'	   => 'período',
+				'fechIni'  => 'fecha de inicio',
+			);
+			$validator = Validator::make($data, $rules, $msg, $attr);
+			if ($validator->fails()) {
+				return Response::json(array(
+					'type' => 'danger',
+					'msg'  => 'Error, datos invalidos',
+					'data' => $validator->getMessageBag()
+				));
+			}
+			/* Validar duracion y montos */
+			$dur = $data['time'];
+			$monto = 0;
+			if ($data['duration'] == 'd') {
+				
+				$time = 86400;
+				$prices = Precios::find(1);
+			}elseif($data['duration'] == 's')
+			{
+				$time = 604800;
+				$prices = Precios::find(2);
+			}elseif($data['duration'] == 'm')
+			{
+				$time = 2629744;
+				$prices = Precios::find(3);
+			}
+			$monto = $prices->precio*$dur;
+			/* Segundo validador de fecha */
+			$fecha = explode('-', $data['fechIni']);
+			$timestamp = strtotime($data['fechIni'])+($time*$data['duration']);
+			$fechaFin = date('d-m-Y',$timestamp);
+
+			$timestamp = $data['duration']*$time;
+			$date  = date('d-m-Y');
+			$timestamp = strtotime($data['fechIni'])+$timestamp;
+			$fechFin = date('Y-m-d',$timestamp);
+			$pub = Publicaciones::find($id);
+			$pub->ubicacion = $data['ubication'];
+			if ($data['ubication'] == 'Categoria') {
+				$pub->categoria = $data['cat'];
+			}
+			$pub->monto = $monto;
+			$pub->fechIni   = date('Y-m-d',strtotime($data['fechIni']));
+			$pub->fechFin   = $fechFin;
+			$pub->status    = 'Pendiente';
+			$pub->save();
+		}else
+		{
+			$input = Input::all();
+			$precio = Precios::all();
+			$solo = $precio[0];
+
+			if (!empty($input['durationPrin']) && !empty($input['periodoPrin']) && !empty($input['durationCat']) && !empty($input['periodoCat'])) {
+
+				if ($input['periodoPrin'] == $precio[0]->precio) {
+					$pub->duracion	= ($input['durationPrin']*86400);
+					$pub->monto = ($input['durationPrin']*$precio[0]->precio)+$pub->monto;
+				}elseif($input['periodoPrin'] == $precio[1]->precio)
+				{
+					$pub->duracion	= ($input['durationPrin']*604800);
+					$pub->monto 	= ($input['durationPrin']*$precio[1]->precio)+$pub->monto;
+				}elseif($input['periodoPrin'] == $precio[2]->precio)
+				{
+					$pub->duracion	= ($input['durationPrin']*2629744);
+					$pub->monto 	= ($input['durationPrin']*$precio[2]->precio)+$pub->monto;
+				}
+
+				if ($input['periodoCat'] == $precio[3]->precio) {
+					$pub->duracionNormal	= ($input['durationCat']*86400)+6048000;
+					$pub->monto 	= ($input['durationCat']*$precio[3]->precio)+$pub->monto;
+				}elseif($input['periodoCat'] == $precio[4]->precio)
+				{
+					$pub->duracionNormal	= ($input['durationCat']*604800)+6048000;
+					$pub->monto 	= ($input['durationCat']*$precio[4]->precio)+$pub->monto;
+				}elseif($input['periodoCat'] == $precio[5]->precio)
+				{
+					$pub->duracionNormal	= ($input['durationCat']*2629744)+6048000;
+					$pub->monto 	= ($input['durationCat']*$precio[5]->precio)+$pub->monto;
+				}
+				$pub->ubicacion = "Ambos";
+
+			}elseif(!empty($input['durationPrin']) && !empty($input['periodoPrin']))
+			{
+				if ($input['periodoPrin'] == $precio[0]->precio) {
+
+					$pub->duracion	= ($input['durationPrin']*86400);
+					$pub->monto = ($input['durationPrin']*$precio[0]->precio)+$pub->monto;
+
+				}elseif($input['periodoPrin'] == $precio[1]->precio)
+				{
+
+					$pub->duracion	= ($input['durationPrin']*604800);
+					$pub->monto 	= ($input['durationPrin']*$precio[1]->precio)+$pub->monto;
+
+				}elseif($input['periodoPrin'] == $precio[2]->precio)
+				{
+
+					$pub->duracion	= ($input['durationPrin']*2629744);
+					$pub->monto 	= ($input['durationPrin']*$precio[2]->precio)+$pub->monto;
+
+				}
+				$pub->ubicacion = 'Principal';
+			}elseif(!empty($input['durationCat']) && !empty($input['periodoCat']))
+			{
+				if ($input['periodoCat'] == $precio[3]->precio) {
+
+					$pub->duracionNormal	= ($input['durationCat']*86400)+6048000;
+					$pub->monto 	= ($input['durationCat']*$precio[3]->precio)+$pub->monto;
+
+				}elseif($input['periodoCat'] == $precio[4]->precio)
+				{
+
+					$pub->duracionNormal	= ($input['durationCat']*604800)+6048000;
+					$pub->monto 	= ($input['durationCat']*$precio[4]->precio)+$pub->monto;
+
+				}elseif($input['periodoCat'] == $precio[5]->precio)
+				{
+
+					$pub->duracionNormal	= ($input['durationCat']*2629744)+6048000;
+					$pub->monto 	= ($input['durationCat']*$precio[5]->precio)+$pub->monto;
+
+				}
+				$pub->ubicacion = 'Categoria';
+
+			}else
+			{
+				$pub->duracionNormal = 6048000;
+				$pub->ubicacion = 'Categoria';
+			}
+					
+			$pub->save();
+		}
+		$obj = new StdClass;
+		$obj->pub_id = $pub->id;
+		$obj->monto  = $pub->monto;
+
+		return Response::json(array(
+			'type'  => 'success',
+			'msg'	=> 'Datos enviados sactisfactoriamente',
+			'data'  => $obj
+		));
 	}
-	
+	public function postElimPub()
+	{
+		$id     = Input::get('id');
+		$pub_id = Input::get('pub_id');
+		$pub = Publicaciones::find($pub_id);
+		$titulo = $pub->titulo;
+		$comment = Comentarios::where('pub_id','=',$id)->delete();
+		$resp    = Respuestas::where('pub_id','=',$id)->delete();
+		$user = User::find($id);
+		$subject = "Correo de Aviso";
+		if (!empty($pub->img_1)) {
+			File::delete('images/pubImages/'.$user->id.'/'.$pub->img_1);
+		}
+		if (!empty($pub->img_2)) {
+			File::delete('images/pubImages/'.$user->id.'/'.$pub->img_2);
+		}
+		if (!empty($pub->img_3)) {
+			File::delete('images/pubImages/'.$user->id.'/'.$pub->img_3);
+		}
+		if (!empty($pub->img_4)) {
+			File::delete('images/pubImages/'.$user->id.'/'.$pub->img_4);
+		}
+		if (!empty($pub->img_5)) {
+			File::delete('images/pubImages/'.$user->id.'/'.$pub->img_5);
+		}
+		if (!empty($pub->img_6)) {
+			File::delete('images/pubImages/'.$user->id.'/'.$pub->img_6);
+		}
+		if (!empty($pub->img_7)) {
+			File::delete('images/pubImages/'.$user->id.'/'.$pub->img_7);
+		}
+		if (!empty($pub->img_8)) {
+			File::delete('images/pubImages/'.$user->id.'/'.$pub->img_8);
+		}
+		$pub->delete();
+		$data = array(
+			'subject' => $subject,
+			'publicacion' => $titulo,
+			'motivo'	  => 'Eliminado por el usuario'
+		);
+		$to_Email = $user->email;
+		Mail::send('emails.elimPubUser', $data, function($message) use ($titulo,$to_Email,$subject)
+		{
+			$message->to($to_Email)->from('pasillo24.com@pasillo24.com')->subject($subject);
+		});
+
+
+		return Response::json(array(
+			'type' => 'success',
+			'msg'  => 'Publicación eliminada satisfactoriamente. Hemos enviado un email al correo.'
+		));
+	}
 	/*---------------------------Pago total--------------------------------------------*/
 	/*                                                                                 */
 	/*                                                                                 */
@@ -1878,11 +2196,10 @@ class AjaxController extends BaseController{
 				'msg'  => 'No se encontro el id de la publicación.',
 			));
 		}
-		$pub_id = Input::get('pub_id');
 		$input 	= Input::all();
 		$rules 	= array(
 			'transNumber' => 'required',
-			'fecha'		  => 'required',
+			'fecha'		  => 'required|date|date_format:Y-m-d',
 			'banco'		  => 'required'
 		);
 		$messages = array(
@@ -1898,6 +2215,7 @@ class AjaxController extends BaseController{
 				)
 			);
 		}
+		$pub_id = Input::get('pub_id');
 		$pago = new Pagos;
 		$pago->user_id   = $id;
 		$pago->pub_id    = $pub_id;
@@ -1962,6 +2280,7 @@ class AjaxController extends BaseController{
 			->leftJoin('departamento','departamento.id','=','publicaciones.departamento')
 			->where('publicaciones.tipo','=',ucfirst(strtolower($type)))
 			->where('publicaciones.deleted','=',0)
+			->orderBy('publicaciones.id','DESC')
 			->get(array('publicaciones.*','categoria.nombre as categoria','departamento.nombre as dep_desc'));	
 		}elseif (strtolower($type) == "habitual") {
 			$publications = Publicaciones::join('categoria','categoria.id','=','publicaciones.categoria')
@@ -1969,6 +2288,7 @@ class AjaxController extends BaseController{
 			->where('user_id','=',$id)
 			->where('publicaciones.tipo','=','Habitual')
 			->where('publicaciones.deleted','=',0)
+			->orderBy('publicaciones.id','DESC')
 			->get(array('publicaciones.*','categoria.nombre as categoria','departamento.nombre as dep_desc'));	
 		}elseif(strtolower($type) == "casual")
 		{
@@ -1977,6 +2297,7 @@ class AjaxController extends BaseController{
 			->where('publicaciones.user_id','=',$id)
 			->where('publicaciones.tipo','=','Casual')
 			->where('publicaciones.deleted','=',0)
+			->orderBy('publicaciones.id','DESC')
 			->get(array(
 				'publicaciones.*',
 				'categoria.nombre as categoria'
@@ -2015,27 +2336,13 @@ class AjaxController extends BaseController{
 	public function getMyCart()
 	{
 		$id = Input::get('id');
-		$compras = Compras::join('publicaciones','publicaciones.id','=','compras.pub_id')
-		->join('usuario','usuario.id','=','publicaciones.user_id')
+		$compras = Compras::with('users')
+		->with(array('publicacion' => function($query){
+			$query->with('deparments');
+		}))
 		->where('compras.user_id','=',$id)
 		->where('compras.valor_vend','=',0)
-		->get(array(
-			'compras.id',
-			'compras.fechVal',
-			'publicaciones.titulo',
-			'publicaciones.id as pub_id',
-			'publicaciones.name as pName',
-			'publicaciones.phone as pPhone',
-			'publicaciones.email as pEmail',
-			'publicaciones.pag_web_hab as pPag_web',
-			'usuario.email',
-			'usuario.id as user_id',
-			'usuario.lastname',
-			'usuario.name',
-			'usuario.pag_web',
-			'usuario.phone',
-			'usuario.username',
-		));
+		->get();
 
 		return Response::json(array(
 			'compras' 	=>$compras,
@@ -2045,20 +2352,14 @@ class AjaxController extends BaseController{
 	public function getMySell()
 	{
 		$id = Input::get('id');
-		$compras = Compras::join('publicaciones','publicaciones.id','=','compras.pub_id')
-		->join('usuario','usuario.id','=','compras.user_id')
-		->where('publicaciones.user_id','=',$id)
+		$compras = Compras::with(array('publicacion' => function($query){
+			$query->with('deparments')->with('users');
+		}))
+		->whereHas('publicacion',function($query) use($id){
+			$query->where('user_id','=',$id);
+		})
 		->where('compras.valor_comp','=',0)
-		->get(array(
-			'compras.id',
-			'compras.valor_vend',
-			'compras.valor_comp',
-			'compras.fechVal',
-			'publicaciones.titulo',
-			'usuario.id as user_id',
-			'usuario.name',
-			'usuario.lastname',
-		));
+		->get();
 		$hoy = date('Y-m-d');
 		return Response::json(array(
 			'compras' 	=> $compras,
@@ -2072,29 +2373,49 @@ class AjaxController extends BaseController{
 		$tipo = Input::get('tipo');
 		$pub = Compras::find($compra_id);
 		if (is_null($pub) || empty($pub)) {
-			return Response::json(array('type' => 'danger','msg' => 'Error al valorar la publicación'));	
+			return Response::json(array('type' => 'danger','msg' => 'Error al valorar la publicación, no se encontro la venta'));	
 		}
 
 		$valor = 0;
-		if($tipo != "pos" && $tipo != 'neg')
+		if($tipo != "pos" && $tipo != 'neg' && $tipo != 'neutro')
 		{
-			return Response::json(array('type' => 'danger','msg' => 'Error al valorar la publicación'));	
+			return Response::json(array('type' => 'danger','msg' => 'Error al valorar la publicación, valor invalido'));	
 		}else
 		{
 			if ($tipo == 'pos') {
 				$valor = 1;
+				$valMsg = "te han valorado positivamente.";
 			}elseif ($tipo == 'neg') {
 				$valor = -1;
+				$valMsg = "te han valorado negativamente.";
+			}elseif($tipo == 'neutro')
+			{
+				$valor = 0;
+				$valMsg = "te han valorado neutralmente.";
 			}
 		}
 		$comp = Compras::find($compra_id);
-		$user = User::find($id);
+		$user = User::where('id','=',$id)->first();
 		$user->reputation = $user->reputation + $valor;
 		if (!$user->save()) {
 			return Response::json(array('type' => 'danger','msg' => 'Error al valorar la publicación'));	
 		}
 		$comp->valor_vend = $valor;
 		if ($comp->save()) {
+			$msg = 'El usuario '.$user->name.' '+$user->lastname.' '.$valMsg;
+			$publication = Publicaciones::find($comp->pub_id);
+			$user = User::with('gcmdevices')->find($publication->user_id);
+			foreach($user->gcmdevices as $gcm) {
+				$regId = $gcm->gcm_regid;
+				$data = [
+					"type"		=> "rating",
+					"pub_id"	=> $comp->pub_id,
+					"message"	=> $msg,
+					"title"		=> "Te han valorado como vendedor",
+				];
+				$doGcm = new Gcm;
+				$response = $doGcm->send_notification($data,$regId);
+			}
 			return Response::json(array('type' => 'success','msg' => 'Publicación valorada correctamente.'));
 		}else
 		{
@@ -2106,17 +2427,25 @@ class AjaxController extends BaseController{
 		$id = Input::get('id');
 		$venta_id   = Input::get('venta_id');
 		$tipo = Input::get('tipo');
-
+		if (is_null($pub) || empty($pub)) {
+			return Response::json(array('type' => 'danger','msg' => 'Error al valorar la publicación, no se encontro la compra'));	
+		}
 		$valor = 0;
-		if($tipo != "pos" && $tipo != 'neg')
+		if($tipo != "pos" && $tipo != 'neg' && $tipo != 'neutro')
 		{
-			return Response::json(array('type' => 'danger','msg' => 'Error al valorar la publicación'));	
+			return Response::json(array('type' => 'danger','msg' => 'Error al valorar la publicación, valor invalido'));	
 		}else
 		{
 			if ($tipo == 'pos') {
 				$valor = 1;
+				$valMsg = "te han valorado positivamente.";
 			}elseif ($tipo == 'neg') {
 				$valor = -1;
+				$valMsg = "te han valorado negativamente.";
+			}elseif($tipo == 'neutro')
+			{
+				$valor = 0;
+				$valMsg = "te han valorado neutralmente.";
 			}
 		}
 		$comp = Compras::find($venta_id);
@@ -2127,6 +2456,19 @@ class AjaxController extends BaseController{
 		}
 		$comp->valor_comp = $valor;
 		if ($comp->save()) {
+			$msg = 'El usuario '.$user->name.' '+$user->lastname.' '.$valMsg;
+			$user = User::with('gcmdevices')->find($comp->user_id);
+			foreach($user->gcmdevices as $gcm) {
+				$regId = $gcm->gcm_regid;
+				$data = array(
+					"type"		=> "rating",
+					"pub_id"	=> $comp->pub_id,
+					"message"	=> $msg,
+					"title"		=> "Te han valorado como vendedor",
+				);
+				$doGcm = new Gcm;
+				$response = $doGcm->send_notification($data,$regId);
+			}
 			return Response::json(array('type' => 'success','msg' => 'Publicación valorada correctamente.'));
 		}else
 		{
@@ -2161,44 +2503,19 @@ class AjaxController extends BaseController{
 			'usuario.name',
 			'usuario.lastname'
 		));
-		$comprasC = Compras::join('publicaciones','publicaciones.id','=','compras.pub_id')
-		->join('usuario','usuario.id','=','publicaciones.user_id')
-		->where('compras.user_id','=',$id)
-		->get(array(
-			'compras.id',
-			'compras.valor_vend',
-			'compras.valor_comp',
-			'publicaciones.titulo',
-			'publicaciones.id as pub_id',
-			'usuario.name',
-			'usuario.lastname'
-		));
-		$ventasC = Compras::join('publicaciones','publicaciones.id','=','compras.pub_id')
-		->join('usuario','usuario.id','=','compras.user_id')
-		->where('publicaciones.user_id','=',$id)
-		->get(array(
-			'compras.id',
-			'compras.valor_vend',
-			'compras.valor_comp',
-			'publicaciones.titulo',
-			'usuario.id as user_id',
-			'usuario.name',
-			'usuario.lastname'
-		));
 		$comp_pos = 0;
 		$comp_neg = 0;
 		$vent_pos = 0;
 		$vent_neg = 0;
-		foreach ($ventasC as $v) {
-			if ($v->valor_vend>0) {
+		foreach ($ventas as $v) {
+			if ($v->valor_vend > 0) {
 				$vent_pos++; 
 			}elseif ($v->valor_vend < 0)
 			{
 				$vent_neg++;
 			}
-			
 		}
-		foreach ($comprasC as $c) {
+		foreach ($compras as $c) {
 			if ($c->valor_comp > 0) {
 				$comp_pos++;
 			}elseif($c->valor_comp < 0)
@@ -2284,123 +2601,260 @@ class AjaxController extends BaseController{
 	/*                                                                                 */
 	/*                                                                                 */
 	/*---------------------------Modificar pub ----------------------------------------*/
-	public function postModifyPub()
+	public function postModifyPub($type)
 	{
-		$id = Input::get('pub_id');
-
-		$input = Input::all();
+		$data = Input::all();
+		if (!Input::has('pub_id')) {
+			return Response::json(array(
+				'type' => 'danger',
+				'msg'  => 'Error, no se encontro el id de la publicación'
+			));
+		}
+		$id = $data['pub_id'];
 		$pub = Publicaciones::find($id);
+		if ($pub->count() < 1) {
+			return Response::json(array(
+				'type' => 'danger',
+				'msg'  => 'Error, no se encontro la publicación'
+			));	
+		}
 		if ($pub->tipo == 'Lider') {
-			if (isset($input['cat']) && $pub->ubicacion != $input['cat'] && !empty($input['cat'])) {
-				$pub->categoria = $input['cat'];
+			$rules = array(
+				'title' 	=> 'required|min:4|max:100',
+				'cat'		=> 'exists:categoria,id',
+				'url'		=> 'url',
+				'img1'		=> 'image|max:3000',
+				'img2'		=> 'image|max:3000', 
+				'name'		=> 'min:4|max:50',
+				'phone' 	=> 'min:7|max:15',
+				'email'		=> 'email',
+				'pag_web'	=> 'url'
+			);
+			$msg = array();
+			$attr = array(
+				'title' 	=> 'titulo',
+				'cat'		=> 'categoría',
+				'url'		=> 'URL',
+				'img1'		=> 'imagen principal',
+				'img2'		=> 'imagen secundaria',
+				'name'		=> 'nombre',
+				'phone'		=> 'telefono',
+				'email'		=> 'email',
+				'pag_web' 	=> 'pagina web'
+			);
+			$validator = Validator::make($data, $rules, $msg, $attr);
+			if ($validator->fails()) {
+				return Response::json(array(
+					'type' => 'danger',
+					'msg'  => 'Error, datos invalidos',
+					'data' => $validator->getMessageBag()
+				));
 			}
-			if (isset($input['pagina']) && $input['pagina'] != $pub->pag_web && !empty($input['pagina'])) {
-				$pub->pag_web = $input['pagina'];
+			if ($pub->ubicacion != "Principal" && isset($data['cat'])) {
+				$pub->categoria = $data['cat'];
 			}
-			if (isset($input['nomb']) && $input['nomb'] != $pub->name && !empty($input['nomb'])) {
-				$pub->name = $input['nomb'];
+			if (Input::hasFile('img1')) {
+				$img1 = Input::file('img1');
+				$user = User::find($pub->user_id);
+				$pub->img_1 = $this->upload_images($img1,$user);
 			}
-			if (isset($input['phone']) && $input['phone'] != $pub->phone && !empty($input['phone'])) {
-				$pub->phone = $input['phone'];
+			if (Input::hasFile('img2')) {
+				$img2 = Input::file('img2');
+				$user = User::find($pub->user_id);
+				$pub->img_2 = $this->upload_images($img2,$user);
 			}
-			if (isset($input['email']) && $input['email'] != $pub->email && !empty($input['email'])) {
-				$pub->email = $input['email'];
+			if (Input::has('title') && $data['title'] != $pub->pag_web) {
+				$pub->titulo = $data['title'];
 			}
-			if (isset($input['pag_web']) && $input['pag_web'] != $pub->pag_web_hab && !empty($input['pag_web'])) {
-				$pub->pag_web_hab = $input['pag_web'];
+			if (Input::has('url') && $data['url'] != $pub->pag_web) {
+				$pub->pag_web = $data['url'];
 			}
-			if (isset($input['namePub']) && !empty($input['namePub'])) {
-				$pub->titulo = $input['namePub'];
+			if (Input::has('name') && $data['name'] != $pub->name) {
+				$pub->name = $data['name'];
+			}
+			if (Input::has('phone') && $data['phone'] != $pub->phon) {
+				$pub->phone = $data['phone'];
+			}
+			if (Input::has('email') && $data['email'] != $pub->emai) {
+				$pub->email = $data['email'];
+			}
+			if (Input::has('pag_web') && $data['pag_web'] != $pub->pag_web_hab) {
+				$pub->pag_web_hab = $data['pag_web'];
+			}
+			if (Input::has('namePub')) {
+				$pub->titulo = $data['namePub'];
 			}
 			
 		}elseif($pub->tipo == 'Habitual')
 		{
-			if (isset($input['cat']) && !empty($input['cat'])) {
-				$pub->categoria = $input['cat'];
+			$rules = array(
+				'title' 		=> 'required|min:4|max:100',
+				'cat'			=> 'required|exists:categoria,id',
+				'subCat'		=> 'exists:subcategoria,id',
+				'price'			=> 'required|numeric|min:1',
+				'currency'		=> 'required|in:Usd,Bs',
+				'department'	=> 'required|exists:departamento,id',
+				'city'			=> 'required|max:50',
+				'brand'			=> 'required_if:cat,34|exists:marcas,id',
+				'models'		=> 'required_if:cat,34|exists:modelo,id',
+				'year'			=> 'required_if:cat,34|numeric|min:1885|max:'.date('Y'),
+				'document'		=> 'required_if:cat,34|max:100',
+				'kilo'			=> 'required_if:cat,34|min:0|max:999999',
+				'tipoTransac'	=> 'required|in:venta,alquiler,Aticretico,otro',
+				'description'	=> 'required',
+				'negocioType'   => 'required|in:fiscal,virtual,independiente,otro',
+				'img1'			=> 'image|max:3000',
+				'img2'			=> 'image|max:3000', 
+				'img3'			=> 'image|max:3000', 
+				'img4'			=> 'image|max:3000', 
+				'img5'			=> 'image|max:3000', 
+				'img6'			=> 'image|max:3000', 
+				'img7'			=> 'image|max:3000', 
+				'img8'			=> 'image|max:3000', 
+				'name'			=> 'min:4|max:50',
+				'phone' 		=> 'min:7|max:15',
+				'email'			=> 'email',
+				'pag_web'		=> 'url'
+			);
+			$msg = array();
+			$attr = array(
+				'title' 		=> 'titulo',
+				'cat'			=> 'categoría',
+				'subCat'		=> 'sub-categoria',
+				'price'			=> 'precio',
+				'currency'		=> 'moneda',
+				'department'	=> 'departamento',
+				'city'			=> 'ciudad',
+				'brand'			=> 'marca',
+				'models'		=> 'modelo',
+				'year'			=> 'año',
+				'document'		=> 'documentos',
+				'kilo'			=> 'kilometraje',
+				'tipoTransac' 	=> 'tipo de transacción',
+				'description' 	=> 'descripción',
+				'img1'			=> 'imagen principal',
+				'img2'			=> 'imagen adicional 1', 
+				'img3'			=> 'imagen adicional 2', 
+				'img4'			=> 'imagen adicional 3', 
+				'img5'			=> 'imagen adicional 4', 
+				'img6'			=> 'imagen adicional 5', 
+				'img7'			=> 'imagen adicional 6', 
+				'img8'			=> 'imagen adicional 7', 
+				'name'			=> 'nombre',
+				'phone'			=> 'telefono',
+				'email'			=> 'email',
+				'pag_web' 		=> 'pagina web'
+			);
+			$validator = Validator::make($data, $rules, $msg, $attr);
+			if ($validator->fails()) {
+				return Response::json(array(
+					'type' => 'danger',
+					'msg'  => 'Error, datos invalidos',
+					'data' => $validator->getMessageBag()
+				));
 			}
-			if (isset($input['pagina']) && !empty($input['pagina'])) {
-				$pub->pag_web = $input['pagina'];
+			$pub->titulo 		= $data['title'];
+			$pub->categoria 	= $data['cat'];
+			$pub->typeCat		= $data['subCat'];
+			$pub->precio 		= $data['price'];
+			$pub->moneda 		= strtolower($data['currency']);
+			$pub->departamento 	= $data['department'];
+			$pub->ciudad 		= $data['city'];
+			
+			$pub->transaccion 	= $data['tipoTransac'];
+			$pub->descripcion 	= $data['description'];
+			$user = User::find($pub->user_id);
+			if (Input::hasFile('img1')) {
+				$img1 = Input::file('img1');
+				$pub->img_1 = $this->upload_images($img1, $user);
 			}
-			if (isset($input['nomb']) && !empty($input['nomb'])) {
-				$pub->name = $input['nomb'];
+			if (Input::hasFile('img2')) {
+				$img2 = Input::file('img2');
+				$pub->img_2 = $this->upload_images($img2, $user);
 			}
-			if (isset($input['phone']) && !empty($input['phone'])) {
-				$pub->phone = $input['phone'];
+			if (Input::hasFile('img3')) {
+				$img3 = Input::file('img3');
+				$pub->img_3 = $this->upload_images($img3, $user);
 			}
-			if (isset($input['email']) && !empty($input['email'])) {
-				$pub->email = $input['email'];
+			if (Input::hasFile('img4')) {
+				$img4 = Input::file('img4');
+				$pub->img_4 = $this->upload_images($img4, $user);
 			}
-			if (isset($input['pagina']) && !empty($input['pagina'])) {
-				$pub->pag_web_hab = $input['pagina'];
+			if (Input::hasFile('img5')) {
+				$img5 = Input::file('img5');
+				$pub->img_5 = $this->upload_images($img5, $user);
 			}
-			if (isset($input['subCat']) && !empty($input['subCat'])) {
-				$pub->typeCat = $input['subCat'];
+			if (Input::hasFile('img6')) {
+				$img6 = Input::file('img6');
+				$pub->img_6 = $this->upload_images($img6, $user);
 			}
-			if (isset($input['title']) && !empty($input['title'])) {
-				$pub->titulo = $input['title'];
+			if (Input::hasFile('img7')) {
+				$img7 = Input::file('img7');
+				$pub->img_7 = $this->upload_images($img7, $user);
 			}
-			if (isset($input['precio']) && !empty($input['precio'])) {
-				$pub->precio = $input['precio'];
+			if (Input::hasFile('img8')) {
+				$img8 = Input::file('img8');
+				$pub->img_8 = $this->upload_images($img8, $user);
 			}
-			if (isset($input['moneda']) && !empty($input['moneda'])) {
-				$pub->moneda = $input['moneda'];
+			if (Input::has('pagina')) {
+				$pub->pag_web = $data['pagina'];
 			}
-			if (isset($input['departamento']) && !empty($input['departamento'])) {
-				$pub->departamento = $input['departamento'];
+			if (Input::has('name')) {
+				$pub->name = $data['name'];
 			}
-			if (isset($input['ciudad']) && !empty($input['ciudad'])) {
-				$pub->ciudad = $input['ciudad'];
+			if (Input::has('phone')) {
+				$pub->phone = $data['phone'];
+			}
+			if (Input::has('email')) {
+				$pub->email = $data['email'];
+			}
+			if (Input::has('pagina')) {
+				$pub->pag_web_hab = $data['pagina'];
 			}
 			if ($pub->categoria == 34) {
-				if (isset($input['marca']) && !empty($input['marca'])) {
-					$pub->marca_id = $input['marca'];
+				$pub->marca_id 		= $data['brand'];
+				$pub->modelo_id 	= $data['models'];
+				$pub->anio 			= $data['year'];
+				$pub->documentos 	= $data['document'];
+				$pub->kilometraje 	= $data['kilo'];
+				if (Input::has('cilin')) {
+					$pub->cilindraje = $data['cilin'];
 				}
-				if (isset($input['modelo']) && !empty($input['modelo'])) {
-					$pub->modelo_id = $input['modelo'];
+				if (Input::has('trans')) {
+					$pub->transmision = $data['trans'];
 				}
-				if (isset($input['anio']) && !empty($input['anio'])) {
-					$pub->anio = $input['anio'];
+				if (Input::has('comb')) {
+					$pub->combustible = $data['comb'];
 				}
-				if (isset($input['doc']) && !empty($input['doc'])) {
-					$pub->documentos = $input['doc'];
+				if (Input::has('trac')) {
+					$pub->traccion = $data['trac'];
 				}
-				if (isset($input['kilo']) && !empty($input['kilo'])) {
-					$pub->kilometraje = $input['kilo'];
-				}
-				if (isset($input['cilin']) && !empty($input['cilin'])) {
-					$pub->cilindraje = $input['cilin'];
-				}
-				if (isset($input['trans']) && !empty($input['trans'])) {
-					$pub->transmision = $input['trans'];
-				}
-				if (isset($input['comb']) && !empty($input['comb'])) {
-					$pub->combustible = $input['comb'];
-				}
-				if (isset($input['trac']) && !empty($input['trac'])) {
-					$pub->traccion = $input['trac'];
-				}
-				
 			}elseif($pub->categoria == 20)
 			{
-				if (isset($input['ext']) && !empty($input['ext'])) {
-					$pub->extension = $input['ext'];
+				if (Input::has('ext')) {
+					$pub->extension = $data['ext'];
 				}
 			}
 			
-			if (isset($input['tipoTransac']) && !empty($input['tipoTransac'])) {
-				$pub->transaccion = $input['tipoTransac'];
-			}
-			if (isset($input['input']) && !empty($input['input'])) {
-				$pub->descripcion = $input['input'];
+			if (!empty($data['input'])) {
+				$pub->descripcion = $data['input'];
 			}
 		}
 		
 		if($pub->save())
 		{
-			return Response::json(array('type' => 'success','msg' => 'Publicación modificada satisfactoriamente.'));
+			return Response::json(array(
+				'type' => 'success', 
+				'msg'  => 'Publicación modificada satisfactoriamente.'
+			));
+			return Redirect::back();
 		}else
 		{
-			return Response::json(array('type' => 'danger','msg' => 'Error al modificar el usuario.'));
+			return Response::json(array(
+				'type' => 'danger', 
+				'msg'  => 'Error al modificar el usuario.'
+			));
+			return Redirect::back();
 		}
 	}
 	/*---------------------------Comentarios-------------------------------------------*/
@@ -2417,37 +2871,41 @@ class AjaxController extends BaseController{
 	public function postComment(){
 		$id = Input::get('id');
 		$pub_id = Input::get('pub_id');
+		if (!Input::has('pub_id')) {
+			return Response::json(array(
+				'type' => 'danger', 
+				'msg' => 'No se encontro el id de la publicación.',
+			));
+		}
 		$comentario = Input::get('comment');
 		if (strlen($comentario)<4) {
-			return 'El comentario es muy corto';
+			return Response::json(array(
+				'type' => 'danger', 
+				'msg' => 'El comentario es muy corto',
+			));
 		}
 		$publication = Publicaciones::find($pub_id);
 		$comentarios = new Comentarios;
-		
 		$comentarios->user_id 	 = $id;
 		$comentarios->pub_id  	 = $pub_id;
 		$comentarios->comentario = $comentario;
 		$comentarios->updated_at = date('Y-m-d',time());
 		$comentarios->created_at = date('Y-m-d',time());
 		$comentarios->save();
-		$msg = "Han comentado tu publicacion: ".$publication->titulo;
-		$user = User::find($publication->user_id);
-		$data = array(
-			'message' 		=> $msg,
-			'title'   		=> $msg,
-			'msgcnt'  		=> null,
-			'timeToLive' 	=> 3000,
-		);
-		$gcm = GcmDevices::where('user_id','=',$user->id)->orderBy('id','DESC')->get(array('gcm_regid'));
-		$regId = array();
-		$i = 0;
-		foreach($gcm as $g)
-		{
-			$regId[$i] = $g['gcm_regid'];
-			$i++;
+		$commenter = User::find($id);
+		$msg = 'El usuario '.$commenter->name.' '+$commenter->lastname.' ha comentado tu publicación '.$publication->titulo;
+		$user = User::with('gcmdevices')->find($publication->user_id);
+		foreach($user->gcmdevices as $gcm) {
+			$regId = $gcm->gcm_regid;
+			$data = array(
+				"type"		=> "comment",
+				"pub_id"	=> $pub_id,
+				"message"	=> $msg,
+				"title"		=> "Han comentado tu publicación"
+			);
+			$doGcm = new Gcm;
+			$response = $doGcm->send_notification($data,$regId);
 		}
-		$doGcm = new Gcm;
-		$response = $doGcm->send_notification($regId,$data);
 		return Response::json(array(
 			'type' => 'success', 
 			'msg' => 'Comentario Guardado Sactisfactoriamente',
@@ -2482,6 +2940,8 @@ class AjaxController extends BaseController{
 		if ($com->deleted == 1) {
 			$com->deleted = 0;
 		}
+
+
 		$resp = new Respuestas;
 		$resp->comentario_id = $input['comment_id'];
 		$resp->respuesta 	 = $input['respuesta'];
@@ -2500,6 +2960,22 @@ class AjaxController extends BaseController{
 			$message->to($to_Email)->from('pasillo24.com@pasillo24.com')->subject($subject);
 		});
 		if ($resp->save()) {
+			
+			$publication = Publicaciones::find($input['pub_id']);
+			$msg = 'El usuario '.Auth::user()->name.' '+Auth::user()->lastname.' ha respondido tu comentario en la publicación '.$publication->titulo;
+			$user = User::with('gcmdevices')->find($publication->user_id);
+			foreach($user->gcmdevices as $gcm) {
+				$regId = $gcm->gcm_regid;
+				$data = array(
+					"type"		=> "comment",
+					"pub_id"	=> $publication->id,
+					"message"	=> $msg,
+					"title"		=> "Han respondido tu comentario"
+				);
+				$doGcm = new Gcm;
+				$response = $doGcm->send_notification($data,$regId);
+			}
+
 			$com->respondido = 1;
 			$com->save();
 			return Response::json(array(
@@ -2552,6 +3028,81 @@ class AjaxController extends BaseController{
 			));
 		}
 	}
+
+	/*---------------------------favoritos---------------------------------------------*/
+	/*                                                                                 */
+	/*                                                                                 */
+	/*                                                                                 */
+	/*                                                                                 */
+	/*                                                                                 */
+	/*                                                                                 */
+	/*                                                                                 */
+	/*                                                                                 */
+	/*                                                                                 */
+	/*---------------------------favoritos---------------------------------------------*/
+	public function addFav($id)
+	{
+		
+		$user_id = Input::get('id');
+		$aux = Favorito::where('user_id','=',$user_id)->where('pub_id','=',$id)->first();
+		if (is_null($aux) || empty($aux)) 
+		{
+			$fav = new Favorito;
+			$fav->user_id = $user_id;
+			$fav->pub_id  = $id;
+			$fav->save();
+			$response = array(
+				'type' 		=> 'success',
+				'msg'  		=> 'Se ha agregado esta publicación a favoritos.',
+				'data'		=> $fav->id,
+			);
+		}else
+		{
+			$response = array(
+				'type' 		=> 'danger',
+				'msg'  		=> 'Ya agregaste esta publicación a favoritos.',
+			);
+		}
+		return Response::json($response);
+	}
+	public function removeFav($id)
+	{
+		$fav = Favorito::find($id);
+		if (is_null($fav) || empty($fav)) {
+			return Response::json(array(
+				'type' 	 => 'danger',
+				'msg'    => 'Favorito no existe o ya se ha eliminado.',
+			));	
+		}
+		$pub = $fav->pub_id;
+		$fav->delete();
+		return Response::json(array(
+			'type' 	 => 'success',
+			'msg'    => 'Se ha removido la publicación de sus favoritos.',
+		));
+	}
+	public function getMyFav()
+	{
+		$toReturn = array_merge($this->toReturn,array(
+			'favoritos.id as fav_id',
+		));
+		$id = Input::get('id');
+		$fav = Publicaciones::leftJoin('favoritos','favoritos.pub_id','=','publicaciones.id')
+		->join('usuario','usuario.id','=','publicaciones.user_id')
+		->leftJoin('departamento','departamento.id','=','publicaciones.departamento')
+		->where(function($query){
+			$query->where('publicaciones.fechFin','>=',date('Y-m-d',time()))
+			->orWhere('publicaciones.fechFinNormal','>=',date('Y-m-d',time()));
+		})	
+		->where('publicaciones.deleted','=',0)
+		->where('favoritos.user_id','=',$id)
+		->get($toReturn);
+		return Response::json(array(
+			'pub'  => $fav,
+			'type' => 'success',
+		));
+	}
+
 	/*---------------------------Compras-----------------------------------------------*/
 	/*                                                                                 */
 	/*                                                                                 */
@@ -2588,18 +3139,39 @@ class AjaxController extends BaseController{
 		$comp->fechVal 	  = date('Y-m-d',time()+172800);
 		if ($comp->save()) {
 			$pub = Publicaciones::find($pub_id);
-			$user = User::find($pub->user_id);
-			$msg = "Han respondido tu comentario: ".$pub->titulo;
-			$data = array(
-				'message' 		=> $msg,
-				'title'   		=> $msg,
-				'msgcnt'  		=> null,
-				'timeToLive' 	=> 3000,
-			);
+			$user = User::with('gcmdevices')->find($pub->user_id);
+			$msg = 'El usuario '.Auth::user()->name.' '+Auth::user()->lastname.' lo ha contactado para compra';
+			foreach($user->gcmdevices as $gcm) {
+				$regId = $gcm->gcm_regid;
+				$data = array(
+					"type"		=> "contact",
+					"pub_id"	=> $comp->pub_id,
+					"message"	=> $msg,
+					"title"		=> "Te han contactado"
+				);
+				$doGcm = new Gcm;
+				$response = $doGcm->send_notification($data,$regId);
+			}
+			$userdata = array();
+			if (empty($pub->name) || empty($pub->lastname)) {
+				$userdata = array_merge($userdata,array('name' => $user->name));
+				$userdata = array_merge($userdata,array('lastname' => $user->lastname));
+			}
+			if (empty($pub->phone)) {
+				$userdata = array_merge($userdata,array('phone' => $user->phone));
+			}
+			if (empty($pub->email)) {
+				$userdata = array_merge($userdata,array('email' => $user->email));
+			}
+			if (empty($pub->pag_web_hab) && $pub->pag_web == "http://") {
+				$userdata = array_merge($userdata,array('pag_web' => $user->pag_web));
+			}
 			return Response::json(array(
 				'type' => 'success',
 				'msg'  => 'Se ha generado una compra',
 				'compra_id' => $comp->id,
+				'pub' => $pub,
+				'userdata' => $userdata
 			));
 		}
 	}
@@ -2621,9 +3193,12 @@ class AjaxController extends BaseController{
 		$input = Input::all();
 		$fecha = explode('-', $input['fecha']);
 		if (count($fecha)<3) {
-			return Response::json(array('code' => 0));
+			return Response::json(array('type' => 'danger', 'msg' => 'El formato de la fecha debe ser dd-mm-yyyy'));
 		}else
 		{
+			if ($fecha < date('d-m-Y')) {
+				return Response::json(array('type' => 'danger', 'msg' => 'La fecha debe ser anterior a hoy.'));
+			}
 			if ($input['per'] == 'd') {
 				$prec = Precios::find(1);
 				$times = 86400;
@@ -2634,27 +3209,44 @@ class AjaxController extends BaseController{
 				$prec = Precios::find(3);
 				$times = 2629744;
 			}
-			$timestamp = strtotime($input['fecha'])+$times;
-			$fech = date('d-m-Y',$timestamp);
-			if ($fecha < date('d-m-Y')) {
-				return Response::json(array('code' => 1));
-			}
-			
 			if ($input['dur'] < 1) {
+				$timestamp = strtotime($input['fecha'])+$times;
 				$costo = $prec->precio;
 			}else
 			{
+				$timestamp = strtotime($input['fecha'])+$times*$input['dur'];
 				$costo = $prec->precio*$input['dur'];
-
 			}
+			$fech = date('d-m-Y',$timestamp);
 			return Response::json(array('fecha' => $fech,'costo' => $costo));
 			
 		}
 	}
 	public function getCategory()
 	{
-		$cat = Categorias::where('tipo','=',1)->where('deleted','=',0)->get(array('id','desc'));
-		$ser = Categorias::where('tipo','=',2)->where('deleted','=',0)->get(array('id','desc'));
+		$aux = Categorias::where('tipo','=',1)->where('deleted','=',0)->where(function($query){
+			$query->where('nombre','!=','otros')->orWhere('nombre','!=','Otros');
+		})->orderBy('desc')->get(array('id','nombre as desc'));
+		$cat = array();
+		foreach ($aux as $i => $c) {
+			$cat[$i] = $c;
+		}
+		$aux2 = Categorias::where('tipo','=',2)->where('deleted','=',0)->where(function($query){
+			$query->where('nombre','!=','otros')->orWhere('nombre','!=','Otros');
+		})->orderBy('desc')->get(array('id','nombre as desc'));
+		$ser = array();
+		foreach ($aux2 as $i => $s) {
+			$ser[$i] = $s;
+		}
+		$otros = Categorias::where('tipo','=',1)->where('deleted','=',0)->where(function($query){
+			$query->where('nombre','=','otros')->orWhere('nombre','=','Otros');
+		})->first(array('id','nombre as desc'));
+		$cat = array_merge($cat,array($otros));
+		$otros2 = Categorias::where('tipo','=',2)->where('deleted','=',0)->where(function($query){
+			$query->where('nombre','=','otros')->orWhere('nombre','=','Otros');
+		})->first(array('id','nombre as desc'));
+		$ser = array_merge($ser,array($otros2));
+
 		return Response::json(array(
 			'type' => 'success',
 			'categorias' => $cat,
@@ -2701,10 +3293,30 @@ class AjaxController extends BaseController{
 	public function getUserData()
 	{
 		$id = Input::get('id');
-		$user = User::find($id);
+		$user = User::where('id','=',$id)->with('favoritos')->first();
 		return Response::json(array(
 			'type' => 'success',
 			'data' => $user,
 		));
+	}
+	public function getTest()
+	{
+		$regId = Input::get('regId');
+		$data = [
+			"type"		=> "rating",
+			"message"	=> 'holis',
+			"title"		=> "Te han valorado como vendedor",
+		];
+		$doGcm = new Gcm;
+		$response = $doGcm->send_notification($data,$regId);
+		return Response::json(array(
+			'type' => 'success',
+			'msg'	=> 'se envio'
+		));
+	}
+	public function getPrice()
+	{
+		$price = Precios::get();
+		return $price;
 	}
 }

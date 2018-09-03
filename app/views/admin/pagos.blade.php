@@ -15,9 +15,6 @@
 				</div>
 			@endif
 			<legend>Administrar pagos</legend>
-			<div class="responseDanger">
-
-			</div>
 			@if(isset($type))
 			@if(!is_null($publicaciones) && !empty($publicaciones))
 				@if($type == "lider")
@@ -34,63 +31,52 @@
 					<table class="table table-striped table-hover table-list-search">
 						<thead>
 							<tr>
-								<th class="textoMedio">Título de la publicación</th>
-								<th class="textoMedio">Ubicación</th>
-								<th class="textoMedio">Fecha de inicio</th>
-								<th class="textoMedio">Fecha de fin</th>
-								<th class="textoMedio">Monto</th>
-								<th class="textoMedio">Ver publicación</th>
-								<th class="textoMedio">Transacción</th>
-								<th class="textoMedio">Datos del usuario</th>
-								<th class="textoMedio">Aprobar Pago</th>
-								<th class="textoMedio">Rechazar Pago</th>
+								<th class="">Título de la publicación</th>
+								<th class="">Ubicación</th>
+								<th class="">Fecha de inicio</th>
+								<th class="">Fecha de fin</th>
+								<th class="">Monto</th>
+								<th class="">Ver publicación</th>
+								<th class="">Transacción</th>
+								<th class="">Datos del usuario</th>
+								<th class="">Aprobar Pago</th>
+								<th class="">Rechazar Pago</th>
 							</tr>
 						</thead>
 						<tbody>
 							@foreach($publicaciones as $publicacion)
 							<tr id="pub_{{ $publicacion->id }}">
-								<td class="textoMedio">{{ $publicacion->titulo }}</td>
-								<td class="textoMedio">
+								<td class="">{{ $publicacion->titulo }}</td>
+								<td class="">
 									@if($publicacion->ubicacion == "Ambos")
 										Categorias/Principal
 									@else
 										{{ $publicacion->ubicacion }}
 									@endif
 								</td>
-								<td class="textoMedio">{{ date('d/m/Y',strtotime($publicacion->fechIni)) }}</td>
-								<td class="textoMedio">{{ date('d/m/Y',strtotime($publicacion->fechFin)) }}</td>
-								<td class="textoMedio">{{ $publicacion->monto.' Bs.' }}</td>
-								<td class="textoMedio">
-									<a href="{{ URL::to('publicacion/lider/'.base64_encode($publicacion->id)) }}" target="_blank" class="btn btn-primary btn-xs">Ver</a></td>
-								<td class="textoMedio">
-									<button class="btn btn-warning btn-xs verTrans" data-toggle="modal" data-target="#showTransData" value="{{ $publicacion->id }}">	Ver
-									</button>
-									<input type="hidden" class="numtrans-{{ $publicacion->id }}" value="{{ $publicacion->num_trans }}">
-									<input type="hidden" class="bank-{{ $publicacion->id }}" value="{{ $publicacion->banco }}">
-									<input type="hidden" class="bankEx-{{ $publicacion->id }}" value="{{ $publicacion->banco_ext }}">
-									<input type="hidden" class="fech-{{ $publicacion->id }}" value="{{ $publicacion->fech_trans }}">
+								<td class="">{{ date('d/m/Y',strtotime($publicacion->fechIni)) }}</td>
+								<td class="">{{ date('d/m/Y',strtotime($publicacion->fechFin)) }}</td>
+								<td class="">{{ $publicacion->monto.' Bs.' }}</td>
+								<td class="">
+									<a href="{{ URL::to('publicacion/lider/'.base64_encode($publicacion->id)) }}" target="_blank" class="btn btn-primary btn-xs">Ver</a>
 								</td>
-								<td class="textoMedio ">
+								<td class="">
+									<button class="btn btn-warning btn-xs verTrans" data-toggle="modal" data-target="#showTransData" value="{{ $publicacion->id }}" data-json="">	Ver
+									</button>
+									<input type="hidden" class="valores" value='{{ json_encode(array('num' => $publicacion->num_trans, 'bank' => $publicacion->banco, 'bankEx' => $publicacion->banco_ext, 'fech' => $publicacion->fech_trans)) }}'>
+								</td>
+								<td class=" ">
 									<button class="btn btn-primary btn-xs ver" data-toggle="modal" data-target="#showUserData" value="{{ $publicacion->id }}">	Ver
 									</button>
-									
+									<input type="hidden" class="valores" value='{{ json_encode(array('username' => $publicacion->username,'name' => $publicacion->name.' '.$publicacion->lastname,'email' => $publicacion->email,'phone' => $publicacion->phone,'pagWg' => $publicacion->pag_web,'carnet' => $publicacion->id_carnet,'nit' => $publicacion->nit)) }}'>
 								</td>
-								<input type="hidden" class="username-{{ $publicacion->id }}" value="{{ $publicacion->username }}">
-									<input type="hidden" class="name-{{ $publicacion->id }}" value="{{ $publicacion->name.' '.$publicacion->lastname }}">
-									<input type="hidden" class="email-{{ $publicacion->id }}" value="{{ $publicacion->email }}">
-									<input type="hidden" class="phone-{{ $publicacion->id }}" value="{{ $publicacion->phone }}">
-									<input type="hidden" class="pagWeb-{{ $publicacion->id }}" value="{{ $publicacion->pag_web }}">
-								<input type="hidden" class="carnet-{{ $publicacion->id }}" value="{{ $publicacion->id_carnet }}">
-								<input type="hidden" class="nit-{{ $publicacion->id }}" value="{{ $publicacion->nit }}">
-								<form method="post" action="{{ URL::to('administrador/pagos/confirmar') }}">
-								<td class="textoMedio">
+								<td class="">
 									@if(Auth::user()->role == 'Administrador')
-										<button class="btn btn-success btn-xs btnAprovar btn-do-disable" name="id" value="{{ $publicacion->id }}" >Aprobar</button>
+										<button class="btn btn-success btn-xs btnAprovar" name="id" value="{{ $publicacion->id }}" data-toggle="modal" href="#aprobar-publicacion">Aprobar</button>
 									@endif
 								</td>
-								</form>
-								<td class="textoMedio">
-									<button class="btn btn-danger btn-xs btnCancelar btn-do-disable" value="{{ $publicacion->id }}" data-toggle="modal" href="#eliminar-publicacion">Rechazar</button>	
+								<td class="">
+									<button class="btn btn-danger btn-xs btn-reject" data-url="{{ URL::to('administrador/pagos/cancelar') }}" value="{{ $publicacion->id }}" data-toggle="modal" href="#eliminar-publicacion">Rechazar</button>	
 								</td>
 							</tr>
 							@endforeach
@@ -111,61 +97,50 @@
 					<table class="table table-striped table-hover table-list-search">
 						<thead>
 							<tr>
-								<th class="textoMedio">Título de la publicación</th>
-								<th class="textoMedio">Categoría</th>
-								<th class="textoMedio">Ubicación</th>
-								<th class="textoMedio">Fecha de inicio</th>
-								<th class="textoMedio">Fecha de fin</th>
-								<th class="textoMedio">Monto</th>
-								<th class="textoMedio">Ver Publicación</th>
-								<th class="textoMedio">Transacción</th>
-								<th class="textoMedio">Datos del usuario</th>
-								<th class="textoMedio">Aprobar Pago</th>
-								<th class="textoMedio">Rechazar Pago</th>
+								<th class="">Título de la publicación</th>
+								<th class="">Categoría</th>
+								<th class="">Ubicación</th>
+								<th class="">Fecha de inicio</th>
+								<th class="">Fecha de fin</th>
+								<th class="">Monto</th>
+								<th class="">Ver Publicación</th>
+								<th class="">Transacción</th>
+								<th class="">Datos del usuario</th>
+								<th class="">Aprobar Pago</th>
+								<th class="">Rechazar Pago</th>
 							</tr>
 						</thead>
 						<tbody>
 							@foreach($publicaciones as $publicacion)
 							<tr id="pub_{{ $publicacion->id }}">
-								<td class="textoMedio">{{ $publicacion->titulo }}</td>
-								<td class="textoMedio">{{ $publicacion->categoria }}</td>
-								<td class="textoMedio">
+								<td class="">{{ $publicacion->titulo }}</td>
+								<td class="">{{ $publicacion->categoria }}</td>
+								<td class="">
 									@if($publicacion->ubicacion == "Ambos")
 											Categorias/Principal
 										@else
 											{{ $publicacion->ubicacion }}
 										@endif
 								</td>
-								<td class="textoMedio">@if($publicacion->fechIni == '0000-00-00') Sin especificar @else {{ date('d/m/Y',strtotime($publicacion->fechIni)) }}@endif</td>
-								<td class="textoMedio">@if($publicacion->fechFin == '0000-00-00') Sin especificar @else{{ date('d/m/Y',strtotime($publicacion->fechFin)) }}@endif</td>
-								<td class="textoMedio">{{ $publicacion->monto.' Bs.' }}</td>
-								<td class="textoMedio"><a href="{{ URL::to('publicacion/habitual/'.base64_encode($publicacion->id)) }}" target="_blank" class="btn btn-primary btn-xs">Ver</a></td>
-								<td class="textoMedio">
+								<td class="">@if($publicacion->fechIni == '0000-00-00') Sin especificar @else {{ date('d/m/Y',strtotime($publicacion->fechIni)) }}@endif</td>
+								<td class="">@if($publicacion->fechFin == '0000-00-00') Sin especificar @else{{ date('d/m/Y',strtotime($publicacion->fechFin)) }}@endif</td>
+								<td class="">{{ $publicacion->monto.' Bs.' }}</td>
+								<td class=""><a href="{{ URL::to('publicacion/habitual/'.base64_encode($publicacion->id)) }}" target="_blank" class="btn btn-primary btn-xs">Ver</a></td>
+								<td class="">
 									<button class="btn btn-warning btn-xs verTrans" data-toggle="modal" data-target="#showTransData" value="{{ $publicacion->id }}">	Ver
 									</button>
-									<input type="hidden" class="numtrans-{{ $publicacion->id }}" value="{{ $publicacion->num_trans }}">
-									<input type="hidden" class="bank-{{ $publicacion->id }}" value="{{ $publicacion->banco }}">
-									<input type="hidden" class="bankEx-{{ $publicacion->id }}" value="{{ $publicacion->banco_ext }}">
-									<input type="hidden" class="fech-{{ $publicacion->id }}" value="{{ $publicacion->fech_trans }}">
+									<input type="hidden" class="valores" value='{{ json_encode(array('num' => $publicacion->num_trans, 'bank' => $publicacion->banco, 'bankEx' => $publicacion->banco_ext, 'fech' => $publicacion->fech_trans)) }}'>
 								</td>
-								<td class="textoMedio"><button class="btn btn-primary btn-xs ver" data-toggle="modal" data-target="#showUserData" value="{{ $publicacion->id }}">Ver</button></td>
-								<input type="hidden" class="username-{{ $publicacion->id }}" value="{{ $publicacion->username }}">
-									<input type="hidden" class="name-{{ $publicacion->id }}" value="{{ $publicacion->name.' '.$publicacion->lastname }}">
-									<input type="hidden" class="email-{{ $publicacion->id }}" value="{{ $publicacion->email }}">
-									<input type="hidden" class="phone-{{ $publicacion->id }}" value="{{ $publicacion->phone }}">
-									<input type="hidden" class="pagWeb-{{ $publicacion->id }}" value="{{ $publicacion->pag_web }}">
-									<input type="hidden" class="carnet-{{ $publicacion->id }}" value="{{ $publicacion->id_carnet }}">
-									<input type="hidden" class="nit-{{ $publicacion->id }}" value="{{ $publicacion->nit }}">
-								<form method="post" action="{{ URL::to('administrador/pagos/confirmar') }}">
-								<td class="textoMedio">
+								<td class=""><button class="btn btn-primary btn-xs ver" data-toggle="modal" data-target="#showUserData" value="{{ $publicacion->id }}">Ver</button>
+									<input type="hidden" class="valores" value='{{ json_encode(array('username' => $publicacion->username,'name' => $publicacion->name.' '.$publicacion->lastname,'email' => $publicacion->email,'phone' => $publicacion->phone,'pagWg' => $publicacion->pag_web,'carnet' => $publicacion->id_carnet,'nit' => $publicacion->nit)) }}'>
+								</td>
+								<td class="">
 									@if(Auth::user()['role'] == 'Administrador')
-									<button class="btn btn-success btnAprovar btn-xs btn-do-disable" name="id" value="{{ $publicacion->id }}" >Aprobar</button>
+									<button class="btn btn-success btnAprovar btn-xs" name="id" value="{{ $publicacion->id }}" data-toggle="modal" href="#aprobar-publicacion">Aprobar</button>
 									@endif
 								</td>
-								</form>
-								
-								<td class="textoMedio">
-									<button class="btn btn-danger btnCancelar btn-xs btn-do-disable" value="{{ $publicacion->id }}" data-toggle="modal" href="#eliminar-publicacion">Rechazar</button>	
+								<td class="">
+									<button class="btn btn-danger btn-xs btn-reject" data-url="{{ URL::to('administrador/pagos/cancelar') }}" value="{{ $publicacion->id }}" data-toggle="modal" href="#eliminar-publicacion">Rechazar</button>	
 								</td>
 								
 								
@@ -188,55 +163,49 @@
 					<table class="table table-striped table-hover table-list-search">
 						<thead>
 							<tr>
-								<th class="textoMedio">Título de la publicación</th>
-								<th class="textoMedio">Categoría</th>
-								<th class="textoMedio">Ubicación</th>
-								<th class="textoMedio">Fecha de inicio</th>
-								<th class="textoMedio">Fecha de fin</th>
-								<th class="textoMedio">Ver publicación</th>
-								<th class="textoMedio">Datos del usuario</th>
-								<th class="textoMedio">Aprobar Pago</th>
-								<th class="textoMedio">Rechazar Pago</th>
+								<th class="">Título de la publicación</th>
+								<th class="">Categoría</th>
+								<th class="">Ubicación</th>
+								<th class="">Fecha de inicio</th>
+								<th class="">Fecha de fin</th>
+								<th class="">Ver publicación</th>
+								<th class="">Datos del usuario</th>
+								<th class="">Aprobar Pago</th>
+								<th class="">Rechazar Pago</th>
 							</tr>
 						</thead>
 						<tbody>
 							@foreach($publicaciones as $publicacion)
 							<tr id="pub_{{ $publicacion->id }}">
-								<td class="textoMedio">{{ $publicacion->titulo }}</td>
-								<td class="textoMedio">{{ $publicacion->categoria_desc}}</td>
-								<td class="textoMedio">
+								<td class="">{{ $publicacion->titulo }}</td>
+								<td class="">{{ $publicacion->categoria_desc}}</td>
+								<td class="">
 									@if($publicacion->ubicacion == "Ambos")
 											Categorias/Principal
 										@else
 											{{ $publicacion->ubicacion }}
 										@endif
 								</td>
-								<td class="textoMedio">@if($publicacion->fechIni == '0000-00-00') Sin especificar @else {{ date('d/m/Y',strtotime($publicacion->fechIni)) }}@endif</td>
-								<td class="textoMedio">@if($publicacion->fechFin == '0000-00-00') Sin especificar @else{{ date('d/m/Y',strtotime($publicacion->fechFin)) }}@endif</td>
+								<td class="">@if($publicacion->fechIni == '0000-00-00') Sin especificar @else {{ date('d/m/Y',strtotime($publicacion->fechIni)) }}@endif</td>
+								<td class="">@if($publicacion->fechFin == '0000-00-00') Sin especificar @else{{ date('d/m/Y',strtotime($publicacion->fechFin)) }}@endif</td>
 								<td>
 									<a target="_blank" class="btn btn-success btn-xs" href="{{ URL::to('publicacion/casual/'.base64_encode($publicacion->id)) }}">
 										Ver
 									</a>
 
 								</td>
-								<td class="textoMedio"><button class="btn btn-primary btn-xs ver" data-toggle="modal" data-target="#showUserData" value="{{ $publicacion->id }}">Ver</button></td>
-									<input type="hidden" class="username-{{ $publicacion->id }}" value="{{ $publicacion->username }}">
-									<input type="hidden" class="name-{{ $publicacion->id }}" value="{{ $publicacion->name.' '.$publicacion->lastname }}">
-									<input type="hidden" class="email-{{ $publicacion->id }}" value="{{ $publicacion->email }}">
-									<input type="hidden" class="phone-{{ $publicacion->id }}" value="{{ $publicacion->phone }}">
-									<input type="hidden" class="pagWeb-{{ $publicacion->id }}" value="{{ $publicacion->pag_web }}">
-									<input type="hidden" class="carnet-{{ $publicacion->id }}" value="{{ $publicacion->id_carnet }}">
-									<input type="hidden" class="nit-{{ $publicacion->id }}" value="{{ $publicacion->nit }}">
-								<form method="post" action="{{ URL::to('administrador/pagos/confirmar') }}">
-								<td class="textoMedio">
+								<td class="">
+									<button class="btn btn-primary btn-xs ver" data-toggle="modal" data-target="#showUserData" value="{{ $publicacion->id }}">Ver</button></td>
+									<input type="hidden" class="valores" value='{{ json_encode(array('num' => $publicacion->num_trans, 'bank' => $publicacion->banco, 'bankEx' => $publicacion->banco_ext, 'fech' => $publicacion->fech_trans)) }}'>
+
+									
+								<td class="">
 									@if(Auth::user()['role'] == 'Administrador')
-									<button class="btn btn-success btnAprovar btn-xs btn-do-disable" name="id" value="{{ $publicacion->id }}" >Aprobar</button>
+									<button class="btn btn-success btnAprovar btn-xs btn-do-disable" name="id" value="{{ $publicacion->id }}" data-toggle="modal" href="#aprobar-publicacion">Aprobar</button>
 									@endif
 								</td>
-								</form>
-								
-								<td class="textoMedio">
-									<button class="btn btn-danger btnCancelar btn-xs btn-do-disable" value="{{ $publicacion->id }}" data-toggle="modal" href="#eliminar-publicacion">Rechazar</button>	
+								<td class="">
+									<button class="btn btn-danger btn-xs btn-reject" data-url="{{ URL::to('administrador/pagos/cancelar') }}" value="{{ $publicacion->id }}" data-toggle="modal" href="#eliminar-publicacion">Rechazar</button>	
 								</td>
 							</tr>
 							@endforeach
@@ -251,30 +220,54 @@
 				</div>
 			@endif
 		@else
-		<div class="col-xs-12" style="display: block;
-margin: 0 auto;
-float: none;">
-			<div class="col-xs-4 typePub imgLiderUp">
-				<h3 class="footerText" style="margin-bottom:1em;">ANUNCIO LÍDER</h3>
-				<img src="{{asset('images/lider-01.png')}}" class="pubType">
-			
-				<a href="{{ URL::to('administrador/pagos/lider') }}" class="btn btn-primary footerText " style="margin-top:2em;width:100%;">Ver publicaciones</a>
-			</div>
-			<div class="col-xs-4 typePub imgLiderUp">
-				<h3 class="footerText" style="margin-bottom:1em;">ANUNCIO HABITUAL</h3>
-				<img src="{{asset('images/habitual-01.png')}}" class="pubType">
+			<div class="col-xs-12">
+				<div class="col-xs-12 pubBottonsCont">
+					<div class="col-sm-12 col-md-4 visible-md visible-lg" >
+						<h3 class="footerText text-center">ANUNCIO LÍDER</h3>
+					</div>
+					<div class="col-sm-12 col-md-4 visible-md visible-lg" >
+						<h3 class="footerText text-center">ANUNCIO HABITUAL</h3>
+
+					</div>
+					<div class="col-sm-12 col-md-4 visible-md visible-lg" >
+						<h3 class="footerText text-center">ANUNCIO CASUAL</h3>
+
+					</div>
+				</div>
+				<div class="col-sm-12">
+					<div class="col-sm-12 col-md-4">
+						<h3 class="footerText text-center hidden-md hidden-lg">ANUNCIO LÍDER</h3>
+						<img src="{{asset('images/lider-01.png')}}" class="pubType center-block">
+					
+						<a href="{{ URL::to('administrador/pagos/lider') }}" class="btn btn-primary pubBtn footerText hidden-md hidden-lg">Ver publicación</a>
+					</div>
+					<div class="col-sm-12 col-md-4">
+						<h3 class="footerText text-center hidden-md hidden-lg">ANUNCIO HABITUAL</h3>
+						<img src="{{asset('images/habitual-01.png')}}" class="pubType center-block">
+						
+						<a href="{{ URL::to('administrador/pagos/habitual') }}" class="btn btn-primary pubBtn footerText hidden-md hidden-lg">Ver publicación</a>
+					</div>
+					<div class="col-sm-12 col-md-4">
+						<h3 class="footerText text-center hidden-md hidden-lg">ANUNCIO CASUAL</h3>
+						<img src="{{asset('images/casual-01.png')}}" class="pubType center-block">
 				
-				<a href="{{ URL::to('administrador/pagos/habitual') }}" class="btn btn-primary footerText " style="margin-top:2em;width:100%;">Ver publicaciones</a>
+						<a href="{{ URL::to('administrador/pagos/casual') }}" class="btn btn-primary pubBtn footerText hidden-md hidden-lg">Ver publicación</a>
+					</div>
+				</div>
+				<div class="col-xs-12 pubBottonsCont">
+					<div class="col-sm-12 col-md-4 formulario visible-md visible-lg" >
+						<a href="{{ URL::to('administrador/pagos/lider') }}" class="btn btn-primary footerText" style="width:100%;">Ver publicación</a>
+					</div>
+					<div class="col-sm-12 col-md-4 formulario visible-md visible-lg" >
+					<a href="{{ URL::to('administrador/pagos/habitual') }}" class="btn btn-primary footerText" style="width:100%;">Ver publicación</a>
+
+					</div>
+					<div class="col-sm-12 col-md-4 formulario visible-md visible-lg" >
+					<a href="{{ URL::to('administrador/pagos/casual') }}" class="btn btn-primary footerText" style="width:100%;">Ver publicación</a>
+
+					</div>
+				</div>
 			</div>
-			<div class="col-xs-4 typePub imgLiderUp">
-				<h3 class="footerText" style="margin-bottom:1em;">ANUNCIO CASUAL</h3>
-				<img src="{{asset('images/habitual-01.png')}}" class="pubType">
-				
-				<a href="{{ URL::to('administrador/pagos/casual') }}" class="btn btn-primary footerText " style="margin-top:2em;width:100%;">Ver publicaciones</a>
-			</div>
-			
-		</div>
-		
 		@endif
 		</div>
 	</div>
@@ -384,17 +377,40 @@ float: none;">
 				<h4 class="modal-title">Rechazar Publicación</h4>
 			</div>
 			<div class="modal-body">
-				<p class="textoPromedio">Motivo</p>
 				<div class="alert responseDanger">
 					<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-					<p class="textoPromedio text-centered responseDanger-text"></p>
+					<p></p>
 				</div>
-				<textarea class="form-control motivo"></textarea>
+				<label>Motivo</label>
+				<textarea class="form-control motivo" rows="3" placeholder="Introduzca el motivo de rechazo"></textarea>
 			</div>
 			<div class="modal-footer">
-				<img src="{{ asset('images/loading.gif') }}" class="miniLoader">
-				<button type="button" class="btn btn-danger send-elim" >Enviar</button>
-        		<button type="button" class="btn btn-success btn-dimiss hidden" data-dismiss="modal">Aceptar</button>
+				<img src="{{ asset('images/loading.gif') }}" class="miniLoader hidden">
+				<button type="button" class="btn btn-danger send-elim btn-modal-elim" >Enviar</button>
+        		<button type="button" class="btn btn-default btn-dimiss btn-close-modal btn-modal-elim" data-dismiss="modal">Cerrar</button>
+
+			</div>
+		</div>
+	</div>
+</div>
+<div class="modal fade" id="aprobar-publicacion" data-backdrop="static" data-keyboard="false">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+				<h4 class="modal-title">Aprobar Publicación</h4>
+			</div>
+			<div class="modal-body">
+				<div class="alert responseDanger">
+					<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+					<p></p>
+				</div>
+				<p>¿Segudo resea aprobar esta publicación?</p>
+			</div>
+			<div class="modal-footer">
+				<img src="{{ asset('images/loading.gif') }}" class="miniLoader hidden">
+				<button type="button" class="btn btn-success send-aprov btn-modal-elim" >Enviar</button>
+        		<button type="button" class="btn btn-default btn-dimiss btn-close-modal btn-modal-elim" data-dismiss="modal">Cerrar</button>
 
 			</div>
 		</div>

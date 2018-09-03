@@ -16,6 +16,9 @@ class GcmDevices extends Eloquent {
 	 * @var array
 	 */
 
-	
+	function users()
+	{
+		return $this->belongsTo('User','user_id');
+	}
 
 }

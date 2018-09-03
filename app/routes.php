@@ -10,7 +10,7 @@
 | and give it the Closure to execute when that URI is requested.
 |
 */
-
+Route::get('test','AjaxController@getTest');
 Route::get('/', 'HomeController@showFront');
 Route::get('inicio','HomeController@showIndex');
 Route::get('inicio/departamentos/{id}','HomeController@showIndex');
@@ -31,12 +31,15 @@ Route::get('inicio/buscar', 'HomeController@getSearch');
 Route::get('publicaciones/categorias/{id}','PublicationController@getPublicationCategory');
 Route::get('publicaciones/departamentos/{id}','PublicationController@getPublicationDepartment');
 //vista de una publicacion lider
-	Route::get('publicacion/lider/{id}','PublicationController@getPublication');
+Route::get('publicacion/lider/{id}','PublicationController@getPublication');
 //vista de la publicacion habitual
-	Route::get('publicacion/habitual/{id}','PublicationController@getPublication');
+Route::get('publicacion/habitual/{id}','PublicationController@getPublication');
 
 	//Route::get('publicacion/habitual/{id}','PublicationController@getPublication');
 Route::get('publicacion/casual/{id}', 'PublicationController@getPublication');
+
+Route::get('publicacion/obtener-cercanos/{id}','PublicationController@getLocations');
+
 
 Route::post('chequear/email','AuthController@postEmailCheck');
 Route::get('inicio/terminos-y-condiciones', 'HomeController@getTermsAndConditions');
@@ -44,6 +47,10 @@ Route::get('inicio/terminos-y-condiciones', 'HomeController@getTermsAndCondition
 //app
 Route::get('app/inicio','AjaxController@showIndex');
 Route::get('app/publicacion','AjaxController@publicationSelf');
+
+
+Route::get('app/lider','AjaxController@getLider');
+
 Route::get('app/inicio/departamentos/{id}','AjaxController@showIndex');
 Route::get('app/inicio/categorias/{id}','AjaxController@getPublicationCategory');
 Route::get('app/inicio/buscar','AjaxController@search');
@@ -55,6 +62,7 @@ Route::post('app/registro','AjaxController@postRegisterApp');
 Route::post('app/cambiar-clave','AjaxController@resetPassword');
 Route::group(array('before' => 'check_app_auth'),function()
 {
+	Route::post('app/registrar-gcm','AjaxController@getGcm');
 	Route::post('app/publicacion/comentar','AjaxController@postComment');
 
 	Route::post('app/publicacion/contactar','AjaxController@getCompra');
@@ -67,10 +75,13 @@ Route::group(array('before' => 'check_app_auth'),function()
 	Route::get('app/usuario/publicacion/habitual/{id}/previsualizar','AjaxController@getHabitualPreview');
 	Route::post('app/usuario/publicacion/habitual/incremento','AjaxController@postHabitualAdd');
 	Route::post('app/usuario/publicacion/casual/enviar','AjaxController@postCasual');
+	Route::post('app/usuario/publicaciones/reactivar/{id}','AjaxController@postReactivate');
 	Route::post('app/usuario/publicaciones/pago/enviar','AjaxController@postPublicationPayment');
 
+	Route::post('app/usuario/publicaciones/eliminar','AjaxController@postElimPub');
+
 	Route::post('app/usuario/publicaciones/mis-publicaciones/{type}','AjaxController@getMyPublicationsType');
-	Route::post('app/usuario/publicaciones/mis-publicaciones/modificar','AjaxController@postModifyPub');
+	Route::post('app/usuario/publicaciones/mis-publicaciones/{type}/modificar','AjaxController@postModifyPub');
 
 	Route::get('app/usuario/mis-compras','AjaxController@getMyCart');
 	Route::get('app/usuario/mis-ventas','AjaxController@getMySell');
@@ -82,7 +93,13 @@ Route::group(array('before' => 'check_app_auth'),function()
 	Route::post('app/usuario/comentarios/marcar','AjaxController@postElimCommentrecividos');
 	Route::post('app/usuario/responder','AjaxController@postResponse');
 
+	Route::get('app/agregar-favorito/{id}','AjaxController@addFav');
+	Route::get('app/remover-favorito/{id}','AjaxController@removeFav');
+	Route::get('app/ver-favorito','AjaxController@getMyFav');
+
 	Route::get('app/usuario-datos','AjaxController@getUserData');
+
+	Route::get('app/precios','AjaxController@getPrice');
 });
 //rutas globales
 Route::get('app/categorias','AjaxController@getCategory');
@@ -92,7 +109,7 @@ Route::get('app/marcas','AjaxController@getBrand');
 Route::get('app/modelos','AjaxController@getModel');
 
 
-
+Route::get('app/pagina-web-link','AjaxController@getPubUrl');
 Route::post('app/subir-imagenes/{carpeta}','AjaxController@upload_image');
 
 
@@ -172,6 +189,9 @@ Route::group(array('before' =>'auth'),function()
 	Route::post('usuario/comentarios/recividos/eliminar','UserController@postElimCommentrecividos');
 	Route::post('usuario/comentarios/hechos/eliminar','UserController@postElimComment');
 	Route::post('modificar/publicacion/eliminar/imagen','PublicationController@postElimImage');
+
+	Route::post('usuario/mi-reputacion/borrar-compra','UserController@removeComp');
+	Route::post('usuario/mi-reputacion/borrar-venta','UserController@removeVend');
 	//rutas del admin
 	Route::group(array('before' => 'role_check'), function()
 	{

@@ -72,7 +72,7 @@
 						 @endforeach
 					@endif
 				</div>
-				<div class="col-xs-12" style="padding:0;">
+				<div class="col-xs-12 formulario" style="padding:0;">
 					<button type="submit" class="btn btn-success">Enviar</button>
 				</div>
 			</form>
@@ -137,10 +137,12 @@
 					@endforeach
 				</tbody>
 			</table>
+				<div class="blog-pagination">
+
 				<nav role="navigation">
 		          <?php  $presenter = new Illuminate\Pagination\BootstrapPresenter($cats); ?>
 		          @if ($cats->getLastPage() > 1)
-		          <ul class="cd-pagination no-space">
+		          <ul class="pagination cd-pagination no-space">
 		            <?php
 		              $beforeAndAfter = 3;
 		           
@@ -172,7 +174,7 @@
 		              //Si es la primera página mostramos el enlace desactivado
 		              if ($currentPage <= 1)
 		              {
-		                echo '<li class="disabled"><span class="textoMedio">Primera</span></li>';
+		                echo '<li class="disabled"><a href="#!">Primera</a></li>';
 		              }
 		              //en otro caso obtenemos la url y mostramos en forma de link
 		              else
@@ -185,18 +187,18 @@
 		              //Para ir a la anterior
 		              if(!empty($filter)){
 			              if (($currentPage-1) < $start) {
-			              	echo '<li class="disable"><span>&lt; Atras</span></li>' ;	
+			              	echo '<li class="disable"><a href="#!">&lt; </a></li>' ;	
 			              }else
 			              {
-			              	echo '<li><a href="'.$cats->getUrl($currentPage-1).'&filter='.$filter->id.'">&lt; Atras</a></li>' ;
+			              	echo '<li><a href="'.$cats->getUrl($currentPage-1).'&filter='.$filter->id.'">&lt; </a></li>' ;
 			              }
 		              }else
 		              {
 		              	if (($currentPage-1) < $start) {
-			              	echo '<li class="disable"><span>&lt; Atras</span></li>' ;	
+			              	echo '<li class="disable"><a href="#!">&lt; </a></li>' ;	
 			              }else
 			              {
-			              	echo '<li><a href="'.$cats->getUrl($currentPage-1).'">&lt; Atras</a></li>' ;
+			              	echo '<li><a href="'.$cats->getUrl($currentPage-1).'">&lt; </a></li>' ;
 			              }
 		              }
 		           
@@ -204,7 +206,7 @@
 		              for($i = $start; $i<=$end;$i++)
 		              {
 		              	if ($currentPage == $i) {
-		              		echo '<li class="disabled"><span>'.$i.'</span></li>';
+		              		echo '<li class="disabled"><a href="#!">'.$i.'</a></li>';
 		              	}else
 		              	{
 		              		if(!empty($filter))
@@ -221,25 +223,25 @@
 		              //Para ir a la siguiente
 		              if (!empty($filter)) {
 			              if (($currentPage+1) > $end) {
-			              	echo '<li class="disable"><span>Adelante &gt;</span></li>' ;
+			              	echo '<li class="disable"><a href="#!"> &gt;</a></li>' ;
 			              }else
 			              {
-			              	echo '<li><a href="'.$cats->getUrl($currentPage+1).'&filter='.$filter->id.'">Adelante &gt;</a></li>' ;
+			              	echo '<li><a href="'.$cats->getUrl($currentPage+1).'&filter='.$filter->id.'"> &gt;</a></li>' ;
 			              }
 		              }else
 		              {
 		              	if (($currentPage+1) > $end) {
-			              	echo '<li class="disable"><span>Adelante &gt;</span></li>' ;
+			              	echo '<li class="disable"><a href="#!"> &gt;</a></li>' ;
 			              }else
 			              {
-			              	echo '<li><a href="'.$cats->getUrl($currentPage+1).'">Adelante &gt;</a></li>' ;
+			              	echo '<li><a href="'.$cats->getUrl($currentPage+1).'"> &gt;</a></li>' ;
 			              }
 		              }
 		           
 		              ////Si es la última página mostramos desactivado
 		              if ($currentPage >= $lastPage)
 		              {
-		                echo '<li class="disabled"><span class="textoMedio">Última</span></li>';
+		                echo '<li class="disabled"><a href="#!">Última</span></li>';
 		              }
 		              //en otro caso obtenemos la url y mostramos en forma de link
 		              else
@@ -251,6 +253,7 @@
 		            @endif
 		          </ul>
 		        </nav> <!-- cd-pagination-wrapper -->
+		    </div>
 		</div>
 	</div>
 </div>
@@ -274,9 +277,9 @@
       	</div>
       </div>
       <div class="modal-footer">
-      	<img src="{{ asset('images/loading.gif') }}" class="miniLoader">
-        <button type="button" class="btn btn-danger eliminar-subcategoria" >Eliminar</button>
-        <button type="button" class="btn btn-success btn-dimiss hidden" data-dismiss="modal">Aceptar</button>
+      	<img src="{{ asset('images/loading.gif') }}" class="miniLoader hidden">
+        <button type="button" class="btn btn-danger eliminar-subcategoria btn-modal-elim" >Eliminar</button>
+        <button type="button" class="btn btn-default btn-dimiss btn-close-modal btn-modal-elim" data-dismiss="modal">Cerrar</button>
       </div>
     </div>
   </div>

@@ -582,11 +582,11 @@ jQuery(document).ready(function($) {
 	$('#ubication').change(function(){
 		var esto = $(this);
 		if (esto.val() == 'Categoria') {
-			esto.parent().removeClass('col-xs-12').addClass('col-xs-6');
+			esto.parent().removeClass('col-md-12').addClass('col-md-6');
 			$('.contCatLider').addClass('showit')
 		}else
 		{
-			esto.parent().removeClass('col-xs-6').addClass('col-xs-12');
+			esto.parent().removeClass('col-md-6').addClass('col-md-12');
 			$('.contCatLider').removeClass('showit');
 		}
 	})

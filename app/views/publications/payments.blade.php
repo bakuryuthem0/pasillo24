@@ -42,7 +42,7 @@
 					</div>
 				</div>
 				<form method="post" action="{{ URL::to('usuario/publicaciones/pago/enviar') }}">
-					<div class="col-xs-12">
+					<div class="col-xs-12 no-padding">
 						<div class="col-xs-12 col-md-6 visible-xs-block">
 							<h2 class="payment-text">Total a pagar:</h2>
 							<h3 class="payment-amount">{{ $pub->monto }} Bs.</h3>
@@ -102,8 +102,10 @@
 									 @endforeach
 								@endif
 			              	</div>
-						<button class="btn btn-success" id="enviarNumTrans" value="{{ $pub_id }}" name="enviarPago" style="margin-top:2em;">Enviar</button>
-						<a class="btn btn-primary btn-to-large"  data-toggle="modal" data-target="#myModalBancos" style="margin-top:2em;">CUENTAS Y ENTIDADES BANCARIAS.</a>
+			            <div class="col-xs-12">
+							<button class="btn btn-success" id="enviarNumTrans" value="{{ $pub_id }}" name="enviarPago" style="margin-top:2em;">Enviar</button>
+							<a class="btn btn-primary btn-to-large"  data-toggle="modal" data-target="#myModalBancos" style="margin-top:2em;">CUENTAS Y ENTIDADES BANCARIAS.</a>
+			            </div>
 							
 						</div>
 						<div class="col-xs-12 col-md-6 hidden-xs">

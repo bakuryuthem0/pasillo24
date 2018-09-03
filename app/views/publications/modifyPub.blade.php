@@ -187,12 +187,10 @@
 					<select class="form-control" name="subCat" id="subCat">
 						<option value="">Seleccione la sub-categoría</option>
 						@foreach($subCat as $sub)
-							@if($sub->categoria_id == $publicaciones->categoria)
-								@if($sub->id == $publicaciones->typeCat)
-									<option class="optiongroup" value="{{ $sub->id }}" selected>{{ $sub->desc }}</option>
-								@else
-									<option class="optiongroup" value="{{ $sub->id }}">{{ $sub->desc }}</option>
-								@endif
+							@if($sub->id == $publicaciones->typeCat)
+								<option class="optiongroup" value="{{ $sub->id }}" selected>{{ $sub->desc }}</option>
+							@else
+								<option class="optiongroup" value="{{ $sub->id }}">{{ $sub->desc }}</option>
 							@endif
 						@endforeach
 					</select>
@@ -318,9 +316,9 @@
 							<option value="">Seleccione un modelo</option>
 							@foreach($modelos as $modelo)
 								@if($publicaciones->modelo_id == $modelo->id)
-								<option class="optionModel" value="{{ $modelo->id }}" selected>{{ $modelo->nombre }}</option>
+									<option class="optionModel" value="{{ $modelo->id }}" selected>{{ $modelo->nombre }}</option>
 								@else
-								<option class="optionModel" value="{{ $modelo->id }}">{{ $modelo->nombre }}</option>
+									<option class="optionModel" value="{{ $modelo->id }}">{{ $modelo->nombre }}</option>
 								@endif
 							@endforeach
 						</select>
@@ -432,7 +430,7 @@
 						@endif
 					</div>
 				@endif
-				<div class="col-xs-12">
+				<div class="col-xs-12 col-md-6 formulario">
 					<label class="textoPromedio">(*) Operación</label>
 					<div class="col-xs-12" class="textoPromedio">
 						
@@ -449,6 +447,27 @@
 					</div>
 					@if ($errors->has('tipoTransac'))
 						 @foreach($errors->get('tipoTransac') as $err)
+						 	<div class="alert alert-danger">
+						 		<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+						 		<p class="textoPromedio">{{ $err }}</p>
+						 	</div>
+						 @endforeach
+					@endif
+				</div>
+				<div class="col-xs-12 col-md-6 formulario">
+					<label class="textoPromedio">(*) Clase de negocio.</label>
+					<div class="col-xs-12" class="textoPromedio">
+						<span for="negocioType" class="textoPromedio">Negocio con domicilio fiscal</span>
+						<input type="radio" name="negocioType" value="fiscal" required @if($publicaciones->bussiness_type == 'fiscal') checked @endif>
+						<span for="negocioType" class="textoPromedio">Tienda-negocio virtual</span>
+						<input type="radio" name="negocioType" value="virtual" required @if($publicaciones->bussiness_type == 'virtual') checked @endif>
+						<span for="negocioType" class="textoPromedio">Independiente </span>
+						<input type="radio" name="negocioType" value="independiente" required @if($publicaciones->bussiness_type == 'independiente') checked @endif>
+						<span for="negocioType" class="textoPromedio">Otro</span>
+						<input type="radio" name="negocioType" value="otro" required @if($publicaciones->bussiness_type == 'otro') checked @endif>
+					</div>
+					@if ($errors->has('negocioType'))
+						 @foreach($errors->get('negocioType') as $err)
 						 	<div class="alert alert-danger">
 						 		<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
 						 		<p class="textoPromedio">{{ $err }}</p>
@@ -618,7 +637,7 @@
 						</div>
 						@endif
 					</div>
-					<div class="col-xs-12">
+					<div class="col-xs-12 formulario">
 						<button type="button" class="btn btn-primary addNewimage">
 							Agregar imagen
 						</button>
@@ -644,7 +663,7 @@
 					{{ Form::text('pagina',$publicaciones->pag_web_hab,array('class' => 'form-control', 'placeholder' => 'Sitio web')) }}
 				</div>
 
-				<div class="col-xs-12">
+				<div class="col-xs-12 formulario">
 					<button  value="{{ $publicaciones->id }}" name="enviarPub" class="btn btn-success">Enviar</button>
 					<input type="reset" value="Borrar" name="borrar" class="btn btn-warning">
 					<a href="{{ URL::to('usuario/publicaciones/mis-publicaciones/lider') }}" class="btn btn-danger cancel">Cancelar</a>

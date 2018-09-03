@@ -11,7 +11,7 @@
 			</div>
 		</div>
 		@endif
-		<div class="col-xs-12 contAnaranjado" style="margin-top:2em;padding:1em 0px 3em 3em;">
+		<div class="col-xs-12 col-md-5 pull-left contAnaranjado">
 			<form method="POST" action="{{ URL::to('administrador/modificar-precios/enviar') }}">
 				<legend>Precios página principal</legend>
 				@foreach($princ as $p)
@@ -20,12 +20,12 @@
 					<input type="text" name="princ{{ $p->id }}" value="{{ $p->precio }}" class="form-control">
 				</div>
 				@endforeach
-				<div class="col-xs-12">
+				<div class="col-xs-12 formulario">
 					<button class="btn btn-success">Enviar</button>
 				</div>
 			</form>
 		</div>
-		<div class="col-xs-12 contAnaranjado" style="margin-top:2em;padding:1em 0px 3em 3em;">
+		<div class="col-xs-12 col-md-5 pull-right contAnaranjado">
 		<form method="POST" action="{{ URL::to('administrador/modificar-precios/enviar') }}">
 			<legend>Precios del menú por categoría</legend>
 			@foreach($cat as $c)
@@ -34,7 +34,7 @@
 				<input type="text" name="cat{{ $c->id }}" value="{{ $c->precio }}" class="form-control">
 			</div>
 			@endforeach
-			<div class="col-xs-12">
+			<div class="col-xs-12 formulario">
 				<button class="btn btn-success">Enviar</button>
 			</div>
 		</form>

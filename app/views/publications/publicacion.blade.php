@@ -3,7 +3,7 @@
 <div class="container contenedorUnico">
 	<div class="row">
 		
-		<div class="col-xs-12 info contAnaranjado @if(Session::has('error')) noMostrar @endif" style="margin-top:2em;">
+		<div class="col-xs-12 info contAnaranjado @if(Session::has('error')) hidden @endif" style="margin-top:2em;">
 
 		@if ($tipo == 'lider')
 			<div class="col-xs-12">
@@ -39,7 +39,7 @@
 				<p class="textoPromedio" style="text-align:justify;padding-right: 2em;">{{ $texto->desc}}</p>
 			</div>
 			
-			<div class="col-xs-12"><button class="btn btn-warning continueNormal">Continuar</button></div>
+			<button class="btn btn-warning continue">Continuar</button>
 		@elseif($tipo == 'casual')	
 			<div class="col-xs-12">
 				<ol class="breadcrumb textoPromedio">
@@ -52,10 +52,10 @@
 				<p class="textoPromedio" style="text-align:justify;padding-right: 2em;">{{ $texto->desc }}</p>
 			</div>
 			
-			<div class="col-xs-12"><button class="btn btn-warning continueCasual">Continuar</button></div>
+			<div class="col-xs-12"><button class="btn btn-warning continue">Continuar</button></div>
 		@endif
 		</div>
-		<div class="col-xs-12 formPub contAnaranjado @if(Session::has('error')) mostrar @endif" style="margin-top:2em;">
+		<div class="col-xs-12 formPub contAnaranjado @if(!Session::has('error')) hidden @endif" style="margin-top:2em;">
 			
 			<form method="post" action="{{ URL::to($url) }}" enctype="multipart/form-data">
 			@if ($tipo == 'lider')
@@ -79,7 +79,7 @@
 					</div>
 				</div>
 				@endif
-				<div class="col-xs-12 @if (Input::old('ubication') && Input::old('ubication') == 'Categoria') col-md-6 @else col-md-12 @endif inputLider">
+				<div class="col-xs-12 formulario @if (Input::old('ubication') && Input::old('ubication') == 'Categoria') col-md-6 @else col-md-12 @endif">
 					<label for="department" class="textoPromedio">(*) Ubicación:</label>
 					<select name="ubication" class="form-control" id="ubication" required>
 						<option value="">Seleccione la ubicación a publicar</option>
@@ -97,7 +97,7 @@
 						 @endforeach
 					@endif
 				</div>
-				<div class="col-xs-12 col-md-6 contCatLider inputLider @if(Input::old('ubication') && Input::old('ubication') == 'Categoria') showit @endif">
+				<div class="col-xs-12 col-md-6 contCatLider formulario @if(!(Input::old('ubication') && Input::old('ubication') == 'Categoria')) hidden @endif">
 					<label for="cat" class="textoPromedio">(*) Categoría</label>
 					<select name="cat" id="category" class="form-control">
 						<option value="">Seleccione la categoría</option>
@@ -143,7 +143,7 @@
 						 @endforeach
 					@endif
 				</div>
-				<div class="col-xs-12 textoPromedio inputLider">
+				<div class="col-xs-12 textoPromedio formulario">
 					<label for="namePub" >(*) Nombre / Título de la publicación:</label>
 					{{ Form::text('namePub',
 					 Input::old('namePub'),
@@ -157,7 +157,7 @@
 						 @endforeach
 					@endif
 				</div>
-				<div class="col-xs-12 col-md-6 textoPromedio">
+				<div class="col-xs-12 col-md-6 formulario textoPromedio">
 					<label for="dep">(*) Departamento:</label>
 					<select name="dep" class="form-control">
 						<option value="">Seleccione un departamento.</option>
@@ -166,7 +166,7 @@
 						@endforeach
 					</select>
 				</div>
-				<div class="col-xs-12 col-md-6">
+				<div class="col-xs-12 col-md-6 formulario">
 					<label class="textoPromedio">(*) Clase de negocio.</label>
 					<div class="col-xs-12" class="textoPromedio">
 						<span for="negocioType" class="textoPromedio">Negocio con domicilio fiscal</span>
@@ -188,7 +188,7 @@
 					@endif
 				</div>
 				<div class="clearfix"></div>
-				<div class="col-xs-6 inputLider">
+				<div class="col-xs-12 col-md-6 formulario">
 
 					<label for="fechIni" class="textoPromedio">(*) Fecha de inicio</label>
 					<input type="text" class="form-control" id="fechIni" name="fechIni" placeholder="DD-MM-AAAA" style="margin-top:1em;" required>
@@ -201,16 +201,10 @@
 						 	</div>
 						 @endforeach
 					@endif
-					<label for="fechaFin" class="textoPromedio">Fecha de Cierre</label>
-					<div class="fechaFin col-xs-12" class="textoPromedio">
-						<img src="{{ asset('images/loading.gif') }}" class="loading">
-					</div>
 				</div>
-				<div class="col-xs-6 inputLider">
-					<div class="col-xs-12 sinPadding">
-						<label for="duration" class="textoPromedio">(*) Duración:</label>
-					</div>
-					<div class="col-xs-2 inputLider sinPadding">
+				<div class="col-xs-12 col-md-6 formulario no-padding">
+					<div class="col-xs-12 "><label for="duration" class="textoPromedio">(*) Duración:</label></div>
+					<div class="col-xs-6 col-md-3 formulario">
 						{{ Form::text('duration',
 						 Input::old('duration'),
 						 array('class' => 'form-control','id' => 'duration','required' => 'required')) }}
@@ -223,7 +217,7 @@
 						 @endforeach
 					@endif
 					</div>
-					<div class="col-xs-5 inputLider sinPadding" style="margin-top:1em;">
+					<div class="col-xs-6 col-md-9 formulario">
 						{{ Form::select('time',array(
 						'' => 'Seleccione el período',
 						'd' => 'Día(s)',
@@ -239,15 +233,24 @@
 						 @endforeach
 					@endif
 					</div>
-					<div class="col-xs-5 contPrecioShow">
+				</div>
+				<div class="clearfix"></div>
+				<div class="col-sm-12 col-md-6 formulario">
+					<label for="fechaFin" class="textoPromedio">Fecha de Cierre</label>
+					<div class="fechaFin" class="textoPromedio">
+						<img src="{{ asset('assets/images/loading.gif') }}" class="miniLoader hidden">
+						<p class="to-hide">Sin especificar.</p>
+						<p class="response-date hidden"></p>
 					</div>
-					<div class="col-xs-12" id="durError"></div>
+				</div>
+				<div class="col-sm-12 col-md-6 bg-info formulario hidden">
+					<p class="response-msg"></p>
 				</div>
 				<div class="col-xs-12" style="margin: 2em 0px 2em 0px;">
 					<hr>
 
 					<p class="bg-info textoPromedio" style="padding:1em;text-align:center;">Se recomienda que la imagen tenga un mínimo de 400px</p>
-					<div class="col-xs-6 textoPromedio imgLiderUp">
+					<div class="col-xs-12 col-md-6 no-padding textoPromedio imgLiderUp">
 						<label>(*) Imagen de la Publicación</label>
 						<input type="file" name="portada" required>
 						@if ($errors->has('portada'))
@@ -259,7 +262,7 @@
 						 @endforeach
 					@endif
 					</div>
-					<div class="col-xs-6 textoPromedio imgLiderUp">
+					<div class="col-xs-12 col-md-6 no-padding textoPromedio imgLiderUp">
 						<label>Imagen secundaria</label>
 						<input type="file" name="portada2">
 						@if ($errors->has('portada2'))
@@ -305,9 +308,9 @@
 					
 				</div>
 				<div class="col-xs-12">
-					<article class="mapContainer" id="" style="position:relative;">
+					<article class="mapContainer hidden" id="" style="position:relative;">
 						<div class="contLoaderBig">
-							<img src="{{ asset('images/loading.gif') }}" class="loaderBig">
+							<img src="{{ asset('assets/images/loading.gif') }}" class="loaderBig">
 						</div>
 					</article>
 					<input type="hidden" name="latitud" class="latitud">
@@ -316,23 +319,23 @@
 				<div class="col-xs-12 imgLiderUp" style="margin-top:5em;">
 					<legend>Información de contacto</legend>
 				</div>
-				<div class="col-xs-6 imgLiderUp">
+				<div class="col-xs-12 col-md-6 formulario">
 					<label for="" class="textoPromedio">Nombre de contacto</label>
 					{{ Form::text('nomb',Input::old('nomb'),array('class' => 'form-control','placeholder' => 'Nombre de contacto')) }}
 				</div>
-				<div class="col-xs-6 imgLiderUp">
+				<div class="col-xs-12 col-md-6 formulario">
 					<label for="" class="textoPromedio">Teléfono de contacto</label>
 					{{ Form::text('phone',Input::old('phone'),array('class' => 'form-control','placeholder' => 'Telefono de contacto')) }}
 				</div>
-				<div class="col-xs-6 imgLiderUp">
+				<div class="col-xs-12 col-md-6 formulario">
 					<label for="" class="textoPromedio">Correo electrónico</label>
 					{{ Form::text('email',Input::old('email'),array('class' => 'form-control', 'placeholder' => 'Correo electronico')) }}
 				</div>
-				<div class="col-xs-6 imgLiderUp">
+				<div class="col-xs-12 col-md-6 formulario">
 					<label for="" class="textoPromedio">Sitio web</label>
 					{{ Form::text('pag_web',Input::old('pag_web'),array('class' => 'form-control', 'placeholder' => 'Sitio web')) }}
 				</div>
-				<div class="col-xs-12">
+				<div class="col-xs-12 formulario">
 					<input type="submit" value="Enviar" name="enviarPub" class="btn btn-success enviarPub">
 					<input type="reset" value="Borrar" name="borrar" class="btn btn-warning">
 					<a href="{{ URL::to('usuario/publicar') }}" class="btn btn-danger cancel">Cancelar</a>
@@ -397,14 +400,12 @@
 				<p class="textoPromedio">(*) Campos obligatorios</p>
 				<hr>
 				@if(Session::has('error'))
-				<div class="col-xs-12">
-					<div class="alert alert-danger">
-						<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-						<p class="textoPromedio">{{ Session::get('error') }}</p>
-					</div>
+				<div class="alert alert-danger">
+					<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+					<p class="textoPromedio">{{ Session::get('error') }}</p>
 				</div>
 				@endif
-				<div class="col-xs-12 col-md-6">
+				<div class="col-xs-12 col-md-6 formulario">
 					<label for="casCat" class="textoPromedio">(*) Categoría</label>
 					<select name="casCat" id="category" class="form-control check-cat-or-service" required>
 						<option value="">Seleccione la categoría</option>
@@ -426,7 +427,7 @@
 						</optgroup>
 					</select>
 				</div>
-				<div class="col-xs-12 col-md-6">
+				<div class="col-xs-12 col-md-6 formulario">
 					<label for="casCity" class="textoPromedio">(*) Departamento</label>
 					<?php $arr = array(
 							'' => 'Seleccione su departamento');
@@ -446,11 +447,11 @@
 						 @endforeach
 					@endif
 				</div>
-				<div class="col-xs-12">
+				<div class="col-xs-12 formulario">
 					<label for="casTit" class="textoPromedio">(*) Titulo</label>
 					{{ Form::text('casTit', Input::old('casTit'), array('class' => 'form-control','placeholder' => 'Titulo','required' => 'required')) }}
 				</div>
-				<div class="col-xs-12 col-md-6">
+				<div class="col-xs-12 col-md-6 formulario">
 					<label for="precio" class="textoPromedio">(*) Precio</label>
 					{{ Form::text('precio',Input::old('precio'),array('placeholder' => 'Precio','class' => 'form-control','required' => 'required')) }}
 					@if ($errors->has('precio'))
@@ -462,7 +463,7 @@
 						 @endforeach
 					@endif
 				</div>
-				<div class="col-xs-12 col-md-6">
+				<div class="col-xs-12 col-md-6 formulario">
 					<label class="textoPromedio">(*) Moneda</label>
 					<div class="col-xs-12" class="textoPromedio">
 						<span for="moneda" class="textoPromedio">USD</span>
@@ -479,25 +480,25 @@
 						 @endforeach
 					@endif
 				</div>
-				<div class="col-xs-12">
+				<div class="col-xs-12 formulario">
 					<p class="bg-info textoPromedio" style="padding:1em;text-align:center;">Se recomienda que la imagen tenga un mínimo de 400px</p>
 					<hr>
 				</div>
-				<div class="col-xs-12 col-md-6">
+				<div class="col-xs-12 col-md-6 formulario">
 					<label for="casTit" class="textoPromedio">(*) Imagen principal</label>
 					<input type="file" name="img1" class="textoPromedio" required>
 				</div>
-				<div class="col-xs-12 col-md-6">
+				<div class="col-xs-12 col-md-6 formulario">
 					<label for="casTit" class="textoPromedio">Segunda imagen</label>
 					<input type="file" name="img2" class="textoPromedio">
 				</div>
-				<div class="col-xs-12">
+				<div class="col-xs-12 formulario">
 					<h4>¿Desea mostrar la ubicación de su publicación?</h4>
 					<input type="checkbox" class="doMap">
 					<label class="textoPromedio">Si desea publicar su ubicación, permita en el popup para poder acceder a ella.</label>
 
 				</div>
-				<div class="col-xs-12">
+				<div class="col-xs-12 formulario">
 					<article class="mapContainer" id="" style="position:relative;">
 						<div class="contLoaderBig">
 							<img src="{{ asset('images/loading.gif') }}" class="loaderBig">
@@ -507,7 +508,7 @@
 					<input type="hidden" name="latitud" class="latitud">
 					<input type="hidden" name="longitud" class="longitud">
 				</div>
-				<div class="col-xs-12 col-md-6">
+				<div class="col-xs-12 col-md-6 formulario">
 					<label class="textoPromedio"><span class="required-on-cat">(*)</span> Condición</label>
 					<div class="col-xs-12" class="textoPromedio">
 						<span for="condition" class="textoPromedio">Nuevo</span>
@@ -524,7 +525,7 @@
 						 @endforeach
 					@endif
 				</div>
-				<div class="col-xs-12 col-md-6">
+				<div class="col-xs-12 col-md-6 formulario">
 					<label class="textoPromedio">(*) Clase de negocio.</label>
 					<div class="col-xs-12" class="textoPromedio">
 						<span for="negocioType" class="textoPromedio">Negocio con domicilio fiscal</span>
@@ -545,7 +546,7 @@
 						 @endforeach
 					@endif
 				</div>
-				<div class="col-xs-12">
+				<div class="col-xs-12 formulario">
 					<p class="bg-info textoPromedio" style="text-align:center;padding:1em;">La descripción deberá tener máximo 400 caracteres.</p>
 					<label for="input" class="textoPromedio">Descripción</label>
 					<!--<textarea id="input" name="input" class="form-control descripcionCasual"></textarea>-->
@@ -559,17 +560,17 @@
 						 @endforeach
 					@endif
 					<div class="cantCaracteres textoPromedio bg-info" style="padding:1em;margin-top:1em;margin-bottom:1em;"></div>
-					<div class="captcha col-xs-qw">
+					<div class="captcha col-xs-12 no-padding formulario">
 							<p class="bg-info textoPromedio" style="padding:0.5em;">Ayúdenos a verificar que la publicación no fue creada por un robot, resolviendo la siguiente suma:</p>
 							<p class="textoPromedio formula">
 							</p>
-							<div class="col-xs-6" style="padding-left:0px;">
+							<div class="col-xs-12 col-md-6 formulario no-padding" style="padding-left:0px;">
 								<input type="text" name="resultado" class="form-control" required>
 							</div>
 					</div>
 				</div>
 
-				<div class="col-xs-12">
+				<div class="col-xs-12 formulario">
 					<button class="btn btn-success">Enviar</button>
 					<a href="#" class="btn btn-danger">Cancelar</a>
 				</div>
@@ -581,7 +582,8 @@
 </div>
 @stop
 @section('postscript')
-
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDsWeMp66ReIVZI4u_J2gteYCyNIKx_MOE"
+        async defer></script>
 <script>
 	CKEDITOR.disableAutoInline = true;
 	$( document ).ready( function() {

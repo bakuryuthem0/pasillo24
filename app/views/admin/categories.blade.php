@@ -47,7 +47,7 @@
 						 @endforeach
 					@endif
 				</div>
-				<div class="col-xs-12" style="padding:0;">
+				<div class="col-xs-12 formulario" style="padding:0;">
 					<button type="submit" class="btn btn-success">Enviar</button>
 				</div>
 			</form>
@@ -123,17 +123,17 @@
       </div>
       <div class="modal-body">
       	<div class="alert responseDanger">
-					<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-					<p class="responseDanger-text textoPromedio"></p>
-				</div>
+			<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+			<p class=""></p>
+		</div>
       	<div class="alert alert-warning">
 			<p class="textoPromedio">Advertencia. ¿Esta seguro que desea continuar?, estos cambios son irreversibles</p>      	    
       	</div>
       </div>
       <div class="modal-footer">
-      	<img src="{{ asset('images/loading.gif') }}" class="miniLoader">
-        <button type="button" class="btn btn-danger eliminar-categoria" >Eliminar</button>
-        <button type="button" class="btn btn-success btn-dimiss hidden" data-dismiss="modal">Aceptar</button>
+      	<img src="{{ asset('images/loading.gif') }}" class="miniLoader hidden">
+        <button type="button" class="btn btn-danger eliminar-categoria btn-modal-elim" >Eliminar</button>
+        <button type="button" class="btn btn-default btn-dimiss btn-close-modal btn-modal-elim" data-dismiss="modal">Cerrar</button>
 
       </div>
     </div>

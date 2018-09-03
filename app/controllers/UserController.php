@@ -180,8 +180,8 @@ class UserController extends BaseController {
 	            //guardamos la imagen con otro nombre ej foto(1).jpg || foto(2).jpg etc
 	            $img1->move("images/pubImages/".Auth::user()['username'],$miImg);
 	            $img = Image::make('images/pubImages/'.Auth::user()['username'].'/'.$miImg);
-	            $blank = Image::make('images/blank.jpg');
-	             if ($img->width() > $img->height()) {
+	            /*$blank = Image::make('images/blank.jpg');
+	            if ($img->width() > $img->height()) {
 		        	$img->widen(1604);
 		        }else
 		        {
@@ -189,10 +189,9 @@ class UserController extends BaseController {
 		        }
 		        if ($img->height() > 804) {
 		        	$img->heighten(804);
-		        }
+		        }*/
 		        $mark = Image::make('images/watermark.png')->widen(400);
-		        $blank->insert($img,'center');
-		        $blank->insert($mark,'center')
+		        $img->insert($mark,'center')
 	           	->interlace()
 	            ->save('images/pubImages/'.Auth::user()['username'].'/'.$miImg);
 	            if($miImg != $img1->getClientOriginalName()){
@@ -208,7 +207,7 @@ class UserController extends BaseController {
 			{
 				$img1->move("images/pubImages/".Auth::user()['username'],$img1->getClientOriginalName());
 				$img = Image::make('images/pubImages/'.Auth::user()['username'].'/'.$img1->getClientOriginalName());
-	            $blank = Image::make('images/blank.jpg');
+	            /*$blank = Image::make('images/blank.jpg');
 	             if ($img->width() > $img->height()) {
 		        	$img->widen(1604);
 		        }else
@@ -217,10 +216,9 @@ class UserController extends BaseController {
 		        }
 		        if ($img->height() > 804) {
 		        	$img->heighten(804);
-		        }
+		        }*/
 		        $mark = Image::make('images/watermark.png')->widen(400);
-		        $blank->insert($img,'center');
-		        $blank->insert($mark,'center')
+		        $img->insert($mark,'center')
 	           	->interlace()
 	            ->save('images/pubImages/'.Auth::user()['username'].'/'.$img1->getClientOriginalName());
 			}
@@ -494,7 +492,7 @@ class UserController extends BaseController {
 	public function getModelo()
 	{
 		$id = Input::get('id');
-		$modelos = Modelo::where('marca_id','=',$id)->get();
+		$modelos = Modelo::where('marca_id','=',$id)->orderBy('nombre')->get();
 		return $modelos;
 	}
 	
@@ -664,7 +662,7 @@ class UserController extends BaseController {
 		$compras = Compras::join('publicaciones','publicaciones.id','=','compras.pub_id')
 		->join('usuario','usuario.id','=','publicaciones.user_id')
 		->where('compras.user_id','=',Auth::id())
-		->where('compras.valor_vend','=',0)
+		->where('compras.valorado_vend','=',0)
 		->get(array(
 			'compras.id',
 			'compras.fechVal',
@@ -691,7 +689,7 @@ class UserController extends BaseController {
 		$compras = Compras::join('publicaciones','publicaciones.id','=','compras.pub_id')
 		->join('usuario','usuario.id','=','compras.user_id')
 		->where('publicaciones.user_id','=',Auth::id())
-		->where('compras.valor_comp','=',0)
+		->where('compras.valorado_comp','=',0)
 		->get(array(
 			'compras.id',
 			'compras.valor_vend',
@@ -719,30 +717,50 @@ class UserController extends BaseController {
 			}
 
 			$valor = 0;
-			if($tipo != "pos" && $tipo != 'neg')
+			if($tipo != "pos" && $tipo != 'neg' && $tipo != "neutro")
 			{
 				return Response::json(array('type' => 'danger','msg' => 'Error al valorar la publicación'));	
 			}else
 			{
 				if ($tipo == 'pos') {
 					$valor = 1;
+					$msg = "Te han valorado positivamente.";
 				}elseif ($tipo == 'neg') {
 					$valor = -1;
+					$msg = "Te han valorado negativamente.";
+				}elseif($tipo == 'neutro')
+				{
+					$valor = 0;
+					$msg = "Te han valorado neutralmente.";
 				}
 			}
 			$comp = Compras::find($id);
 			$pub = Publicaciones::find($comp->pub_id);
 			$user = User::find($pub->user_id);
-			$user->reputation = $user->reputation + $valor;
+			$user->reputation 	 = $user->reputation + $valor;
+
 			if (!$user->save()) {
-				return Response::json(array('type' => 'danger','msg' => 'Error al valorar la publicación'));	
+				return Response::json(array('type' => 'danger','msg' => 'Error al valorar al vendedor.'));	
 			}
 			$comp->valor_vend = $valor;
+			$comp->valorado_vend = 1;
+			$data = array(
+				"type"		=> "rating",
+				"pub_id"	=> $comp->pub_id,
+				"message"	=> $msg,
+				"title"		=> "Te han valorado",
+			);
+			$user = User::with('gcmdevices')->find($pub->user_id);
+			foreach($user->gcmdevices as $gcm) {
+				$regId = $gcm->gcm_regid;
+				$doGcm = new Gcm;
+				$response = $doGcm->send_notification($data,$regId);
+			}
 			if ($comp->save()) {
-				return Response::json(array('type' => 'success','msg' => 'Publicación valorada correctamente.'));
+				return Response::json(array('type' => 'success','msg' => 'Vendedor valorado correctamente.'));
 			}else
 			{
-				return Response::json(array('type' => 'danger','msg' => 'Error al valorar la publicación'));
+				return Response::json(array('type' => 'danger','msg' => 'Error al valorar al vendedor.'));
 			}
 		}
 	}
@@ -753,29 +771,48 @@ class UserController extends BaseController {
 			$tipo = Input::get('tipo');
 
 			$valor = 0;
-			if($tipo != "pos" && $tipo != 'neg')
+			if($tipo != "pos" && $tipo != 'neg' && $tipo != 'neutro')
 			{
-				return Response::json(array('type' => 'danger','msg' => 'Error al valorar la publicación'));	
+				return Response::json(array('type' => 'danger','msg' => 'Error al valorar al comprador.'));	
 			}else
 			{
 				if ($tipo == 'pos') {
 					$valor = 1;
+					$msg = "Te han valorado positivamente.";
 				}elseif ($tipo == 'neg') {
 					$valor = -1;
+					$msg = "Te han valorado negativamente.";
+				}elseif($tipo == 'neutro')
+				{
+					$valor = 0;
+					$msg = "Te han valorado neutralmente.";
 				}
 			}
 			$comp = Compras::find($id);
 			$user = User::find($comp->user_id);
 			$user->reputation = $user->reputation + $valor;
 			if (!$user->save()) {
-				return Response::json(array('type' => 'danger','msg' => 'Error al valorar la publicación'));	
+				return Response::json(array('type' => 'danger','msg' => 'Error al valorar al comprador.'));	
 			}
-			$comp->valor_comp = $valor;
+			$comp->valor_comp 	 = $valor;
+			$comp->valorado_comp = 1;
+			$data = array(
+				"type"		=> "rating",
+				"pub_id"	=> $comp->pub_id,
+				"message"	=> $msg,
+				"title"		=> "Te han valorado",
+			);
+			$user = User::with('gcmdevices')->find($comp->user_id);
+			foreach($user->gcmdevices as $gcm) {
+				$regId = $gcm->gcm_regid;
+				$doGcm = new Gcm;
+				$response = $doGcm->send_notification($data,$regId);
+			}
 			if ($comp->save()) {
-				return Response::json(array('type' => 'success','msg' => 'Publicación valorada correctamente.'));
+				return Response::json(array('type' => 'success','msg' => 'Comprador valorado correctamente.'));
 			}else
 			{
-				return Response::json(array('type' => 'danger','msg' => 'Error al valorar la publicación'));
+				return Response::json(array('type' => 'danger','msg' => 'Error al valorar al comprador.'));
 			}
 		}
 	}
@@ -785,10 +822,13 @@ class UserController extends BaseController {
 		$compras = Compras::join('publicaciones','publicaciones.id','=','compras.pub_id')
 		->join('usuario','usuario.id','=','publicaciones.user_id')
 		->where('compras.user_id','=',Auth::id())
+		->where('was_erased_comp','=',0)
 		->paginate(10,array(
 			'compras.id',
 			'compras.valor_vend',
 			'compras.valor_comp',
+			'compras.valorado_vend',
+			'compras.valorado_comp',
 			'publicaciones.titulo',
 			'publicaciones.id as pub_id',
 			'publicaciones.name as name_pub',
@@ -798,10 +838,13 @@ class UserController extends BaseController {
 		$ventas = Compras::join('publicaciones','publicaciones.id','=','compras.pub_id')
 		->join('usuario','usuario.id','=','compras.user_id')
 		->where('publicaciones.user_id','=',Auth::id())
+		->where('was_erased_vend','=',0)
 		->paginate(10,array(
 			'compras.id',
 			'compras.valor_vend',
 			'compras.valor_comp',
+			'compras.valorado_vend',
+			'compras.valorado_comp',
 			'publicaciones.titulo',
 			'usuario.id as user_id',
 			'usuario.name',
@@ -1194,5 +1237,27 @@ class UserController extends BaseController {
 		
 		Session::flash('success', 'Su publicación se actualizo sactisfactoriamente.');
 		return Redirect::to('usuario/publicaciones/pago/'.$pub->id);
+	}
+	public function removeComp()
+	{
+		$id = Input::get('id');
+		$action = Compras::find($id);
+		$action->was_erased_comp = 1;
+		$action->save();
+		return Response::json(array(
+			'type' => 'success',
+			'msg'  => 'El elemento seleccionado fue eliminado sactisfactoriamente.',
+		));
+	}
+	public function removeVend()
+	{
+		$id = Input::get('id');
+		$action = Compras::find($id);
+		$action->was_erased_vend = 1;
+		$action->save();
+		return Response::json(array(
+			'type' => 'success',
+			'msg'  => 'El elemento seleccionado fue eliminado sactisfactoriamente.',
+		));
 	}
 }
