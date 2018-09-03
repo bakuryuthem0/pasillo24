@@ -4,7 +4,7 @@ class ModeloTableSeeder extends Seeder {
 
     public function run()
     {
-        Modelo::create(array(
+        Modelo::insert(array(
         	array(
 	        	'marca_id' => '1',
 	        	'id' => '1', 

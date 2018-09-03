@@ -4,7 +4,7 @@ class UsuarioTableSeeder extends Seeder {
 
     public function run()
     {
-        User::create(array(
+        User::insert(array(
         	'id' => '1', 
         	'username' => 'admin', 
         	'password' => Hash::make('Temporal*1'), 

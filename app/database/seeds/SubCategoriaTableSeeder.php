@@ -4,7 +4,7 @@ class SubCategoriaTableSeeder extends Seeder {
 
     public function run()
     {
-        SubCat::create(array(
+        SubCat::insert(array(
         	array(
 	        	'id' => '1',
 	        	'categoria_id' => '1',

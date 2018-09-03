@@ -4,7 +4,7 @@ class PublicidadTableSeeder extends Seeder {
 
     public function run()
     {
-        Publicidad::create(array(
+        Publicidad::insert(array(
         	array(
 		        'id' => '1', 
 		        'image' => 'gif.gif', 

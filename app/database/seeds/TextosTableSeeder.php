@@ -4,7 +4,7 @@ class TextosTableSeeder extends Seeder {
 
     public function run()
     {
-        Textos::create(array(
+        Textos::insert(array(
         	array(
 	        	'id' => '1', 
 	        	'desc' => '<p><strong>Pasillo24&nbsp;</strong>proporciona tres lugares a elecci&oacute;n del usuario donde poder ubicar y editar su <strong>ANUNCIO L&iacute;DER</strong>.<br />\r\nEn el men&uacute; principal en primera fila si su empresa, negocio, tienda, etc. posee una p&aacute;gina web, si no la posee saldr&aacute; en segunda fila. Esto solo con la finalidad de mantener una organizaci&oacute;n para permitir al usuario una mejor navegaci&oacute;n por el portal.<br />\r\nSi se desea mas objetividad o el producto y/o servicio tiene una orientaci&oacute;n especifica podr&aacute; elegir una de las carteleras que existen dentro de cada categor&iacute;a, dependiendo el producto; si por ejemplo mi rubro son las ventas de alimentos para ganado, elegir&eacute; que mi producto se publique en esa secci&oacute;n y en esa cartelera.<br />\r\nComo Bono la comunidad <strong>Pasillo24&nbsp;</strong>publicar&aacute; los anuncios y aumentar&aacute; la publicidad de su producto a trav&eacute;s de sus cuentas en las principales redes sociales, esto solo aplica para los anuncios programados a partir de una semana en adelante.</p>\r\n\r\n<p>&nbsp;</p>\r\n'

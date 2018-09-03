@@ -4,7 +4,7 @@ class MarcasTableSeeder extends Seeder {
 
     public function run()
     {
-        Marcas::create(array(
+        Marcas::insert(array(
         	array(
 	        	'id' => '1', 
 	        	'nombre' => 'Abarth', 

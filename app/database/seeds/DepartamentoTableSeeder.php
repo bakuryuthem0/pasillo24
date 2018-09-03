@@ -4,7 +4,7 @@ class DepartamentoTableSeeder extends Seeder {
 
     public function run()
     {
-        Department::create(array(
+        Department::insert(array(
         	array(
 	        	'id' => '1', 
 	        	'nombre' => 'la paz'
