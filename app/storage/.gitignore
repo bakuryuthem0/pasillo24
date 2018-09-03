@@ -1,3 +1,4 @@
-*
-
+storage/logs/*
+storage/sessions/
+storage/view/*
 !.gitignore
