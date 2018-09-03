@@ -44,10 +44,10 @@ class CreateComentariosPublicacionesTable extends Migration {
 		    $table->integer('monto');
 		    $table->string('status');
 		    $table->string('motivo');
-		    $table->date('fechaIni');
-		    $table->date('fechaFin');
-		    $table->date('fechaIniNormal');
-		    $table->date('fechaFinNormal');
+		    $table->date('fechIni');
+		    $table->date('fechFin');
+		    $table->date('fechIniNormal');
+		    $table->date('fechFinNormal');
 		    $table->integer('deleted')->default(0);
 		    $table->string('name',255);
 		    $table->string('lastname',255);
