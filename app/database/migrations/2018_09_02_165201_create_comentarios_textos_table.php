@@ -16,7 +16,7 @@ class CreateComentariosTextosTable extends Migration {
 		Schema::create('textos', function($table)
 		{
 		    $table->increments('id');
-		    $table->string('desc',255);
+		    $table->text('desc');
 		    
 		});
 	}
