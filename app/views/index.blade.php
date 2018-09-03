@@ -156,7 +156,6 @@
 				<div class="col-xs-12 publication no-padding">
 					<h3>Anuncios LÍDER de Empresas y Particulares sin sitio web</h3>
 						<div class="owl-carousel2">
-							<?php $x = 0; ?>
 							@foreach($habitual as $pubHabitual)
 									<div class="col-xs-12 contCatIndex separator no-padding">
 								 		<div class="col-xs-12 image">
@@ -186,7 +185,6 @@
 								 		</div>
 									</div>
 							@endforeach
-							@if(count($habitual)%2 != 0)
 							<div class="item">
 								<div class="col-xs-12 separator disponible-item no-padding">
 							 		<div class="col-xs-12 image no-padding bg-01">
@@ -197,26 +195,7 @@
 							 		</div>
 								</div>
 							</div>
-							@else
-								<div class="item">
-									<div class="col-xs-12 contCatIndex separator disponible-item no-padding">
-										<div class="col-xs-12 image no-padding bg-01">
-											<img src="{{ asset('images/logo.png') }}" class="logo">
-								 		</div>
-								 		<div class="col-xs-12 texto-disponible">
-								 			<h3 class="text-center text-white"><strong>Disponible</strong></h3>
-								 		</div>
-									</div>
-									<div class="col-xs-12 contCatIndex separator disponible-item no-padding">
-										<div class="col-xs-12 image no-padding bg-01">
-											<img src="{{ asset('images/logo.png') }}" class="logo">
-								 		</div>
-								 		<div class="col-xs-12 texto-disponible">
-								 			<h3 class="text-center text-white"><strong>Disponible</strong></h3>
-								 		</div>
-									</div>
-								</div>
-							@endif
+							
 						</div>
 							
 				</div>
