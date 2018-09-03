@@ -20,18 +20,18 @@
 		@else
 			<meta property="og:image"          content="http://preview.pasillo24.com/images/portal.png" />
 		@endif
-		{{ HTML::style('css/bootstrap.min.css') }}
-		{{ HTML::style('//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css') }}
+		<link rel="stylesheet" type="text/css" href="{{ asset('css/bootstrap.min.css') }}">
+		<link rel="stylesheet" type="text/css" href="{{ asset('//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css') }}">
         <link href="{{ asset('css/font-awesome.min.css') }}" rel="stylesheet">
 
-		{{ HTML::style('css/bootstrap-theme.min.css')}}
-		{{ HTML::style('css/custom.css?v=2.0') }}
-		{{ HTML::style('css/jquery.cleditor.css') }}
-		{{ HTML::style('css/owl.carousel.css') }}
-		{{ HTML::style('css/owl.theme.default.css') }}
-        {{ HTML::style('css/ui-lightness/jquery-ui-1.9.2.custom.min.css') }}
-		{{ HTML::script('js/jquery.min.js') }}
-		{{ HTML::script('js/owl.carousel.min.js') }}
+		<link rel="stylesheet" type="text/css" href="{{ asset('css/bootstrap-theme.min.css') }}">
+		<link rel="stylesheet" type="text/css" href="{{ asset('css/custom.css?v=2.0') }}">
+		<link rel="stylesheet" type="text/css" href="{{ asset('css/jquery.cleditor.css') }}">
+		<link rel="stylesheet" type="text/css" href="{{ asset('css/owl.carousel.css') }}">
+		<link rel="stylesheet" type="text/css" href="{{ asset('css/owl.theme.default.css') }}">
+        <link rel="stylesheet" type="text/css" href="{{ asset('css/ui-lightness/jquery-ui-1.9.2.custom.min.css') }}">
+		<script type="text/javascript" src="{{ asset('js/jquery.min.js') }}"></script>
+		<script type="text/javascript" src="{{ asset('js/owl.carousel.min.js') }}"></script>
 		<script src='https://www.google.com/recaptcha/api.js'></script>
 	</head>
 	<body>
@@ -515,14 +515,14 @@
             </footer>
 	<input type="hidden" value="{{  URL::full() }}" id="urlBase">
 	
-	{{ HTML::script('js/jquery.min.js') }}
-	{{ HTML::script('js/bootstrap.min.js') }}
-	{{ HTML::script('js/custom.js?v=2.0')}}
+	<script type="text/javascript" src="{{ asset('js/jquery.min.js') }}"></script>
+	<script type="text/javascript" src="{{ asset('js/bootstrap.min.js') }}"></script>
+	<script type="text/javascript" src="{{ asset('js/custom.js?v=2.0') }}"></script>
 	
-	{{ HTML::script('js/ckeditor.js') }}
-	{{ HTML::script('js/jquery.ckeditor.js') }}
-	{{ HTML::script('js/owl.carousel.min.js') }}
-	{{ HTML::script('js/jquery-ui-1.9.2.custom.min.js') }}
+	<script type="text/javascript" src="{{ asset('js/ckeditor.js') }}"></script>
+	<script type="text/javascript" src="{{ asset('js/jquery.ckeditor.js') }}"></script>
+	<script type="text/javascript" src="{{ asset('js/owl.carousel.min.js') }}"></script>
+	<script type="text/javascript" src="{{ asset('js/jquery-ui-1.9.2.custom.min.js') }}"></script>
 
        <script type="text/javascript">
        $(function () {
