@@ -24,6 +24,7 @@ class CreateUsuarioTable extends Migration {
 		    $table->string('id_carnet',255);
 		    $table->string('nit',255);
 		    $table->integer('state');
+		    $table->string('pag_web',255);
 		    $table->string('phone',255);
 		    $table->string('postal_code',255);
 		    $table->integer('reputation')->default(0);
