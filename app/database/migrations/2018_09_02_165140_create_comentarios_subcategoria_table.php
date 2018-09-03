@@ -19,7 +19,7 @@ class CreateComentariosSubcategoriaTable extends Migration {
 		    $table->integer('categoria_id');
 		    $table->string('desc',255);
 		    $table->integer('deleted');
-		    $table->timestamps()->default('0000-00-00');
+		    
 		});
 	}
 

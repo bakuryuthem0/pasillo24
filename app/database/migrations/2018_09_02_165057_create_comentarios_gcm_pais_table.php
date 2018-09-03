@@ -18,7 +18,7 @@ class CreateComentariosGcmPaisTable extends Migration {
 		    $table->increments('id');
 		    $table->string('cod');
 		    $table->string('name',255);
-		    $table->timestamps()->default('0000-00-00');
+		    
 		});
 	}
 

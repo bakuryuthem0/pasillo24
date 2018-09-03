@@ -19,7 +19,7 @@ class CreateComentariosPreciosTable extends Migration {
 		    $table->integer('pub_type_id');
 		    $table->integer('precio');
 		    $table->string('desc',255);
-		    $table->timestamps()->default('0000-00-00');
+		    
 		});
 	}
 

@@ -21,7 +21,7 @@ class CreateComentariosPubTable extends Migration {
 		    $table->integer('status');
 		    $table->string('name',100);
 		    $table->text('comment');
-		    $table->timestamps()->default('0000-00-00');
+		    
 		});
 	}
 
