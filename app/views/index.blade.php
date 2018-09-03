@@ -158,10 +158,6 @@
 						<div class="owl-carousel2">
 							<?php $x = 0; ?>
 							@foreach($habitual as $pubHabitual)
-								@if($x%2 == 0)
-									<div class="item">
-								@endif
-
 									<div class="col-xs-12 contCatIndex separator no-padding">
 								 		<div class="col-xs-12 image">
 											<a href="{{ URL::to('publicacion/habitual/'.$pubHabitual->id) }}">
@@ -189,10 +185,6 @@
 								 			<a href="{{ URL::to('publicacion/habitual/'.$pubHabitual->id) }}" class="btn btn-warning">Ver publicación</a>
 								 		</div>
 									</div>
-								@if(($x+1)%2 == 0)
-									</div>
-								@endif
-								<?php $x++; ?>
 							@endforeach
 							@if(count($habitual)%2 != 0)
 							<div class="item">
