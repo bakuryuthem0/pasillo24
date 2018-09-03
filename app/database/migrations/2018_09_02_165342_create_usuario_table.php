@@ -13,7 +13,7 @@ class CreateUsuarioTable extends Migration {
 	public function up()
 	{
 		//
-		Schema::create('precios', function($table)
+		Schema::create('usuario', function($table)
 		{
 		    $table->increments('id');
 		    $table->string('username',255);
@@ -49,7 +49,7 @@ class CreateUsuarioTable extends Migration {
 	public function down()
 	{
 		//
-		Schema::dropIfExists('precios');
+		Schema::dropIfExists('usuario');
 	}
 
 }
