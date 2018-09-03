@@ -13,7 +13,7 @@ class CreateComentariosGcmPaisTable extends Migration {
 	public function up()
 	{
 		//
-		Schema::create('images', function($table)
+		Schema::create('pais', function($table)
 		{
 		    $table->increments('id');
 		    $table->string('cod');
@@ -30,7 +30,7 @@ class CreateComentariosGcmPaisTable extends Migration {
 	public function down()
 	{
 		//
-		Schema::dropIfExists('images');
+		Schema::dropIfExists('pais');
 	}
 
 }
