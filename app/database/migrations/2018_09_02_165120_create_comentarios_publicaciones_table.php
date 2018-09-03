@@ -23,7 +23,7 @@ class CreateComentariosPublicacionesTable extends Migration {
 		    $table->integer('categoria');
 		    $table->string('titulo',255);
 		    $table->string('ciudad',255);
-		    $table->stirng('pag_web',255);
+		    $table->string('pag_web',255);
 		    $table->integer('typeCat');
 		    $table->integer('marca');
 		    $table->integer('modelo');
