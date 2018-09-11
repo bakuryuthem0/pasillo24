@@ -7,39 +7,57 @@ class DepartamentoTableSeeder extends Seeder {
         Department::insert(array(
         	array(
 	        	'id' => '1', 
-	        	'nombre' => 'la paz'
+	        	'nombre' => 'la paz',
+	        	'created_at' => '0000-00-00',
+	        	'updated_at' => '0000-00-00'
         	),
 			array(
 				'id' => '2', 
-				'nombre' => 'santa cruz'
+				'nombre' => 'santa cruz',
+				'created_at' => '0000-00-00',
+	        	'updated_at' => '0000-00-00'
 			),
 			array(
 				'id' => '3', 
-				'nombre' => 'cochabamba'
+				'nombre' => 'cochabamba',
+				'created_at' => '0000-00-00',
+	        	'updated_at' => '0000-00-00'
 			),
 			array(
 				'id' => '4', 
-				'nombre' => 'beni'
+				'nombre' => 'beni',
+				'created_at' => '0000-00-00',
+	        	'updated_at' => '0000-00-00'
 			),
 			array(
 				'id' => '5', 
-				'nombre' => 'potosi'
+				'nombre' => 'potosi',
+				'created_at' => '0000-00-00',
+	        	'updated_at' => '0000-00-00'
 			),
 			array(
 				'id' => '6', 
-				'nombre' => 'tarija'
+				'nombre' => 'tarija',
+				'created_at' => '0000-00-00',
+	        	'updated_at' => '0000-00-00'
 			),
 			array(
 				'id' => '7', 
-				'nombre' => 'chuquisaca'
+				'nombre' => 'chuquisaca',
+				'created_at' => '0000-00-00',
+	        	'updated_at' => '0000-00-00'
 			),
 			array(
 				'id' => '8', 
-				'nombre' => 'oruro'
+				'nombre' => 'oruro',
+				'created_at' => '0000-00-00',
+	        	'updated_at' => '0000-00-00'
 			),
 			array(
 				'id' => '9', 
-				'nombre' => 'pando'
+				'nombre' => 'pando',
+				'created_at' => '0000-00-00',
+	        	'updated_at' => '0000-00-00'
 			),
 
         ));

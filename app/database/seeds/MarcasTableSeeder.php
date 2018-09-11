@@ -8,402 +8,562 @@ class MarcasTableSeeder extends Seeder {
         	array(
 	        	'id' => '1', 
 	        	'nombre' => 'Abarth', 
-	        	'val' => 'abarth'
+	        	'val' => 'abarth',
+	        	'created_at' => '0000-00-00',
+	        	'updated_at' => '0000-00-00'
         	),
 			array(
 				'id' => '2', 
 				'nombre' => 'Alfa Romeo',
-				'val' =>  'alfa-romeo'
+				'val' =>  'alfa-romeo',
+				'created_at' => '0000-00-00',
+	        	'updated_at' => '0000-00-00'
 			),
 			array(
 				'id' => '3', 
 				'nombre' => 'Aro', 
-				'val' => 'aro'
+				'val' => 'aro',
+				'created_at' => '0000-00-00',
+	        	'updated_at' => '0000-00-00'
 			),
 			array(
 				'id' => '4', 
 				'nombre' => 'Asia', 
-				'val' => 'asia'
+				'val' => 'asia',
+				'created_at' => '0000-00-00',
+	        	'updated_at' => '0000-00-00'
 			),
 			array(
 				'id' => '5', 
 				'nombre' => 'Asia Motors',
-				'val' =>  'asia-motors'
+				'val' =>  'asia-motors',
+				'created_at' => '0000-00-00',
+	        	'updated_at' => '0000-00-00'
 			),
 			array(
 				'id' => '6', 
 				'nombre' => 'Aston Martin',
-				'val' =>  'aston-martin'
+				'val' =>  'aston-martin',
+				'created_at' => '0000-00-00',
+	        	'updated_at' => '0000-00-00'
 			),
 			array(
 				'id' => '7', 
 				'nombre' => 'Audi', 
-				'val' => 'audi'
+				'val' => 'audi',
+				'created_at' => '0000-00-00',
+	        	'updated_at' => '0000-00-00'
 			),
 			array(
 				'id' => '8', 
 				'nombre' => 'Austin', 
-				'val' => 'austin'
+				'val' => 'austin',
+				'created_at' => '0000-00-00',
+	        	'updated_at' => '0000-00-00'
 			),
 			array(
 				'id' => '9', 
 				'nombre' => 'Auverland', 
-				'val' => 'auverland'
+				'val' => 'auverland',
+				'created_at' => '0000-00-00',
+	        	'updated_at' => '0000-00-00'
 			),
 			array(
 				'id' => '10', 
 				'nombre' => 'Bentley', 
-				'val' => 'bentley'
+				'val' => 'bentley',
+				'created_at' => '0000-00-00',
+	        	'updated_at' => '0000-00-00'
 			),
 			array(
 				'id' => '11', 
 				'nombre' => 'Bertone', 
-				'val' => 'bertone'
+				'val' => 'bertone',
+				'created_at' => '0000-00-00',
+	        	'updated_at' => '0000-00-00'
 			),
 			array(
 				'id' => '12', 
 				'nombre' => 'Bmw', 
-				'val' => 'bmw'
+				'val' => 'bmw',
+				'created_at' => '0000-00-00',
+	        	'updated_at' => '0000-00-00'
 			),
 			array(
 				'id' => '13', 
 				'nombre' => 'Cadillac', 
-				'val' => 'cadillac'
+				'val' => 'cadillac',
+				'created_at' => '0000-00-00',
+	        	'updated_at' => '0000-00-00'
 			),
 			array(
 				'id' => '14', 
 				'nombre' => 'Chevrolet', 
-				'val' => 'chevrolet'
+				'val' => 'chevrolet',
+				'created_at' => '0000-00-00',
+	        	'updated_at' => '0000-00-00'
 			),
 			array(
 				'id' => '15', 
 				'nombre' => 'Chrysler', 
-				'val' => 'chrysler'
+				'val' => 'chrysler',
+				'created_at' => '0000-00-00',
+	        	'updated_at' => '0000-00-00'
 			),
 			array(
 				'id' => '16', 
 				'nombre' => 'Citroen', 
-				'val' => 'citroen'
+				'val' => 'citroen',
+				'created_at' => '0000-00-00',
+	        	'updated_at' => '0000-00-00'
 			),
 			array(
 				'id' => '17', 
 				'nombre' => 'Corvette', 
-				'val' => 'corvette'
+				'val' => 'corvette',
+				'created_at' => '0000-00-00',
+	        	'updated_at' => '0000-00-00'
 			),
 			array(
 				'id' => '18', 
 				'nombre' => 'Dacia', 
-				'val' => 'dacia'
+				'val' => 'dacia',
+				'created_at' => '0000-00-00',
+	        	'updated_at' => '0000-00-00'
 			),
 			array(
 				'id' => '19', 
 				'nombre' => 'Daewoo', 
-				'val' => 'daewoo'
+				'val' => 'daewoo',
+				'created_at' => '0000-00-00',
+	        	'updated_at' => '0000-00-00'
 			),
 			array(
 				'id' => '20', 
 				'nombre' => 'Daf', 
-				'val' => 'daf'
+				'val' => 'daf',
+				'created_at' => '0000-00-00',
+	        	'updated_at' => '0000-00-00'
 			),
 			array(
 				'id' => '21', 
 				'nombre' => 'Daihatsu', 
-				'val' => 'daihatsu'
+				'val' => 'daihatsu',
+				'created_at' => '0000-00-00',
+	        	'updated_at' => '0000-00-00'
 			),
 			array(
 				'id' => '22', 
 				'nombre' => 'Daimler', 
-				'val' => 'daimler'
+				'val' => 'daimler',
+				'created_at' => '0000-00-00',
+	        	'updated_at' => '0000-00-00'
 			),
 			array(
 				'id' => '23', 
 				'nombre' => 'Dodge', 
-				'val' => 'dodge'
+				'val' => 'dodge',
+				'created_at' => '0000-00-00',
+	        	'updated_at' => '0000-00-00'
 			),
 			array(
 				'id' => '24', 
 				'nombre' => 'Ferrari', 
-				'val' => 'ferrari'
+				'val' => 'ferrari',
+				'created_at' => '0000-00-00',
+	        	'updated_at' => '0000-00-00'
 			),
 			array(
 				'id' => '25', 
 				'nombre' => 'Fiat', 
-				'val' => 'fiat'
+				'val' => 'fiat',
+				'created_at' => '0000-00-00',
+	        	'updated_at' => '0000-00-00'
 			),
 			array(
 				'id' => '26', 
 				'nombre' => 'Ford', 
-				'val' => 'ford'
+				'val' => 'ford',
+				'created_at' => '0000-00-00',
+	        	'updated_at' => '0000-00-00'
 			),
 			array(
 				'id' => '27', 
 				'nombre' => 'Galloper', 
-				'val' => 'galloper'
+				'val' => 'galloper',
+				'created_at' => '0000-00-00',
+	        	'updated_at' => '0000-00-00'
 			),
 			array(
 				'id' => '28', 
 				'nombre' => 'Gmc', 
-				'val' => 'gmc'
+				'val' => 'gmc',
+				'created_at' => '0000-00-00',
+	        	'updated_at' => '0000-00-00'
 			),
 			array(
 				'id' => '29', 
 				'nombre' => 'Honda', 
-				'val' => 'honda'
+				'val' => 'honda',
+				'created_at' => '0000-00-00',
+	        	'updated_at' => '0000-00-00'
 			),
 			array(
 				'id' => '30', 
 				'nombre' => 'Hummer', 
-				'val' => 'hummer'
+				'val' => 'hummer',
+				'created_at' => '0000-00-00',
+	        	'updated_at' => '0000-00-00'
 			),
 			array(
 				'id' => '31', 
 				'nombre' => 'Hyundai', 
-				'val' => 'hyundai'
+				'val' => 'hyundai',
+				'created_at' => '0000-00-00',
+	        	'updated_at' => '0000-00-00'
 			),
 			array(
 				'id' => '32', 
 				'nombre' => 'Infiniti', 
-				'val' => 'infiniti'
+				'val' => 'infiniti',
+				'created_at' => '0000-00-00',
+	        	'updated_at' => '0000-00-00'
 			),
 			array(
 				'id' => '33', 
 				'nombre' => 'Innocenti', 
-				'val' => 'innocenti'
+				'val' => 'innocenti',
+				'created_at' => '0000-00-00',
+	        	'updated_at' => '0000-00-00'
 			),
 			array(
 				'id' => '34', 
 				'nombre' => 'Isuzu', 
-				'val' => 'isuzu'
+				'val' => 'isuzu',
+				'created_at' => '0000-00-00',
+	        	'updated_at' => '0000-00-00'
 			),
 			array(
 				'id' => '35', 
 				'nombre' => 'Iveco', 
-				'val' => 'iveco'
+				'val' => 'iveco',
+				'created_at' => '0000-00-00',
+	        	'updated_at' => '0000-00-00'
 			),
 			array(
 				'id' => '36', 
 				'nombre' => 'Iveco-pegaso',
-				'val' =>  'iveco-pegaso'
+				'val' =>  'iveco-pegaso',
+				'created_at' => '0000-00-00',
+	        	'updated_at' => '0000-00-00'
 			),
 			array(
 				'id' => '37', 
 				'nombre' => 'Jaguar', 
-				'val' => 'jaguar'
+				'val' => 'jaguar',
+				'created_at' => '0000-00-00',
+	        	'updated_at' => '0000-00-00'
 			),
 			array(
 				'id' => '38', 
 				'nombre' => 'Jeep', 
-				'val' => 'jeep'
+				'val' => 'jeep',
+				'created_at' => '0000-00-00',
+	        	'updated_at' => '0000-00-00'
 			),
 			array(
 				'id' => '39', 
 				'nombre' => 'Kia', 
-				'val' => 'kia'
+				'val' => 'kia',
+				'created_at' => '0000-00-00',
+	        	'updated_at' => '0000-00-00'
 			),
 			array(
 				'id' => '40', 
 				'nombre' => 'Lada', 
-				'val' => 'lada'
+				'val' => 'lada',
+				'created_at' => '0000-00-00',
+	        	'updated_at' => '0000-00-00'
 			),
 			array(
 				'id' => '41', 
 				'nombre' => 'Lamborghini', 
-				'val' => 'lamborghini'
+				'val' => 'lamborghini',
+				'created_at' => '0000-00-00',
+	        	'updated_at' => '0000-00-00'
 			),
 			array(
 				'id' => '42', 
 				'nombre' => 'Lancia', 
-				'val' => 'lancia'
+				'val' => 'lancia',
+				'created_at' => '0000-00-00',
+	        	'updated_at' => '0000-00-00'
 			),
 			array(
 				'id' => '43', 
 				'nombre' => 'Land-rover',
-				'val' =>  'land-rover'
+				'val' =>  'land-rover',
+				'created_at' => '0000-00-00',
+	        	'updated_at' => '0000-00-00'
 			),
 			array(
 				'id' => '44', 
 				'nombre' => 'Ldv', 
-				'val' => 'ldv'
+				'val' => 'ldv',
+				'created_at' => '0000-00-00',
+	        	'updated_at' => '0000-00-00'
 			),
 			array(
 				'id' => '45', 
 				'nombre' => 'Lexus', 
-				'val' => 'lexus'
+				'val' => 'lexus',
+				'created_at' => '0000-00-00',
+	        	'updated_at' => '0000-00-00'
 			),
 			array(
 				'id' => '46', 
 				'nombre' => 'Lotus', 
-				'val' => 'lotus'
+				'val' => 'lotus',
+				'created_at' => '0000-00-00',
+	        	'updated_at' => '0000-00-00'
 			),
 			array(
 				'id' => '47', 
 				'nombre' => 'Mahindra', 
-				'val' => 'mahindra'
+				'val' => 'mahindra',
+				'created_at' => '0000-00-00',
+	        	'updated_at' => '0000-00-00'
 			),
 			array(
 				'id' => '48', 
 				'nombre' => 'Maserati', 
-				'val' => 'maserati'
+				'val' => 'maserati',
+				'created_at' => '0000-00-00',
+	        	'updated_at' => '0000-00-00'
 			),
 			array(
 				'id' => '49', 
 				'nombre' => 'Maybach', 
-				'val' => 'maybach'
+				'val' => 'maybach',
+				'created_at' => '0000-00-00',
+	        	'updated_at' => '0000-00-00'
 			),
 			array(
 				'id' => '50', 
 				'nombre' => 'Mazda', 
-				'val' => 'mazda'
+				'val' => 'mazda',
+				'created_at' => '0000-00-00',
+	        	'updated_at' => '0000-00-00'
 			),
 			array(
 				'id' => '51', 
 				'nombre' => 'Mercedes-benz',
-				'val' =>  'mercedes-benz'
+				'val' =>  'mercedes-benz',
+				'created_at' => '0000-00-00',
+	        	'updated_at' => '0000-00-00'
 			),
 			array(
 				'id' => '52', 
 				'nombre' => 'Mg', 
-				'val' => 'mg'
+				'val' => 'mg',
+				'created_at' => '0000-00-00',
+	        	'updated_at' => '0000-00-00'
 			),
 			array(
 				'id' => '53', 
 				'nombre' => 'Mini', 
-				'val' => 'mini'
+				'val' => 'mini',
+				'created_at' => '0000-00-00',
+	        	'updated_at' => '0000-00-00'
 			),
 			array(
 				'id' => '54', 
 				'nombre' => 'Mitsubishi', 
-				'val' => 'mitsubishi'
+				'val' => 'mitsubishi',
+				'created_at' => '0000-00-00',
+	        	'updated_at' => '0000-00-00'
 			),
 			array(
 				'id' => '55', 
 				'nombre' => 'Morgan', 
-				'val' => 'morgan'
+				'val' => 'morgan',
+				'created_at' => '0000-00-00',
+	        	'updated_at' => '0000-00-00'
 			),
 			array(
 				'id' => '56', 
 				'nombre' => 'Nissan', 
-				'val' => 'nissan'
+				'val' => 'nissan',
+				'created_at' => '0000-00-00',
+	        	'updated_at' => '0000-00-00'
 			),
 			array(
 				'id' => '57', 
 				'nombre' => 'Opel', 
-				'val' => 'opel'
+				'val' => 'opel',
+				'created_at' => '0000-00-00',
+	        	'updated_at' => '0000-00-00'
 			),
 			array(
 				'id' => '58', 
 				'nombre' => 'Peugeot', 
-				'val' => 'peugeot'
+				'val' => 'peugeot',
+				'created_at' => '0000-00-00',
+	        	'updated_at' => '0000-00-00'
 			),
 			array(
 				'id' => '59', 
 				'nombre' => 'Pontiac', 
-				'val' => 'pontiac'
+				'val' => 'pontiac',
+				'created_at' => '0000-00-00',
+	        	'updated_at' => '0000-00-00'
 			),
 			array(
 				'id' => '60', 
 				'nombre' => 'Porsche', 
-				'val' => 'porsche'
+				'val' => 'porsche',
+				'created_at' => '0000-00-00',
+	        	'updated_at' => '0000-00-00'
 			),
 			array(
 				'id' => '61', 
 				'nombre' => 'Renault', 
-				'val' => 'renault'
+				'val' => 'renault',
+				'created_at' => '0000-00-00',
+	        	'updated_at' => '0000-00-00'
 			),
 			array(
 				'id' => '62', 
 				'nombre' => 'Rolls-royce',
-				'val' =>  'rolls-royce'
+				'val' =>  'rolls-royce',
+				'created_at' => '0000-00-00',
+	        	'updated_at' => '0000-00-00'
 			),
 			array(
 				'id' => '63', 
 				'nombre' => 'Rover', 
-				'val' => 'rover'
+				'val' => 'rover',
+				'created_at' => '0000-00-00',
+	        	'updated_at' => '0000-00-00'
 			),
 			array(
 				'id' => '64', 
 				'nombre' => 'Saab', 
-				'val' => 'saab'
+				'val' => 'saab',
+				'created_at' => '0000-00-00',
+	        	'updated_at' => '0000-00-00'
 			),
 			array(
 				'id' => '65', 
 				'nombre' => 'Santana', 
-				'val' => 'santana'
+				'val' => 'santana',
+				'created_at' => '0000-00-00',
+	        	'updated_at' => '0000-00-00'
 			),
 			array(
 				'id' => '66', 
 				'nombre' => 'Seat', 
-				'val' => 'seat'
+				'val' => 'seat',
+				'created_at' => '0000-00-00',
+	        	'updated_at' => '0000-00-00'
 			),
 			array(
 				'id' => '67', 
 				'nombre' => 'Skoda', 
-				'val' => 'skoda'
+				'val' => 'skoda',
+				'created_at' => '0000-00-00',
+	        	'updated_at' => '0000-00-00'
 			),
 			array(
 				'id' => '68', 
 				'nombre' => 'Smart', 
-				'val' => 'smart'
+				'val' => 'smart',
+				'created_at' => '0000-00-00',
+	        	'updated_at' => '0000-00-00'
 			),
 			array(
 				'id' => '69', 
 				'nombre' => 'Ssangyong', 
-				'val' => 'ssangyong'
+				'val' => 'ssangyong',
+				'created_at' => '0000-00-00',
+	        	'updated_at' => '0000-00-00'
 			),
 			array(
 				'id' => '70', 
 				'nombre' => 'Subaru', 
-				'val' => 'subaru'
+				'val' => 'subaru',
+				'created_at' => '0000-00-00',
+	        	'updated_at' => '0000-00-00'
 			),
 			array(
 				'id' => '71', 
 				'nombre' => 'Suzuki', 
-				'val' => 'suzuki'
+				'val' => 'suzuki',
+				'created_at' => '0000-00-00',
+	        	'updated_at' => '0000-00-00'
 			),
 			array(
 				'id' => '72', 
 				'nombre' => 'Talbot', 
-				'val' => 'talbot'
+				'val' => 'talbot',
+				'created_at' => '0000-00-00',
+	        	'updated_at' => '0000-00-00'
 			),
 			array(
 				'id' => '73', 
 				'nombre' => 'Tata', 
-				'val' => 'tata'
+				'val' => 'tata',
+				'created_at' => '0000-00-00',
+	        	'updated_at' => '0000-00-00'
 			),
 			array(
 				'id' => '74', 
 				'nombre' => 'Toyota', 
-				'val' => 'toyota'
+				'val' => 'toyota',
+				'created_at' => '0000-00-00',
+	        	'updated_at' => '0000-00-00'
 			),
 			array(
 				'id' => '75', 
 				'nombre' => 'Umm', 
-				'val' => 'umm'
+				'val' => 'umm',
+				'created_at' => '0000-00-00',
+	        	'updated_at' => '0000-00-00'
 			),
 			array(
 				'id' => '76', 
 				'nombre' => 'Vaz', 
-				'val' => 'vaz'
+				'val' => 'vaz',
+				'created_at' => '0000-00-00',
+	        	'updated_at' => '0000-00-00'
 			),
 			array(
 				'id' => '77', 
 				'nombre' => 'Volkswagen', 
-				'val' => 'volkswagen'
+				'val' => 'volkswagen',
+				'created_at' => '0000-00-00',
+	        	'updated_at' => '0000-00-00'
 			),
 			array(
 				'id' => '78', 
 				'nombre' => 'Volvo', 
-				'val' => 'volvo'
+				'val' => 'volvo',
+				'created_at' => '0000-00-00',
+	        	'updated_at' => '0000-00-00'
 			),
 			array(
 				'id' => '79', 
 				'nombre' => 'Wartburg', 
-				'val' => 'wartburg'
+				'val' => 'wartburg',
+				'created_at' => '0000-00-00',
+	        	'updated_at' => '0000-00-00'
 			),
 			array(
 				'id' => '80', 
 				'nombre' => 'Otros', 
-				'val' => 'Otros'
+				'val' => 'Otros',
+				'created_at' => '0000-00-00',
+	        	'updated_at' => '0000-00-00'
 			),
 
         ));
