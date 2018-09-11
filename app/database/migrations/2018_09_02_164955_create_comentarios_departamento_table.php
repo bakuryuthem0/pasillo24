@@ -17,7 +17,7 @@ class CreateComentariosDepartamentoTable extends Migration {
 		{
 		    $table->increments('id');
 		    $table->string('nombre',255);
-		    
+		    $table->timestamps();
 		});
 	}
 

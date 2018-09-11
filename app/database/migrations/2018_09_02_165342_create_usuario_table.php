@@ -38,7 +38,7 @@ class CreateUsuarioTable extends Migration {
 		    $table->string('role',255);
 		    $table->string('nombEmp',255)->nullable();
 		    $table->string('auth_token',255)->nullable();
-		    $table->string('updated_at',255)->nullable();
+		    $table->timestamps();
 		    
 		});
 	}

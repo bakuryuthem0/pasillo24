@@ -20,7 +20,7 @@ class CreateCategoriaTable extends Migration {
 		    $table->string('desc',255)->default('');
 		    $table->integer('deleted');
 		    $table->integer('tipo');
-		    
+		    $table->timestamps();
 		});
 	}
 

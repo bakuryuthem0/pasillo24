@@ -19,7 +19,7 @@ class CreateComentariosGcmNumcuentasTable extends Migration {
 		    $table->integer('banco_id');
 		    $table->string('num_cuenta',255);
 		    $table->string('tipoCuenta',255);
-		    
+		    $table->timestamps();
 		});
 	}
 

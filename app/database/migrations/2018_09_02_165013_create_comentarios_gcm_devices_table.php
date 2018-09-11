@@ -18,7 +18,7 @@ class CreateComentariosGcmDevicesTable extends Migration {
 		    $table->increments('id');
 		    $table->string('gcm_regid',255);
 		    $table->integer('user_id');
-		    
+		    $table->timestamps();
 		});
 	}
 

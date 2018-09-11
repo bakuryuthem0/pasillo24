@@ -22,7 +22,7 @@ class CreateComentariosRespuestasTable extends Migration {
 		    $table->string('respuesta', 255);
 		    $table->integer('is_read')->default(0);
 		    $table->integer('deleted')->default(0);
-		    
+		    $table->timestamps();
 		});
 	}
 

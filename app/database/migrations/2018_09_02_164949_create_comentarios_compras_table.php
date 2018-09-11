@@ -25,7 +25,7 @@ class CreateComentariosComprasTable extends Migration {
 		    $table->integer('valorado_vend')->default(0);
 		    $table->integer('was_erased_comp')->default(0);
 		    $table->integer('was_erased_vend')->default(0);
-		    
+		    $table->timestamps();
 		});
 	}
 

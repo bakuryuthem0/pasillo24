@@ -19,7 +19,7 @@ class CreateComentariosGcmLocationsTable extends Migration {
 		    $table->integer('pub_id');
 		    $table->string('latitude',255);
 		    $table->string('longitude',255);
-		    
+		    $table->timestamps(); 
 		});
 	}
 

@@ -22,7 +22,7 @@ class CreateComentarioTable extends Migration {
 		    $table->integer('respondido');
 		    $table->integer('is_read');
 		    $table->integer('deleted');
-		    
+		    $table->timestamps();
 		});
 	}
 

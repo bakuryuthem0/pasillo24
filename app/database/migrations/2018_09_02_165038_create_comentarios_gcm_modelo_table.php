@@ -19,7 +19,7 @@ class CreateComentariosGcmModeloTable extends Migration {
 		    $table->integer('marca_id');
 		    $table->string('nombre',255);
 		    $table->string('val',255);
-		    
+		    $table->timestamps();
 		});
 	}
 

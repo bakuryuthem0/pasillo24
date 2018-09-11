@@ -17,7 +17,7 @@ class CreateComentariosTextosTable extends Migration {
 		{
 		    $table->increments('id');
 		    $table->text('desc');
-		    
+		    $table->timestamps();
 		});
 	}
 

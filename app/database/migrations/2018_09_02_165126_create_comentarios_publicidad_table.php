@@ -20,7 +20,7 @@ class CreateComentariosPublicidadTable extends Migration {
 		    $table->string('pos',255);
 		    $table->string('pag_web',255);
 		    $table->integer('activo');
-		    
+		    $table->timestamps();
 		});
 	}
 
