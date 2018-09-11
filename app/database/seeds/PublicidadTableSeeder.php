@@ -11,8 +11,8 @@ class PublicidadTableSeeder extends Seeder {
 		        'pos' => 'top', 
 		        'pag_web' => 'http://ffasil.com', 
 		        'activo' => 0,
-		        'created_at' => '0000-00-00',
-	        	'updated_at' => '0000-00-00'
+		        'created_at' => '2018-01-01',
+	        	'updated_at' => '2018-01-01'
         	),
 			array(
 				'id' => '2', 
@@ -20,8 +20,8 @@ class PublicidadTableSeeder extends Seeder {
 				'pos' => 'izq', 
 				'pag_web' => 'http://ffasil.com', 
 				'activo' => 0,
-				'created_at' => '0000-00-00',
-	        	'updated_at' => '0000-00-00'
+				'created_at' => '2018-01-01',
+	        	'updated_at' => '2018-01-01'
 			),
 			array(
 				'id' => '3', 
@@ -29,8 +29,8 @@ class PublicidadTableSeeder extends Seeder {
 				'pos' => 'der', 
 				'pag_web' => 'http://', 
 				'activo' => 0,
-				'created_at' => '0000-00-00',
-	        	'updated_at' => '0000-00-00'
+				'created_at' => '2018-01-01',
+	        	'updated_at' => '2018-01-01'
 			),
 
         ));

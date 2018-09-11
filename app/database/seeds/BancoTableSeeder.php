@@ -8,38 +8,38 @@ class BancoTableSeeder extends Seeder {
         	array(
 	        	'id' => '1', 
 	        	'nombre' => 'Banco Nacional de Bolivia',
-	        	'created_at' => '0000-00-00',
-	        	'updated_at' => '0000-00-00'
+	        	'created_at' => '2018-01-01',
+	        	'updated_at' => '2018-01-01'
         	),
         	array(
 				'id' => '2', 
 				'nombre' => 'Banco Union',
-				'created_at' => '0000-00-00',
-	        	'updated_at' => '0000-00-00'
+				'created_at' => '2018-01-01',
+	        	'updated_at' => '2018-01-01'
         	),
 			array(
 				'id' => '3', 
 				'nombre' => 'Banco de Crédito',
-				'created_at' => '0000-00-00',
-	        	'updated_at' => '0000-00-00'
+				'created_at' => '2018-01-01',
+	        	'updated_at' => '2018-01-01'
 			),
 			array(
 				'id' => '4', 
 				'nombre' => 'Banco Mercantil Santa Cruz',
-				'created_at' => '0000-00-00',
-	        	'updated_at' => '0000-00-00'
+				'created_at' => '2018-01-01',
+	        	'updated_at' => '2018-01-01'
 			),
 			array(
 				'id' => '6', 
 				'nombre' => 'Banco Bisa',
-				'created_at' => '0000-00-00',
-	        	'updated_at' => '0000-00-00'
+				'created_at' => '2018-01-01',
+	        	'updated_at' => '2018-01-01'
 			),
 			array(
 				'id' => '9', 
 				'nombre' => 'PayPal',
-				'created_at' => '0000-00-00',
-	        	'updated_at' => '0000-00-00'
+				'created_at' => '2018-01-01',
+	        	'updated_at' => '2018-01-01'
 			),
         ));
     }

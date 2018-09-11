@@ -22,8 +22,8 @@ class UsuarioTableSeeder extends Seeder {
         	'register_cod_active' => 'afdfad', 
         	'user_suspended' => '1', 
         	'role' => 'Administrador',
-            'created_at' => '0000-00-00',
-            'updated_at' => '0000-00-00'
+            'created_at' => '2018-01-01',
+            'updated_at' => '2018-01-01'
         ));
     }
 
